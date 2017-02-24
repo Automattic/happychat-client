@@ -6,7 +6,7 @@
   "scripts": {
     "test": "NODE_PATH=./src mocha --compilers js:babel-register -r test/helpers",
     "build": "webpack",
-    "start": "webpack-dev-server --hot"
+    "start": "webpack-dev-server --hot -p 3000"
   },
   "author": "",
   "license": "ISC",
