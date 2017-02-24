@@ -16,6 +16,10 @@ Develop using `webpack-dev-server`:
 
 A whitelisted hostname is required to access the page so that `jquery.wpcom-proxy-request` will work properly. By default it we serve off of port 3000 so `calypso.localhost:3000` will work.
 
+To use a different port, pass the `--port` argument through:
+
+    npm start -- --port 3001
+
 In the browser console try to initialize a connection:
 
     dispatch( actions.connectChat() )
