@@ -21,7 +21,7 @@ module.exports = {
 		extensions: [ '.', '.js', '.jsx' ]
 	},
 	plugins: [
-		new HtmlWebpackPlugin( { title: 'HUD', hash: true } ),
+		new HtmlWebpackPlugin( { title: 'Happychat', hash: true } ),
 		new webpack.ProvidePlugin( {
 			React: 'react',
 		} ),
