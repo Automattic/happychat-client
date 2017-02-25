@@ -5,6 +5,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import IO from 'socket.io-client';
 import { EventEmitter } from 'events';
 import logger from 'redux-logger';
+import { v4 as uuid } from 'uuid';
 /**
  * Internal dependencies
  */
@@ -48,14 +49,30 @@ class Connection extends EventEmitter {
 		debug( 'initialize' );
 		this.store = store;
 	}
-	getSocket() {
-		if ( this.socket ) {
-			return Promise.resolve( this.socket );
-		}
-		this.socket = new IO( 'https://happychat-io-staging.go-vip.co/customer' );
-		log( this.socket, 'init', () => {
+	startSocket( token ) {
+		const socket = this.socket = new IO( 'https://happychat-io-staging.go-vip.co/customer' );
+		log( socket, 'init', () => {
 			this.emit( 'connect' );
 		} );
+		log( socket, 'token', handler => {
+			handler( token );
+		} );
+
+		log( socket, 'unauthorized', () => {
+			socket.close();
+			debug( 'not authorized' );
+		} );
+		// Received a chat message
+		log( socket, 'message', message => this.emit( 'message', message ) );
+		// Received chat status new/assigning/assigned/missed/pending/abandoned
+		log( socket, 'status', status => this.emit( 'status', status ) );
+		// If happychat is currently accepting chats
+		log( socket, 'accept', accept => this.emit( 'accept', accept ) );
+	}
+	getSocket() {
+		if ( ! this.socket ) {
+			return Promise.reject( new Error( 'connection not initialized' ) );
+		}
 		return Promise.resolve( this.socket );
 	}
 	isConnected() {
@@ -66,12 +83,18 @@ class Connection extends EventEmitter {
 		return dispatch( me() )
 			.then( ( user ) => dispatch( startSession() )
 				.then( ( { session_id } ) => dispatch( sign( { user, session_id } ) )
-					.then( ( { jwt } ) => this.getSocket().then( () => {
-						debug( 'socket is open', user, jwt, session_id );
-						return Promise.reject( new Error( 'Failed to start' ) );
-					} ) )
+					.then( ( { jwt } ) => {
+						this.startSocket( { signer_user_id: user.ID, jwt } );
+					} )
 				)
 			);
+	}
+
+	send( message ) {
+		this.getSocket().then(
+			socket => socket.emit( 'message', { text: message, id: uuid() } ),
+			e => debug( e )
+		);
 	}
 }
 
