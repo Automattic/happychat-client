@@ -1,2 +1,4 @@
-node_modules
-dist
+.gitignore
+node_modules/
+public/happychat.js
+public/happychat.css

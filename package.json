@@ -1,68 +1,50 @@
 {
-  "name": "happychat-customer-enhancer",
-  "version": "1.0.0",
+  "name": "happychat-embedded",
+  "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "src/api.js",
   "scripts": {
-    "test": "NODE_PATH=./src mocha --compilers js:babel-register -r test/helpers",
-    "build": "webpack",
-    "start": "webpack-dev-server --hot"
+    "build": "run-p build:*",
+    "build:js": "webpack",
+    "build:css": "node-sass src/ui/index.scss public/happychat.css",
+    "start": "webpack-dev-server"
   },
+  "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "devDependencies": {
-    "autoprefixer": "^6.7.5",
-    "babel": "^6.23.0",
-    "babel-core": "^6.23.1",
-    "babel-loader": "^6.3.2",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-register": "^6.23.0",
-    "eslint": "^3.16.1",
-    "eslint-config-wpcalypso": "^0.6.0",
-    "eslint-plugin-wpcalypso": "^3.0.2",
-    "html-webpack-plugin": "^2.28.0",
-    "mocha": "^3.2.0",
-    "ramda": "^0.23.0",
-    "redux": "^3.6.0",
-    "socket.io-client": "^1.7.3",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.1"
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.5.1",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-wpcalypso": "^0.8.0",
+    "eslint-plugin-react": "^7.0.1",
+    "eslint-plugin-wpcalypso": "^3.2.0",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.0.2",
+    "webpack": "^2.6.0",
+    "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
-    "debug": "^2.6.1",
-    "jquery": "^3.1.1",
+    "classnames": "^2.2.5",
+    "events": "^1.1.1",
+    "gridicons": "^1.1.0",
+    "i18n-calypso": "^1.7.4",
     "lodash": "^4.17.4",
-    "redux-logger": "^2.8.1",
-    "socket.io-client": "^1.7.3",
-    "uuid": "^3.0.1"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ],
-    "plugins": [
-      "transform-object-rest-spread"
-    ]
-  },
-  "eslintConfig": {
-    "env": {
-      "node": true,
-      "mocha": true,
-      "browser": true,
-      "jquery": true
-    },
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "ecmaFeatures": {
-        "experimentalObjectRestSpread": true
-      }
-    },
-    "plugins": [
-      "wpcalypso"
-    ],
-    "extends": [
-      "wpcalypso"
-    ]
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-redux": "^5.0.5",
+    "redux": "^3.6.0",
+    "redux-devtools-extension": "^2.13.2",
+    "reselect": "^3.0.1",
+    "socket.io-client": "^2.0.2",
+    "twemoji": "^2.3.0",
+    "url": "^0.11.0",
+    "uuid": "^3.0.1",
+    "wpcom-oauth-cors": "^1.0.1",
+    "wpcom-xhr-request": "^1.1.0"
   }
 }

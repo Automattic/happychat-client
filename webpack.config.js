@@ -1,33 +1,21 @@
-const HtmlWebpackPlugin = require( 'html-webpack-plugin' );
-const webpack = require( 'webpack' );
-const { resolve, join } = require( 'path' );
+const path = require( 'path' );
 
 module.exports = {
-	devtool: 'sourcemap',
-	entry: {
-		vendor: [ 'jquery', './src/jquery.wpcom-proxy-request.js' ],
-		app: './src'
-	},
+	entry: './src/api.js',
 	output: {
-		path: resolve( './dist' ),
-		filename: '[name].js'
+		filename: './public/happychat.js'
 	},
 	module: {
-		loaders: [
-			{ test: /\.jsx?$/, exclude: /node_modules/, loaders: [ 'babel-loader' ] }
-		]
+		rules: [ { test: /\.(js|jsx)$/, exclude: /node_modules/, use: 'babel-loader' } ]
 	},
 	resolve: {
-		extensions: [ '.', '.js', '.jsx' ]
+		modules: [ path.resolve( '.' ), 'node_modules' ],
+		extensions: [ '.js', '.jsx' ]
 	},
-	plugins: [
-		new HtmlWebpackPlugin( { title: 'Happychat', hash: true } ),
-		new webpack.ProvidePlugin( {
-			React: 'react',
-		} ),
-	],
 	devServer: {
-		historyApiFallback: true,
-		port: 3000
+		contentBase: './public',
+		compress: true,
+		port: 9000,
+		hot: true
 	}
 };

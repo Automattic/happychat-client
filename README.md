@@ -1,70 +1,12 @@
-# Happychat Client for customers
+# Happychat client
 
-Redux based happychat client for connecting to happychat.
-
-## Installing
-
-    git clone git@github.com:Automattic/happychat-client.git
-    cd happychat-client
-    npm install
+Currently, customer facing code for Happychat lives in Calypso. This project intends to extract it and prepare the Happychat client to be embeddable in any environment.
 
 ## Running
 
-Develop using `webpack-dev-server`:
+    npm install
+    npm run build && npm run start
 
-    npm start
+Visit localhost:9000 and click the Happychat button to start a chat. The first time, you'll be redirected to the WordPress.com token approval screen.
 
-A whitelisted hostname is required to access the page so that `jquery.wpcom-proxy-request` will work properly. By default it we serve off of port 3000 so `calypso.localhost:3000` will work.
-
-To use a different port, pass the `--port` argument through:
-
-    npm start -- --port 3001
-
-In the browser console try to initialize a connection:
-
-    dispatch( actions.connectChat() )
-
-This is about all it can do at the moment.
-
-Here's a list of whitelisted hostnames:
-
-```
-https://wordpress.com
-http://widgets.wp.com
-https://widgets.wp.com
-http://wpeditor.org
-https://dev-mc.a8c.com
-https://mc.a8c.com
-https://wpeditor.org
-http://calypso.dev:3000
-https://calypso.dev:3000
-http://calypso.dev:3001
-https://calypso.dev:3001
-http://calypso.localhost:3000
-https://calypso.localhost:3000
-http://calypso.localhost:3001
-https://calypso.localhost:3001
-https://calypso.live
-http://notifications.dev:3000
-http://notifications.dev:8888
-https://notifications.dev:3000
-https://automattic.github.io
-http://wpeditor.local
-http://wpeditor.local:3000
-http://wpeditor.local:8888
-https://wpeditor.local
-https://wpeditor.local:3000
-https://wpeditor.local:8888
-http://wpeditor.dev
-http://wpeditor.dev:8888
-https://wpeditor.dev
-https://wpeditor.dev:8888
-```
-
-## Building
-
-To produce static assets:
-
-    npm run build
-
-The main application will be at `dist/app.js`. It depends on `jquery` and `jquery.wpcom-proxy-request`
+By default, it will try to connect to a local instance of Happychat, so make sure you have one running and there is at least one operator available.
