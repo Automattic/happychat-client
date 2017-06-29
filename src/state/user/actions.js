@@ -4,7 +4,8 @@
 import {
 	HAPPYCHAT_USER_CURRENT_SET,
 	HAPPYCHAT_USER_LOCALE_SET,
-	HAPPYCHAT_USER_GEOLOCATION_SET
+	HAPPYCHAT_USER_GEOLOCATION_SET,
+	HAPPYCHAT_USER_TOKEN
 } from 'src/state/action-types';
 
 /**
@@ -32,5 +33,12 @@ export function setLocale( locale ) {
 	return {
 		type: HAPPYCHAT_USER_LOCALE_SET,
 		locale
+	};
+}
+
+export function setToken( token ) {
+	return {
+		type: HAPPYCHAT_USER_TOKEN,
+		token
 	};
 }

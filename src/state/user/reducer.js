@@ -9,7 +9,8 @@ import { combineReducers } from 'redux';
 import {
 	HAPPYCHAT_USER_LOCALE_SET,
 	HAPPYCHAT_USER_CURRENT_SET,
-	HAPPYCHAT_USER_GEOLOCATION_SET
+	HAPPYCHAT_USER_GEOLOCATION_SET,
+	HAPPYCHAT_USER_TOKEN
 } from 'src/state/action-types';
 
 /**
@@ -43,8 +44,17 @@ const locale = ( state = null, action ) => {
 	return state;
 };
 
+const token = ( state = null, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_USER_TOKEN:
+			return action.token;
+	}
+	return state;
+};
+
 export default combineReducers( {
 	geoLocation,
 	currentUser,
-	locale
+	locale,
+	token
 } );

@@ -3,17 +3,10 @@
  */
 import request from 'wpcom-xhr-request';
 
-/**
- * Internal dependencies
- */
-import config from 'src/config';
-
-const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 const debug = require( 'debug' )( 'happychat-embedded:wpcom' );
 
-export const getUser = () =>
+export const getUser = token =>
 	new Promise( ( resolve, reject ) => {
-		const token = wpcomOAuth.token();
 		if ( ! token ) {
 			return reject( 'There is no token' );
 		}
@@ -24,7 +17,7 @@ export const getUser = () =>
 				method: 'GET',
 				apiNamespace: 'rest/v1',
 				path: '/me',
-				authToken: token.access_token
+				authToken: token
 			},
 			( error, body, headers ) => {
 				if ( error ) {
@@ -38,9 +31,8 @@ export const getUser = () =>
 		);
 	} );
 
-export const startSession = () =>
+export const startSession = token =>
 	new Promise( ( resolve, reject ) => {
-		const token = wpcomOAuth.token();
 		if ( ! token ) {
 			return reject( 'There is no token' );
 		}
@@ -51,7 +43,7 @@ export const startSession = () =>
 				method: 'POST',
 				apiNamespace: 'rest/v1',
 				path: '/happychat/session',
-				authToken: token.access_token
+				authToken: token
 			},
 			( error, body, headers ) => {
 				if ( error ) {
@@ -65,9 +57,8 @@ export const startSession = () =>
 		);
 	} );
 
-export const sign = payload =>
+export const sign = ( payload, token ) =>
 	new Promise( ( resolve, reject ) => {
-		const token = wpcomOAuth.token();
 		if ( ! token ) {
 			return reject( 'There is no token' );
 		}
@@ -78,7 +69,7 @@ export const sign = payload =>
 				method: 'POST',
 				apiNamespace: 'rest/v1',
 				path: '/jwt/sign',
-				authToken: token.access_token,
+				authToken: token,
 				body: { payload: JSON.stringify( payload ) }
 			},
 			( error, body, headers ) => {

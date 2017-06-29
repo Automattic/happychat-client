@@ -35,7 +35,12 @@ import {
 	isHappychatConnectionUninitialized,
 	wasHappychatRecentlyActive
 } from 'src/state/socket/selectors';
-import { getCurrentUser, getCurrentUserLocale, getGeoLocation } from 'src/state/user/selectors';
+import {
+	getCurrentUser,
+	getCurrentUserLocale,
+	getGeoLocation,
+	getToken
+} from 'src/state/user/selectors';
 
 const debug = require( 'debug' )( 'happychat-embedded:middleware' );
 
@@ -82,14 +87,15 @@ const connectChat = ( connection, { getState, dispatch } ) => {
 
 	// create new session id and get signed identity data for authenticating
 	/* eslint-disable camelcase */
-	return startSession()
+	const token = getToken();
+	return startSession( token )
 		.then( ( { session_id, geo_location } ) => {
 			debug( 'session id ', session_id );
 			debug( 'geo_location ', geo_location );
 			if ( geo_location && geo_location.country_long && geo_location.city ) {
 				dispatch( setGeoLocation( geo_location ) );
 			}
-			return sign( { user, session_id } );
+			return sign( { user, session_id }, token );
 		} )
 		.then( ( { jwt } ) => {
 			debug( 'what is the jwt ', jwt );
@@ -137,9 +143,8 @@ const sendInfo = ( connection, { getState }, siteUrl ) => {
 	// Geo location
 	const state = getState();
 	const geoLocation = getGeoLocation( state );
-	const userLocation = null !== geoLocation
-		? `\nLocation: ${ geoLocation.city }, ${ geoLocation.country_long }`
-		: '';
+	const userLocation =
+		null !== geoLocation ? `\nLocation: ${ geoLocation.city }, ${ geoLocation.country_long }` : '';
 
 	const msg = {
 		text: `Info\n ${ siteHelp } ${ screenRes } ${ browserSize } ${ userAgent } ${ localDateTime } ${ userLocation }` // eslint-disable-line max-len

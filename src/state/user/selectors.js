@@ -14,3 +14,5 @@ export const getGeoLocation = state => get( state, 'user.geoLocation', null );
 export const getCurrentUser = state => get( state, 'user.currentUser', null );
 
 export const getCurrentUserLocale = state => get( state, 'user.locale', null );
+
+export const getToken = state => get( state, 'user.token', null );
