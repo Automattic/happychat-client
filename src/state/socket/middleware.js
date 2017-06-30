@@ -63,6 +63,7 @@ const connectChat = ( connection, { getState, dispatch } ) => {
 
 	const user = getCurrentUser( state );
 	const locale = getCurrentUserLocale( state );
+	const token = getToken( state );
 
 	debug( 'dispatch setConnecting' );
 	// Notify that a new connection is being established
@@ -87,7 +88,6 @@ const connectChat = ( connection, { getState, dispatch } ) => {
 
 	// create new session id and get signed identity data for authenticating
 	/* eslint-disable camelcase */
-	const token = getToken();
 	return startSession( token )
 		.then( ( { session_id, geo_location } ) => {
 			debug( 'session id ', session_id );
