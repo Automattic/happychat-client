@@ -15,7 +15,7 @@ import Happychat from 'src/ui';
 import reducer from 'src/state/reducer';
 import socketIOProxy from 'src/state/socket/middleware';
 import { openChat } from 'src/state/ui/actions';
-import { setCurrentUser, setLocale } from 'src/state/user/actions';
+import { setCurrentUser, setLocale, setToken } from 'src/state/user/actions';
 import { getUser } from 'src/lib/wp';
 
 const debug = debugFactory( 'happychat-embedded:api-wrapper' );
@@ -27,17 +27,20 @@ const store = createStore(
 	compose( applyMiddleware( socketIOProxy() ), devToolsEnhancer() )
 );
 
-const renderTo = nodeId => {
-	debug( 'get user info' );
+const renderTo = ( nodeId, token ) => {
+	debug( 'get user info with token ', token );
+	store.dispatch( setToken( token ) );
 	/* eslint-disable camelcase */
-	getUser()
+	getUser( token )
 		.then( ( { ID, email, username, display_name, avatar_URL, language } ) => {
 			store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 			store.dispatch( setLocale( language ) );
 
 			debug( 'renderTo' );
 			ReactDOM.render(
-				<Provider store={ store }><Happychat /></Provider>,
+				<Provider store={ store }>
+					<Happychat />
+				</Provider>,
 				document.getElementById( nodeId )
 			);
 
