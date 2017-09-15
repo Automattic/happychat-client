@@ -1,9 +1,9 @@
 const path = require( 'path' );
 
 module.exports = {
-	entry: './src/api.js',
+	entry: './targets/standalone/index.js',
 	output: {
-		filename: './public/happychat.js'
+		filename: './targets/standalone/public/happychat.js'
 	},
 	module: {
 		rules: [ { test: /\.(js|jsx)$/, exclude: /node_modules/, use: 'babel-loader' } ]
@@ -13,7 +13,7 @@ module.exports = {
 		extensions: [ '.js', '.jsx' ]
 	},
 	devServer: {
-		contentBase: './public',
+		contentBase: './targets/standalone/public',
 		compress: true,
 		port: 9000,
 		hot: true
