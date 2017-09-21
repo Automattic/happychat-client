@@ -5,7 +5,7 @@ Currently, customer facing code for Happychat lives in Calypso. This project int
 ## Running
 
     npm install
-    npm run build && npm run start
+    npm run start
 
 Visit localhost:9000 and click the Happychat button to start a chat. The first time, you'll be redirected to the WordPress.com token approval screen.
 

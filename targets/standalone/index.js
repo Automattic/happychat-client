@@ -6,7 +6,7 @@ import debugFactory from 'debug';
 /**
  * Internal dependencies
  */
-import { renderTo } from 'src/api-wrapper';
+import { renderTo } from 'targets/standalone/api-wrapper';
 import config from 'src/config';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );

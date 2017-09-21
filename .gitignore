@@ -1,4 +1,4 @@
 .gitignore
 node_modules/
-public/happychat.js
-public/happychat.css
+tokens
+targets/standalone/public/tokens

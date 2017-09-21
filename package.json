@@ -2,12 +2,19 @@
   "name": "happychat-embedded",
   "version": "0.0.1",
   "description": "",
-  "main": "src/api.js",
+  "main": "src/standalone/api.js",
   "scripts": {
     "build": "run-p build:*",
-    "build:js": "webpack",
-    "build:css": "node-sass src/ui/index.scss public/happychat.css",
-    "start": "webpack-dev-server"
+    "build:js": "run-p build:js:*",
+    "build:js:npm": "webpack --config webpack.npm.config.js",
+    "build:js:standalone": "webpack --config webpack.standalone.config.js",
+    "build:js:wordpress": "webpack --config webpack.wordpress.config.js",
+    "build:css": "run-p build:css:*",
+    "build:css:npm": "node-sass src/ui/index.scss targets/npm/public/happychat.css",
+    "build:css:standalone": "node-sass src/ui/index.scss targets/standalone/public/happychat.css",
+    "build:css:wordpress": "node-sass src/ui/index.scss targets/wordpress/public/happychat.css",
+    "prestart": "npm run build:js:standalone; npm run build:css:standalone",
+    "start": "webpack-dev-server --config webpack.standalone.config.js"
   },
   "keywords": [],
   "author": "",
