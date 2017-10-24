@@ -7,14 +7,14 @@ import React, { Component } from 'react';
 import debugFactory from 'debug';
 const debug = debugFactory( 'happychat-embedded:localize' );
 
-export default ComposedComponent =>
+export const mockLocalize = ComposedComponent =>
 	class extends Component {
-		mockTranslate( msg ) {
+		translate( msg ) {
 			debug( 'mockTranslate ', msg );
 			return msg;
 		}
 
 		render() {
-			return <ComposedComponent { ...this.props } translate={ this.mockTranslate } />;
+			return <ComposedComponent { ...this.props } translate={ this.translate } />;
 		}
 	};

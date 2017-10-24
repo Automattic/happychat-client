@@ -9,11 +9,12 @@ import { connect } from 'react-redux';
  * Calypso dependencies
  */
 import { Notices } from 'components/happychat/notices';
+// TODO: implement localize
+import { mockLocalize } from 'src/ui/components/localize';
 
 /**
  * Internal dependencies
  */
-import localize from 'src/ui/components/localize';
 import { getHappychatStatus } from 'src/state/chat/selectors';
 import {
 	getHappychatConnectionStatus,
@@ -26,4 +27,4 @@ const mapState = state => ( {
 	connectionStatus: getHappychatConnectionStatus( state ),
 } );
 
-export default localize( connect( mapState )( Notices ) );
+export default mockLocalize( connect( mapState )( Notices ) );
