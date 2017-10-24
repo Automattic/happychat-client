@@ -51,6 +51,7 @@
     "twemoji": "^2.3.0",
     "url": "^0.11.0",
     "uuid": "^3.0.1",
+    "wp-calypso": "github:automattic/wp-calypso#update/happychat/ui-decouple",
     "wpcom-oauth-cors": "^1.0.1",
     "wpcom-xhr-request": "^1.1.0"
   }

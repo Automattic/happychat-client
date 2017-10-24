@@ -6,11 +6,24 @@ module.exports = {
 		filename: './targets/standalone/public/happychat.js'
 	},
 	module: {
-		rules: [ { test: /\.(js|jsx)$/, exclude: /node_modules/, use: 'babel-loader' } ]
+		rules: [
+			{
+				test: /\.(js|jsx)$/,
+				use: 'babel-loader',
+				include: [
+					path.resolve( __dirname, 'src' ),
+					path.resolve( __dirname, 'targets' ),
+					path.resolve( __dirname, 'node_modules', 'wp-calypso', 'client' ),
+				],
+			} ]
 	},
 	resolve: {
-		modules: [ path.resolve( '.' ), 'node_modules' ],
-		extensions: [ '.js', '.jsx' ]
+		extensions: [ '.js', '.jsx' ],
+		modules: [
+			path.resolve( __dirname ),
+			path.resolve( __dirname, 'node_modules' ),
+			path.resolve( __dirname, 'node_modules', 'wp-calypso', 'client' ),
+		],
 	},
 	devServer: {
 		contentBase: './targets/standalone/public',
