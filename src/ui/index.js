@@ -1,6 +1,9 @@
 /**
  * External dependencies
+ *
+ * @format
  */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
@@ -17,10 +20,11 @@ import {
 	openChat,
 	closeChat,
 	minimizeChat,
-	minimizedChat
+	minimizedChat,
 } from 'src/state/ui/actions';
 import { isHappychatMinimizing, isHappychatOpen } from 'src/state/ui/selectors';
 import { getHappychatConnectionStatus } from 'src/state/socket/selectors';
+import Title from './title';
 import HappychatConnection from './connection';
 import Composer from './composer';
 import Notices from './notices';
@@ -28,17 +32,6 @@ import Timeline from './timeline';
 
 const debug = debugFactory( 'happychat-embedded:ui' );
 
-/**
- * React component for rendering title bar
- */
-const Title = localize( ( { onCloseChat, translate } ) =>
-	<div className="happychat__active-toolbar">
-		<h4>{translate( 'Support Chat' )}</h4>
-		<div onClick={ onCloseChat }>
-			<GridIcon icon="cross" />
-		</div>
-	</div>
-);
 /*
  * Main chat UI component
  */
@@ -62,12 +55,10 @@ class Happychat extends React.Component {
 				<div
 					className={ classnames( 'happychat__container', {
 						'is-open': isChatOpen,
-						'is-minimizing': isMinimizing
+						'is-minimizing': isMinimizing,
 					} ) }
 				>
-					<div className="happychat__title">
-						<Title onCloseChat={ onCloseChat } />
-					</div>
+					<Title onCloseChat={ onCloseChat } />
 					<Timeline />
 					<Notices />
 					<Composer />
@@ -81,7 +72,7 @@ const mapState = state => {
 	return {
 		connectionStatus: getHappychatConnectionStatus( state ),
 		isChatOpen: isHappychatOpen( state ),
-		isMinimizing: isHappychatMinimizing( state )
+		isMinimizing: isHappychatMinimizing( state ),
 	};
 };
 
@@ -107,7 +98,7 @@ const mapDispatch = dispatch => {
 		setFocused() {
 			debug( 'set focused' );
 			dispatch( focus() );
-		}
+		},
 	};
 };
 
