@@ -41,6 +41,7 @@
     "gridicons": "^1.1.0",
     "i18n-calypso": "^1.7.4",
     "lodash": "^4.17.4",
+    "prettier": "github:automattic/calypso-prettier#14307ba5cc6bcfc00243f5e2d1b25c72d52c28c8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
