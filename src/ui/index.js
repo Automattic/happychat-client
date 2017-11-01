@@ -1,15 +1,16 @@
+/** @format */
+
 /**
  * External dependencies
- *
- * @format
  */
-
-import React from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
-import GridIcon from 'gridicons';
-import { localize } from 'i18n-calypso';
-import debugFactory from 'debug';
+
+/**
+ * Calypso dependencies
+ */
+import { Happychat } from 'components/happychat/main';
+// TODO: implement localize
+import { mockLocalize } from 'src/ui/components/localize';
 
 /**
  * Internal dependencies
@@ -22,84 +23,54 @@ import {
 	minimizeChat,
 	minimizedChat,
 } from 'src/state/ui/actions';
+import { sendChatMessage, setChatMessage } from 'src/state/chat/actions';
+import { connectChat } from 'src/state/socket/actions';
 import { isHappychatMinimizing, isHappychatOpen } from 'src/state/ui/selectors';
-import { getHappychatConnectionStatus } from 'src/state/socket/selectors';
-import Title from './title';
-import HappychatConnection from './connection';
-import Composer from './composer';
-import Notices from './notices';
-import Timeline from './timeline';
-
-const debug = debugFactory( 'happychat-embedded:ui' );
-
-/*
- * Main chat UI component
- */
-class Happychat extends React.Component {
-	componentDidMount() {
-		debug( 'did mount' );
-		this.props.setFocused();
-	}
-
-	componentWillUnmount() {
-		debug( 'will unmount' );
-		this.props.setBlurred();
-	}
-
-	render() {
-		const { isChatOpen, isMinimizing, onCloseChat } = this.props;
-
-		return (
-			<div className="happychat">
-				<HappychatConnection />
-				<div
-					className={ classnames( 'happychat__container', {
-						'is-open': isChatOpen,
-						'is-minimizing': isMinimizing,
-					} ) }
-				>
-					<Title onCloseChat={ onCloseChat } />
-					<Timeline />
-					<Notices />
-					<Composer />
-				</div>
-			</div>
-		);
-	}
-}
+import { getHappychatStatus } from 'src/state/chat/selectors';
+import {
+	getHappychatConnectionStatus,
+	isHappychatConnectionUninitialized,
+	isHappychatServerReachable,
+} from 'src/state/socket/selectors';
+import { canUserSendMessages, getCurrentChatMessage } from 'src/state/chat/selectors';
+import { getCurrentUser } from 'src/state/user/selectors';
+import { getHappychatTimeline } from 'src/state/chat/selectors';
 
 const mapState = state => {
+	const currentUser = getCurrentUser( state );
 	return {
+		chatStatus: getHappychatStatus( state ),
 		connectionStatus: getHappychatConnectionStatus( state ),
+		currentUserEmail: currentUser.email,
+		disabled: ! canUserSendMessages( state ),
+		getAuth: () => {}, // TODO: implement
 		isChatOpen: isHappychatOpen( state ),
+		isConnectionUninitialized: isHappychatConnectionUninitialized( state ),
+		/* eslint-disable camelcase */
+		isCurrentUser: ( { user_id, source } ) => {
+			return user_id.toString() === currentUser.ID.toString() && source === 'customer';
+		},
+		/* eslint-enable camelcase */
+		isHappychatEnabled: true,
 		isMinimizing: isHappychatMinimizing( state ),
+		isServerReachable: isHappychatServerReachable( state ),
+		message: getCurrentChatMessage( state ),
+		timeline: getHappychatTimeline( state ),
 	};
 };
 
-const mapDispatch = dispatch => {
-	return {
-		onOpenChat() {
-			debug( 'open chat' );
-			dispatch( openChat() );
-		},
-		onCloseChat() {
-			debug( 'minimize chat' );
-			dispatch( minimizeChat() );
-			setTimeout( function() {
-				debug( 'close chat' );
-				dispatch( minimizedChat() );
-				dispatch( closeChat() );
-			}, 500 );
-		},
-		setBlurred() {
-			debug( 'set blurred' );
-			dispatch( blur() );
-		},
-		setFocused() {
-			debug( 'set focused' );
-			dispatch( focus() );
-		},
-	};
+const mapDispatch = {
+	onBlurred: blur,
+	onCloseChat: closeChat,
+	onFocused: focus,
+	onInitConnection: connectChat,
+	onMinimizeChat: minimizeChat,
+	onMinimizedChat: minimizedChat,
+	onSendMessage: sendChatMessage,
+	onSendNotTyping: () => {},
+	onSendTyping: () => {},
+	onSetCurrentMessage: setChatMessage,
+	onOpenChat: openChat, // TODO: what this mean?
 };
 
-export default connect( mapState, mapDispatch )( Happychat );
+export default connect( mapState, mapDispatch )( mockLocalize( Happychat ) );
