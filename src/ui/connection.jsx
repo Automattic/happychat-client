@@ -18,7 +18,9 @@ import { isHappychatConnectionUninitialized } from 'src/state/socket/selectors';
 
 export default connect(
 	state => ( {
-		isUninitialized: isHappychatConnectionUninitialized( state ),
+		getAuth: () => {},
+		isConnectionUninitialized: isHappychatConnectionUninitialized( state ),
+		isHappychatEnabled: true,
 	} ),
-	{ connectChat }
+	{ onInitConnection: connectChat }
 )( HappychatConnection );
