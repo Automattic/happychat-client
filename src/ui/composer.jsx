@@ -23,13 +23,12 @@ const mapState = state => ( {
 	message: getCurrentChatMessage( state ),
 } );
 
-const mapDispatch = dispatch => ( {
-	onUpdateChatMessage( message ) {
-		dispatch( setChatMessage( message ) );
-	},
-	onSendChatMessage( message ) {
-		dispatch( sendChatMessage( message ) );
-	},
-} );
+const mapDispatch = {
+	onFocus: () => {},
+	onSendMessage: sendChatMessage,
+	onSendNotTyping: () => {},
+	onSendTyping: () => {},
+	onSetCurrentMessage: setChatMessage,
+};
 
 export default connect( mapState, mapDispatch )( mockLocalize( Composer ) );
