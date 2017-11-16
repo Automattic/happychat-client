@@ -6,15 +6,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import debugFactory from 'debug';
-const debug = debugFactory( 'happychat-embedded:ui' );
 
 /**
  * Calypso dependencies
  */
 
 // actions
-import { initConnection, sendMessage } from 'state/happychat/connection/actions';
+import {
+	initConnection,
+	sendMessage,
+	onSendNotTyping,
+	onSendTyping,
+} from 'state/happychat/connection/actions';
 import { blur, focus, setCurrentMessage } from 'state/happychat/ui/actions';
 import getHappychatChatStatus from 'state/happychat/selectors/get-happychat-chat-status';
 import getHappychatCurrentMessage from 'state/happychat/selectors/get-happychat-current-message';
@@ -161,14 +164,8 @@ const mapState = state => {
 const mapDispatch = {
 	onInitConnection: initConnection,
 	onSendMessage: sendMessage,
-	onSendNotTyping: () => {
-		// TODO
-		debug( 'send not typing' );
-	},
-	onSendTyping: () => {
-		// TODO
-		debug( 'send typing' );
-	},
+	onSendNotTyping: onSendNotTyping,
+	onSendTyping: onSendTyping,
 	onSetCurrentMessage: setCurrentMessage,
 	setBlurred: blur,
 	setFocused: focus,

@@ -40113,10 +40113,6 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactRedux = __webpack_require__(176);
 
-var _debug = __webpack_require__(7);
-
-var _debug2 = _interopRequireDefault(_debug);
-
 var _actions = __webpack_require__(69);
 
 var _actions2 = __webpack_require__(220);
@@ -40174,8 +40170,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 
 
-var debug = (0, _debug2.default)('happychat-embedded:ui');
-
 /**
  * Calypso dependencies
  */
@@ -40195,6 +40189,7 @@ var debug = (0, _debug2.default)('happychat-embedded:ui');
 /**
  * Internal dependencies
  */
+
 
 /**
  * React component for rendering a happychat client as a full page
@@ -40337,14 +40332,8 @@ var mapState = function mapState(state) {
 var mapDispatch = {
 	onInitConnection: _actions.initConnection,
 	onSendMessage: _actions.sendMessage,
-	onSendNotTyping: function onSendNotTyping() {
-		// TODO
-		debug('send not typing');
-	},
-	onSendTyping: function onSendTyping() {
-		// TODO
-		debug('send typing');
-	},
+	onSendNotTyping: _actions.onSendNotTyping,
+	onSendTyping: _actions.onSendTyping,
 	onSetCurrentMessage: _actions2.setCurrentMessage,
 	setBlurred: _actions2.blur,
 	setFocused: _actions2.focus
