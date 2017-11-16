@@ -20,7 +20,6 @@ import middleware from 'state/happychat/middleware';
  */
 import Happychat from 'src/ui';
 import reducer from 'src/state/reducer';
-import { openChat } from 'src/state/ui/actions';
 import { setCurrentUser, setLocale } from 'src/state/user/actions';
 import { getUser } from 'src/lib/wp';
 
@@ -48,9 +47,6 @@ const renderTo = nodeId => {
 				</Provider>,
 				document.getElementById( nodeId )
 			);
-
-			debug( 'dispatch openChat' );
-			store.dispatch( openChat() );
 		} )
 		.catch( error => {
 			debug( error );

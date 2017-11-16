@@ -15,7 +15,7 @@ const debug = debugFactory( 'happychat-embedded:ui' );
 
 // actions
 import { initConnection, sendMessage } from 'state/happychat/connection/actions';
-import { setCurrentMessage } from 'state/happychat/ui/actions';
+import { blur, focus, setCurrentMessage } from 'state/happychat/ui/actions';
 import getHappychatChatStatus from 'state/happychat/selectors/get-happychat-chat-status';
 import getHappychatCurrentMessage from 'state/happychat/selectors/get-happychat-current-message';
 
@@ -38,7 +38,6 @@ import { mockLocalize } from 'src/ui/components/localize';
  * Internal dependencies
  */
 import config from 'src/config';
-import { blur, focus } from 'src/state/ui/actions';
 import { getCurrentUser } from 'src/state/user/selectors';
 
 /**
