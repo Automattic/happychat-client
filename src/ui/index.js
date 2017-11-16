@@ -15,18 +15,10 @@ import { connect } from 'react-redux';
 import {
 	initConnection,
 	sendMessage,
-	onSendNotTyping,
-	onSendTyping,
+	sendNotTyping,
+	sendTyping,
 } from 'state/happychat/connection/actions';
 import { blur, focus, setCurrentMessage } from 'state/happychat/ui/actions';
-import getHappychatChatStatus from 'state/happychat/selectors/get-happychat-chat-status';
-import getHappychatCurrentMessage from 'state/happychat/selectors/get-happychat-current-message';
-
-// selectors
-import getHappychatConnectionStatus from 'state/happychat/selectors/get-happychat-connection-status';
-import getHappychatTimeline from 'state/happychat/selectors/get-happychat-timeline';
-import isHappychatConnectionUninitialized from 'state/happychat/selectors/is-happychat-connection-uninitialized';
-import isHappychatServerReachable from 'state/happychat/selectors/is-happychat-server-reachable';
 
 // UI components
 import { HappychatConnection } from 'components/happychat/connection';
@@ -42,7 +34,15 @@ import { mockLocalize } from 'src/ui/components/localize';
  */
 import config from 'src/config';
 import { getHappychatAuth } from 'src/lib/wp';
-import getCurrentUser from 'src/state/selectors/get-current-user';
+
+// selectors
+import getChatStatus from 'src/state/selectors/get-chat-status';
+import getChatTimeline from 'src/state/selectors/get-chat-timeline';
+import getConnectionStatus from 'src/state/selectors/get-connection-status';
+import getUser from 'src/state/selectors/get-user';
+import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
+import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
+import isHCServerReachable from 'src/state/selectors/is-server-reachable';
 
 /**
  * React component for rendering a happychat client as a full page
@@ -63,13 +63,13 @@ export class HappychatPage extends Component {
 			currentUserEmail,
 			disabled,
 			getAuth,
+			isConnectionUninitialized,
 			isCurrentUser,
 			isExternalUrl,
-			onInitConnection,
-			isConnectionUninitialized,
 			isHappychatEnabled,
 			isServerReachable,
 			message,
+			onInitConnection,
 			onSendMessage,
 			onSendNotTyping,
 			onSendTyping,
@@ -140,14 +140,14 @@ HappychatPage.propTypes = {
 };
 
 const mapState = state => {
-	const currentUser = getCurrentUser( state );
+	const currentUser = getUser( state );
 	return {
-		chatStatus: getHappychatChatStatus( state ),
-		connectionStatus: getHappychatConnectionStatus( state ),
+		chatStatus: getChatStatus( state ),
+		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
 		disabled: true, // TODO
 		getAuth: getHappychatAuth( state ),
-		isConnectionUninitialized: isHappychatConnectionUninitialized( state ),
+		isConnectionUninitialized: isHCConnectionUninitialized( state ),
 		/* eslint-disable camelcase */
 		isCurrentUser: ( { user_id, source } ) => {
 			return user_id.toString() === currentUser.ID.toString() && source === 'customer';
@@ -155,9 +155,9 @@ const mapState = state => {
 		/* eslint-enable camelcase */
 		isExternalUrl: () => true,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
-		isServerReachable: isHappychatServerReachable( state ),
-		message: getHappychatCurrentMessage( state ),
-		timeline: getHappychatTimeline( state ),
+		isServerReachable: isHCServerReachable( state ),
+		message: getUICurrentMessage( state ),
+		timeline: getChatTimeline( state ),
 		twemojiUrl: config( 'twemoji_cdn_url' ),
 	};
 };
@@ -165,8 +165,8 @@ const mapState = state => {
 const mapDispatch = {
 	onInitConnection: initConnection,
 	onSendMessage: sendMessage,
-	onSendNotTyping: onSendNotTyping,
-	onSendTyping: onSendTyping,
+	onSendNotTyping: sendNotTyping,
+	onSendTyping: sendTyping,
 	onSetCurrentMessage: setCurrentMessage,
 	setBlurred: blur,
 	setFocused: focus,
