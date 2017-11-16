@@ -41,6 +41,7 @@ import { mockLocalize } from 'src/ui/components/localize';
  * Internal dependencies
  */
 import config from 'src/config';
+import { getHappychatAuth } from 'src/lib/wp';
 import { getCurrentUser } from 'src/state/user/selectors';
 
 /**
@@ -145,7 +146,7 @@ const mapState = state => {
 		connectionStatus: getHappychatConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
 		disabled: true, // TODO
-		getAuth: () => {}, // TODO
+		getAuth: getHappychatAuth( state ),
 		isConnectionUninitialized: isHappychatConnectionUninitialized( state ),
 		/* eslint-disable camelcase */
 		isCurrentUser: ( { user_id, source } ) => {

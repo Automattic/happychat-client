@@ -1,3 +1,5 @@
+/** @format */
+
 /**
  * External dependencies
  */
@@ -7,6 +9,7 @@ import request from 'wpcom-xhr-request';
  * Internal dependencies
  */
 import config from 'src/config';
+import { getCurrentUser, getCurrentUserLocale } from 'src/state/user/selectors';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 const debug = require( 'debug' )( 'happychat-embedded:wpcom' );
@@ -24,7 +27,7 @@ export const getUser = () =>
 				method: 'GET',
 				apiNamespace: 'rest/v1',
 				path: '/me',
-				authToken: token.access_token
+				authToken: token.access_token,
 			},
 			( error, body, headers ) => {
 				if ( error ) {
@@ -51,7 +54,7 @@ export const startSession = () =>
 				method: 'POST',
 				apiNamespace: 'rest/v1',
 				path: '/happychat/session',
-				authToken: token.access_token
+				authToken: token.access_token,
 			},
 			( error, body, headers ) => {
 				if ( error ) {
@@ -79,7 +82,7 @@ export const sign = payload =>
 				apiNamespace: 'rest/v1',
 				path: '/jwt/sign',
 				authToken: token.access_token,
-				body: { payload: JSON.stringify( payload ) }
+				body: { payload: JSON.stringify( payload ) },
 			},
 			( error, body, headers ) => {
 				if ( error ) {
@@ -92,3 +95,23 @@ export const sign = payload =>
 			}
 		);
 	} );
+
+/* eslint-disable camelcase */
+export const getHappychatAuth = state => () => {
+	const url = config( 'happychat_url' );
+
+	const locale = getCurrentUserLocale( state );
+	const groups = [ 'JPOP' ];
+	const user = getCurrentUser( state );
+	const signer_user_id = user.ID;
+	let geoLocation;
+
+	return startSession()
+		.then( ( { session_id, geo_location } ) => {
+			geoLocation = geo_location;
+			return sign( { user, session_id } );
+		} )
+		.then( ( { jwt } ) => ( { url, user: { jwt, signer_user_id, locale, groups, geoLocation } } ) ) // eslint-disable-line max-len
+		.catch( e => Promise.reject( 'Failed to start an authenticated Happychat session: ' + e ) );
+};
+/* eslint-enable camelcase */
