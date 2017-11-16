@@ -42,7 +42,7 @@ import { mockLocalize } from 'src/ui/components/localize';
  */
 import config from 'src/config';
 import { getHappychatAuth } from 'src/lib/wp';
-import { getCurrentUser } from 'src/state/user/selectors';
+import getCurrentUser from 'src/state/selectors/get-current-user';
 
 /**
  * React component for rendering a happychat client as a full page

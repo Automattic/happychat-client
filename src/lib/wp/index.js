@@ -9,7 +9,8 @@ import request from 'wpcom-xhr-request';
  * Internal dependencies
  */
 import config from 'src/config';
-import { getCurrentUser, getCurrentUserLocale } from 'src/state/user/selectors';
+import getCurrentUser from 'src/state/selectors/get-current-user';
+import getCurrentUserLocale from 'src/state/selectors/get-current-user-locale';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 const debug = require( 'debug' )( 'happychat-embedded:wpcom' );
