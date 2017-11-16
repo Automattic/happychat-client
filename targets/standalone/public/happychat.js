@@ -37244,8 +37244,6 @@ var _reduxDevtoolsExtension = __webpack_require__(468);
 
 var _middleware = __webpack_require__(214);
 
-var _middleware2 = _interopRequireDefault(_middleware);
-
 var _ui = __webpack_require__(231);
 
 var _ui2 = _interopRequireDefault(_ui);
@@ -37276,7 +37274,7 @@ var debug = (0, _debug2.default)('happychat-embedded:api-wrapper');
 
 
 debug('createStore');
-var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware2.default)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)()));
+var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware.socketMiddleware)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)()));
 
 var renderTo = function renderTo(nodeId) {
 	debug('get user info');

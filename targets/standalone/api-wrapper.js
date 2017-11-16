@@ -13,7 +13,7 @@ import { devToolsEnhancer } from 'redux-devtools-extension';
 /**
  * Calypso dependencies
  */
-import middleware from 'state/happychat/middleware';
+import { socketMiddleware } from 'state/happychat/middleware';
 
 /**
  * Internal dependencies
@@ -29,7 +29,7 @@ debug( 'createStore' );
 const store = createStore(
 	reducer,
 	{},
-	compose( applyMiddleware( middleware() ), devToolsEnhancer() )
+	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
 const renderTo = nodeId => {
