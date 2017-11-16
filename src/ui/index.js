@@ -12,6 +12,16 @@ const debug = debugFactory( 'happychat-embedded:ui' );
 /**
  * Calypso dependencies
  */
+
+// actions
+import { initConnection } from 'state/happychat/connection/actions';
+
+// selectors
+import getHappychatConnectionStatus from 'state/happychat/selectors/get-happychat-connection-status';
+import isHappychatConnectionUninitialized from 'state/happychat/selectors/is-happychat-connection-uninitialized';
+import isHappychatServerReachable from 'state/happychat/selectors/is-happychat-server-reachable';
+
+// UI components
 import { HappychatConnection } from 'components/happychat/connection';
 import { Composer } from 'components/happychat/composer';
 import { Notices } from 'components/happychat/notices';
@@ -26,13 +36,7 @@ import { mockLocalize } from 'src/ui/components/localize';
 import config from 'src/config';
 import { blur, focus } from 'src/state/ui/actions';
 import { sendChatMessage, setChatMessage } from 'src/state/chat/actions';
-import { connectChat } from 'src/state/socket/actions';
 import { getHappychatStatus } from 'src/state/chat/selectors';
-import {
-	getHappychatConnectionStatus,
-	isHappychatConnectionUninitialized,
-	isHappychatServerReachable,
-} from 'src/state/socket/selectors';
 import { canUserSendMessages, getCurrentChatMessage } from 'src/state/chat/selectors';
 import { getCurrentUser } from 'src/state/user/selectors';
 import { getHappychatTimeline } from 'src/state/chat/selectors';
@@ -58,7 +62,7 @@ export class HappychatPage extends Component {
 			getAuth,
 			isCurrentUser,
 			isExternalUrl,
-			initConnection,
+			onInitConnection,
 			isConnectionUninitialized,
 			isHappychatEnabled,
 			isServerReachable,
@@ -76,7 +80,7 @@ export class HappychatPage extends Component {
 			<div className="happychat__page" aria-live="polite" aria-relevant="additions">
 				<HappychatConnection
 					getAuth={ getAuth }
-					initConnection={ initConnection }
+					initConnection={ onInitConnection }
 					isConnectionUninitialized={ isConnectionUninitialized }
 					isHappychatEnabled={ isHappychatEnabled }
 				/>
@@ -114,13 +118,13 @@ HappychatPage.propTypes = {
 	currentUserEmail: PropTypes.string,
 	disabled: PropTypes.bool,
 	getAuth: PropTypes.func,
-	initConnection: PropTypes.func,
 	isConnectionUninitialized: PropTypes.bool,
 	isCurrentUser: PropTypes.func,
 	isExternalUrl: PropTypes.func,
 	isHappychatEnabled: PropTypes.bool,
 	isServerReachable: PropTypes.bool,
 	message: PropTypes.string,
+	onInitConnection: PropTypes.func,
 	onSendMessage: PropTypes.func,
 	onSendNotTyping: PropTypes.func,
 	onSendTyping: PropTypes.func,
@@ -156,7 +160,7 @@ const mapState = state => {
 };
 
 const mapDispatch = {
-	initConnection: connectChat,
+	onInitConnection: initConnection,
 	onSendMessage: sendChatMessage,
 	onSendNotTyping: () => {
 		// TODO

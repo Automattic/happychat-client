@@ -1,3 +1,5 @@
+/** @format */
+
 /**
  * External dependencies
  */
@@ -9,11 +11,15 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 
 /**
+ * Calypso dependencies
+ */
+import middleware from 'state/happychat/middleware';
+
+/**
  * Internal dependencies
  */
 import Happychat from 'src/ui';
 import reducer from 'src/state/reducer';
-import socketIOProxy from 'src/state/socket/middleware';
 import { openChat } from 'src/state/ui/actions';
 import { setCurrentUser, setLocale } from 'src/state/user/actions';
 import { getUser } from 'src/lib/wp';
@@ -24,7 +30,7 @@ debug( 'createStore' );
 const store = createStore(
 	reducer,
 	{},
-	compose( applyMiddleware( socketIOProxy() ), devToolsEnhancer() )
+	compose( applyMiddleware( middleware() ), devToolsEnhancer() )
 );
 
 const renderTo = nodeId => {
@@ -37,7 +43,9 @@ const renderTo = nodeId => {
 
 			debug( 'renderTo' );
 			ReactDOM.render(
-				<Provider store={ store }><Happychat /></Provider>,
+				<Provider store={ store }>
+					<Happychat />
+				</Provider>,
 				document.getElementById( nodeId )
 			);
 
