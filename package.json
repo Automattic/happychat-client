@@ -44,6 +44,7 @@
     "prettier": "github:automattic/calypso-prettier#14307ba5cc6bcfc00243f5e2d1b25c72d52c28c8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-pure-render": "^1.0.2",
     "react-redux": "^5.0.5",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.2",

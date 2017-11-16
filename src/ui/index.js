@@ -14,10 +14,14 @@ const debug = debugFactory( 'happychat-embedded:ui' );
  */
 
 // actions
-import { initConnection } from 'state/happychat/connection/actions';
+import { initConnection, sendMessage } from 'state/happychat/connection/actions';
+import { setCurrentMessage } from 'state/happychat/ui/actions';
+import getHappychatChatStatus from 'state/happychat/selectors/get-happychat-chat-status';
+import getHappychatCurrentMessage from 'state/happychat/selectors/get-happychat-current-message';
 
 // selectors
 import getHappychatConnectionStatus from 'state/happychat/selectors/get-happychat-connection-status';
+import getHappychatTimeline from 'state/happychat/selectors/get-happychat-timeline';
 import isHappychatConnectionUninitialized from 'state/happychat/selectors/is-happychat-connection-uninitialized';
 import isHappychatServerReachable from 'state/happychat/selectors/is-happychat-server-reachable';
 
@@ -35,11 +39,7 @@ import { mockLocalize } from 'src/ui/components/localize';
  */
 import config from 'src/config';
 import { blur, focus } from 'src/state/ui/actions';
-import { sendChatMessage, setChatMessage } from 'src/state/chat/actions';
-import { getHappychatStatus } from 'src/state/chat/selectors';
-import { canUserSendMessages, getCurrentChatMessage } from 'src/state/chat/selectors';
 import { getCurrentUser } from 'src/state/user/selectors';
-import { getHappychatTimeline } from 'src/state/chat/selectors';
 
 /**
  * React component for rendering a happychat client as a full page
@@ -139,10 +139,10 @@ HappychatPage.propTypes = {
 const mapState = state => {
 	const currentUser = getCurrentUser( state );
 	return {
-		chatStatus: getHappychatStatus( state ),
+		chatStatus: getHappychatChatStatus( state ),
 		connectionStatus: getHappychatConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
-		disabled: ! canUserSendMessages( state ),
+		disabled: true, // TODO
 		getAuth: () => {}, // TODO
 		isConnectionUninitialized: isHappychatConnectionUninitialized( state ),
 		/* eslint-disable camelcase */
@@ -153,7 +153,7 @@ const mapState = state => {
 		isExternalUrl: () => true,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
 		isServerReachable: isHappychatServerReachable( state ),
-		message: getCurrentChatMessage( state ),
+		message: getHappychatCurrentMessage( state ),
 		timeline: getHappychatTimeline( state ),
 		twemojiUrl: config( 'twemoji_cdn_url' ),
 	};
@@ -161,7 +161,7 @@ const mapState = state => {
 
 const mapDispatch = {
 	onInitConnection: initConnection,
-	onSendMessage: sendChatMessage,
+	onSendMessage: sendMessage,
 	onSendNotTyping: () => {
 		// TODO
 		debug( 'send not typing' );
@@ -170,7 +170,7 @@ const mapDispatch = {
 		// TODO
 		debug( 'send typing' );
 	},
-	onSetCurrentMessage: setChatMessage,
+	onSetCurrentMessage: setCurrentMessage,
 	setBlurred: blur,
 	setFocused: focus,
 };
