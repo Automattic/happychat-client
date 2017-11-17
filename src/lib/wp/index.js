@@ -102,7 +102,7 @@ export const getHappychatAuth = state => () => {
 	const url = config( 'happychat_url' );
 
 	const locale = getCurrentUserLocale( state );
-	const groups = [ 'JPOP' ];
+	const groups = [ 'jpop' ]; // TODO decide how to pass groups
 	const user = getCurrentUser( state );
 	const signer_user_id = user.ID;
 	let geoLocation;
