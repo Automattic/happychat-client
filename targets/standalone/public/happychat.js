@@ -21081,8 +21081,8 @@ module.exports = {};
 
 var keys = __webpack_require__(307);
 var hasBinary = __webpack_require__(138);
-var sliceBuffer = __webpack_require__(201);
-var after = __webpack_require__(200);
+var sliceBuffer = __webpack_require__(202);
+var after = __webpack_require__(201);
 var utf8 = __webpack_require__(308);
 
 var base64encoder;
@@ -22866,7 +22866,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createConfig = __webpack_require__(223);
+var _createConfig = __webpack_require__(224);
 
 var _createConfig2 = _interopRequireDefault(_createConfig);
 
@@ -37342,17 +37342,13 @@ var _reactDom = __webpack_require__(381);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _debug = __webpack_require__(8);
-
-var _debug2 = _interopRequireDefault(_debug);
-
 var _reactRedux = __webpack_require__(178);
 
 var _redux = __webpack_require__(37);
 
 var _reduxDevtoolsExtension = __webpack_require__(475);
 
-var _middleware = __webpack_require__(215);
+var _middleware = __webpack_require__(216);
 
 var _ui = __webpack_require__(238);
 
@@ -37364,55 +37360,44 @@ var _reducer2 = _interopRequireDefault(_reducer);
 
 var _actions = __webpack_require__(235);
 
-var _getUser = __webpack_require__(225);
-
-var _getUser2 = _interopRequireDefault(_getUser);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Internal dependencies
+ * Calypso dependencies
  */
-var debug = (0, _debug2.default)('happychat-embedded:api-wrapper');
+var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware.socketMiddleware)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)()));
+
+/* eslint-disable camelcase */
+
 
 /**
- * Calypso dependencies
+ * Internal dependencies
  */
 /** @format */
 
 /**
  * External dependencies
  */
+var renderTo = exports.renderTo = function renderTo(nodeId, _ref) {
+	var ID = _ref.ID,
+	    email = _ref.email,
+	    username = _ref.username,
+	    display_name = _ref.display_name,
+	    avatar_URL = _ref.avatar_URL,
+	    language = _ref.language,
+	    groups = _ref.groups;
 
+	store.dispatch((0, _actions.setCurrentUser)({ ID: ID, email: email, username: username, display_name: display_name, avatar_URL: avatar_URL }));
+	store.dispatch((0, _actions.setLocale)(language));
+	store.dispatch((0, _actions.setGroups)(groups));
 
-debug('createStore');
-var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware.socketMiddleware)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)()));
-
-var renderTo = exports.renderTo = function renderTo(nodeId) {
-	debug('get user info');
-	/* eslint-disable camelcase */
-	(0, _getUser2.default)().then(function (_ref) {
-		var ID = _ref.ID,
-		    email = _ref.email,
-		    username = _ref.username,
-		    display_name = _ref.display_name,
-		    avatar_URL = _ref.avatar_URL,
-		    language = _ref.language;
-
-		store.dispatch((0, _actions.setCurrentUser)({ ID: ID, email: email, username: username, display_name: display_name, avatar_URL: avatar_URL }));
-		store.dispatch((0, _actions.setLocale)(language));
-
-		debug('renderTo');
-		_reactDom2.default.render(_react2.default.createElement(
-			_reactRedux.Provider,
-			{ store: store },
-			_react2.default.createElement(_ui2.default, null)
-		), document.getElementById(nodeId));
-	}).catch(function (error) {
-		debug(error);
-	});
-	/* eslint-enable camelcase */
+	_reactDom2.default.render(_react2.default.createElement(
+		_reactRedux.Provider,
+		{ store: store },
+		_react2.default.createElement(_ui2.default, null)
+	), document.getElementById(nodeId));
 };
+/* eslint-enable camelcase */
 
 var setChatGroups = exports.setChatGroups = function setChatGroups(groups) {
 	store.dispatch((0, _actions.setGroups)([groups]));
@@ -37420,6 +37405,73 @@ var setChatGroups = exports.setChatGroups = function setChatGroups(groups) {
 
 /***/ }),
 /* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _wpcomXhrRequest = __webpack_require__(197);
+
+var _wpcomXhrRequest2 = _interopRequireDefault(_wpcomXhrRequest);
+
+var _wpcomOauthCors = __webpack_require__(69);
+
+var _wpcomOauthCors2 = _interopRequireDefault(_wpcomOauthCors);
+
+var _debug = __webpack_require__(8);
+
+var _debug2 = _interopRequireDefault(_debug);
+
+var _config = __webpack_require__(48);
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/** @format */
+
+/**
+ * External dependencies
+ */
+var debug = (0, _debug2.default)('happychat-embedded:wpcom:get-user');
+
+/**
+ * Internal dependencies
+ */
+
+var wpcomOAuth = (0, _wpcomOauthCors2.default)((0, _config2.default)('oauth_client_id'));
+
+exports.default = function () {
+	return new Promise(function (resolve, reject) {
+		var token = wpcomOAuth.token();
+		if (!token) {
+			return reject('There is no token');
+		}
+
+		debug('Fire request getUser');
+		(0, _wpcomXhrRequest2.default)({
+			method: 'GET',
+			apiNamespace: 'rest/v1',
+			path: '/me',
+			authToken: token.access_token
+		}, function (error, body, headers) {
+			if (error) {
+				debug('Request failed: ', error);
+				return reject(error);
+			}
+
+			debug('Response: ', body, ' headers ', headers);
+			return resolve(body);
+		});
+	});
+};
+
+/***/ }),
+/* 201 */
 /***/ (function(module, exports) {
 
 module.exports = after
@@ -37453,7 +37505,7 @@ function noop() {}
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports) {
 
 /**
@@ -37488,7 +37540,7 @@ module.exports = function(arraybuffer, start, end) {
 
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37633,7 +37685,7 @@ exports.default = Emojify;
 module.exports = exports['default'];
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37718,7 +37770,7 @@ exports.default = {
 module.exports = exports['default'];
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37860,7 +37912,7 @@ var Composer = exports.Composer = (0, _createReactClass2.default)({
 });
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37936,7 +37988,7 @@ HappychatConnection.propTypes = {
 };
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38167,7 +38219,7 @@ var call = exports.call = function call(method) {
 };
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38300,7 +38352,7 @@ Notices.propTypes = {
 };
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38337,13 +38389,13 @@ var _classnames2 = _interopRequireDefault(_classnames);
 
 var _lodash = __webpack_require__(5);
 
-var _functional = __webpack_require__(206);
+var _functional = __webpack_require__(207);
 
-var _autoscroll = __webpack_require__(203);
+var _autoscroll = __webpack_require__(204);
 
 var _autoscroll2 = _interopRequireDefault(_autoscroll);
 
-var _emojify = __webpack_require__(202);
+var _emojify = __webpack_require__(203);
 
 var _emojify2 = _interopRequireDefault(_emojify);
 
@@ -38351,7 +38403,7 @@ var _scrollbleed = __webpack_require__(111);
 
 var _scrollbleed2 = _interopRequireDefault(_scrollbleed);
 
-var _url = __webpack_require__(209);
+var _url = __webpack_require__(210);
 
 var _debug = __webpack_require__(8);
 
@@ -38635,7 +38687,7 @@ var Timeline = exports.Timeline = (0, _createReactClass2.default)({
 });
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38675,7 +38727,7 @@ var setUrlScheme = exports.setUrlScheme = function setUrlScheme(url, scheme) {
 };
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38841,7 +38893,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39058,7 +39110,7 @@ exports.default = function () {
 module.exports = exports['default'];
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39085,7 +39137,7 @@ var _constants = __webpack_require__(17);
 
 var _utils = __webpack_require__(49);
 
-var _schema = __webpack_require__(213);
+var _schema = __webpack_require__(214);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39249,7 +39301,7 @@ exports.default = (0, _utils.combineReducers)({
 });
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39284,7 +39336,7 @@ var timelineSchema = exports.timelineSchema = {
 };
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39368,7 +39420,7 @@ exports.default = (0, _utils.combineReducers)({
 module.exports = exports['default'];
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39385,15 +39437,15 @@ var _actionTypes = __webpack_require__(22);
 
 var _actions = __webpack_require__(70);
 
-var _connection = __webpack_require__(211);
+var _connection = __webpack_require__(212);
 
 var _connection2 = _interopRequireDefault(_connection);
 
-var _isHappychatClientConnected = __webpack_require__(218);
+var _isHappychatClientConnected = __webpack_require__(219);
 
 var _isHappychatClientConnected2 = _interopRequireDefault(_isHappychatClientConnected);
 
-var _isHappychatChatAssigned = __webpack_require__(217);
+var _isHappychatChatAssigned = __webpack_require__(218);
 
 var _isHappychatChatAssigned2 = _interopRequireDefault(_isHappychatChatAssigned);
 
@@ -39458,7 +39510,7 @@ var socketMiddleware = exports.socketMiddleware = function socketMiddleware() {
 exports.default = socketMiddleware();
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39487,7 +39539,7 @@ module.exports = exports['default'];
  */
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39518,7 +39570,7 @@ exports.default = function (state) {
 module.exports = exports['default'];
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39534,7 +39586,7 @@ exports.default = function (state) {
 
 var _constants = __webpack_require__(17);
 
-var _getHappychatConnectionStatus = __webpack_require__(216);
+var _getHappychatConnectionStatus = __webpack_require__(217);
 
 var _getHappychatConnectionStatus2 = _interopRequireDefault(_getHappychatConnectionStatus);
 
@@ -39553,7 +39605,7 @@ module.exports = exports['default'];
  */
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39637,7 +39689,7 @@ var setCurrentMessage = exports.setCurrentMessage = function setCurrentMessage(m
 };
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39745,7 +39797,7 @@ var isMinimizing = function isMinimizing() {
 exports.default = (0, _utils.combineReducers)({ currentMessage: currentMessage, isMinimizing: isMinimizing, isOpen: isOpen, lostFocusAt: lostFocusAt });
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39764,7 +39816,7 @@ var _actionTypes = __webpack_require__(22);
 
 var _utils = __webpack_require__(49);
 
-var _schema = __webpack_require__(222);
+var _schema = __webpack_require__(223);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39791,7 +39843,7 @@ var geoLocation = exports.geoLocation = (0, _utils.createReducer)(null, (0, _def
 exports.default = (0, _utils.combineReducers)({ geoLocation: geoLocation });
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39813,7 +39865,7 @@ var geoLocationSchema = exports.geoLocationSchema = {
 };
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39891,7 +39943,7 @@ module.exports = function (data) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40023,73 +40075,6 @@ exports.default = function (state) {
 /* eslint-enable camelcase */
 
 /***/ }),
-/* 225 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _wpcomXhrRequest = __webpack_require__(197);
-
-var _wpcomXhrRequest2 = _interopRequireDefault(_wpcomXhrRequest);
-
-var _wpcomOauthCors = __webpack_require__(69);
-
-var _wpcomOauthCors2 = _interopRequireDefault(_wpcomOauthCors);
-
-var _debug = __webpack_require__(8);
-
-var _debug2 = _interopRequireDefault(_debug);
-
-var _config = __webpack_require__(48);
-
-var _config2 = _interopRequireDefault(_config);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/** @format */
-
-/**
- * External dependencies
- */
-var debug = (0, _debug2.default)('happychat-embedded:wpcom:get-user');
-
-/**
- * Internal dependencies
- */
-
-var wpcomOAuth = (0, _wpcomOauthCors2.default)((0, _config2.default)('oauth_client_id'));
-
-exports.default = function () {
-	return new Promise(function (resolve, reject) {
-		var token = wpcomOAuth.token();
-		if (!token) {
-			return reject('There is no token');
-		}
-
-		debug('Fire request getUser');
-		(0, _wpcomXhrRequest2.default)({
-			method: 'GET',
-			apiNamespace: 'rest/v1',
-			path: '/me',
-			authToken: token.access_token
-		}, function (error, body, headers) {
-			if (error) {
-				debug('Request failed: ', error);
-				return reject(error);
-			}
-
-			debug('Response: ', body, ' headers ', headers);
-			return resolve(body);
-		});
-	});
-};
-
-/***/ }),
 /* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -40102,15 +40087,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(37);
 
-var _reducer = __webpack_require__(212);
+var _reducer = __webpack_require__(213);
 
 var _reducer2 = _interopRequireDefault(_reducer);
 
-var _reducer3 = __webpack_require__(214);
+var _reducer3 = __webpack_require__(215);
 
 var _reducer4 = _interopRequireDefault(_reducer3);
 
-var _reducer5 = __webpack_require__(220);
+var _reducer5 = __webpack_require__(221);
 
 var _reducer6 = _interopRequireDefault(_reducer5);
 
@@ -40198,7 +40183,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _lodash = __webpack_require__(5);
 
-var _createSelector = __webpack_require__(210);
+var _createSelector = __webpack_require__(211);
 
 var _createSelector2 = _interopRequireDefault(_createSelector);
 
@@ -40406,7 +40391,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(37);
 
-var _reducer = __webpack_require__(221);
+var _reducer = __webpack_require__(222);
 
 var _actionTypes = __webpack_require__(113);
 
@@ -40555,15 +40540,15 @@ var _reactRedux = __webpack_require__(178);
 
 var _actions = __webpack_require__(70);
 
-var _actions2 = __webpack_require__(219);
+var _actions2 = __webpack_require__(220);
 
-var _connection = __webpack_require__(205);
+var _connection = __webpack_require__(206);
 
-var _composer = __webpack_require__(204);
+var _composer = __webpack_require__(205);
 
-var _notices = __webpack_require__(207);
+var _notices = __webpack_require__(208);
 
-var _timeline = __webpack_require__(208);
+var _timeline = __webpack_require__(209);
 
 var _localize = __webpack_require__(237);
 
@@ -40571,7 +40556,7 @@ var _config = __webpack_require__(48);
 
 var _config2 = _interopRequireDefault(_config);
 
-var _getHappychatAuth = __webpack_require__(224);
+var _getHappychatAuth = __webpack_require__(225);
 
 var _getHappychatAuth2 = _interopRequireDefault(_getHappychatAuth);
 
@@ -40802,30 +40787,59 @@ var _debug = __webpack_require__(8);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _apiWrapper = __webpack_require__(199);
-
 var _config = __webpack_require__(48);
 
 var _config2 = _interopRequireDefault(_config);
 
+var _getWpcomUser = __webpack_require__(200);
+
+var _getWpcomUser2 = _interopRequireDefault(_getWpcomUser);
+
+var _apiWrapper = __webpack_require__(199);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Internal dependencies
- */
-var wpcomOAuth = __webpack_require__(69)((0, _config2.default)('oauth_client_id')); /** @format */
+/** @format */
 
 /**
  * External dependencies
  */
+var wpcomOAuth = __webpack_require__(69)((0, _config2.default)('oauth_client_id'));
+
+/**
+ * Internal dependencies
+ */
 
 var debug = (0, _debug2.default)('happychat-embedded:api');
 
-debug('get token');
+debug('get token from wpcom');
 wpcomOAuth.get(function () {
-  debug('render Happychat');
-  (0, _apiWrapper.renderTo)('root');
-  (0, _apiWrapper.setChatGroups)(['wpcom']);
+	/* eslint-disable camelcase */
+	debug('get user info from wpcom');
+	(0, _getWpcomUser2.default)().then(function (_ref) {
+		var ID = _ref.ID,
+		    email = _ref.email,
+		    username = _ref.username,
+		    display_name = _ref.display_name,
+		    avatar_URL = _ref.avatar_URL,
+		    language = _ref.language;
+
+		debug('render Happychat');
+		// it is the host responsibility to set the groups on init, although that
+		// although that data is not in the wpcom API response
+		(0, _apiWrapper.renderTo)('root', {
+			ID: ID,
+			email: email,
+			username: username,
+			display_name: display_name,
+			avatar_URL: avatar_URL,
+			language: language,
+			groups: ['wpcom']
+		});
+	}).catch(function (error) {
+		debug('could not get user info: ', error);
+	});
+	/* eslint-enable camelcase */
 });
 
 /***/ }),
