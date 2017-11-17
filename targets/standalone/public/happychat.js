@@ -40808,35 +40808,43 @@ var wpcomOAuth = __webpack_require__(69)((0, _config2.default)('oauth_client_id'
 
 var debug = (0, _debug2.default)('happychat-embedded:standalone');
 
-debug('get token from wpcom');
-wpcomOAuth.get(function () {
-	/* eslint-disable camelcase */
-	debug('get user info from wpcom');
-	(0, _getWpcomUser2.default)().then(function (_ref) {
-		var ID = _ref.ID,
-		    email = _ref.email,
-		    username = _ref.username,
-		    display_name = _ref.display_name,
-		    avatar_URL = _ref.avatar_URL,
-		    language = _ref.language;
+var initHappychat = function initHappychat(domNode, groups) {
+	debug('get token from wpcom');
+	wpcomOAuth.get(function () {
+		/* eslint-disable camelcase */
+		debug('get user info from wpcom');
+		(0, _getWpcomUser2.default)().then(function (_ref) {
+			var ID = _ref.ID,
+			    email = _ref.email,
+			    username = _ref.username,
+			    display_name = _ref.display_name,
+			    avatar_URL = _ref.avatar_URL,
+			    language = _ref.language;
 
-		debug('render Happychat');
-		// it is the host responsibility to set the groups on init, although that
-		// although that data is not in the wpcom API response
-		(0, _src.renderTo)('root', {
-			ID: ID,
-			email: email,
-			username: username,
-			display_name: display_name,
-			avatar_URL: avatar_URL,
-			language: language,
-			groups: ['wpcom']
+			debug('render Happychat');
+			// it is the host responsibility to set the groups on init, although that
+			// although that data is not in the wpcom API response
+			(0, _src.renderTo)(domNode, {
+				ID: ID,
+				email: email,
+				username: username,
+				display_name: display_name,
+				avatar_URL: avatar_URL,
+				language: language,
+				groups: groups
+			});
+		}).catch(function (error) {
+			debug('could not get user info: ', error);
 		});
-	}).catch(function (error) {
-		debug('could not get user info: ', error);
+		/* eslint-enable camelcase */
 	});
-	/* eslint-enable camelcase */
-});
+};
+
+window.Happychat = {
+	open: function open(domNode, groups) {
+		initHappychat(domNode, groups);
+	}
+};
 
 /***/ }),
 /* 240 */
