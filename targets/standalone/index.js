@@ -15,7 +15,7 @@ import { renderTo } from 'src';
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 const debug = debugFactory( 'happychat-embedded:standalone' );
 
-const initHappychat = ( domNode, groups ) => {
+const initHappychat = ( nodeId, groups ) => {
 	debug( 'get token from wpcom' );
 	wpcomOAuth.get( () => {
 		/* eslint-disable camelcase */
@@ -25,7 +25,7 @@ const initHappychat = ( domNode, groups ) => {
 				debug( 'render Happychat' );
 				// it is the host responsibility to set the groups on init, although that
 				// although that data is not in the wpcom API response
-				renderTo( domNode, {
+				renderTo( nodeId, {
 					ID,
 					email,
 					username,
@@ -43,7 +43,7 @@ const initHappychat = ( domNode, groups ) => {
 };
 
 window.Happychat = {
-	open: ( domNode, groups ) => {
-		initHappychat( domNode, groups );
+	open: ( nodeId, groups ) => {
+		initHappychat( nodeId, groups );
 	},
 };

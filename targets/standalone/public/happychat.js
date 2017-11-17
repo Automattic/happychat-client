@@ -40808,7 +40808,7 @@ var wpcomOAuth = __webpack_require__(69)((0, _config2.default)('oauth_client_id'
 
 var debug = (0, _debug2.default)('happychat-embedded:standalone');
 
-var initHappychat = function initHappychat(domNode, groups) {
+var initHappychat = function initHappychat(nodeId, groups) {
 	debug('get token from wpcom');
 	wpcomOAuth.get(function () {
 		/* eslint-disable camelcase */
@@ -40824,7 +40824,7 @@ var initHappychat = function initHappychat(domNode, groups) {
 			debug('render Happychat');
 			// it is the host responsibility to set the groups on init, although that
 			// although that data is not in the wpcom API response
-			(0, _src.renderTo)(domNode, {
+			(0, _src.renderTo)(nodeId, {
 				ID: ID,
 				email: email,
 				username: username,
@@ -40841,8 +40841,8 @@ var initHappychat = function initHappychat(domNode, groups) {
 };
 
 window.Happychat = {
-	open: function open(domNode, groups) {
-		initHappychat(domNode, groups);
+	open: function open(nodeId, groups) {
+		initHappychat(nodeId, groups);
 	}
 };
 
