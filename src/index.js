@@ -44,7 +44,3 @@ export const renderTo = (
 	);
 };
 /* eslint-enable camelcase */
-
-export const setChatGroups = groups => {
-	store.dispatch( setGroups( [ groups ] ) );
-};

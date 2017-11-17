@@ -37332,7 +37332,7 @@ module.exports = yeast;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.setChatGroups = exports.renderTo = undefined;
+exports.renderTo = undefined;
 
 var _react = __webpack_require__(16);
 
@@ -37399,10 +37399,6 @@ var renderTo = exports.renderTo = function renderTo(nodeId, _ref) {
 };
 /* eslint-enable camelcase */
 
-var setChatGroups = exports.setChatGroups = function setChatGroups(groups) {
-	store.dispatch((0, _actions.setGroups)([groups]));
-};
-
 /***/ }),
 /* 200 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -37437,7 +37433,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * External dependencies
  */
-var debug = (0, _debug2.default)('happychat-embedded:wpcom:get-user');
+var debug = (0, _debug2.default)('happychat-embedded:standalone:get-wpcom-user');
 
 /**
  * Internal dependencies
@@ -40787,15 +40783,15 @@ var _debug = __webpack_require__(8);
 
 var _debug2 = _interopRequireDefault(_debug);
 
-var _config = __webpack_require__(48);
-
-var _config2 = _interopRequireDefault(_config);
-
 var _getWpcomUser = __webpack_require__(200);
 
 var _getWpcomUser2 = _interopRequireDefault(_getWpcomUser);
 
-var _apiWrapper = __webpack_require__(199);
+var _config = __webpack_require__(48);
+
+var _config2 = _interopRequireDefault(_config);
+
+var _src = __webpack_require__(199);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40810,7 +40806,7 @@ var wpcomOAuth = __webpack_require__(69)((0, _config2.default)('oauth_client_id'
  * Internal dependencies
  */
 
-var debug = (0, _debug2.default)('happychat-embedded:api');
+var debug = (0, _debug2.default)('happychat-embedded:standalone');
 
 debug('get token from wpcom');
 wpcomOAuth.get(function () {
@@ -40827,7 +40823,7 @@ wpcomOAuth.get(function () {
 		debug('render Happychat');
 		// it is the host responsibility to set the groups on init, although that
 		// although that data is not in the wpcom API response
-		(0, _apiWrapper.renderTo)('root', {
+		(0, _src.renderTo)('root', {
 			ID: ID,
 			email: email,
 			username: username,

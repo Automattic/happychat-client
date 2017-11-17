@@ -8,12 +8,12 @@ import debugFactory from 'debug';
 /**
  * Internal dependencies
  */
-import config from 'src/config';
 import getUser from 'targets/standalone/get-wpcom-user';
-import { renderTo } from 'targets/standalone/api-wrapper';
+import config from 'src/config';
+import { renderTo } from 'src';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
-const debug = debugFactory( 'happychat-embedded:api' );
+const debug = debugFactory( 'happychat-embedded:standalone' );
 
 debug( 'get token from wpcom' );
 wpcomOAuth.get( () => {
