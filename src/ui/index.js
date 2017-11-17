@@ -20,12 +20,6 @@ import {
 } from 'state/happychat/connection/actions';
 import { blur, focus, setCurrentMessage } from 'state/happychat/ui/actions';
 
-// UI components
-import { HappychatConnection } from 'components/happychat/connection';
-import { Composer } from 'components/happychat/composer';
-import { Notices } from 'components/happychat/notices';
-import { Timeline } from 'components/happychat/timeline';
-
 // TODO: implement localize
 import { mockLocalize } from 'src/ui/components/localize';
 
@@ -34,6 +28,12 @@ import { mockLocalize } from 'src/ui/components/localize';
  */
 import config from 'src/config';
 import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
+
+// UI components
+import { HappychatConnection } from 'src/ui/components/connection';
+import { Composer } from 'src/ui/components/composer';
+import { Notices } from 'src/ui/components/notices';
+import { Timeline } from 'src/ui/components/timeline';
 
 // selectors
 import canUserSendMessages from 'src/state/selectors/can-user-send-messages';
