@@ -36,6 +36,7 @@ import config from 'src/config';
 import { getHappychatAuth } from 'src/lib/wp';
 
 // selectors
+import canUserSendMessages from 'src/state/selectors/can-user-send-messages';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
@@ -145,7 +146,7 @@ const mapState = state => {
 		chatStatus: getChatStatus( state ),
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
-		disabled: true, // TODO
+		disabled: ! canUserSendMessages( state ),
 		getAuth: getHappychatAuth( state ),
 		isConnectionUninitialized: isHCConnectionUninitialized( state ),
 		/* eslint-disable camelcase */
