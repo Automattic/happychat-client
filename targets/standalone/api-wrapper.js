@@ -20,7 +20,7 @@ import { socketMiddleware } from 'state/happychat/middleware';
  */
 import Happychat from 'src/ui';
 import reducer from 'src/state/reducer';
-import { setCurrentUser, setLocale } from 'src/state/user/actions';
+import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
 import getUser from 'src/lib/wpcom/get-user';
 
 const debug = debugFactory( 'happychat-embedded:api-wrapper' );
@@ -32,7 +32,7 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
-const renderTo = nodeId => {
+export const renderTo = nodeId => {
 	debug( 'get user info' );
 	/* eslint-disable camelcase */
 	getUser()
@@ -54,4 +54,6 @@ const renderTo = nodeId => {
 	/* eslint-enable camelcase */
 };
 
-export { renderTo };
+export const setChatGroups = groups => {
+	store.dispatch( setGroups( [ groups ] ) );
+};

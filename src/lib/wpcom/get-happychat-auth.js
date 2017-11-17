@@ -11,8 +11,9 @@ import debugFactory from 'debug';
  * Internal dependencies
  */
 import config from 'src/config';
-import getCurrentUser from 'src/state/selectors/get-user';
-import getCurrentUserLocale from 'src/state/selectors/get-user-locale';
+import getUser from 'src/state/selectors/get-user';
+import getUserLocale from 'src/state/selectors/get-user-locale';
+import getUserGroups from 'src/state/selectors/get-user-groups';
 
 const debug = debugFactory( 'happychat-embedded:wpcom:get-happychat-auth' );
 const wpcomOAuth = wpcomOAuthFactory( config( 'oauth_client_id' ) );
@@ -76,9 +77,9 @@ const startSession = () =>
 export default state => () => {
 	const url = config( 'happychat_url' );
 
-	const locale = getCurrentUserLocale( state );
-	const groups = [ 'jpop' ]; // TODO decide how to pass groups
-	const user = getCurrentUser( state );
+	const user = getUser( state );
+	const locale = getUserLocale( state );
+	const groups = getUserGroups( state );
 	const signer_user_id = user.ID;
 	let geoLocation;
 
