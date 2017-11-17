@@ -4,6 +4,8 @@
  * External dependencies
  */
 import request from 'wpcom-xhr-request';
+import wpcomOAuthFactory from 'wpcom-oauth-cors';
+import debugFactory from 'debug';
 
 /**
  * Internal dependencies
@@ -12,64 +14,10 @@ import config from 'src/config';
 import getCurrentUser from 'src/state/selectors/get-user';
 import getCurrentUserLocale from 'src/state/selectors/get-user-locale';
 
-const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
-const debug = require( 'debug' )( 'happychat-embedded:wpcom' );
+const debug = debugFactory( 'happychat-embedded:wpcom:get-happychat-auth' );
+const wpcomOAuth = wpcomOAuthFactory( config( 'oauth_client_id' ) );
 
-export const getUser = () =>
-	new Promise( ( resolve, reject ) => {
-		const token = wpcomOAuth.token();
-		if ( ! token ) {
-			return reject( 'There is no token' );
-		}
-
-		debug( 'Fire request getUser' );
-		request(
-			{
-				method: 'GET',
-				apiNamespace: 'rest/v1',
-				path: '/me',
-				authToken: token.access_token,
-			},
-			( error, body, headers ) => {
-				if ( error ) {
-					debug( 'Request failed: ', error );
-					return reject( error );
-				}
-
-				debug( 'Response: ', body, ' headers ', headers );
-				return resolve( body );
-			}
-		);
-	} );
-
-export const startSession = () =>
-	new Promise( ( resolve, reject ) => {
-		const token = wpcomOAuth.token();
-		if ( ! token ) {
-			return reject( 'There is no token' );
-		}
-
-		debug( 'Fire request startSession' );
-		request(
-			{
-				method: 'POST',
-				apiNamespace: 'rest/v1',
-				path: '/happychat/session',
-				authToken: token.access_token,
-			},
-			( error, body, headers ) => {
-				if ( error ) {
-					debug( 'Request failed: ', error );
-					return reject( error );
-				}
-
-				debug( 'Response: ', body, ' headers ', headers );
-				return resolve( body );
-			}
-		);
-	} );
-
-export const sign = payload =>
+const sign = payload =>
 	new Promise( ( resolve, reject ) => {
 		const token = wpcomOAuth.token();
 		if ( ! token ) {
@@ -97,8 +45,35 @@ export const sign = payload =>
 		);
 	} );
 
+const startSession = () =>
+	new Promise( ( resolve, reject ) => {
+		const token = wpcomOAuth.token();
+		if ( ! token ) {
+			return reject( 'There is no token' );
+		}
+
+		debug( 'Fire request startSession' );
+		request(
+			{
+				method: 'POST',
+				apiNamespace: 'rest/v1',
+				path: '/happychat/session',
+				authToken: token.access_token,
+			},
+			( error, body, headers ) => {
+				if ( error ) {
+					debug( 'Request failed: ', error );
+					return reject( error );
+				}
+
+				debug( 'Response: ', body, ' headers ', headers );
+				return resolve( body );
+			}
+		);
+	} );
+
 /* eslint-disable camelcase */
-export const getHappychatAuth = state => () => {
+export default state => () => {
 	const url = config( 'happychat_url' );
 
 	const locale = getCurrentUserLocale( state );

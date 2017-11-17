@@ -33,7 +33,7 @@ import { mockLocalize } from 'src/ui/components/localize';
  * Internal dependencies
  */
 import config from 'src/config';
-import { getHappychatAuth } from 'src/lib/wp';
+import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
 
 // selectors
 import canUserSendMessages from 'src/state/selectors/can-user-send-messages';

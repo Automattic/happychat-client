@@ -21,7 +21,7 @@ import { socketMiddleware } from 'state/happychat/middleware';
 import Happychat from 'src/ui';
 import reducer from 'src/state/reducer';
 import { setCurrentUser, setLocale } from 'src/state/user/actions';
-import { getUser } from 'src/lib/wp';
+import getUser from 'src/lib/wpcom/get-user';
 
 const debug = debugFactory( 'happychat-embedded:api-wrapper' );
 
