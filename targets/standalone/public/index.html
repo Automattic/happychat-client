@@ -6,10 +6,10 @@
         <link rel="stylesheet" href="./happychat.css">
 </head>
 <body>
-        <div id="root">
-                <button type="button" name="button" onclick="Happychat.open('happychat')">Happychat</button>
-                <div id='happychat'></div>
-        </div>
+        <div id="root"></div>
         <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            Happychat.open( 'root', [ 'woo' ] );
+        </script>
 </body>
 </html>

@@ -1,114 +1,176 @@
+/** @format */
+
 /**
  * External dependencies
  */
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
-import GridIcon from 'gridicons';
-import { localize } from 'i18n-calypso';
-import debugFactory from 'debug';
+
+/**
+ * Calypso dependencies
+ */
+
+// actions
+import {
+	initConnection,
+	sendMessage,
+	sendNotTyping,
+	sendTyping,
+} from 'state/happychat/connection/actions';
+import { blur, focus, setCurrentMessage } from 'state/happychat/ui/actions';
+
+// UI components
+import { HappychatConnection } from 'components/happychat/connection';
+import { Composer } from 'components/happychat/composer';
+import { Notices } from 'components/happychat/notices';
+import { Timeline } from 'components/happychat/timeline';
+
+// TODO: implement localize
+import { mockLocalize } from 'src/ui/components/localize';
 
 /**
  * Internal dependencies
  */
-import {
-	blur,
-	focus,
-	openChat,
-	closeChat,
-	minimizeChat,
-	minimizedChat
-} from 'src/state/ui/actions';
-import { isHappychatMinimizing, isHappychatOpen } from 'src/state/ui/selectors';
-import { getHappychatConnectionStatus } from 'src/state/socket/selectors';
-import HappychatConnection from './connection';
-import Composer from './composer';
-import Notices from './notices';
-import Timeline from './timeline';
+import config from 'src/config';
+import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
 
-const debug = debugFactory( 'happychat-embedded:ui' );
+// selectors
+import canUserSendMessages from 'src/state/selectors/can-user-send-messages';
+import getChatStatus from 'src/state/selectors/get-chat-status';
+import getChatTimeline from 'src/state/selectors/get-chat-timeline';
+import getConnectionStatus from 'src/state/selectors/get-connection-status';
+import getUser from 'src/state/selectors/get-user';
+import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
+import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
+import isHCServerReachable from 'src/state/selectors/is-server-reachable';
 
 /**
- * React component for rendering title bar
+ * React component for rendering a happychat client as a full page
  */
-const Title = localize( ( { onCloseChat, translate } ) =>
-	<div className="happychat__active-toolbar">
-		<h4>{translate( 'Support Chat' )}</h4>
-		<div onClick={ onCloseChat }>
-			<GridIcon icon="cross" />
-		</div>
-	</div>
-);
-/*
- * Main chat UI component
- */
-class Happychat extends React.Component {
+export class HappychatPage extends Component {
 	componentDidMount() {
-		debug( 'did mount' );
 		this.props.setFocused();
 	}
 
 	componentWillUnmount() {
-		debug( 'will unmount' );
 		this.props.setBlurred();
 	}
 
 	render() {
-		const { isChatOpen, isMinimizing, onCloseChat } = this.props;
+		const {
+			chatStatus,
+			connectionStatus,
+			currentUserEmail,
+			disabled,
+			getAuth,
+			isConnectionUninitialized,
+			isCurrentUser,
+			isExternalUrl,
+			isHappychatEnabled,
+			isServerReachable,
+			message,
+			onInitConnection,
+			onSendMessage,
+			onSendNotTyping,
+			onSendTyping,
+			onSetCurrentMessage,
+			timeline,
+			translate,
+			twemojiUrl,
+		} = this.props;
 
 		return (
-			<div className="happychat">
-				<HappychatConnection />
-				<div
-					className={ classnames( 'happychat__container', {
-						'is-open': isChatOpen,
-						'is-minimizing': isMinimizing
-					} ) }
-				>
-					<div className="happychat__title">
-						<Title onCloseChat={ onCloseChat } />
-					</div>
-					<Timeline />
-					<Notices />
-					<Composer />
-				</div>
+			<div className="happychat__page" aria-live="polite" aria-relevant="additions">
+				<HappychatConnection
+					getAuth={ getAuth }
+					initConnection={ onInitConnection }
+					isConnectionUninitialized={ isConnectionUninitialized }
+					isHappychatEnabled={ isHappychatEnabled }
+				/>
+				<Timeline
+					currentUserEmail={ currentUserEmail }
+					isCurrentUser={ isCurrentUser }
+					isExternalUrl={ isExternalUrl }
+					timeline={ timeline }
+					translate={ translate }
+					twemojiUrl={ twemojiUrl }
+				/>
+				<Notices
+					chatStatus={ chatStatus }
+					connectionStatus={ connectionStatus }
+					isServerReachable={ isServerReachable }
+					translate={ translate }
+				/>
+				<Composer
+					disabled={ disabled }
+					message={ message }
+					onSendMessage={ onSendMessage }
+					onSendNotTyping={ onSendNotTyping }
+					onSendTyping={ onSendTyping }
+					onSetCurrentMessage={ onSetCurrentMessage }
+					translate={ translate }
+				/>
 			</div>
 		);
 	}
 }
 
+HappychatPage.propTypes = {
+	chatStatus: PropTypes.string,
+	connectionStatus: PropTypes.string,
+	currentUserEmail: PropTypes.string,
+	disabled: PropTypes.bool,
+	getAuth: PropTypes.func,
+	isConnectionUninitialized: PropTypes.bool,
+	isCurrentUser: PropTypes.func,
+	isExternalUrl: PropTypes.func,
+	isHappychatEnabled: PropTypes.bool,
+	isServerReachable: PropTypes.bool,
+	message: PropTypes.string,
+	onInitConnection: PropTypes.func,
+	onSendMessage: PropTypes.func,
+	onSendNotTyping: PropTypes.func,
+	onSendTyping: PropTypes.func,
+	onSetCurrentMessage: PropTypes.func,
+	setBlurred: PropTypes.func,
+	setFocused: PropTypes.func,
+	timeline: PropTypes.array,
+	translate: PropTypes.func,
+	twemojiUrl: PropTypes.string,
+};
+
 const mapState = state => {
+	const currentUser = getUser( state );
 	return {
-		connectionStatus: getHappychatConnectionStatus( state ),
-		isChatOpen: isHappychatOpen( state ),
-		isMinimizing: isHappychatMinimizing( state )
+		chatStatus: getChatStatus( state ),
+		connectionStatus: getConnectionStatus( state ),
+		currentUserEmail: currentUser.email,
+		disabled: ! canUserSendMessages( state ),
+		getAuth: getHappychatAuth( state ),
+		isConnectionUninitialized: isHCConnectionUninitialized( state ),
+		/* eslint-disable camelcase */
+		isCurrentUser: ( { user_id, source } ) => {
+			return user_id.toString() === currentUser.ID.toString() && source === 'customer';
+		},
+		/* eslint-enable camelcase */
+		isExternalUrl: () => true,
+		isHappychatEnabled: config.isEnabled( 'happychat' ),
+		isServerReachable: isHCServerReachable( state ),
+		message: getUICurrentMessage( state ),
+		timeline: getChatTimeline( state ),
+		twemojiUrl: config( 'twemoji_cdn_url' ),
 	};
 };
 
-const mapDispatch = dispatch => {
-	return {
-		onOpenChat() {
-			debug( 'open chat' );
-			dispatch( openChat() );
-		},
-		onCloseChat() {
-			debug( 'minimize chat' );
-			dispatch( minimizeChat() );
-			setTimeout( function() {
-				debug( 'close chat' );
-				dispatch( minimizedChat() );
-				dispatch( closeChat() );
-			}, 500 );
-		},
-		setBlurred() {
-			debug( 'set blurred' );
-			dispatch( blur() );
-		},
-		setFocused() {
-			debug( 'set focused' );
-			dispatch( focus() );
-		}
-	};
+const mapDispatch = {
+	onInitConnection: initConnection,
+	onSendMessage: sendMessage,
+	onSendNotTyping: sendNotTyping,
+	onSendTyping: sendTyping,
+	onSetCurrentMessage: setCurrentMessage,
+	setBlurred: blur,
+	setFocused: focus,
 };
 
-export default connect( mapState, mapDispatch )( Happychat );
+export default connect( mapState, mapDispatch )( mockLocalize( HappychatPage ) );

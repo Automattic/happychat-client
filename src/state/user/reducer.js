@@ -1,36 +1,36 @@
+/** @format */
+
 /**
  * External dependencies
  */
 import { combineReducers } from 'redux';
 
 /**
+ * Calypso dependencies
+ */
+import { geoLocation } from 'state/happychat/user/reducer';
+
+/**
  * Internal dependencies
  */
 import {
-	HAPPYCHAT_USER_LOCALE_SET,
 	HAPPYCHAT_USER_CURRENT_SET,
-	HAPPYCHAT_USER_GEOLOCATION_SET
+	HAPPYCHAT_USER_GROUPS_SET,
+	HAPPYCHAT_USER_LOCALE_SET,
 } from 'src/state/action-types';
-
-/**
- * Tracks the current user geo location.
- *
- * @param  {Object} state  Current state
- * @param  {Object} action Action payload
- * @return {Object}        Updated state
- */
-const geoLocation = ( state = null, action ) => {
-	switch ( action.type ) {
-		case HAPPYCHAT_USER_GEOLOCATION_SET:
-			return action.geoLocation;
-	}
-	return state;
-};
 
 const currentUser = ( state = null, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_USER_CURRENT_SET:
 			return action.currentUser;
+	}
+	return state;
+};
+
+const groups = ( state = [], action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_USER_GROUPS_SET:
+			return action.groups;
 	}
 	return state;
 };
@@ -44,7 +44,8 @@ const locale = ( state = null, action ) => {
 };
 
 export default combineReducers( {
-	geoLocation,
 	currentUser,
-	locale
+	geoLocation,
+	groups,
+	locale,
 } );

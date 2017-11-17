@@ -2,19 +2,18 @@
   "name": "happychat-embedded",
   "version": "0.0.1",
   "description": "",
-  "main": "src/standalone/api.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "run-p build:*",
     "build:js": "run-p build:js:*",
-    "build:js:npm": "webpack --config webpack.npm.config.js",
     "build:js:standalone": "webpack --config webpack.standalone.config.js",
     "build:js:wordpress": "webpack --config webpack.wordpress.config.js",
     "build:css": "run-p build:css:*",
-    "build:css:npm": "node-sass src/ui/index.scss targets/npm/public/happychat.css",
     "build:css:standalone": "node-sass src/ui/index.scss targets/standalone/public/happychat.css",
     "build:css:wordpress": "node-sass src/ui/index.scss targets/wordpress/public/happychat.css",
     "prestart": "npm run build:js:standalone; npm run build:css:standalone",
-    "start": "webpack-dev-server --config webpack.standalone.config.js"
+    "start": "webpack-dev-server --config webpack.standalone.config.js",
+    "wordpress": "npm run build:js:wordpress; npm run build:css:wordpress"
   },
   "keywords": [],
   "author": "",
@@ -41,8 +40,10 @@
     "gridicons": "^1.1.0",
     "i18n-calypso": "^1.7.4",
     "lodash": "^4.17.4",
+    "prettier": "github:automattic/calypso-prettier#14307ba5cc6bcfc00243f5e2d1b25c72d52c28c8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-pure-render": "^1.0.2",
     "react-redux": "^5.0.5",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.2",
@@ -51,6 +52,7 @@
     "twemoji": "^2.3.0",
     "url": "^0.11.0",
     "uuid": "^3.0.1",
+    "wp-calypso": "github:automattic/wp-calypso#update/happychat/ui-decouple",
     "wpcom-oauth-cors": "^1.0.1",
     "wpcom-xhr-request": "^1.1.0"
   }
