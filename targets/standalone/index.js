@@ -1,3 +1,5 @@
+/** @format */
+
 /**
  * External dependencies
  */
@@ -14,9 +16,6 @@ const debug = debugFactory( 'happychat-embedded:api' );
 
 debug( 'get token' );
 wpcomOAuth.get( () => {
-	debug( 'inject window.Happychat' );
-	window.Happychat = {
-		open: nodeId => renderTo( nodeId ),
-		sendTimelineEvent: () => {} // TODO
-	};
+	debug( 'load Happychat' );
+	renderTo( 'root' );
 } );

@@ -1,3 +1,4 @@
+/** @format */
 /**
  * Live Chat
  */
@@ -384,3 +385,33 @@
     display: block; }
   .has-chat .main.customize.is-iframe {
     right: 272px; } }
+
+/**
+ * Mobile fullscreen mode
+ * Includes code to make the Me > Chat section nice on larger breakoints as well,
+ * even though we'll be hiding that for the time being.
+ */
+.happychat__page {
+  position: fixed;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  top: 0;
+  margin-top: 47px;
+  left: 272px;
+  right: 0;
+  bottom: 0; }
+
+@media (min-width: 1041px) {
+  .happychat__page .happychat__timeline-message {
+    max-width: 80%; } }
+
+@media (max-width: 960px) {
+  .happychat__page {
+    left: 229px; } }
+
+@media (max-width: 660px) {
+  .happychat__page {
+    left: 0; } }

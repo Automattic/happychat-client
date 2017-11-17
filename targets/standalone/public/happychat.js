@@ -28474,7 +28474,7 @@ var getHappychatAuth = exports.getHappychatAuth = function getHappychatAuth(stat
 		var url = (0, _config2.default)('happychat_url');
 
 		var locale = (0, _getUserLocale2.default)(state);
-		var groups = ['JPOP'];
+		var groups = ['jpop']; // TODO decide how to pass groups
 		var user = (0, _getUser2.default)(state);
 		var signer_user_id = user.ID;
 		var geoLocation = void 0;
@@ -40475,21 +40475,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * Internal dependencies
  */
-var wpcomOAuth = __webpack_require__(110)((0, _config2.default)('oauth_client_id')); /**
-                                                                                         * External dependencies
-                                                                                         */
+var wpcomOAuth = __webpack_require__(110)((0, _config2.default)('oauth_client_id')); /** @format */
+
+/**
+ * External dependencies
+ */
 
 var debug = (0, _debug2.default)('happychat-embedded:api');
 
 debug('get token');
 wpcomOAuth.get(function () {
-	debug('inject window.Happychat');
-	window.Happychat = {
-		open: function open(nodeId) {
-			return (0, _apiWrapper.renderTo)(nodeId);
-		},
-		sendTimelineEvent: function sendTimelineEvent() {} // TODO
-	};
+  debug('load Happychat');
+  (0, _apiWrapper.renderTo)('root');
 });
 
 /***/ }),
