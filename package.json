@@ -46,7 +46,7 @@
     "react-dom": "15.6.2",
     "react-pure-render": "1.0.2",
     "react-redux": "5.0.6",
-    "redux": "3.0.4",
+    "redux": "3.7.2",
     "redux-devtools-extension": "2.13.2",
     "socket.io-client": "1.4.5",
     "twemoji": "2.3",
