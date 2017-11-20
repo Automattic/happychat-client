@@ -3,7 +3,7 @@
 /**
  * Internal dependencies
  */
-import { HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED } from 'state/happychat/constants';
+import { HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED } from 'src/state/constants';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
 
 /**

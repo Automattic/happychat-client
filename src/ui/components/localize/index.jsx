@@ -5,7 +5,7 @@
  */
 import React, { Component } from 'react';
 import debugFactory from 'debug';
-const debug = debugFactory( 'happychat-embedded:localize' );
+const debug = debugFactory( 'happychat-client:ui:localize' );
 
 export const mockLocalize = ComposedComponent =>
 	class extends Component {

@@ -1,5 +1,5 @@
 {
-  "name": "happychat-embedded",
+  "name": "happychat-client",
   "version": "0.0.1",
   "description": "",
   "main": "src/index.js",
@@ -23,6 +23,7 @@
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.5.1",
     "babel-preset-react": "^6.24.1",
     "eslint": "^3.19.0",
@@ -36,11 +37,13 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "create-react-class": "^15.6.2",
     "events": "^1.1.1",
     "gridicons": "^1.1.0",
     "i18n-calypso": "^1.7.4",
     "lodash": "^4.17.4",
     "prettier": "github:automattic/calypso-prettier#14307ba5cc6bcfc00243f5e2d1b25c72d52c28c8",
+    "prop-types": "15.5.10",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-pure-render": "^1.0.2",
@@ -52,7 +55,6 @@
     "twemoji": "^2.3.0",
     "url": "^0.11.0",
     "uuid": "^3.0.1",
-    "wp-calypso": "github:automattic/wp-calypso#update/happychat/ui-decouple",
     "wpcom-oauth-cors": "^1.0.1",
     "wpcom-xhr-request": "^1.1.0"
   }

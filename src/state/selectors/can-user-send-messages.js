@@ -14,7 +14,7 @@ import {
 	HAPPYCHAT_CHAT_STATUS_DEFAULT,
 	HAPPYCHAT_CHAT_STATUS_MISSED,
 	HAPPYCHAT_CHAT_STATUS_PENDING,
-} from 'state/happychat/constants';
+} from 'src/state/constants';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import isConnectionConnected from 'src/state/selectors/is-connection-connected';
 

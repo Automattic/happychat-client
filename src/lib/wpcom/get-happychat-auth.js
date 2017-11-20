@@ -15,7 +15,7 @@ import getUser from 'src/state/selectors/get-user';
 import getUserLocale from 'src/state/selectors/get-user-locale';
 import getUserGroups from 'src/state/selectors/get-user-groups';
 
-const debug = debugFactory( 'happychat-embedded:wpcom:get-happychat-auth' );
+const debug = debugFactory( 'happychat-client:wpcom:get-happychat-auth' );
 const wpcomOAuth = wpcomOAuthFactory( config( 'oauth_client_id' ) );
 
 const sign = payload =>

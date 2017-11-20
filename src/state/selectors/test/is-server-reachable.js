@@ -14,7 +14,7 @@ import {
 	HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT,
 	HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE,
 	HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR,
-} from 'state/happychat/constants';
+} from 'src/state/constants';
 import isServerReachable from '../is-server-reachable';
 
 describe( '#isServerReachable', () => {

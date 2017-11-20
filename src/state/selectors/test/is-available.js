@@ -12,7 +12,7 @@ import deepFreeze from 'deep-freeze';
 import {
 	HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED,
 	HAPPYCHAT_CONNECTION_STATUS_CONNECTED,
-} from 'state/happychat/constants';
+} from 'src/state/constants';
 import isAvailable from '../is-available';
 
 describe( '#isAvailable', () => {
