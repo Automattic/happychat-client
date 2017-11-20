@@ -33958,7 +33958,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * External dependencies
  */
-var debug = (0, _debug2.default)('happychat-embedded:standalone:get-wpcom-user');
+var debug = (0, _debug2.default)('happychat-client:standalone:get-wpcom-user');
 
 /**
  * Internal dependencies
@@ -34374,7 +34374,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * Internal dependencies
  */
-var debug = (0, _debug2.default)('happychat-embedded:wpcom:get-happychat-auth'); /** @format */
+var debug = (0, _debug2.default)('happychat-client:wpcom:get-happychat-auth'); /** @format */
 
 /**
  * External dependencies
@@ -35130,7 +35130,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var debug = (0, _debug2.default)('calypso:happychat:connection');
+var debug = (0, _debug2.default)('happychat-client:socketio');
 
 var buildConnection = function buildConnection(socket) {
 	return (0, _lodash.isString)(socket) ? new _socket2.default(socket) // If socket is an URL, connect to server.
@@ -36355,7 +36355,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 
 
-var debug = (0, _debug2.default)('happychat-embedded:localize');
+var debug = (0, _debug2.default)('happychat-client:ui:localize');
 
 var mockLocalize = exports.mockLocalize = function mockLocalize(ComposedComponent) {
 	return function (_Component) {
@@ -36571,7 +36571,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
 
-var debug = (0, _debug2.default)('calypso:happychat:timeline');
+var debug = (0, _debug2.default)('happychat-client:ui:timeline');
 
 var linksNotEmpty = function linksNotEmpty(_ref) {
 	var links = _ref.links;
@@ -37176,7 +37176,7 @@ var wpcomOAuth = __webpack_require__(48)((0, _config2.default)('oauth_client_id'
  * Internal dependencies
  */
 
-var debug = (0, _debug2.default)('happychat-embedded:standalone');
+var debug = (0, _debug2.default)('happychat-client:standalone');
 
 var initHappychat = function initHappychat(nodeId, groups) {
 	debug('get token from wpcom');
