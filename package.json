@@ -32,6 +32,7 @@
     "events": "1.0.2",
     "node-sass": "4.5.3",
     "npm-run-all": "4.0.2",
+    "prettier": "github:automattic/calypso-prettier#717e62ee",
     "webpack": "3.8.1",
     "webpack-dev-server": "2.9.4"
   },
@@ -40,7 +41,6 @@
     "create-react-class": "15.6.2",
     "gridicons": "2.1.0",
     "lodash": "4.15.0",
-    "prettier": "github:automattic/calypso-prettier#717e62ee",
     "prop-types": "15.5.10",
     "react": "15.6.2",
     "react-dom": "15.6.2",
