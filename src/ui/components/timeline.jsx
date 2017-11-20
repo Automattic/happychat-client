@@ -19,7 +19,7 @@ import scrollbleed from './scrollbleed';
 import { addSchemeIfMissing, setUrlScheme } from './url';
 
 import debugFactory from 'debug';
-const debug = debugFactory( 'calypso:happychat:timeline' );
+const debug = debugFactory( 'happychat-client:ui:timeline' );
 
 const linksNotEmpty = ( { links } ) => ! isEmpty( links );
 

@@ -12,7 +12,7 @@ import debugFactory from 'debug';
  */
 import config from 'src/config';
 
-const debug = debugFactory( 'happychat-embedded:standalone:get-wpcom-user' );
+const debug = debugFactory( 'happychat-client:standalone:get-wpcom-user' );
 const wpcomOAuth = wpcomOAuthFactory( config( 'oauth_client_id' ) );
 
 export default () =>
