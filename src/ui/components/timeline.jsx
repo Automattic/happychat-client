@@ -130,6 +130,13 @@ const groupMessages = messages => {
 			const message_type = message.type;
 			const message_source = message.source;
 			debug( 'compare source', message_source, message.source );
+
+			debug( 'user_id ', user_id );
+			debug( 'type ', type );
+			debug( 'group ', group );
+			debug( 'groups ', groups );
+			debug( 'source ', source );
+			debug( 'message ', message );
 			if ( user_id !== message_user_id || message_type !== type || message_source !== source ) {
 				return {
 					user_id: message_user_id,
@@ -139,6 +146,7 @@ const groupMessages = messages => {
 					groups: group ? groups.concat( [ group ] ) : groups,
 				};
 			}
+
 			// it's the same user so group it together
 			return { user_id, group: group.concat( [ message ] ), groups, type, source };
 		},

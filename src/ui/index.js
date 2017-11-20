@@ -8,8 +8,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 /**
- * Calypso dependencies
+ * Internal dependencies
  */
+import config from 'src/config';
 
 // actions
 import {
@@ -17,25 +18,11 @@ import {
 	sendMessage,
 	sendNotTyping,
 	sendTyping,
-} from 'state/happychat/connection/actions';
-import { blur, focus, setCurrentMessage } from 'state/happychat/ui/actions';
-
-// TODO: implement localize
-import { mockLocalize } from 'src/ui/components/localize';
-
-/**
- * Internal dependencies
- */
-import config from 'src/config';
-import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
-
-// UI components
-import { HappychatConnection } from 'src/ui/components/connection';
-import { Composer } from 'src/ui/components/composer';
-import { Notices } from 'src/ui/components/notices';
-import { Timeline } from 'src/ui/components/timeline';
+} from 'src/state/connection/actions';
+import { blur, focus, setCurrentMessage } from 'src/state/ui/actions';
 
 // selectors
+import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
 import canUserSendMessages from 'src/state/selectors/can-user-send-messages';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import getChatTimeline from 'src/state/selectors/get-chat-timeline';
@@ -44,6 +31,13 @@ import getUser from 'src/state/selectors/get-user';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
 import isHCServerReachable from 'src/state/selectors/is-server-reachable';
+
+// UI components
+import { mockLocalize } from 'src/ui/components/localize'; // TODO implement localize
+import { HappychatConnection } from 'src/ui/components/connection';
+import { Composer } from 'src/ui/components/composer';
+import { Notices } from 'src/ui/components/notices';
+import { Timeline } from 'src/ui/components/timeline';
 
 /**
  * React component for rendering a happychat client as a full page

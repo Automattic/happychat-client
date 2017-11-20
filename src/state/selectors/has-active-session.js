@@ -13,7 +13,7 @@ import {
 	HAPPYCHAT_CHAT_STATUS_CLOSED,
 	HAPPYCHAT_CHAT_STATUS_DEFAULT,
 	HAPPYCHAT_CHAT_STATUS_NEW,
-} from 'state/happychat/constants';
+} from 'src/state/constants';
 import createSelector from 'lib/create-selector';
 
 /**

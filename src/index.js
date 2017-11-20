@@ -10,15 +10,11 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 
 /**
- * Calypso dependencies
- */
-import { socketMiddleware } from 'state/happychat/middleware';
-
-/**
  * Internal dependencies
  */
 import Happychat from 'src/ui';
 import reducer from 'src/state/reducer';
+import { socketMiddleware } from 'src/state/middleware';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
 
 const store = createStore(
