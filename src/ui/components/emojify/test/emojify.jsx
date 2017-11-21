@@ -6,14 +6,13 @@
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 
 /**
  * Internal dependencies
  */
-import config from 'config';
+import config from 'src/config';
 import Emojify from '..';
 
 describe( 'Emojify', () => {
@@ -23,7 +22,7 @@ describe( 'Emojify', () => {
 			const wrapper = shallow( <Emojify>Foo</Emojify>, {
 				disableLifecycleMethods: true,
 			} );
-			expect( wrapper.html() ).to.equal( '<div class="emojify">Foo</div>' );
+			expect( wrapper.html() ).toBe( '<div class="emojify">Foo</div>' );
 		} );
 
 		test( 'wraps a block in a div', () => {
@@ -33,13 +32,13 @@ describe( 'Emojify', () => {
 				</Emojify>,
 				{ disableLifecycleMethods: true }
 			);
-			expect( wrapper.html() ).to.equal( '<div class="emojify"><p>Bar</p></div>' );
+			expect( wrapper.html() ).toBe( '<div class="emojify"><p>Bar</p></div>' );
 		} );
 
 		test( 'replaces emoji in a string', () => {
 			const wrapper = mount( <Emojify twemojiUrl={ twemojiUrl }>🙂</Emojify> );
 
-			expect( wrapper.html() ).to.equal(
+			expect( wrapper.html() ).toBe(
 				'<div class="emojify"><img draggable="false" class="emojify__emoji" alt="🙂" ' +
 					'src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/72x72/1f642.png"></div>'
 			);
@@ -52,7 +51,7 @@ describe( 'Emojify', () => {
 				</Emojify>
 			);
 
-			expect( wrapper.html() ).to.equal(
+			expect( wrapper.html() ).toBe(
 				'<div class="emojify"><p><img draggable="false" class="emojify__emoji" alt="🧔🏻" ' +
 					'src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/72x72/1f9d4-1f3fb.png"></p></div>'
 			);
@@ -62,7 +61,7 @@ describe( 'Emojify', () => {
 			const wrapper = shallow( <Emojify alt="bar">השנה היא 2017.</Emojify>, {
 				disableLifecycleMethods: true,
 			} );
-			expect( wrapper.getElement().props.alt ).to.equal( 'bar' );
+			expect( wrapper.getElement().props.alt ).toBe( 'bar' );
 		} );
 	} );
 } );

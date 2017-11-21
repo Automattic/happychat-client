@@ -1,11 +1,6 @@
 /** @format */
 
 /**
- * External dependencies
- */
-import { expect } from 'chai';
-
-/**
  * Internal dependencies
  */
 import getChatTimeline from '../get-chat-timeline';
@@ -43,7 +38,7 @@ describe( '#getChatTimeline', () => {
 		const timelineCached = getChatTimeline( state );
 		// force a new reference, but with the same data
 		state.chat.timeline = [ ...timelineWithoutIds2 ];
-		expect( getChatTimeline( state ) ).to.be.equals( timelineCached );
+		expect( getChatTimeline( state ) ).toBe( timelineCached );
 	} );
 
 	test( 'returns the cached timeline if messages ids are the same', () => {
@@ -55,7 +50,7 @@ describe( '#getChatTimeline', () => {
 		const timelineCached = getChatTimeline( state );
 		// force a new reference, but with the same data
 		state.chat.timeline = [ ...timelineAtTime1 ];
-		expect( getChatTimeline( state ) ).to.be.equals( timelineCached );
+		expect( getChatTimeline( state ) ).toBe( timelineCached );
 	} );
 
 	test( 'returns the new timeline if some message id is different', () => {
@@ -67,6 +62,6 @@ describe( '#getChatTimeline', () => {
 		const timelineCached = getChatTimeline( state );
 		// force a new reference, but with the same data
 		state.chat.timeline = [ ...timelineAtTime2 ];
-		expect( getChatTimeline( state ) ).to.not.be.equals( timelineCached );
+		expect( getChatTimeline( state ) ).not.toBe( timelineCached );
 	} );
 } );

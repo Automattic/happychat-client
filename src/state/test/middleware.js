@@ -113,13 +113,11 @@ describe( 'middleware', () => {
 
 	describe( 'eventMessage', () => {
 		const state = {
-			happychat: {
-				connection: {
-					status: HAPPYCHAT_CONNECTION_STATUS_CONNECTED,
-				},
-				chat: {
-					status: HAPPYCHAT_CHAT_STATUS_ASSIGNED,
-				},
+			connection: {
+				status: HAPPYCHAT_CONNECTION_STATUS_CONNECTED,
+			},
+			chat: {
+				status: HAPPYCHAT_CHAT_STATUS_ASSIGNED,
 			},
 		};
 
@@ -156,7 +154,7 @@ describe( 'middleware', () => {
 				HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED,
 			].forEach( connectionStatus => {
 				store.getState.mockReturnValue(
-					Object.assign( state, { happychat: { connection: { status: connectionStatus } } } )
+					Object.assign( state, { connection: { status: connectionStatus } } )
 				);
 				const action = blur();
 				actionMiddleware( action );
@@ -176,9 +174,7 @@ describe( 'middleware', () => {
 				HAPPYCHAT_CHAT_STATUS_MISSED,
 				HAPPYCHAT_CHAT_STATUS_PENDING,
 			].forEach( chatStatus => {
-				store.getState.mockReturnValue(
-					Object.assign( state, { happychat: { chat: { status: chatStatus } } } )
-				);
+				store.getState.mockReturnValue( Object.assign( state, { chat: { status: chatStatus } } ) );
 				const action = blur();
 				actionMiddleware( action );
 

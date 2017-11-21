@@ -3,7 +3,6 @@
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import deepFreeze from 'deep-freeze';
 
 /**
@@ -24,7 +23,7 @@ describe( '#isServerReachable', () => {
 				error: null,
 			},
 		} );
-		expect( isServerReachable( state ) ).to.be.true;
+		expect( isServerReachable( state ) ).toBeTruthy();
 	} );
 
 	it( 'should return true if error is: Forced Close', () => {
@@ -33,7 +32,7 @@ describe( '#isServerReachable', () => {
 				error: HAPPYCHAT_CONNECTION_ERROR_FORCED_CLOSE,
 			},
 		} );
-		expect( isServerReachable( state ) ).to.be.true;
+		expect( isServerReachable( state ) ).toBeTruthy();
 	} );
 
 	it( 'should return true if error is: Transport Close', () => {
@@ -42,7 +41,7 @@ describe( '#isServerReachable', () => {
 				error: HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE,
 			},
 		} );
-		expect( isServerReachable( state ) ).to.be.true;
+		expect( isServerReachable( state ) ).toBeTruthy();
 	} );
 
 	it( 'should return true if error is: Transport Error', () => {
@@ -51,7 +50,7 @@ describe( '#isServerReachable', () => {
 				error: HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR,
 			},
 		} );
-		expect( isServerReachable( state ) ).to.be.true;
+		expect( isServerReachable( state ) ).toBeTruthy();
 	} );
 
 	it( 'should return false if error is: Ping Timeout', () => {
@@ -60,6 +59,6 @@ describe( '#isServerReachable', () => {
 				error: HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT,
 			},
 		} );
-		expect( isServerReachable( state ) ).to.be.false;
+		expect( isServerReachable( state ) ).toBeFalsy();
 	} );
 } );

@@ -43,7 +43,7 @@ const DEFAULT_GET_CACHE_KEY = ( () => {
 		// Webpack can optimize bundles if it can detect that a block will
 		// never be reached. Since `NODE_ENV` is defined using DefinePlugin,
 		// these debugging modules will be excluded from the production build.
-		warn = require( 'src/lib/warn' );
+		warn = require( 'src/lib/warn' ).default;
 		includes = require( 'lodash/includes' );
 	} else {
 		return ( state, ...args ) => args.join();

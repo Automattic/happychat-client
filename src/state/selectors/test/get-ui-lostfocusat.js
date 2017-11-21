@@ -3,7 +3,6 @@
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import deepFreeze from 'deep-freeze';
 
 /**
@@ -17,6 +16,6 @@ const NOW = 1488173100125;
 describe( '#getLostFocusTimestamp', () => {
 	test( 'returns the current timestamp', () => {
 		const state = deepFreeze( { ui: { lostFocusAt: NOW } } );
-		expect( getUILostFocusAt( state ) ).to.eql( NOW );
+		expect( getUILostFocusAt( state ) ).toBe( NOW );
 	} );
 } );
