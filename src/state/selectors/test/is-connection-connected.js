@@ -3,7 +3,6 @@
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import deepFreeze from 'deep-freeze';
 
 /**
@@ -25,7 +24,7 @@ describe( '#isConnectionConnected', () => {
 				status: HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED,
 			},
 		} );
-		expect( isConnectionConnected( stateUnitialized ) ).to.be.false;
+		expect( isConnectionConnected( stateUnitialized ) ).toBeFalsy();
 	} );
 
 	it( 'should return true for CONNECTED', () => {
@@ -34,7 +33,7 @@ describe( '#isConnectionConnected', () => {
 				status: HAPPYCHAT_CONNECTION_STATUS_CONNECTED,
 			},
 		} );
-		expect( isConnectionConnected( stateConnected ) ).to.be.true;
+		expect( isConnectionConnected( stateConnected ) ).toBeTruthy();
 	} );
 
 	it( 'should return false for DISCONNECTED', () => {
@@ -43,7 +42,7 @@ describe( '#isConnectionConnected', () => {
 				status: HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED,
 			},
 		} );
-		expect( isConnectionConnected( stateDisconnected ) ).to.be.false;
+		expect( isConnectionConnected( stateDisconnected ) ).toBeFalsy();
 	} );
 
 	it( 'should return false for CONNECTING', () => {
@@ -52,7 +51,7 @@ describe( '#isConnectionConnected', () => {
 				status: HAPPYCHAT_CONNECTION_STATUS_CONNECTING,
 			},
 		} );
-		expect( isConnectionConnected( stateConnecting ) ).to.be.false;
+		expect( isConnectionConnected( stateConnecting ) ).toBeFalsy();
 	} );
 
 	it( 'should return false for RECONNECTING', () => {
@@ -61,6 +60,6 @@ describe( '#isConnectionConnected', () => {
 				status: HAPPYCHAT_CONNECTION_STATUS_RECONNECTING,
 			},
 		} );
-		expect( isConnectionConnected( stateReconnecting ) ).to.be.false;
+		expect( isConnectionConnected( stateReconnecting ) ).toBeFalsy();
 	} );
 } );
