@@ -1,11 +1,6 @@
 /** @format */
 
 /**
- * External dependencies
- */
-import { expect } from 'chai';
-
-/**
  * Internal dependencies
  */
 import { HAPPYCHAT_IO_RECEIVE_INIT } from 'src/state/action-types';
@@ -15,7 +10,7 @@ describe( '#geoLocation()', () => {
 	test( 'should default to null', () => {
 		const state = geoLocation( undefined, {} );
 
-		expect( state ).to.be.null;
+		expect( state ).toBeNull();
 	} );
 
 	test( 'should set the current user geolocation', () => {
@@ -29,6 +24,6 @@ describe( '#geoLocation()', () => {
 			},
 		} );
 
-		expect( state ).to.eql( { country_long: 'Romania', city: 'Timisoara' } );
+		expect( state ).toMatchObject( { country_long: 'Romania', city: 'Timisoara' } );
 	} );
 } );
