@@ -3,7 +3,6 @@
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import deepFreeze from 'deep-freeze';
 
 /**
@@ -23,7 +22,7 @@ describe( '#isAvailable', () => {
 				isAvailable: true,
 			},
 		} );
-		expect( isAvailable( state ) ).to.be.false;
+		expect( isAvailable( state ) ).toBeFalsy();
 	} );
 
 	it( "should be false if Happychat isn't accepting new connections", () => {
@@ -33,7 +32,7 @@ describe( '#isAvailable', () => {
 				isAvailable: false,
 			},
 		} );
-		expect( isAvailable( state ) ).to.be.false;
+		expect( isAvailable( state ) ).toBeFalsy();
 	} );
 
 	it( "should be true when there's a connection and connections are being accepted", () => {
@@ -43,6 +42,6 @@ describe( '#isAvailable', () => {
 				isAvailable: true,
 			},
 		} );
-		expect( isAvailable( state ) ).to.be.true;
+		expect( isAvailable( state ) ).toBeTruthy();
 	} );
 } );
