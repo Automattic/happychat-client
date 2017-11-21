@@ -1,3 +1,10 @@
 {
-  "testMatch": [ "<rootDir>/src/**/test/*.js?(x)", "<rootDir>/targets/**/test/*.js?(x)" ]
+  "modulePaths": [
+		"<rootDir>"
+	],
+	"rootDir": ".",
+	"roots": [ "<rootDir>/src/ui/components/test" ],
+  "testEnvironment": "node",
+	"testMatch": [ "<rootDir>/src/**/test/*.js?(x)", "<rootDir>/targets/**/test/*.js?(x)" ],
+  "setupTestFrameworkScriptFile": "<rootDir>/setup-jest.js"
 }
