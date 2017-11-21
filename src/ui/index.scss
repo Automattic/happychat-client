@@ -1,6 +1,10 @@
-/** @format */
-@import 'css/_colors';
-@import 'css/_breakpoints';
+// general
+@import 'css/reset';
+@import 'css/colors';
+@import 'css/typography';
+@import 'css/breakpoints';
+
+// happychat specific
 @import 'style';
 @import 'style-mechat';
 @import 'components/emojify/style';
