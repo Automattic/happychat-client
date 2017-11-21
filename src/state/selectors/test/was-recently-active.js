@@ -1,14 +1,9 @@
 /** @format */
 
 /**
- * External dependencies
- */
-import { expect } from 'chai';
-
-/**
  * Internal dependencies
  */
-import wasRecentlyActive from '/was-recently-active';
+import wasRecentlyActive from '../was-recently-active';
 
 const TIME_SECOND = 1000;
 const TIME_MINUTE = TIME_SECOND * 60;
@@ -26,7 +21,7 @@ describe( '#wasRecentlyActive()', () => {
 			chat: { lastActivityTimestamp: null },
 		} );
 
-		expect( result ).to.be.false;
+		expect( result ).toBeFalsy();
 	} );
 
 	test( 'should return false if last activity was 3 hours ago', () => {
@@ -34,7 +29,7 @@ describe( '#wasRecentlyActive()', () => {
 			chat: { lastActivityTimestamp: NOW - TIME_HOUR * 3 },
 		} );
 
-		expect( result ).to.be.false;
+		expect( result ).toBeFalsy();
 	} );
 
 	test( 'should return true if last activity was 5 minutes ago', () => {
@@ -42,6 +37,6 @@ describe( '#wasRecentlyActive()', () => {
 			chat: { lastActivityTimestamp: NOW - TIME_MINUTE * 5 },
 		} );
 
-		expect( result ).to.be.true;
+		expect( result ).toBeTruthy();
 	} );
 } );
