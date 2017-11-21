@@ -11,10 +11,10 @@
     "build:wordpress": "run-p build:wordpress:*",
     "build:wordpress:css": "node-sass src/ui/index.scss targets/wordpress/public/happychat.css",
     "build:wordpress:js": "webpack --config webpack.wordpress.config.js",
-    "prestart": "npm run build:js:standalone; npm run build:css:standalone",
+    "prestart": "npm run build:standalone:js; npm run build:standalone:css",
     "start": "webpack-dev-server --config webpack.standalone.config.js",
     "test": "jest -c jest.config.json",
-    "wordpress": "npm run build:js:wordpress; npm run build:css:wordpress"
+    "wordpress": "npm run build:wordpress:js; npm run build:wordpress:css"
   },
   "keywords": [],
   "author": "",
