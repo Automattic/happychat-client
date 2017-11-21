@@ -23,8 +23,8 @@ import {
 	receiveUnauthorized,
 	requestTranscript,
 	sendTyping,
-} from 'state/happychat/connection/actions';
-import buildConnection from '../connection';
+} from 'src/state/connection/actions';
+import buildConnection from '../socketio';
 
 describe( 'connection', () => {
 	describe( 'init', () => {
