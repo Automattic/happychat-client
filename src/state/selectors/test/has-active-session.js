@@ -3,7 +3,6 @@
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import deepFreeze from 'deep-freeze';
 
 /**
@@ -40,14 +39,14 @@ describe( '#hasActiveSession', () => {
 	test( 'should be false when chat.status indicates the user has no active session', () => {
 		inactiveChatStatuses.forEach( status => {
 			const state = deepFreeze( { chat: { status } } );
-			expect( hasActiveSession( state ) ).to.be.false;
+			expect( hasActiveSession( state ) ).toBeFalsy();
 		} );
 	} );
 
 	test( 'should be true when chat.status indicates the user has an active session', () => {
 		activeChatStatuses.forEach( status => {
 			const state = deepFreeze( { chat: { status } } );
-			expect( hasActiveSession( state ) ).to.be.true;
+			expect( hasActiveSession( state ) ).toBeTruthy();
 		} );
 	} );
 } );
