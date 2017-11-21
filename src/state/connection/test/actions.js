@@ -1,11 +1,6 @@
 /** @format */
 
 /**
- * External dependencies
- */
-import { expect } from 'chai';
-
-/**
  * Internal dependencies
  */
 import { HAPPYCHAT_IO_RECEIVE_INIT } from 'src/state/action-types';
@@ -16,7 +11,7 @@ describe( 'actions', () => {
 		test( 'should return an action object', () => {
 			const action = receiveInit( { geoLocation: { country_long: 'Romania' } } );
 
-			expect( action ).to.eql( {
+			expect( action ).toMatchObject( {
 				type: HAPPYCHAT_IO_RECEIVE_INIT,
 				user: { geoLocation: { country_long: 'Romania' } },
 			} );
