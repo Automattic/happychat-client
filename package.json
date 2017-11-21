@@ -13,6 +13,7 @@
     "build:wordpress:js": "webpack --config webpack.wordpress.config.js",
     "prestart": "npm run build:js:standalone; npm run build:css:standalone",
     "start": "webpack-dev-server --config webpack.standalone.config.js",
+    "test": "jest -c jest.config.json",
     "wordpress": "npm run build:js:wordpress; npm run build:css:wordpress"
   },
   "keywords": [],
@@ -30,6 +31,7 @@
     "eslint-plugin-react": "7.1.0",
     "eslint-plugin-wpcalypso": "3.4.1",
     "events": "1.0.2",
+    "jest": "21.2.1",
     "node-sass": "4.5.3",
     "npm-run-all": "4.0.2",
     "prettier": "github:automattic/calypso-prettier#717e62ee",
