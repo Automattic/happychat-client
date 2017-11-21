@@ -1,11 +1,6 @@
 /** @format */
 
 /**
- * External dependencies
- */
-import { expect } from 'chai';
-
-/**
  * Internal dependencies
  */
 import getGeoLocation from '../get-user-geolocation';
@@ -15,7 +10,7 @@ describe( 'getGeoLocation', () => {
 		const selected = getGeoLocation( {
 			user: { geoLocation: null },
 		} );
-		expect( selected ).to.equal( null );
+		expect( selected ).toBeNull();
 	} );
 
 	test( 'should return value if geoLocation is set', () => {
@@ -26,6 +21,6 @@ describe( 'getGeoLocation', () => {
 				},
 			},
 		} );
-		expect( selected ).to.eql( { city: 'Timisoara' } );
+		expect( selected ).toMatchObject( { city: 'Timisoara' } );
 	} );
 } );
