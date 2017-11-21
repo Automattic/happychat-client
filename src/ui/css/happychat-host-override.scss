@@ -1,0 +1,14 @@
+// This file only exist to override some style.scss and style-mechat.scss
+// directives that are needed for Calypso
+//
+// We can delete this when Happychat styles are adapted to several hosts
+// (Calypso, WordPress, standalone).
+
+body {
+  background-color: $gray-light;
+}
+
+.happychat__page {
+  left: 0;
+  margin-top: 0;
+}

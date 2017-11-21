@@ -1,0 +1,14 @@
+// ==========================================================================
+// Clear fix mixin (clearfix)
+// ==========================================================================
+
+@mixin clear-fix {
+	&:after {
+		content: ".";
+		display: block;
+		height: 0;
+		width: 0;
+		clear: both;
+		visibility: hidden;
+	}
+}
