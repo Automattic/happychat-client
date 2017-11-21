@@ -5,12 +5,12 @@
   "main": "src/index.js",
   "scripts": {
     "build": "run-p build:*",
-    "build:js": "run-p build:js:*",
-    "build:js:standalone": "webpack --config webpack.standalone.config.js",
-    "build:js:wordpress": "webpack --config webpack.wordpress.config.js",
-    "build:css": "run-p build:css:*",
-    "build:css:standalone": "node-sass src/ui/index.scss targets/standalone/public/happychat.css",
-    "build:css:wordpress": "node-sass src/ui/index.scss targets/wordpress/public/happychat.css",
+    "build:standalone": "run-p build:standalone:*",
+    "build:standalone:css": "node-sass src/ui/index.scss targets/standalone/public/happychat.css",
+    "build:standalone:js": "webpack --config webpack.standalone.config.js",
+    "build:wordpress": "run-p build:wordpress:*",
+    "build:wordpress:css": "node-sass src/ui/index.scss targets/wordpress/public/happychat.css",
+    "build:wordpress:js": "webpack --config webpack.wordpress.config.js",
     "prestart": "npm run build:js:standalone; npm run build:css:standalone",
     "start": "webpack-dev-server --config webpack.standalone.config.js",
     "wordpress": "npm run build:js:wordpress; npm run build:css:wordpress"
