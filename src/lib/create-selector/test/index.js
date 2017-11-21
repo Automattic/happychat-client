@@ -1,37 +1,27 @@
 /** @format */
+
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import { filter } from 'lodash';
-import sinon from 'sinon';
 
 /**
  * Internal dependencies
  */
 import createSelector from '../';
-import { useSandbox } from 'test/helpers/use-sinon';
 
 describe( 'index', () => {
 	let selector, getSitePosts;
 
-	useSandbox( sandbox => {
-		sandbox.stub( console, 'warn' );
-		selector = sandbox.spy( ( state, siteId ) => {
+	beforeEach( () => {
+		selector = jest.fn().mockImplementation( ( state, siteId ) => {
 			return filter( state.posts, { site_ID: siteId } );
 		} );
-	} );
-
-	beforeAll( () => {
 		getSitePosts = createSelector( selector, state => state.posts );
 	} );
 
-	beforeEach( () => {
-		getSitePosts.memoizedSelector.cache.clear();
-	} );
-
 	test( 'should expose its memoized function', () => {
-		expect( getSitePosts.memoizedSelector ).to.be.a( 'function' );
+		expect( getSitePosts.memoizedSelector ).toBeInstanceOf( Function );
 	} );
 
 	test( 'should create a function which returns the expected value when called', () => {
@@ -46,7 +36,7 @@ describe( 'index', () => {
 			},
 		};
 
-		expect( getSitePosts( state, 2916284 ) ).to.eql( [
+		expect( getSitePosts( state, 2916284 ) ).toMatchObject( [
 			{
 				ID: 841,
 				site_ID: 2916284,
@@ -71,11 +61,12 @@ describe( 'index', () => {
 		getSitePosts( state, 2916284 );
 		getSitePosts( state, 2916284 );
 
-		expect( selector ).to.have.been.calledOnce;
+		expect( selector ).toHaveBeenCalledTimes( 1 );
 	} );
 
 	test( 'should warn against complex arguments in development mode', () => {
 		const state = { posts: {} };
+		console.warn = jest.fn(); // eslint-disable-line no-console
 
 		getSitePosts( state, 1 );
 		getSitePosts( state, '' );
@@ -87,7 +78,7 @@ describe( 'index', () => {
 		getSitePosts( state, [] );
 		getSitePosts( state, 1, [] );
 
-		expect( console.warn ).to.have.been.calledThrice;
+		expect( console.warn ).toHaveBeenCalledTimes( 3 );
 	} );
 
 	test( 'should return the expected value of differing arguments', () => {
@@ -112,7 +103,7 @@ describe( 'index', () => {
 		const sitePosts = getSitePosts( state, 38303081 );
 		getSitePosts( state, 2916284 );
 
-		expect( sitePosts ).to.eql( [
+		expect( sitePosts ).toMatchObject( [
 			{
 				ID: 413,
 				site_ID: 38303081,
@@ -120,7 +111,7 @@ describe( 'index', () => {
 				title: 'Ribs & Chicken',
 			},
 		] );
-		expect( selector ).to.have.been.calledTwice;
+		expect( selector ).toHaveBeenCalledTimes( 2 );
 	} );
 
 	test( 'should bust the cache when watched state changes', () => {
@@ -154,7 +145,7 @@ describe( 'index', () => {
 			},
 		};
 
-		expect( getSitePosts( nextState, 2916284 ) ).to.eql( [
+		expect( getSitePosts( nextState, 2916284 ) ).toMatchObject( [
 			{
 				ID: 841,
 				site_ID: 2916284,
@@ -162,7 +153,7 @@ describe( 'index', () => {
 				title: 'Hello World',
 			},
 		] );
-		expect( selector ).to.have.been.calledTwice;
+		expect( selector ).toHaveBeenCalledTimes( 2 );
 	} );
 
 	test( 'should accept an array of dependent state values', () => {
@@ -181,7 +172,7 @@ describe( 'index', () => {
 		getSitePostsWithArrayDependants( state, 2916284 );
 		getSitePostsWithArrayDependants( state, 2916284 );
 
-		expect( selector ).to.have.been.calledOnce;
+		expect( selector ).toHaveBeenCalledTimes( 1 );
 	} );
 
 	test( 'should accept an array of dependent selectors', () => {
@@ -205,7 +196,7 @@ describe( 'index', () => {
 		getSitePostsWithArrayDependants( nextState, 2916284 );
 		getSitePostsWithArrayDependants( nextState, 2916284 );
 
-		expect( selector ).to.have.been.calledTwice;
+		expect( selector ).toHaveBeenCalledTimes( 2 );
 	} );
 
 	test( 'should default to watching entire state, returning cached result if no changes', () => {
@@ -224,7 +215,7 @@ describe( 'index', () => {
 		getSitePostsWithDefaultGetDependants( state, 2916284 );
 		getSitePostsWithDefaultGetDependants( state, 2916284 );
 
-		expect( selector ).to.have.been.calledOnce;
+		expect( selector ).toHaveBeenCalledTimes( 1 );
 	} );
 
 	test( 'should default to watching entire state, busting if state has changed', () => {
@@ -261,7 +252,7 @@ describe( 'index', () => {
 
 		getSitePostsWithDefaultGetDependants( nextState, 2916284 );
 
-		expect( selector ).to.have.been.calledTwice;
+		expect( selector ).toHaveBeenCalledTimes( 2 );
 	} );
 
 	test( 'should accept an optional custom cache key generating function', () => {
@@ -273,28 +264,29 @@ describe( 'index', () => {
 
 		getSitePostsWithCustomGetCacheKey( { posts: {} }, 2916284 );
 
-		expect( getSitePostsWithCustomGetCacheKey.memoizedSelector.cache.has( 'CUSTOM2916284' ) ).to.be
-			.true;
+		expect(
+			getSitePostsWithCustomGetCacheKey.memoizedSelector.cache.has( 'CUSTOM2916284' )
+		).toBeTruthy();
 	} );
 
 	test( 'should call dependant state getter with arguments', () => {
-		const getDeps = sinon.spy();
+		const getDeps = jest.fn();
 		const memoizedSelector = createSelector( () => null, getDeps );
 		const state = {};
 
 		memoizedSelector( state, 1, 2, 3 );
 
-		expect( getDeps ).to.have.been.calledWithExactly( state, 1, 2, 3 );
+		expect( getDeps ).toHaveBeenCalledWith( state, 1, 2, 3 );
 	} );
 
 	test( 'should handle an array of selectors instead of a dependant state getter', () => {
-		const getPosts = sinon.spy();
-		const getQuuxs = sinon.spy();
+		const getPosts = jest.fn();
+		const getQuuxs = jest.fn();
 		const memoizedSelector = createSelector( () => null, [ getPosts, getQuuxs ] );
 		const state = {};
 
 		memoizedSelector( state, 1, 2, 3 );
-		expect( getPosts ).to.have.been.calledWithExactly( state, 1, 2, 3 );
-		expect( getQuuxs ).to.have.been.calledWithExactly( state, 1, 2, 3 );
+		expect( getPosts ).toHaveBeenCalledWith( state, 1, 2, 3 );
+		expect( getQuuxs ).toHaveBeenCalledWith( state, 1, 2, 3 );
 	} );
 } );
