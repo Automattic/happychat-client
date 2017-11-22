@@ -21386,7 +21386,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* eslint-disable camelcase */
 exports.default = (0, _createConfig2.default)({
 	happychat_url: 'https://happychat-io-staging.go-vip.co/customer',
-	oauth_client_id: '54006',
+	oauth_client_id: '56134',
 	hostname: 'wordpress.com',
 	twemoji_cdn_url: 'https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/', // eslint-disable-line max-len
 	features: {
