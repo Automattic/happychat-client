@@ -13,7 +13,7 @@ import {
 	HAPPYCHAT_USER_CURRENT_SET,
 	HAPPYCHAT_USER_GROUPS_SET,
 	HAPPYCHAT_USER_LOCALE_SET,
-} from 'src/state/action-types';
+} from '../action-types';
 
 /**
  * Tracks the current user info
