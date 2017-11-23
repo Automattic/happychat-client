@@ -2,7 +2,7 @@
   "name": "happychat-client",
   "version": "0.0.1",
   "description": "",
-  "main": "src/index.js",
+  "main": "./index.js",
   "scripts": {
     "build": "run-p build:*",
     "build:standalone": "run-p build:standalone:*",
