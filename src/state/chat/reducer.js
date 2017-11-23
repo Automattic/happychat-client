@@ -15,8 +15,8 @@ import {
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT,
 	HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE,
-} from 'src/state/action-types';
-import { HAPPYCHAT_CHAT_STATUS_DEFAULT } from 'src/state/constants';
+} from '../action-types';
+import { HAPPYCHAT_CHAT_STATUS_DEFAULT } from '../constants';
 
 /**
  * Tracks the last time happychat sent or received a message
