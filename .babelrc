@@ -9,11 +9,13 @@
 					"not ie <= 10"
 				]
 			}
-    } ],
-    "react"
+    } ]
   ],
   "plugins":[
+      "syntax-jsx",
       "transform-class-properties",
-      "transform-object-rest-spread"
+      "transform-object-rest-spread",
+      "transform-react-display-name",
+      "transform-react-jsx",
   ]
 }
