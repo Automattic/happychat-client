@@ -48002,6 +48002,7 @@ HappychatPage.propTypes = {
 	setBlurred: _propTypes2.default.func,
 	setFocused: _propTypes2.default.func,
 	timeline: _propTypes2.default.array,
+	token: _propTypes2.default.object,
 	translate: _propTypes2.default.func,
 	twemojiUrl: _propTypes2.default.string
 };

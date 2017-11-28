@@ -1,0 +1,28 @@
+/** @format */
+
+/**
+ * Live chat
+ */
+
+.happychat__active-toolbar {
+	display: flex;
+	flex: 1 1 auto;
+
+	> :first-child {
+		flex: 1;
+		margin-left: 12px;
+	}
+
+	> div {
+		padding: 11px;
+		cursor: pointer;
+	}
+
+	> div:hover {
+		background: lighten($blue-medium, 5%);
+	}
+
+	svg {
+		display: block;
+	}
+}
