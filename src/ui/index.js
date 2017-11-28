@@ -70,6 +70,7 @@ export class HappychatPage extends Component {
 			onSendTyping,
 			onSetCurrentMessage,
 			timeline,
+			token,
 			translate,
 			twemojiUrl,
 		} = this.props;
@@ -78,6 +79,7 @@ export class HappychatPage extends Component {
 			<div className="happychat__page" aria-live="polite" aria-relevant="additions">
 				<HappychatConnection
 					getAuth={ getAuth }
+					token={ token }
 					initConnection={ onInitConnection }
 					isConnectionUninitialized={ isConnectionUninitialized }
 					isHappychatEnabled={ isHappychatEnabled }
@@ -130,6 +132,7 @@ HappychatPage.propTypes = {
 	setBlurred: PropTypes.func,
 	setFocused: PropTypes.func,
 	timeline: PropTypes.array,
+	token: PropTypes.object,
 	translate: PropTypes.func,
 	twemojiUrl: PropTypes.string,
 };

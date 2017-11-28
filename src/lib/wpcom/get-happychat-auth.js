@@ -4,7 +4,6 @@
  * External dependencies
  */
 import request from 'wpcom-xhr-request';
-import wpcomOAuthFactory from 'wpcom-oauth-cors';
 import debugFactory from 'debug';
 
 /**
@@ -16,11 +15,9 @@ import getUserLocale from 'src/state/selectors/get-user-locale';
 import getUserGroups from 'src/state/selectors/get-user-groups';
 
 const debug = debugFactory( 'happychat-client:wpcom:get-happychat-auth' );
-const wpcomOAuth = wpcomOAuthFactory( config( 'oauth_client_id' ) );
 
-const sign = payload =>
+const sign = ( payload, token ) =>
 	new Promise( ( resolve, reject ) => {
-		const token = wpcomOAuth.token();
 		if ( ! token ) {
 			return reject( 'There is no token' );
 		}
@@ -46,9 +43,8 @@ const sign = payload =>
 		);
 	} );
 
-const startSession = () =>
+const startSession = token =>
 	new Promise( ( resolve, reject ) => {
-		const token = wpcomOAuth.token();
 		if ( ! token ) {
 			return reject( 'There is no token' );
 		}
@@ -74,7 +70,7 @@ const startSession = () =>
 	} );
 
 /* eslint-disable camelcase */
-export default state => () => {
+export default state => token => {
 	const url = config( 'happychat_url' );
 
 	const user = getUser( state );
@@ -83,10 +79,10 @@ export default state => () => {
 	const signer_user_id = user.ID;
 	let geoLocation;
 
-	return startSession()
+	return startSession( token )
 		.then( ( { session_id, geo_location } ) => {
 			geoLocation = geo_location;
-			return sign( { user, session_id } );
+			return sign( { user, session_id }, token );
 		} )
 		.then( ( { jwt } ) => ( { url, user: { jwt, signer_user_id, locale, groups, geoLocation } } ) ) // eslint-disable-line max-len
 		.catch( e => Promise.reject( 'Failed to start an authenticated Happychat session: ' + e ) );

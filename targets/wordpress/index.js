@@ -22,15 +22,19 @@ const initHappychat = ( nodeId, groups, token ) => {
 			debug( 'render Happychat' );
 			// it is the host responsibility to set the groups on init, although that
 			// although that data is not in the wpcom API response
-			renderTo( nodeId, {
-				ID,
-				email,
-				username,
-				display_name,
-				avatar_URL,
-				language,
-				groups: groups,
-			} );
+			renderTo(
+				nodeId,
+				{
+					ID,
+					email,
+					username,
+					display_name,
+					avatar_URL,
+					language,
+					groups: groups,
+				},
+				token
+			);
 		} )
 		.catch( error => {
 			debug( 'could not get user info: ', error );
