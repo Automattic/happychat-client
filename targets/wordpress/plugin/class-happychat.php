@@ -30,7 +30,14 @@ class Happychat {
 	}
 
 	public function shortcode_to_happychat_form( $atts ) {
-		return '<span id="happychat-form">Welcome to the Happychat world!</span>';
+		$happychat_node_id = 'happychat-form';
+		return '<span id="'.$happychat_node_id.'">
+					<button class="wccom-component-button"
+							onclick="Happychat.open( \''.$happychat_node_id.'\', [ \'woo\' ], '.self::get_token().' )"
+					>
+					Chat with us
+					</button>
+				</span>';
 	}
 
 	public function enqueue_scripts() {
