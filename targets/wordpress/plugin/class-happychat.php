@@ -30,7 +30,7 @@ class Happychat {
 	}
 
 	public function shortcode_to_happychat_form( $atts ) {
-		return '<span>Welcome to the Happychat world!</span>';
+		return '<span id="happychat-form">Welcome to the Happychat world!</span>';
 	}
 
 	public function enqueue_scripts() {
@@ -38,7 +38,7 @@ class Happychat {
 
 		error_log('register script');
 		wp_register_script(
-			'happychat-create-chat-scripts',
+			'happychat-form-js',
 			plugins_url( 'assets/happychat.js', __FILE__ ),
 			array(),
 			self::VERSION,
@@ -47,7 +47,7 @@ class Happychat {
 
 		error_log('register style');
 		wp_register_style(
-			'happychat-create-chat-styles',
+			'happychat-form-css',
 			plugins_url( 'assets/happychat.css', __FILE__ ),
 			array(),
 			self::VERSION
@@ -55,7 +55,7 @@ class Happychat {
 
 		error_log('enqueue script and style');
 		error_log('token is '.self::get_token());
-		wp_enqueue_style( 'happychat-create-chat-styles' );
-		wp_enqueue_script( 'happychat-create-chat-scripts' );
+		wp_enqueue_style( 'happychat-form-css' );
+		wp_enqueue_script( 'happychat-form-js' );
 	}
 }

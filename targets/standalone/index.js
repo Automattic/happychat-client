@@ -8,7 +8,7 @@ import debugFactory from 'debug';
 /**
  * Internal dependencies
  */
-import getUser from 'targets/standalone/get-wpcom-user';
+import getUser from 'targets/common/get-wpcom-user';
 import config from 'src/config';
 import { renderTo } from 'src';
 
@@ -20,7 +20,7 @@ const initHappychat = ( nodeId, groups ) => {
 	wpcomOAuth.get( () => {
 		/* eslint-disable camelcase */
 		debug( 'get user info from wpcom' );
-		getUser()
+		getUser( wpcomOAuth.token() )
 			.then( ( { ID, email, username, display_name, avatar_URL, language } ) => {
 				debug( 'render Happychat' );
 				// it is the host responsibility to set the groups on init, although that
