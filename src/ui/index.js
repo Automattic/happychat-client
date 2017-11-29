@@ -53,6 +53,7 @@ export class HappychatPage extends Component {
 
 	render() {
 		const {
+			accessToken,
 			chatStatus,
 			connectionStatus,
 			currentUserEmail,
@@ -70,7 +71,6 @@ export class HappychatPage extends Component {
 			onSendTyping,
 			onSetCurrentMessage,
 			timeline,
-			token,
 			translate,
 			twemojiUrl,
 		} = this.props;
@@ -78,8 +78,8 @@ export class HappychatPage extends Component {
 		return (
 			<div className="happychat__page" aria-live="polite" aria-relevant="additions">
 				<HappychatConnection
+					accessToken={ accessToken }
 					getAuth={ getAuth }
-					token={ token }
 					initConnection={ onInitConnection }
 					isConnectionUninitialized={ isConnectionUninitialized }
 					isHappychatEnabled={ isHappychatEnabled }
@@ -113,6 +113,7 @@ export class HappychatPage extends Component {
 }
 
 HappychatPage.propTypes = {
+	accessToken: PropTypes.string,
 	chatStatus: PropTypes.string,
 	connectionStatus: PropTypes.string,
 	currentUserEmail: PropTypes.string,
@@ -132,7 +133,6 @@ HappychatPage.propTypes = {
 	setBlurred: PropTypes.func,
 	setFocused: PropTypes.func,
 	timeline: PropTypes.array,
-	token: PropTypes.object,
 	translate: PropTypes.func,
 	twemojiUrl: PropTypes.string,
 };

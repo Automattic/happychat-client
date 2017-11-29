@@ -14,10 +14,10 @@ import { renderTo } from 'src';
 const debug = debugFactory( 'happychat-client:standalone' );
 debug( 'loading happychat library ' );
 
-const initHappychat = ( nodeId, groups, token ) => {
+const initHappychat = ( nodeId, groups, accessToken ) => {
 	debug( 'starting happychat' );
 	/* eslint-disable camelcase */
-	getUser( token )
+	getUser( accessToken )
 		.then( ( { ID, email, username, display_name, avatar_URL, language } ) => {
 			debug( 'render Happychat' );
 			// it is the host responsibility to set the groups on init, although that
@@ -33,7 +33,7 @@ const initHappychat = ( nodeId, groups, token ) => {
 					language,
 					groups: groups,
 				},
-				token
+				accessToken
 			);
 		} )
 		.catch( error => {
@@ -43,7 +43,7 @@ const initHappychat = ( nodeId, groups, token ) => {
 };
 
 window.Happychat = {
-	open: ( nodeId, groups, token ) => {
-		initHappychat( nodeId, groups, token );
+	open: ( nodeId, groups, accessToken ) => {
+		initHappychat( nodeId, groups, accessToken );
 	},
 };

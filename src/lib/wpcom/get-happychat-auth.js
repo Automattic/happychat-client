@@ -16,9 +16,9 @@ import getUserGroups from 'src/state/selectors/get-user-groups';
 
 const debug = debugFactory( 'happychat-client:wpcom:get-happychat-auth' );
 
-const sign = ( payload, token ) =>
+const sign = ( payload, accessToken ) =>
 	new Promise( ( resolve, reject ) => {
-		if ( ! token ) {
+		if ( ! accessToken ) {
 			return reject( 'There is no token' );
 		}
 
@@ -28,7 +28,7 @@ const sign = ( payload, token ) =>
 				method: 'POST',
 				apiNamespace: 'rest/v1',
 				path: '/jwt/sign',
-				authToken: token.access_token,
+				authToken: accessToken,
 				body: { payload: JSON.stringify( payload ) },
 			},
 			( error, body, headers ) => {
@@ -43,9 +43,9 @@ const sign = ( payload, token ) =>
 		);
 	} );
 
-const startSession = token =>
+const startSession = accessToken =>
 	new Promise( ( resolve, reject ) => {
-		if ( ! token ) {
+		if ( ! accessToken ) {
 			return reject( 'There is no token' );
 		}
 
@@ -55,7 +55,7 @@ const startSession = token =>
 				method: 'POST',
 				apiNamespace: 'rest/v1',
 				path: '/happychat/session',
-				authToken: token.access_token,
+				authToken: accessToken,
 			},
 			( error, body, headers ) => {
 				if ( error ) {
@@ -70,7 +70,7 @@ const startSession = token =>
 	} );
 
 /* eslint-disable camelcase */
-export default state => token => {
+export default state => accessToken => {
 	const url = config( 'happychat_url' );
 
 	const user = getUser( state );
@@ -79,10 +79,10 @@ export default state => token => {
 	const signer_user_id = user.ID;
 	let geoLocation;
 
-	return startSession( token )
+	return startSession( accessToken )
 		.then( ( { session_id, geo_location } ) => {
 			geoLocation = geo_location;
-			return sign( { user, session_id }, token );
+			return sign( { user, session_id }, accessToken );
 		} )
 		.then( ( { jwt } ) => ( { url, user: { jwt, signer_user_id, locale, groups, geoLocation } } ) ) // eslint-disable-line max-len
 		.catch( e => Promise.reject( 'Failed to start an authenticated Happychat session: ' + e ) );
