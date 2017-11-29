@@ -261,6 +261,11 @@
       "from": "mime-types@>=2.1.10 <3.0.0",
       "resolved": "https://registry.npmjs.org/mime-types/-/mime-types-2.1.17.tgz"
     },
+    "moment": {
+      "version": "2.19.2",
+      "from": "moment@latest",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.19.2.tgz"
+    },
     "ms": {
       "version": "0.7.1",
       "from": "ms@0.7.1",
