@@ -33075,10 +33075,10 @@ var debug = (0, _debug2.default)('happychat-client:standalone'); /** @format */
 
 debug('loading happychat library ');
 
-var initHappychat = function initHappychat(nodeId, groups, token) {
+var initHappychat = function initHappychat(nodeId, groups, accessToken) {
 	debug('starting happychat');
 	/* eslint-disable camelcase */
-	(0, _getWpcomUser2.default)(token).then(function (_ref) {
+	(0, _getWpcomUser2.default)(accessToken).then(function (_ref) {
 		var ID = _ref.ID,
 		    email = _ref.email,
 		    username = _ref.username,
@@ -33097,7 +33097,7 @@ var initHappychat = function initHappychat(nodeId, groups, token) {
 			avatar_URL: avatar_URL,
 			language: language,
 			groups: groups
-		}, token);
+		}, accessToken);
 	}).catch(function (error) {
 		debug('could not get user info: ', error);
 	});
@@ -33105,8 +33105,8 @@ var initHappychat = function initHappychat(nodeId, groups, token) {
 };
 
 window.Happychat = {
-	open: function open(nodeId, groups, token) {
-		initHappychat(nodeId, groups, token);
+	open: function open(nodeId, groups, accessToken) {
+		initHappychat(nodeId, groups, accessToken);
 	}
 };
 
@@ -33472,9 +33472,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var debug = (0, _debug2.default)('happychat-client:standalone:get-wpcom-user');
 
-exports.default = function (token) {
+exports.default = function (accessToken) {
 	return new Promise(function (resolve, reject) {
-		if (!token) {
+		if (!accessToken) {
 			return reject('There is no token');
 		}
 
@@ -33483,7 +33483,7 @@ exports.default = function (token) {
 			method: 'GET',
 			apiNamespace: 'rest/v1',
 			path: '/me',
-			authToken: token.access_token
+			authToken: accessToken
 		}, function (error, body, headers) {
 			if (error) {
 				debug('Request failed: ', error);
@@ -35375,7 +35375,7 @@ var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((
 /**
  * External dependencies
  */
-var renderTo = exports.renderTo = function renderTo(nodeId, _ref, token) {
+var renderTo = exports.renderTo = function renderTo(nodeId, _ref, accessToken) {
 	var ID = _ref.ID,
 	    email = _ref.email,
 	    username = _ref.username,
@@ -35391,7 +35391,7 @@ var renderTo = exports.renderTo = function renderTo(nodeId, _ref, token) {
 	_reactDom2.default.render(_react2.default.createElement(
 		_reactRedux.Provider,
 		{ store: store },
-		_react2.default.createElement(_ui2.default, { token: token })
+		_react2.default.createElement(_ui2.default, { accessToken: accessToken })
 	), document.getElementById(nodeId));
 };
 /* eslint-enable camelcase */
@@ -47920,6 +47920,7 @@ var HappychatPage = exports.HappychatPage = function (_Component) {
 		key: 'render',
 		value: function render() {
 			var _props = this.props,
+			    accessToken = _props.accessToken,
 			    chatStatus = _props.chatStatus,
 			    connectionStatus = _props.connectionStatus,
 			    currentUserEmail = _props.currentUserEmail,
@@ -47937,7 +47938,6 @@ var HappychatPage = exports.HappychatPage = function (_Component) {
 			    onSendTyping = _props.onSendTyping,
 			    onSetCurrentMessage = _props.onSetCurrentMessage,
 			    timeline = _props.timeline,
-			    token = _props.token,
 			    translate = _props.translate,
 			    twemojiUrl = _props.twemojiUrl;
 
@@ -47946,8 +47946,8 @@ var HappychatPage = exports.HappychatPage = function (_Component) {
 				'div',
 				{ className: 'happychat__page', 'aria-live': 'polite', 'aria-relevant': 'additions' },
 				_react2.default.createElement(_connection.HappychatConnection, {
+					accessToken: accessToken,
 					getAuth: getAuth,
-					token: token,
 					initConnection: onInitConnection,
 					isConnectionUninitialized: isConnectionUninitialized,
 					isHappychatEnabled: isHappychatEnabled
@@ -47983,6 +47983,7 @@ var HappychatPage = exports.HappychatPage = function (_Component) {
 }(_react.Component);
 
 HappychatPage.propTypes = {
+	accessToken: _propTypes2.default.string,
 	chatStatus: _propTypes2.default.string,
 	connectionStatus: _propTypes2.default.string,
 	currentUserEmail: _propTypes2.default.string,
@@ -48002,7 +48003,6 @@ HappychatPage.propTypes = {
 	setBlurred: _propTypes2.default.func,
 	setFocused: _propTypes2.default.func,
 	timeline: _propTypes2.default.array,
-	token: _propTypes2.default.object,
 	translate: _propTypes2.default.func,
 	twemojiUrl: _propTypes2.default.string
 };
@@ -48483,9 +48483,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var debug = (0, _debug2.default)('happychat-client:wpcom:get-happychat-auth');
 
-var sign = function sign(payload, token) {
+var sign = function sign(payload, accessToken) {
 	return new Promise(function (resolve, reject) {
-		if (!token) {
+		if (!accessToken) {
 			return reject('There is no token');
 		}
 
@@ -48494,7 +48494,7 @@ var sign = function sign(payload, token) {
 			method: 'POST',
 			apiNamespace: 'rest/v1',
 			path: '/jwt/sign',
-			authToken: token.access_token,
+			authToken: accessToken,
 			body: { payload: JSON.stringify(payload) }
 		}, function (error, body, headers) {
 			if (error) {
@@ -48508,9 +48508,9 @@ var sign = function sign(payload, token) {
 	});
 };
 
-var startSession = function startSession(token) {
+var startSession = function startSession(accessToken) {
 	return new Promise(function (resolve, reject) {
-		if (!token) {
+		if (!accessToken) {
 			return reject('There is no token');
 		}
 
@@ -48519,7 +48519,7 @@ var startSession = function startSession(token) {
 			method: 'POST',
 			apiNamespace: 'rest/v1',
 			path: '/happychat/session',
-			authToken: token.access_token
+			authToken: accessToken
 		}, function (error, body, headers) {
 			if (error) {
 				debug('Request failed: ', error);
@@ -48535,7 +48535,7 @@ var startSession = function startSession(token) {
 /* eslint-disable camelcase */
 
 exports.default = function (state) {
-	return function (token) {
+	return function (accessToken) {
 		var url = (0, _config2.default)('happychat_url');
 
 		var user = (0, _getUser2.default)(state);
@@ -48544,12 +48544,12 @@ exports.default = function (state) {
 		var signer_user_id = user.ID;
 		var geoLocation = void 0;
 
-		return startSession(token).then(function (_ref) {
+		return startSession(accessToken).then(function (_ref) {
 			var session_id = _ref.session_id,
 			    geo_location = _ref.geo_location;
 
 			geoLocation = geo_location;
-			return sign({ user: user, session_id: session_id }, token);
+			return sign({ user: user, session_id: session_id }, accessToken);
 		}).then(function (_ref2) {
 			var jwt = _ref2.jwt;
 			return { url: url, user: { jwt: jwt, signer_user_id: signer_user_id, locale: locale, groups: groups, geoLocation: geoLocation } };
@@ -49993,7 +49993,7 @@ var HappychatConnection = exports.HappychatConnection = function (_Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			if (this.props.isHappychatEnabled && this.props.isConnectionUninitialized) {
-				this.props.initConnection(this.props.getAuth(this.props.token));
+				this.props.initConnection(this.props.getAuth(this.props.accessToken));
 			}
 		}
 	}, {
@@ -50007,11 +50007,11 @@ var HappychatConnection = exports.HappychatConnection = function (_Component) {
 }(_react.Component);
 
 HappychatConnection.propTypes = {
+	accessToken: _propTypes2.default.string,
 	getAuth: _propTypes2.default.func,
 	isConnectionUninitialized: _propTypes2.default.bool,
 	isHappychatEnabled: _propTypes2.default.bool,
-	initConnection: _propTypes2.default.func,
-	token: _propTypes2.default.object
+	initConnection: _propTypes2.default.func
 };
 
 /***/ }),

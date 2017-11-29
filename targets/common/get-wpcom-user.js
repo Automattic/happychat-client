@@ -8,9 +8,9 @@ import debugFactory from 'debug';
 
 const debug = debugFactory( 'happychat-client:standalone:get-wpcom-user' );
 
-export default token =>
+export default accessToken =>
 	new Promise( ( resolve, reject ) => {
-		if ( ! token ) {
+		if ( ! accessToken ) {
 			return reject( 'There is no token' );
 		}
 
@@ -20,7 +20,7 @@ export default token =>
 				method: 'GET',
 				apiNamespace: 'rest/v1',
 				path: '/me',
-				authToken: token.access_token,
+				authToken: accessToken,
 			},
 			( error, body, headers ) => {
 				if ( error ) {

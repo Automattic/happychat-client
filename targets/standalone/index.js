@@ -20,8 +20,8 @@ const initHappychat = ( nodeId, groups ) => {
 	wpcomOAuth.get( () => {
 		/* eslint-disable camelcase */
 		debug( 'get user info from wpcom' );
-		const token = wpcomOAuth.token();
-		getUser( token )
+		const accessToken = wpcomOAuth.token().access_token;
+		getUser( accessToken )
 			.then( ( { ID, email, username, display_name, avatar_URL, language } ) => {
 				debug( 'render Happychat' );
 				// it is the host responsibility to set the groups on init, although that
@@ -37,7 +37,7 @@ const initHappychat = ( nodeId, groups ) => {
 						language,
 						groups: groups,
 					},
-					token
+					accessToken
 				);
 			} )
 			.catch( error => {
