@@ -1,0 +1,26 @@
+/** @format */
+
+@import 'css/shared/colors';
+
+// experiment: style scrollbars
+.happychat__page {
+	::-webkit-scrollbar {
+		width: 12px;
+		height: 12px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color: lighten($gray, 10%);
+		border: 3px solid transparent;
+		background-clip: padding-box;
+
+		&:hover {
+			background-color: $gray;
+		}
+	}
+}
+
+@import 'components/timeline';
+@import 'components/notices';
+@import 'components/composer';

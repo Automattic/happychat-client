@@ -26,7 +26,8 @@ const store = createStore(
 /* eslint-disable camelcase */
 export const renderTo = (
 	nodeId,
-	{ ID, email, username, display_name, avatar_URL, language, groups }
+	{ ID, email, username, display_name, avatar_URL, language, groups },
+	token
 ) => {
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
@@ -34,7 +35,7 @@ export const renderTo = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat />
+			<Happychat token={ token } />
 		</Provider>,
 		document.getElementById( nodeId )
 	);

@@ -1,0 +1,153 @@
+/** @format */
+.happychat__page ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px; }
+
+.happychat__page ::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #a8bece;
+  border: 3px solid transparent;
+  background-clip: padding-box; }
+  .happychat__page ::-webkit-scrollbar-thumb:hover {
+    background-color: #87a6bc; }
+
+/** @format */
+.happychat__conversation {
+  flex: 1 1 auto;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: 6px; }
+  .happychat__conversation::before {
+    content: '';
+    flex: 1 1 auto; }
+
+.happychat__welcome {
+  flex: 1 auto;
+  padding: 16px;
+  color: #2e4453;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; }
+  .happychat__welcome p {
+    margin: 0;
+    padding: 0; }
+
+.happychat__message-text {
+  font-size: 14px;
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 8px 8px 8px 0;
+  color: #2e4453;
+  background: white;
+  position: relative;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  white-space: pre-wrap; }
+  .happychat__message-text p {
+    margin: 8px 0; }
+    .happychat__message-text p:first-child {
+      margin-top: 0; }
+    .happychat__message-text p:last-child {
+      margin-bottom: 0; }
+  .happychat__message-text:after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: -8px;
+    width: 0;
+    height: 0;
+    border-bottom: 8px solid white;
+    border-left: 8px solid transparent; }
+  .is-user-message .happychat__message-text {
+    color: white;
+    background: #00aadc;
+    border-radius: 8px 8px 0 8px; }
+    .is-user-message .happychat__message-text:after {
+      left: auto;
+      right: -8px;
+      width: 0;
+      height: 0;
+      border-bottom: 8px solid #00aadc;
+      border-left: none;
+      border-right: 8px solid transparent; }
+
+.happychat__timeline-message {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0 10px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  margin-right: auto;
+  margin-left: 0; }
+  .happychat__timeline-message a {
+    color: #00aadc;
+    text-decoration: underline; }
+  .happychat__timeline-message a:hover {
+    text-decoration: none; }
+  .happychat__timeline-message.is-user-message {
+    flex-direction: row;
+    margin-left: auto;
+    margin-right: 0; }
+    .happychat__timeline-message.is-user-message a {
+      color: #a9e9fc; }
+
+/** @format */
+.happychat__notice {
+  padding: 12px;
+  border-top: 1px solid #c8d7e1;
+  color: white;
+  background-color: #537994;
+  margin: 0; }
+
+/** @format */
+/**
+ * Chat composer
+ */
+.happychat__composer {
+  display: flex;
+  flex: 0 0 auto;
+  background: white;
+  border-top: 1px solid #d9e3ea;
+  position: relative; }
+  .happychat__composer.is-disabled {
+    background: #fcefd6; }
+
+.happychat__message {
+  flex: 1 1 auto;
+  border-radius: 4px;
+  border: 0; }
+  .happychat__message > textarea {
+    padding: 12px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    min-height: initial;
+    align-self: stretch;
+    resize: none;
+    height: 100%; }
+    .happychat__message > textarea:focus, .happychat__message > textarea:active {
+      outline: none;
+      box-shadow: none; }
+
+.happychat__submit {
+  align-self: flex-start;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  background: #00aadc;
+  color: white;
+  padding: 4px 8px;
+  margin: 8px 12px 0 0;
+  cursor: pointer; }
+  .happychat__submit > svg {
+    fill: currentColor;
+    display: block; }
+  .happychat__submit:hover {
+    background: #10c9ff; }
+  .happychat__submit:disabled {
+    display: none; }
