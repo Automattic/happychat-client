@@ -49,6 +49,7 @@
     "create-react-class": "15.6.2",
     "gridicons": "2.1.0",
     "lodash": "4.15.0",
+    "moment": "2.19.2",
     "prop-types": "15.5.10",
     "react": "15.6.2",
     "react-dom": "15.6.2",
