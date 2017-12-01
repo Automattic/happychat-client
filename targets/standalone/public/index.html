@@ -10,6 +10,9 @@
         <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
         <script type="text/javascript">
             Happychat.open( 'root', [ 'woo' ] );
+            Happychat.on( 'availability', function( isAvailable ){
+              console.log( 'isAvailable: ', isAvailable );
+            })
         </script>
 </body>
 </html>
