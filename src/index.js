@@ -86,3 +86,8 @@ export const renderTo = (
 
 export const subscribeTo = ( eventName, subscriber ) =>
 	subscribers.hasOwnProperty( eventName ) ? subscribers[ eventName ].push( subscriber ) : '';
+
+export const unsubscribeFrom = ( eventName, subscriber ) =>
+	subscribers.hasOwnProperty( eventName ) && subscribers[ eventName ].indexOf( subscriber ) > -1
+		? subscribers[ eventName ].splice( subscribers[ eventName ].indexOf( subscriber ), 1 )
+		: '';

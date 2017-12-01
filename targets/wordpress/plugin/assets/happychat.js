@@ -33166,6 +33166,9 @@ window.Happychat = {
 	},
 	on: function on(eventName, callback) {
 		(0, _src.subscribeTo)(eventName, callback);
+	},
+	off: function off(eventName, callback) {
+		(0, _src.unsubscribeFrom)(eventName, callback);
 	}
 };
 
@@ -35393,7 +35396,7 @@ module.exports = request;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.subscribeTo = exports.renderTo = undefined;
+exports.unsubscribeFrom = exports.subscribeTo = exports.renderTo = undefined;
 
 var _react = __webpack_require__(14);
 
@@ -35500,6 +35503,10 @@ var renderTo = exports.renderTo = function renderTo(nodeId, _ref, accessToken) {
 
 var subscribeTo = exports.subscribeTo = function subscribeTo(eventName, subscriber) {
 	return subscribers.hasOwnProperty(eventName) ? subscribers[eventName].push(subscriber) : '';
+};
+
+var unsubscribeFrom = exports.unsubscribeFrom = function unsubscribeFrom(eventName, subscriber) {
+	return subscribers.hasOwnProperty(eventName) && subscribers[eventName].indexOf(subscriber) > -1 ? subscribers[eventName].splice(subscribers[eventName].indexOf(subscriber), 1) : '';
 };
 
 /***/ }),

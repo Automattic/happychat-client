@@ -9,7 +9,7 @@ import debugFactory from 'debug';
  * Internal dependencies
  */
 import getUser from 'targets/common/get-wpcom-user';
-import { renderTo, subscribeTo } from 'src';
+import { renderTo, subscribeTo, unsubscribeFrom } from 'src';
 
 const debug = debugFactory( 'happychat-client:standalone' );
 debug( 'loading happychat library ' );
@@ -48,5 +48,8 @@ window.Happychat = {
 	},
 	on: ( eventName, callback ) => {
 		subscribeTo( eventName, callback );
+	},
+	off: ( eventName, callback ) => {
+		unsubscribeFrom( eventName, callback );
 	},
 };

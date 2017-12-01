@@ -10,7 +10,7 @@ import debugFactory from 'debug';
  */
 import getUser from 'targets/common/get-wpcom-user';
 import config from 'src/config';
-import { renderTo, subscribeTo } from 'src';
+import { renderTo, subscribeTo, unsubscribeFrom } from 'src';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 const debug = debugFactory( 'happychat-client:standalone' );
@@ -53,5 +53,8 @@ window.Happychat = {
 	},
 	on: ( eventName, callback ) => {
 		subscribeTo( eventName, callback );
+	},
+	off: ( eventName, callback ) => {
+		unsubscribeFrom( eventName, callback );
 	},
 };
