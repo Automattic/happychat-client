@@ -5,4 +5,9 @@
  */
 import { get } from 'lodash';
 
-export default state => get( state, 'user.groups', null );
+/**
+ * Internal dependencies
+ */
+import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
+
+export default state => get( state, 'user.groups', [ HAPPYCHAT_GROUP_WPCOM ] );

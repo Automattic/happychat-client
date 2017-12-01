@@ -13,6 +13,7 @@ import config from 'src/config';
 import getUser from 'src/state/selectors/get-user';
 import getUserLocale from 'src/state/selectors/get-user-locale';
 import getUserGroups from 'src/state/selectors/get-user-groups';
+import getUserSkills from 'src/state/selectors/get-user-skills';
 
 const debug = debugFactory( 'happychat-client:wpcom:get-happychat-auth' );
 
@@ -76,6 +77,7 @@ export default state => accessToken => {
 	const user = getUser( state );
 	const locale = getUserLocale( state );
 	const groups = getUserGroups( state );
+	const skills = getUserSkills( state );
 	const signer_user_id = user.ID;
 	let geoLocation;
 
@@ -84,7 +86,10 @@ export default state => accessToken => {
 			geoLocation = geo_location;
 			return sign( { user, session_id }, accessToken );
 		} )
-		.then( ( { jwt } ) => ( { url, user: { jwt, signer_user_id, locale, groups, geoLocation } } ) ) // eslint-disable-line max-len
+		.then( ( { jwt } ) => ( {
+			url,
+			user: { jwt, signer_user_id, locale, groups, skills, geoLocation },
+		} ) )
 		.catch( e => Promise.reject( 'Failed to start an authenticated Happychat session: ' + e ) );
 };
 /* eslint-enable camelcase */

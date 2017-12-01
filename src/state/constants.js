@@ -15,6 +15,10 @@ export const HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED = 'disconnected';
 export const HAPPYCHAT_CONNECTION_STATUS_RECONNECTING = 'reconnecting';
 export const HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED = 'unauthorized';
 
+// Skills
+export const HAPPYCHAT_SKILL_PRODUCT = 'product';
+export const HAPPYCHAT_SKILL_LANGUAGE = 'language';
+
 // Groups
 export const HAPPYCHAT_GROUP_JPOP = 'jpop';
 export const HAPPYCHAT_GROUP_WOO = 'woo';

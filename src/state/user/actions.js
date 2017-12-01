@@ -10,7 +10,7 @@ import {
 } from 'src/state/action-types';
 
 /**
- * Returns an action object that sets the current chat message
+ * Returns an action object that sets the current user
  *
  * @param  { Object } currentUser Current user to be set
  * @return { Object } Action object
@@ -36,7 +36,7 @@ export function setGroups( groups ) {
 }
 
 /**
- * Returns an action object that sets the current chat message
+ * Returns an action object that sets the user locale
  *
  * @param  { String } locale Locale to be set
  * @return { Object } Action object
