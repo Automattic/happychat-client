@@ -18161,16 +18161,6 @@ module.exports = { debugTool: debugTool };
 "use strict";
 
 
-module.exports = __webpack_require__(25);
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
@@ -18218,6 +18208,16 @@ var HAPPYCHAT_CHAT_STATUS_DEFAULT = exports.HAPPYCHAT_CHAT_STATUS_DEFAULT = 'def
 var HAPPYCHAT_CHAT_STATUS_NEW = exports.HAPPYCHAT_CHAT_STATUS_NEW = 'new';
 var HAPPYCHAT_CHAT_STATUS_MISSED = exports.HAPPYCHAT_CHAT_STATUS_MISSED = 'missed';
 var HAPPYCHAT_CHAT_STATUS_PENDING = exports.HAPPYCHAT_CHAT_STATUS_PENDING = 'pending';
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(25);
+
 
 /***/ }),
 /* 15 */
@@ -24552,7 +24552,7 @@ var _uuid = __webpack_require__(294);
 
 var _actionTypes = __webpack_require__(21);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 /**
  * Returns an action object indicating that the connection is being stablished.
@@ -30458,7 +30458,7 @@ var storeShape = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_hoist_non_react_statics___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hoist_non_react_statics__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant__ = __webpack_require__(268);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_invariant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_invariant__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_Subscription__ = __webpack_require__(269);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_PropTypes__ = __webpack_require__(111);
@@ -31277,7 +31277,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _lodash = __webpack_require__(7);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 /** @format */
 
@@ -31333,7 +31333,7 @@ exports.default = function (state) {
   return (0, _getConnectionStatus2.default)(state) === _constants.HAPPYCHAT_CONNECTION_STATUS_CONNECTED;
 };
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 var _getConnectionStatus = __webpack_require__(65);
 
@@ -31425,7 +31425,7 @@ module.exports = isArray;
 
 
 
-var React = __webpack_require__(13);
+var React = __webpack_require__(14);
 var factory = __webpack_require__(84);
 
 if (typeof React === 'undefined') {
@@ -35395,7 +35395,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.subscribeTo = exports.renderTo = undefined;
 
-var _react = __webpack_require__(13);
+var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -35413,6 +35413,8 @@ var _debug = __webpack_require__(8);
 
 var _debug2 = _interopRequireDefault(_debug);
 
+var _constants = __webpack_require__(13);
+
 var _ui = __webpack_require__(292);
 
 var _ui2 = _interopRequireDefault(_ui);
@@ -35427,6 +35429,8 @@ var _actions = __webpack_require__(371);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var debug = (0, _debug2.default)('happychat-client:api');
+
 /**
  * Internal dependencies
  */
@@ -35435,24 +35439,41 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * External dependencies
  */
-var debug = (0, _debug2.default)('happychat-client:api');
+
 
 var subscribers = {
-	availability: []
+	availability: [],
+	ongoingConversation: []
 };
 
 var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware.socketMiddleware)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)()));
 
-var oldAvailability = store.getState().connection.isAvailable;
-store.subscribe(function () {
-	var newAvailability = store.getState().connection.isAvailable;
+var maybeTellAvailabilitySubscribers = function maybeTellAvailabilitySubscribers(oldAvailability, newAvailability) {
 	if (oldAvailability !== newAvailability) {
-		debug('availability changed from ', oldAvailability, ' to ', newAvailability);
+		debug('availability changed form ', oldAvailability, ' to ', newAvailability);
 		subscribers.availability.forEach(function (subscriber) {
 			subscriber(newAvailability);
 		});
 	}
-	oldAvailability = newAvailability;
+	return newAvailability;
+};
+
+var maybeTellOngoingConversationSubscribers = function maybeTellOngoingConversationSubscribers(oldStatus, newStatus) {
+	if (oldStatus !== newStatus) {
+		debug('ongoingConversation changed form ', oldStatus, ' to ', newStatus);
+		subscribers.ongoingConversation.forEach(function (subscriber) {
+			subscriber(newStatus);
+		});
+	}
+	return newStatus;
+};
+
+var oldAvailability = false;
+var oldOngoingConversation = false;
+store.subscribe(function () {
+	// we need to notify first the ongoingConversation subscribers
+	oldOngoingConversation = maybeTellOngoingConversationSubscribers(oldOngoingConversation, store.getState().chat.status === _constants.HAPPYCHAT_CHAT_STATUS_ASSIGNED);
+	oldAvailability = maybeTellAvailabilitySubscribers(oldAvailability, store.getState().connection.isAvailable);
 });
 
 /* eslint-disable camelcase */
@@ -35478,8 +35499,7 @@ var renderTo = exports.renderTo = function renderTo(nodeId, _ref, accessToken) {
 /* eslint-enable camelcase */
 
 var subscribeTo = exports.subscribeTo = function subscribeTo(eventName, subscriber) {
-	var subsFiltered = subscribers[eventName] || [];
-	subsFiltered.push(subscriber);
+	return subscribers.hasOwnProperty(eventName) ? subscribers[eventName].push(subscriber) : '';
 };
 
 /***/ }),
@@ -46525,7 +46545,7 @@ module.exports = ReactDOMInvalidARIAHook;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony export (immutable) */ __webpack_exports__["a"] = createProvider;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
@@ -47888,7 +47908,7 @@ exports.HappychatPage = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(13);
+var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -48667,7 +48687,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 var _getUserGroups = __webpack_require__(122);
 
@@ -48718,7 +48738,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _lodash = __webpack_require__(7);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 var _getChatStatus = __webpack_require__(123);
 
@@ -49956,7 +49976,7 @@ exports.default = function (state) {
   return (0, _getConnectionStatus2.default)(state) === _constants.HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED;
 };
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 var _getConnectionStatus = __webpack_require__(65);
 
@@ -49981,7 +50001,7 @@ exports.default = function (state) {
 
 var _lodash = __webpack_require__(7);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 /***/ }),
 /* 331 */
@@ -49999,7 +50019,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(13);
+var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -50063,7 +50083,7 @@ exports.HappychatConnection = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(13);
+var _react = __webpack_require__(14);
 
 var _propTypes = __webpack_require__(19);
 
@@ -50132,7 +50152,7 @@ var _classnames = __webpack_require__(68);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _react = __webpack_require__(13);
+var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -50272,7 +50292,7 @@ exports.Notices = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(13);
+var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -50282,7 +50302,7 @@ var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _lodash = __webpack_require__(7);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50403,7 +50423,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
  */
 
 
-var _react = __webpack_require__(13);
+var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -51054,7 +51074,7 @@ var _propTypes = __webpack_require__(19);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _react = __webpack_require__(13);
+var _react = __webpack_require__(14);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -51845,7 +51865,7 @@ var _lodash = __webpack_require__(7);
 
 var _actionTypes = __webpack_require__(21);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 /**
  * Tracks the last time happychat sent or received a message
@@ -52019,7 +52039,7 @@ var _redux = __webpack_require__(20);
 
 var _actionTypes = __webpack_require__(21);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 /**
  * Tracks connection errors as defined by the SocketIO library
@@ -56292,7 +56312,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _lodash = __webpack_require__(7);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(13);
 
 /** @format */
 

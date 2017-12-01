@@ -26,6 +26,12 @@ if ( window.Happychat ) {
 
 	Happychat.on( 'availability', function( isAvailable ) {
 		console.log( 'isAvailable: ', isAvailable );
-		isAvailable ? showHappychat() : showTicketForm();
+		if ( ! happychatSettings.hasOngoingConversation ) {
+			isAvailable ? showHappychat() : showTicketForm();
+		}
+	} );
+
+	Happychat.on( 'ongoingConversation', function( hasOngoingConversation ) {
+		happychatSettings.ongoingConversation = hasOngoingConversation;
 	} );
 }

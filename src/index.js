@@ -9,9 +9,11 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import debugFactory from 'debug';
+
 /**
  * Internal dependencies
  */
+import { HAPPYCHAT_CHAT_STATUS_ASSIGNED } from 'src/state/constants';
 import Happychat from 'src/ui';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
@@ -20,6 +22,7 @@ const debug = debugFactory( 'happychat-client:api' );
 
 const subscribers = {
 	availability: [],
+	ongoingConversation: [],
 };
 
 const store = createStore(
@@ -28,16 +31,38 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
-let oldAvailability = store.getState().connection.isAvailable;
-store.subscribe( () => {
-	const newAvailability = store.getState().connection.isAvailable;
+const maybeTellAvailabilitySubscribers = ( oldAvailability, newAvailability ) => {
 	if ( oldAvailability !== newAvailability ) {
-		debug( 'availability changed from ', oldAvailability, ' to ', newAvailability );
+		debug( 'availability changed form ', oldAvailability, ' to ', newAvailability );
 		subscribers.availability.forEach( subscriber => {
 			subscriber( newAvailability );
 		} );
 	}
-	oldAvailability = newAvailability;
+	return newAvailability;
+};
+
+const maybeTellOngoingConversationSubscribers = ( oldStatus, newStatus ) => {
+	if ( oldStatus !== newStatus ) {
+		debug( 'ongoingConversation changed form ', oldStatus, ' to ', newStatus );
+		subscribers.ongoingConversation.forEach( subscriber => {
+			subscriber( newStatus );
+		} );
+	}
+	return newStatus;
+};
+
+let oldAvailability = false;
+let oldOngoingConversation = false;
+store.subscribe( () => {
+	// we need to notify first the ongoingConversation subscribers
+	oldOngoingConversation = maybeTellOngoingConversationSubscribers(
+		oldOngoingConversation,
+		store.getState().chat.status === HAPPYCHAT_CHAT_STATUS_ASSIGNED
+	);
+	oldAvailability = maybeTellAvailabilitySubscribers(
+		oldAvailability,
+		store.getState().connection.isAvailable
+	);
 } );
 
 /* eslint-disable camelcase */
@@ -59,7 +84,5 @@ export const renderTo = (
 };
 /* eslint-enable camelcase */
 
-export const subscribeTo = ( eventName, subscriber ) => {
-	const subsFiltered = subscribers[ eventName ] || [];
-	subsFiltered.push( subscriber );
-};
+export const subscribeTo = ( eventName, subscriber ) =>
+	subscribers.hasOwnProperty( eventName ) ? subscribers[ eventName ].push( subscriber ) : '';

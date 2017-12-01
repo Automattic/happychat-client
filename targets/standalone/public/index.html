@@ -12,6 +12,9 @@
             Happychat.open( 'root', [ 'woo' ] );
             Happychat.on( 'availability', function( isAvailable ){
               console.log( 'isAvailable: ', isAvailable );
+            });
+            Happychat.on( 'ongoingConversation', function( hasOngoingConversation ){
+              console.log( 'hasOngoingConversation: ', hasOngoingConversation );
             })
         </script>
 </body>
