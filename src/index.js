@@ -13,11 +13,13 @@ import debugFactory from 'debug';
 /**
  * Internal dependencies
  */
-import { HAPPYCHAT_CHAT_STATUS_ASSIGNED } from 'src/state/constants';
 import Happychat from 'src/ui';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
+import isChatAssigned from 'src/state/selectors/is-chat-assigned';
+import isAvailable from 'src/state/selectors/is-available';
+
 const debug = debugFactory( 'happychat-client:api' );
 
 const subscribers = {
@@ -54,14 +56,19 @@ const callSubscribersIfOngoingConversationChanged = ( oldStatus, newStatus ) => 
 let oldAvailability = false;
 let oldOngoingConversation = false;
 store.subscribe( () => {
-	// we need to notify first the ongoingConversation subscribers
+	// When an operator has 1 spot left and this is assigned to a new customer,
+	// we're going to call both ongoingConversation and availability subscribers.
+	//
+	// Some clients use some logic to prevent the chat from showing if the availability
+	// is false, but they don't hide the chat if there is an ongoingConversation;
+	// hence, we need to call ongoingConversation subscribers first.
 	oldOngoingConversation = callSubscribersIfOngoingConversationChanged(
 		oldOngoingConversation,
-		store.getState().chat.status === HAPPYCHAT_CHAT_STATUS_ASSIGNED
+		isChatAssigned( store.getState() )
 	);
 	oldAvailability = callSubscribersIfAvailabilityChanged(
 		oldAvailability,
-		store.getState().connection.isAvailable
+		isAvailable( store.getState() )
 	);
 } );
 
