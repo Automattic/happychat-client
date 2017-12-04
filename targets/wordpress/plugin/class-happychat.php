@@ -54,89 +54,7 @@ class Happychat {
 			$should_offer_chat = true;
 		}
 
-		// Display chat box to users at select URLs.
-		if ( ! $should_offer_chat && get_option( 'wccom_olark_enable' ) ) {
-			if ( in_array( $wp->request, explode( ' ', get_option( 'wccom_olark_display_urls' ) ) )
-				|| in_array( $wp->request, explode( ' ', get_option( 'wccom_olark_display_purchaser_urls' ) ) )
-				&& wc_get_customer_order_count( get_current_user_id() ) ) {
-
-				$should_offer_chat = true;
-			}
-		}
-
 		return $should_offer_chat;
-	}
-
-	private function is_chat_blitz(){
-		global $wp;
-
-		$is_chat_blitz = false;
-		// During a Chat Blitz, maybe replace the standard Create Ticket form with a chat box.
-		if ( 'my-account/create-a-ticket' === $wp->request
-			&& get_option( 'wccom_olark_enable_chat_blitz' )
-			&& $this->is_paying_customer( get_current_user_id() ) ) {
-
-			$is_chat_blitz = true;
-		}
-
-		return $is_chat_blitz;
-	}
-
-	public function get_revenue_share_products() {
-		$result = array();
-		$page = 0;
-		$products_per_page = 500;
-		while ( $product_ids = get_posts(
-			array(
-				'posts_per_page' => $products_per_page,
-				'offset' => $products_per_page * $page++,
-				'fields' => 'ids',
-				'post_type' => 'product',
-				'tax_query' => array(
-					array(
-						'taxonomy' => 'pa_revenue-share',
-						'field' => 'slug',
-						'terms' => 'true',
-					),
-				),
-			)
-		) ) {
-			$result = array_merge( $result, $product_ids );
-		}
-
-		return $result;
-	}
-
-	public function is_paying_customer( $user_id ) {
-		global $wpdb;
-
-		// Look up current licenses.
-		$statement = $wpdb->prepare(
-			"SELECT product_id
-			FROM {$wpdb->prefix}woocommerce_product_keys
-			WHERE %d = user_id
-			AND ( 1 = lifetime
-				OR support_expiry_date > NOW() )",
-			$user_id
-		);
-		$product_ids = $wpdb->get_col( $statement, 0 );
-
-		// Check if any of the licensed products are revenue share products.
-		if ( ! empty( array_intersect( $this->get_revenue_share_products(), $product_ids ) ) ) {
-			// Customer has a revenue share product.
-			return true;
-		}
-
-		// Check if any of the licensed products cost money.
-		foreach ( $product_ids as $product_id ) {
-			$product = wc_get_product( $product_id );
-			if ( 0 < $product->get_regular_price() ) {
-				// User has a paid product.
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	public function enqueue_scripts() {
@@ -170,8 +88,7 @@ class Happychat {
 
 			$happychatSettings = array(
 				'token' => self::get_token(),
-				'groups' => [ 'woo' ],
-				'isChatBliz' => self::is_chat_blitz()
+				'groups' => [ 'woo' ]
 			);
 
 			wp_localize_script( 'happychat-form-js-init', 'happychatSettings', $happychatSettings );
