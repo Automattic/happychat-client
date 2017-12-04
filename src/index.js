@@ -31,7 +31,7 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
-const maybeTellAvailabilitySubscribers = ( oldAvailability, newAvailability ) => {
+const callSubscribersIfAvailabilityChanged = ( oldAvailability, newAvailability ) => {
 	if ( oldAvailability !== newAvailability ) {
 		debug( 'availability changed form ', oldAvailability, ' to ', newAvailability );
 		subscribers.availability.forEach( subscriber => {
@@ -41,7 +41,7 @@ const maybeTellAvailabilitySubscribers = ( oldAvailability, newAvailability ) =>
 	return newAvailability;
 };
 
-const maybeTellOngoingConversationSubscribers = ( oldStatus, newStatus ) => {
+const callSubscribersIfOngoingConversationChanged = ( oldStatus, newStatus ) => {
 	if ( oldStatus !== newStatus ) {
 		debug( 'ongoingConversation changed form ', oldStatus, ' to ', newStatus );
 		subscribers.ongoingConversation.forEach( subscriber => {
@@ -55,11 +55,11 @@ let oldAvailability = false;
 let oldOngoingConversation = false;
 store.subscribe( () => {
 	// we need to notify first the ongoingConversation subscribers
-	oldOngoingConversation = maybeTellOngoingConversationSubscribers(
+	oldOngoingConversation = callSubscribersIfOngoingConversationChanged(
 		oldOngoingConversation,
 		store.getState().chat.status === HAPPYCHAT_CHAT_STATUS_ASSIGNED
 	);
-	oldAvailability = maybeTellAvailabilitySubscribers(
+	oldAvailability = callSubscribersIfAvailabilityChanged(
 		oldAvailability,
 		store.getState().connection.isAvailable
 	);
