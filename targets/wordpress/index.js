@@ -9,7 +9,7 @@ import debugFactory from 'debug';
  * Internal dependencies
  */
 import getUser from 'targets/common/get-wpcom-user';
-import { renderTo } from 'src';
+import { renderTo, subscribeTo, unsubscribeFrom } from 'src';
 
 const debug = debugFactory( 'happychat-client:standalone' );
 debug( 'loading happychat library ' );
@@ -31,7 +31,7 @@ const initHappychat = ( nodeId, groups, accessToken ) => {
 					display_name,
 					avatar_URL,
 					language,
-					groups: groups,
+					groups,
 				},
 				accessToken
 			);
@@ -45,5 +45,11 @@ const initHappychat = ( nodeId, groups, accessToken ) => {
 window.Happychat = {
 	open: ( nodeId, groups, accessToken ) => {
 		initHappychat( nodeId, groups, accessToken );
+	},
+	on: ( eventName, callback ) => {
+		subscribeTo( eventName, callback );
+	},
+	off: ( eventName, callback ) => {
+		unsubscribeFrom( eventName, callback );
 	},
 };
