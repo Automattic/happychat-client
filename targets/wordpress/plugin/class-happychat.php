@@ -26,21 +26,23 @@ class Happychat {
 
 	private function get_token() {
 		$current_user = wp_get_current_user();
-		return get_user_meta($current_user->ID, 'wp_woocommerce_wpcom_signin_access_token', true);
+		return get_user_meta( $current_user->ID, 'wp_woocommerce_wpcom_signin_access_token', true );
 	}
 
 	public function shortcode_to_happychat_form( $atts ) {
+		self::do_enqueue_scripts();
+
 		$happychat_node_id = 'happychat-form';
-		return '<span id="'.$happychat_node_id.'">
+		return '<span id="' . $happychat_node_id . '">
 					<button class="button view"
-							onclick="Happychat.open( \''.$happychat_node_id.'\', [ \'woo\' ], \''.self::get_token().'\' )"
+							onclick="Happychat.open( \'' . $happychat_node_id . '\', [ \'woo\' ], \'' . self::get_token() . '\' )"
 					>
 					Chat with us
 					</button>
 				</span>';
 	}
 
-	private function should_offer_chat(){
+	private function should_offer_chat() {
 		global $wp;
 
 		// Display on front page not currently supported.
@@ -57,23 +59,30 @@ class Happychat {
 		return $should_offer_chat;
 	}
 
+	private function do_enqueue_scripts() {
+		wp_register_style(
+			'happychat-form-css',
+			plugins_url( 'assets/happychat.css', __FILE__ ),
+			array(),
+			self::VERSION
+		);
+
+		wp_register_script(
+			'happychat-form-js',
+			plugins_url( 'assets/happychat.js', __FILE__ ),
+			array(),
+			self::VERSION,
+			true
+		);
+
+		wp_enqueue_style( 'happychat-form-css' );
+		wp_enqueue_script( 'happychat-form-js' );
+
+	}
+
 	public function enqueue_scripts() {
 		if ( self::should_offer_chat() ) {
-
-			wp_register_style(
-				'happychat-form-css',
-				plugins_url( 'assets/happychat.css', __FILE__ ),
-				array(),
-				self::VERSION
-			);
-
-			wp_register_script(
-				'happychat-form-js',
-				plugins_url( 'assets/happychat.js', __FILE__ ),
-				array(),
-				self::VERSION,
-				true
-			);
+			self::do_enqueue_scripts();
 
 			wp_register_script(
 				'happychat-form-js-init',
@@ -83,15 +92,11 @@ class Happychat {
 				true
 			);
 
-			wp_enqueue_style( 'happychat-form-css' );
-			wp_enqueue_script( 'happychat-form-js' );
-
-			$happychatSettings = array(
+			$happychat_settings = array(
 				'token' => self::get_token(),
-				'groups' => [ 'woo' ]
+				'groups' => [ 'woo' ],
 			);
-
-			wp_localize_script( 'happychat-form-js-init', 'happychatSettings', $happychatSettings );
+			wp_localize_script( 'happychat-form-js-init', 'happychatSettings', $happychat_settings );
 			wp_enqueue_script( 'happychat-form-js-init' );
 		}
 	}
