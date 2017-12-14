@@ -3,7 +3,7 @@
 /**
  * External dependencies
  */
-import { memoize } from 'lodash';
+import memoize from 'lodash/memoize';
 import shallowEqual from 'react-pure-render/shallowEqual';
 
 /**

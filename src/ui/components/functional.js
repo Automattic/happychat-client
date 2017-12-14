@@ -3,8 +3,10 @@
 /**
  * External dependencies
  */
-
-import { find, forEach as iterate, get, map as collect } from 'lodash';
+import find from 'lodash/find';
+import iterate from 'lodash/forEach';
+import get from 'lodash/get';
+import collect from 'lodash/map';
 
 /*
  * Returns a function that checks for props that have a truthy `propkey` (uses lodash/object/get

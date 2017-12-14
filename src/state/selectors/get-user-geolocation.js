@@ -3,7 +3,7 @@
 /**
  * External dependencies
  */
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 /**
  * Returns the geo location of the current user, based happychat session initiation (on ip)

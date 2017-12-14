@@ -7,7 +7,9 @@ import classNames from 'classnames';
 import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
-import { get, isEmpty, throttle } from 'lodash';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import throttle from 'lodash/throttle';
 
 /**
  * Internal dependencies
