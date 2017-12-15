@@ -1,7 +1,8 @@
-.gitignore
 node_modules/
 tokens
 targets/standalone/public/tokens
 targets/standalone/public/happychat.css
 targets/standalone/public/happychat.js
+targets/standalone/wordpress/plugin/assets/happychat.css
+targets/standalone/wordpress/plugin/assets/happychat.js
 stats.json
