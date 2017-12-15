@@ -1,5 +1,6 @@
 /** @format */
 const path = require( 'path' );
+const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
 module.exports = {
 	entry: './targets/standalone/index.js',
@@ -15,6 +16,7 @@ module.exports = {
 			},
 		],
 	},
+	plugins: [ new UglifyJsPlugin() ],
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
 		modules: [ path.resolve( __dirname ), path.resolve( __dirname, 'node_modules' ) ],
