@@ -5,7 +5,7 @@
   "main": "./index.js",
   "scripts": {
     "preanalyze-bundles": "webpack --config webpack.standalone.config.js --profile --json > stats.json",
-    "analyze-bundles": "webpack-bundle-analyzer stats.json ./targets/standalone/public/",
+    "analyze-bundles": "webpack-bundle-analyzer stats.json .",
     "build": "run-p build:*",
     "build:standalone": "run-p build:standalone:*",
     "build:standalone:css": "node-sass src/ui/index.scss targets/standalone/public/happychat.css",
