@@ -3,7 +3,7 @@
 /**
  * External dependencies
  */
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 /**
  * Gets the current happychat connection status

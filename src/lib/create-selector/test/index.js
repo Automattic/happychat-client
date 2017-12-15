@@ -3,7 +3,7 @@
 /**
  * External dependencies
  */
-import { filter } from 'lodash';
+import filter from 'lodash/filter';
 
 /**
  * Internal dependencies

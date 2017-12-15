@@ -4,6 +4,8 @@
   "description": "",
   "main": "./index.js",
   "scripts": {
+    "preanalyze-bundles": "webpack --config webpack.standalone.config.js --profile --json > stats.json",
+    "analyze-bundles": "webpack-bundle-analyzer stats.json .",
     "build": "run-p build:*",
     "build:standalone": "run-p build:standalone:*",
     "build:standalone:css": "node-sass src/ui/index.scss targets/standalone/public/happychat.css",
@@ -41,7 +43,8 @@
     "npm-run-all": "4.0.2",
     "prettier": "github:automattic/calypso-prettier#717e62ee",
     "react-test-renderer": "15.6.2",
-    "webpack": "3.8.1",
+    "webpack": "3.10.0",
+    "webpack-bundle-analyzer": "2.9.1",
     "webpack-dev-server": "2.9.4"
   },
   "dependencies": {
@@ -59,6 +62,7 @@
     "redux-devtools-extension": "2.13.2",
     "socket.io-client": "1.4.5",
     "twemoji": "2.3",
+    "uglifyjs-webpack-plugin": "1.1.4",
     "uuid": "2.0.1",
     "wpcom-oauth-cors": "1.0.1",
     "wpcom-xhr-request": "1.1.1"

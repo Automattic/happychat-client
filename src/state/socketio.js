@@ -4,7 +4,7 @@
  * External dependencies
  */
 import IO from 'socket.io-client';
-import { isString } from 'lodash';
+import isString from 'lodash/isString';
 import debugFactory from 'debug';
 
 /**

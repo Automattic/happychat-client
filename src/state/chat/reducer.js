@@ -4,7 +4,12 @@
  * External dependencies
  */
 import { combineReducers } from 'redux';
-import { concat, filter, find, map, get, sortBy } from 'lodash';
+import concat from 'lodash/concat';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import map from 'lodash/map';
+import get from 'lodash/get';
+import sortBy from 'lodash/sortBy';
 
 /**
  * Internal dependencies

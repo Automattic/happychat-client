@@ -3,7 +3,7 @@
 /**
  * External dependencies
  */
-import { startsWith } from 'lodash';
+import startsWith from 'lodash/startsWith';
 
 const schemeRegex = /^\w+:\/\//;
 

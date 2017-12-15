@@ -7,7 +7,9 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { assign, isArray, isEmpty } from 'lodash';
+import assign from 'lodash/assign';
+import isArray from 'lodash/isArray';
+import isEmpty from 'lodash/isEmpty';
 
 /**
  * Internal dependencies
