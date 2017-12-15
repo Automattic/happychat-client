@@ -1,5 +1,6 @@
 /** @format */
 const path = require( 'path' );
+const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
 module.exports = {
@@ -16,7 +17,12 @@ module.exports = {
 			},
 		],
 	},
-	plugins: [ new UglifyJsPlugin() ],
+	plugins: [
+		new webpack.DefinePlugin( {
+			'process.env.NODE_ENV': JSON.stringify( 'production' ),
+		} ),
+		new UglifyJsPlugin(),
+	],
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
 		modules: [ path.resolve( __dirname ), path.resolve( __dirname, 'node_modules' ) ],
