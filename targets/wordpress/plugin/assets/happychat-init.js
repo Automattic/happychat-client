@@ -3,7 +3,9 @@
 /* ONLY ES5 code here, this is not transpiled */
 /* eslint-disable no-var */
 
-/* globals: document, Happychat, happychatSettings */
+// Teach no-undef ESLint rule not to fail for these variables,
+// because they are declared for us in the global scope.
+/* global window, jQuery, Happychat, happychatSettings */
 
 if ( window.Happychat ) {
 	var zendesk = '.post.wrap .entry .woocommerce-error, .post.wrap .entry .create-ticket';
