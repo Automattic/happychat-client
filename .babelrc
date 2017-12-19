@@ -1,21 +1,10 @@
 {
-  "presets": [
-    [ "env", {
-      "targets": {
-				"browsers": [
-					"last 2 versions",
-					"Safari >= 10",
-					"iOS >= 10",
-					"not ie <= 10"
-				]
-			}
-    } ]
-  ],
-  "plugins":[
-      "syntax-jsx",
-      "transform-class-properties",
-      "transform-object-rest-spread",
-      "transform-react-display-name",
-      "transform-react-jsx",
-  ]
+	"presets": [ [ "env" ] ],
+	"plugins": [
+		"syntax-jsx",
+		"transform-class-properties",
+		"transform-object-rest-spread",
+		"transform-react-display-name",
+		"transform-react-jsx",
+	],
 }
