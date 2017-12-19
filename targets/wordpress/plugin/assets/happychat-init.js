@@ -24,14 +24,19 @@ if ( window.Happychat ) {
 	jQuery( happychat ).css( 'display', 'none' );
 	Happychat.open( 'happychat-form', happychatSettings.groups, happychatSettings.token );
 
-	Happychat.on( 'availability', function( isAvailable ) {
-		console.log( 'isAvailable: ', isAvailable );
-		if ( ! happychatSettings.hasOngoingConversation ) {
-			isAvailable ? showHappychat() : showTicketForm();
+	var isHappychatAvailable = false;
+	var hasOngoingConversation = false;
+	var changeHappychatVisibility = function( availability, conversation ) {
+		if ( ! conversation ) {
+			availability ? showHappychat() : showTicketForm();
 		}
+	};
+	Happychat.on( 'availability', function( newStatus ) {
+		isHappychatAvailable = newStatus;
+		changeHappychatVisibility( isHappychatAvailable, hasOngoingConversation );
 	} );
-
-	Happychat.on( 'ongoingConversation', function( hasOngoingConversation ) {
-		happychatSettings.ongoingConversation = hasOngoingConversation;
+	Happychat.on( 'ongoingConversation', function( newStatus ) {
+		hasOngoingConversation = newStatus;
+		changeHappychatVisibility( isHappychatAvailable, hasOngoingConversation );
 	} );
 }

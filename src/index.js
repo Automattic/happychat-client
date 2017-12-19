@@ -17,6 +17,7 @@ import Happychat from 'src/ui';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
+import isChatBeingAssigned from 'src/state/selectors/is-chat-being-assigned';
 import isChatAssigned from 'src/state/selectors/is-chat-assigned';
 import isAvailable from 'src/state/selectors/is-available';
 
@@ -56,15 +57,17 @@ const callSubscribersIfOngoingConversationChanged = ( oldStatus, newStatus ) => 
 let oldAvailability = false;
 let oldOngoingConversation = false;
 store.subscribe( () => {
-	// When an operator has 1 spot left and this is assigned to a new customer,
-	// we're going to call both ongoingConversation and availability subscribers.
+	// Some clients hide the chat form status if the availability is false,
+	// but they don't want to hide it if there is an ongoingConversation.
 	//
-	// Some clients use some logic to prevent the chat from showing if the availability
-	// is false, but they don't hide the chat if there is an ongoingConversation;
-	// hence, we need to call ongoingConversation subscribers first.
+	// When an operator has 1 spot left, we're going to call subscribers
+	// with availability=false and ongoingConversation=true.
+	// But because the availability event happens before the chatStatus is "assigned",
+	// we need to consider the "assigning" chatStatus as an ongoingConversation,
+	// to prevent the race condition.
 	oldOngoingConversation = callSubscribersIfOngoingConversationChanged(
 		oldOngoingConversation,
-		isChatAssigned( store.getState() )
+		isChatBeingAssigned( store.getState() ) || isChatAssigned( store.getState() )
 	);
 	oldAvailability = callSubscribersIfAvailabilityChanged(
 		oldAvailability,
