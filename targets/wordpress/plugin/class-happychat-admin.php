@@ -49,9 +49,11 @@ class Happychat_Admin {
 
 		//Add settings fields
 		add_settings_field( 'happychat_enable' , 'Enable Happychat:' , array( $this, 'happychat_enable_html' )  , 'happychat' , 'happychat_settings' );
+		add_settings_field( 'happychat_user_eligibility' , 'User eligibility:' , array( $this, 'happychat_user_eligibility_html' )  , 'happychat' , 'happychat_settings' );
 
 		//Register settings fields
 		register_setting( 'happychat' , 'happychat_enable' );
+		register_setting( 'happychat' , 'happychat_user_eligibility' );
 
 	}
 
@@ -61,6 +63,14 @@ class Happychat_Admin {
 			'> If this box is checked, the "Create Ticket" form will be replaced with a Happychat chat box.' .
 			' Happychat will only show if an operator is available, and the customer has purchased products that are either paid or a revenue share.' .
 			'<br/><br/><a href="/wp-admin/edit.php?taxonomy=pa_revenue-share&term=true&post_type=product">See all products with attribute Revenue Share = true.';
+	}
+
+	public function happychat_user_eligibility_html() {
+		$user_eligibility = get_option( 'happychat_user_eligibility' );
+		print '<select id="happychat_user_eligibility" name="happychat_user_eligibility">';
+		print '<option value="all" ' . selected( $user_eligibility, 'all' ) . '>All</option>';
+		print '<option value="paying_customers" ' . selected( $user_eligibility, 'paying_customers' ) . '>Paying customers</option>';
+		print '</select>';
 	}
 
 	public function settings_page() {
