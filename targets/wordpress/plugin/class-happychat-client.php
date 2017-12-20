@@ -42,16 +42,22 @@ class Happychat_Client {
 				</span>';
 	}
 
+	private function is_happychat_enabled( ) {
+		return get_option( 'happychat_enable' );
+	}
+
+	private function is_user_eligible( ) {
+		return true;
+	}
+
 	private function should_offer_chat() {
 		global $wp;
 		$should_offer_chat = false;
 
-		// Do not offer chat if happychat is disabled
-		if ( ! get_option( 'happychat_enable' ) ) {
+		if ( ! $this->is_happychat_enabled() || ! $this->is_user_eligible() ) {
 			return false;
 		}
 
-		// The ticket forms always need the chat scripts
 		if ( in_array( $wp->request, array( 'my-account/create-a-ticket', 'my-account/marketplace-ticket-form' ) ) ) {
 			$should_offer_chat = true;
 		}
