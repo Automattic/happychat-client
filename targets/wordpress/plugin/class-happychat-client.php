@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Happychat {
+class Happychat_Client {
 	private static $_instance = null;
 	const VERSION = '0.0.1-dev';
 
@@ -44,13 +44,13 @@ class Happychat {
 
 	private function should_offer_chat() {
 		global $wp;
+		$should_offer_chat = false;
 
-		// Display on front page not currently supported.
-		if ( $wp->request === '' ) {
+		// Do not offer chat if happychat is disabled
+		if ( ! get_option( 'happychat_enable' ) ) {
 			return false;
 		}
 
-		$should_offer_chat = false;
 		// The ticket forms always need the chat scripts
 		if ( in_array( $wp->request, array( 'my-account/create-a-ticket', 'my-account/marketplace-ticket-form' ) ) ) {
 			$should_offer_chat = true;
