@@ -42,12 +42,28 @@ class Happychat_Client {
 				</span>';
 	}
 
-	private function is_happychat_enabled( ) {
+	private function is_happychat_enabled() {
 		return get_option( 'happychat_enable' );
 	}
 
-	private function is_user_eligible( ) {
-		return true;
+	private function is_paying_customer() {
+		return false;
+	}
+
+	private function is_user_eligible() {
+		$is_eligible = false;
+		$eligibility = get_option( 'happychat_user_eligibility' );
+
+		switch ( $eligibility ) {
+			case 'paying_customers':
+				$is_eligible = $this->is_paying_customer();
+				break;
+			case 'all':
+			default:
+				$is_eligible = true;
+		}
+
+		return $is_eligible;
 	}
 
 	private function should_offer_chat() {
