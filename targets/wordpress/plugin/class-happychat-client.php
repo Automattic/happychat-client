@@ -86,7 +86,6 @@ class Happychat_Client {
 	 * If the ticket creation page is loading slowly for customers with many
 	 * products while chat blitz is on, this is a likely culprit.
 	 *
-	 * @param $user_id
 	 * @return bool
 	 */
 	public function is_paying_customer() {
