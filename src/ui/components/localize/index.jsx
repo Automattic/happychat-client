@@ -4,14 +4,16 @@
  * External dependencies
  */
 import React, { Component } from 'react';
-import debugFactory from 'debug';
-const debug = debugFactory( 'happychat-client:ui:localize' );
+import get from 'lodash/get';
 
 export const mockLocalize = ComposedComponent =>
 	class extends Component {
-		translate( msg ) {
-			debug( 'mockTranslate ', msg );
-			return msg;
+		translate( msg, options ) {
+			let translatedMsg = msg;
+			if ( get( options, 'args', false ) ) {
+				translatedMsg = msg.replace( '%s', options.args );
+			}
+			return translatedMsg;
 		}
 
 		render() {
