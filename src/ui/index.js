@@ -146,11 +146,9 @@ const mapState = state => {
 		disabled: ! canUserSendMessages( state ),
 		getAuth: getHappychatAuth( state ),
 		isConnectionUninitialized: isHCConnectionUninitialized( state ),
-		/* eslint-disable camelcase */
-		isCurrentUser: ( { user_id, source } ) => {
-			return user_id.toString() === currentUser.ID.toString() && source === 'customer';
+		isCurrentUser: ( { source } ) => {
+			return source === 'customer';
 		},
-		/* eslint-enable camelcase */
 		isExternalUrl: () => true,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
 		isServerReachable: isHCServerReachable( state ),
