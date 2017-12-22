@@ -4,11 +4,8 @@
 // We can delete this when Happychat styles are adapted to several hosts
 // (Calypso, WordPress, standalone).
 
-body {
-  background-color: $gray-light;
-}
-
 .happychat__page {
+  background-color: $gray-light;
   left: 0;
   margin-top: 0;
 }

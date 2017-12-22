@@ -21,6 +21,11 @@
 	}
 }
 
+// override colors
+.happychat__page {
+	background-color: $gray-light;
+}
+
 @import 'components/emojify/style';
 @import 'components/timeline';
 @import 'components/notices';
