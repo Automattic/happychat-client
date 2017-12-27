@@ -26,6 +26,11 @@
 	background-color: $gray-light;
 }
 
+// make textarea to fill the whole box
+.happychat__message > textarea {
+	width: 100%;
+}
+
 @import 'components/emojify/style';
 @import 'components/timeline';
 @import 'components/notices';
