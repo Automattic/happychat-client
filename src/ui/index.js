@@ -43,12 +43,24 @@ import { Timeline } from 'src/ui/components/timeline';
  * React component for rendering a happychat client as a full page
  */
 export class HappychatPage extends Component {
+	constructor( props ) {
+		super( props );
+		this.onUnload = this.onUnload.bind( this );
+	}
+
 	componentDidMount() {
 		this.props.setFocused();
+		window.addEventListener( 'beforeunload', this.onUnload );
 	}
 
 	componentWillUnmount() {
 		this.props.setBlurred();
+		window.removeEventListener( 'beforeunload', this.onUnload );
+	}
+
+	onUnload( e ) {
+		e.returnValue = 'The chat session will end if the page is reloaded';
+		return e.returnValue;
 	}
 
 	render() {
