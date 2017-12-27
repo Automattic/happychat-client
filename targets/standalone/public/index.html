@@ -4,12 +4,29 @@
         <meta charset="utf-8">
         <title>Happychat Embedded</title>
         <link rel="stylesheet" href="./happychat.css">
+        <style>
+        body {
+          margin-left: 25%;
+          margin-right: 25%;
+        }
+        </style>
 </head>
 <body>
-        <div id="root"></div>
+        <article>
+          <h3>Title</h3>
+          <p>Occaecati qui hic quia totam eos similique adipisci quis.
+            Nesciunt qui voluptatem qui. Qui deleniti rem fugit possimus
+            et cupiditate vel commodi. Quasi nam consequatur exercitationem
+            ut sit qui delectus quia. Quas occaecati est vel perferendis.</p>
+          <div id="chat"></div>
+          <p>Occaecati qui hic quia totam eos similique adipisci quis.
+            Nesciunt qui voluptatem qui. Qui deleniti rem fugit possimus
+            et cupiditate vel commodi. Quasi nam consequatur exercitationem
+            ut sit qui delectus quia. Quas occaecati est vel perferendis.</p>
+        </article>
         <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
         <script type="text/javascript">
-            Happychat.open( 'root', [ 'woo' ] );
+            Happychat.open( 'chat', [ 'woo' ] );
             Happychat.on( 'availability', function( isAvailable ){
               console.log( 'isAvailable: ', isAvailable );
             });
