@@ -28,7 +28,11 @@
 
 // make textarea to fill the whole box
 .happychat__message > textarea {
-	width: 100%;
+       width: 100%;
+}
+
+.happychat__conversation {
+	height: 50vh;
 }
 
 @import 'components/emojify/style';
