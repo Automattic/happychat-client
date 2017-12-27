@@ -28,15 +28,20 @@ if ( window.Happychat ) {
 
 	var isHappychatAvailable = false;
 	var hasOngoingConversation = false;
+
 	var changeHappychatVisibility = function( availability, conversation ) {
-		if ( ! conversation ) {
+		if ( conversation ) {
+			showHappychat();
+		} else {
 			availability ? showHappychat() : showTicketForm();
 		}
 	};
+
 	Happychat.on( 'availability', function( newStatus ) {
 		isHappychatAvailable = newStatus;
 		changeHappychatVisibility( isHappychatAvailable, hasOngoingConversation );
 	} );
+
 	Happychat.on( 'ongoingConversation', function( newStatus ) {
 		hasOngoingConversation = newStatus;
 		changeHappychatVisibility( isHappychatAvailable, hasOngoingConversation );
