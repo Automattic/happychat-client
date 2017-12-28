@@ -1,7 +1,24 @@
 /** @format */
 
+@import 'css/shared/reset';
 @import 'css/shared/colors';
 @import 'css/shared/typography';
+@import 'css/shared/mixins/breakpoints';
+@import 'css/shared/mixins/clear-text';
+@import 'css/shared/forms';
+
+// chat form
+@import 'components/emojify/style';
+@import 'components/timeline';
+@import 'components/notices';
+@import 'components/composer';
+
+// support form
+@import 'components/button/style';
+@import 'components/form-button/style';
+@import 'components/form-label/style';
+@import 'components/segmented-control/style';
+@import 'components/contact-form/style';
 
 // experiment: style scrollbars
 .happychat__page {
@@ -47,8 +64,3 @@
 .happychat__submit {
 	border: 0;
 }
-
-@import 'components/emojify/style';
-@import 'components/timeline';
-@import 'components/notices';
-@import 'components/composer';

@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <meta charset="utf-8">
-        <title>Happychat Embedded</title>
-        <link rel="stylesheet" href="./happychat.css">
-        <style>
-        body {
-          margin-left: 12%;
-          margin-right: 12%;
-        }
-        </style>
+  <meta charset="utf-8">
+  <title>Happychat Embedded</title>
+  <link rel="stylesheet" href="./happychat.css">
+  <style>
+  body {
+    margin-left: 12%;
+    margin-right: 12%;
+  }
+  </style>
 </head>
 <body>
-        <div id="chat"></div>
-        <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
-        <script type="text/javascript">
-Happychat.open( 'chat', {
-	options: [ { value: 'account', label: 'Account' }, { value: 'other', label: 'Other' } ],
-	submitForm: () => {
-		console.log( 'submitForm' );
-	},
-} );
+    <div id="support"></div>
+    <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    /** @format */
+Happychat.open(
+	'support',
+	[ 'woo' ],
+	[ { value: 'account', label: 'Account' }, { value: 'other', label: 'Other' } ]
+);
 </script>
 </body>
 </html>

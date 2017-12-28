@@ -78,8 +78,7 @@ store.subscribe( () => {
 /* eslint-disable camelcase */
 export const renderTo = (
 	nodeId,
-	{ ID, email, username, display_name, avatar_URL, language, groups },
-	accessToken
+	{ ID, email, username, display_name, avatar_URL, language, groups, accessToken }
 ) => {
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );

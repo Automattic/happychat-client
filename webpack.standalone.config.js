@@ -3,7 +3,7 @@ const path = require( 'path' );
 const webpack = require( 'webpack' );
 
 module.exports = {
-	entry: './targets/standalone/form.js',
+	entry: './targets/standalone/index.js',
 	output: {
 		filename: './targets/standalone/public/happychat.js',
 	},
