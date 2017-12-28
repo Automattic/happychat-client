@@ -18,7 +18,7 @@
     "analyze-bundles": "webpack-bundle-analyzer stats.json .",
     "build": "run-p build:*",
     "build:standalone": "run-p build:standalone:*",
-    "build:standalone:css": "node-sass src/ui/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/public/happychat.css ",
+    "build:standalone:css": "node-sass src/ui/form-experiment.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/public/happychat.css ",
     "build:standalone:js": "webpack --config webpack.standalone.config.js",
     "build:wordpress": "run-p build:wordpress:*",
     "build:wordpress:css": "node-sass src/ui/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/wordpress/plugin/assets/happychat.css",
