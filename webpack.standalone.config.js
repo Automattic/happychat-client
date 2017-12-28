@@ -1,10 +1,9 @@
 /** @format */
 const path = require( 'path' );
 const webpack = require( 'webpack' );
-const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
 module.exports = {
-	entry: './targets/standalone/index.js',
+	entry: './targets/standalone/form.js',
 	output: {
 		filename: './targets/standalone/public/happychat.js',
 	},
@@ -19,10 +18,8 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.DefinePlugin( {
-			'process.env.NODE_ENV': JSON.stringify( 'production' ),
+			'process.env.NODE_ENV': JSON.stringify( 'development' ),
 		} ),
-		new webpack.optimize.ModuleConcatenationPlugin(),
-		new UglifyJsPlugin(),
 	],
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
