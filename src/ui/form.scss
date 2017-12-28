@@ -27,7 +27,7 @@
 	background-color: $gray-light;
 	font-family: $sans;
 	font-size: 14px;
-	border: 1px solid lighten( $gray, 25% );
+	border: 1px solid lighten($gray, 25%);
 }
 
 // make textarea to fill the whole box
@@ -38,6 +38,7 @@
 
 // small tweaks to conversation container
 .happychat__conversation {
+	height: 50vh; // set height so it can be scrolled
 	padding-left: 6px;
 	padding-right: 6px;
 }
