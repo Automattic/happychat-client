@@ -9,8 +9,11 @@ import ReactDOM from 'react-dom';
 /**
  * Internal dependencies
  */
-import { ContactForm } from 'src/ui/components/contact-form';
+import ContactForm from 'src/ui/components/contact-form';
 
-export const renderTo = nodeId => {
-	ReactDOM.render( <ContactForm />, document.getElementById( nodeId ) );
+export const renderTo = ( nodeId, { options, submitForm } ) => {
+	ReactDOM.render(
+		<ContactForm options={ options } submitForm={ submitForm } />,
+		document.getElementById( nodeId )
+	);
 };

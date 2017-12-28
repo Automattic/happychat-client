@@ -6,7 +6,7 @@
 import { renderTo } from 'src/ui/form';
 
 window.Happychat = {
-	open: nodeId => {
-		renderTo( nodeId );
+	open: ( nodeId, { options, submitForm } ) => {
+		renderTo( nodeId, { options, submitForm } );
 	},
 };

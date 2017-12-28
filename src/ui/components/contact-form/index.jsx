@@ -4,6 +4,8 @@
  * External dependencies
  */
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import debugFactory from 'debug';
 const debug = debugFactory( 'happychat-client:ui:contact-form' );
 
@@ -33,12 +35,8 @@ export class ContactForm extends React.Component {
 	}
 
 	render() {
-		const { submitForm } = this.props;
+		const { options, submitForm } = this.props;
 
-		const options = [
-			{ value: 'account', label: 'Account', subtext: 'Change pwd, etc' },
-			{ value: 'extensions', label: 'Extensions', subtext: 'Primary, etc' },
-		];
 		return (
 			<div className="help-contact-form">
 				<FormLabel>How can we help?</FormLabel>
@@ -59,3 +57,15 @@ export class ContactForm extends React.Component {
 		);
 	}
 }
+
+ContactForm.propTypes = {
+	options: PropTypes.array.isRequired,
+	submitForm: PropTypes.func.isRequired,
+};
+
+ContactForm.defaultProps = {
+	options: [],
+	submitForm: () => {},
+};
+
+export default ContactForm;

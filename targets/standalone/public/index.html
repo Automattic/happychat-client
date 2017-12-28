@@ -15,8 +15,12 @@
         <div id="chat"></div>
         <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
         <script type="text/javascript">
-        /** @format */
-Happychat.open( 'chat' );
+Happychat.open( 'chat', {
+	options: [ { value: 'account', label: 'Account' }, { value: 'other', label: 'Other' } ],
+	submitForm: () => {
+		console.log( 'submitForm' );
+	},
+} );
 </script>
 </body>
 </html>
