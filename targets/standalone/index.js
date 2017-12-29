@@ -15,7 +15,7 @@ import { renderTo, subscribeTo, unsubscribeFrom } from 'src';
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 const debug = debugFactory( 'happychat-client:standalone' );
 
-const initHappychat = ( nodeId, groups ) => {
+const initHappychat = ( nodeId, groups, formOptions ) => {
 	debug( 'get token from wpcom' );
 	wpcomOAuth.get( () => {
 		/* eslint-disable camelcase */
@@ -33,7 +33,7 @@ const initHappychat = ( nodeId, groups ) => {
 					groups,
 					accessToken,
 				};
-				renderTo( nodeId, user );
+				renderTo( nodeId, user, formOptions );
 			} )
 			.catch( error => {
 				debug( 'could not get user info: ', error );
@@ -43,8 +43,8 @@ const initHappychat = ( nodeId, groups ) => {
 };
 
 window.Happychat = {
-	open: ( nodeId, groups, options ) => {
-		initHappychat( nodeId, groups, options );
+	open: ( nodeId, groups, formOptions ) => {
+		initHappychat( nodeId, groups, formOptions );
 	},
 	on: ( eventName, callback ) => {
 		subscribeTo( eventName, callback );

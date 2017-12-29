@@ -67,5 +67,3 @@ ContactForm.defaultProps = {
 	options: [],
 	submitForm: () => {},
 };
-
-export default ContactForm;

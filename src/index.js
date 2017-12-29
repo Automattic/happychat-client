@@ -78,7 +78,8 @@ store.subscribe( () => {
 /* eslint-disable camelcase */
 export const renderTo = (
 	nodeId,
-	{ ID, email, username, display_name, avatar_URL, language, groups, accessToken }
+	{ ID, email, username, display_name, avatar_URL, language, groups, accessToken },
+	formOptions = []
 ) => {
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
@@ -86,7 +87,7 @@ export const renderTo = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat accessToken={ accessToken } />
+			<Happychat accessToken={ accessToken } formOptions={ formOptions } />
 		</Provider>,
 		document.getElementById( nodeId )
 	);

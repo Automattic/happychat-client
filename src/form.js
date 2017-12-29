@@ -4,6 +4,7 @@
  * External dependencies
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 /**
@@ -35,6 +36,7 @@ import isHCServerReachable from 'src/state/selectors/is-server-reachable';
 import { mockLocalize } from 'src/ui/components/localize'; // TODO implement localize
 import { HappychatConnection } from 'src/ui/components/connection';
 import { HappychatForm } from 'src/ui/components/happychat-form';
+import { ContactForm } from 'src/ui/components/contact-form';
 
 export class Form extends React.Component {
 	render() {
@@ -44,6 +46,7 @@ export class Form extends React.Component {
 			connectionStatus,
 			currentUserEmail,
 			disabled,
+			formOptions,
 			getAuth,
 			isConnectionUninitialized,
 			isCurrentUser,
@@ -71,29 +74,38 @@ export class Form extends React.Component {
 					isHappychatEnabled={ isHappychatEnabled }
 					onInitConnection={ onInitConnection }
 				/>
-				<HappychatForm
-					chatStatus={ chatStatus }
-					connectionStatus={ connectionStatus }
-					currentUserEmail={ currentUserEmail }
-					disabled={ disabled }
-					isCurrentUser={ isCurrentUser }
-					isExternalUrl={ isExternalUrl }
-					isServerReachable={ isServerReachable }
-					message={ message }
-					onSendMessage={ onSendMessage }
-					onSendNotTyping={ onSendNotTyping }
-					onSendTyping={ onSendTyping }
-					onSetCurrentMessage={ onSetCurrentMessage }
-					setBlurred={ setBlurred }
-					setFocused={ setFocused }
-					timeline={ timeline }
-					translate={ translate }
-					twemojiUrl={ twemojiUrl }
-				/>
+				{ formOptions && formOptions.length > 0 ? (
+					<ContactForm options={ formOptions } />
+				) : (
+					<HappychatForm
+						chatStatus={ chatStatus }
+						connectionStatus={ connectionStatus }
+						currentUserEmail={ currentUserEmail }
+						disabled={ disabled }
+						isCurrentUser={ isCurrentUser }
+						isExternalUrl={ isExternalUrl }
+						isServerReachable={ isServerReachable }
+						message={ message }
+						onSendMessage={ onSendMessage }
+						onSendNotTyping={ onSendNotTyping }
+						onSendTyping={ onSendTyping }
+						onSetCurrentMessage={ onSetCurrentMessage }
+						setBlurred={ setBlurred }
+						setFocused={ setFocused }
+						timeline={ timeline }
+						translate={ translate }
+						twemojiUrl={ twemojiUrl }
+					/>
+				) }
 			</div>
 		);
 	}
 }
+
+Form.propTypes = {
+	accessToken: PropTypes.string.isRequired,
+	formOptions: PropTypes.array,
+};
 
 const mapState = state => {
 	const currentUser = getUser( state );
