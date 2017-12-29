@@ -38,7 +38,7 @@ export class ContactForm extends React.Component {
 		const { options, submitForm } = this.props;
 
 		return (
-			<div className="help-contact-form">
+			<div className="contact-form">
 				<FormLabel>How can we help?</FormLabel>
 				<SegmentedControl options={ options } primary />
 
