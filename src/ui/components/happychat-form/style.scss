@@ -1,0 +1,50 @@
+/** @format */
+
+@import 'components/timeline';
+@import 'components/notices';
+@import 'components/composer';
+
+// experiment: style scrollbars
+.happychat__page {
+	::-webkit-scrollbar {
+		width: 12px;
+		height: 12px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color: lighten($gray, 10%);
+		border: 3px solid transparent;
+		background-clip: padding-box;
+
+		&:hover {
+			background-color: $gray;
+		}
+	}
+}
+
+// override colors and fonts
+.happychat__page {
+	background-color: $gray-light;
+	font-family: $sans;
+	font-size: 14px;
+	border: 1px solid lighten($gray, 25%);
+}
+
+// make textarea to fill the whole box
+.happychat__message > textarea {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+// small tweaks to conversation container
+.happychat__conversation {
+	height: 50vh; // set height so it can be scrolled
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+// clean grey border on submit button
+.happychat__submit {
+	border: 0;
+}
