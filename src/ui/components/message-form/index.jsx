@@ -23,7 +23,7 @@ export class MessageForm extends React.Component {
 }
 
 MessageForm.propTypes = {
-	message: PropTypes.string.isRequired,
+	message: PropTypes.string,
 };
 
 MessageForm.defaultProps = {

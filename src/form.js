@@ -96,7 +96,7 @@ export class Form extends React.Component {
 			/>
 		);
 
-		let form = <MessageForm msg="We cannot offer support right now" />;
+		let form = <MessageForm />;
 		if ( isChatOpen ) {
 			form = chatForm;
 		} else if ( formOptions && formOptions.length > 0 ) {

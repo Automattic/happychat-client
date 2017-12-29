@@ -13,6 +13,7 @@ import { devToolsEnhancer } from 'redux-devtools-extension';
  * Internal dependencies
  */
 import Happychat from 'src/form';
+import { MessageForm } from 'src/ui/components/message-form';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
@@ -41,3 +42,6 @@ export const renderTo = (
 	);
 };
 /* eslint-enable camelcase */
+
+export const renderMessage = ( nodeId, msg ) =>
+	ReactDOM.render( <MessageForm message={ msg } />, document.getElementById( nodeId ) );

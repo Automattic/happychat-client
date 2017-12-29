@@ -10,7 +10,7 @@ import debugFactory from 'debug';
  */
 import getUser from 'targets/common/get-wpcom-user';
 import config from 'src/config';
-import { renderTo, subscribeTo, unsubscribeFrom } from 'src';
+import { renderTo, renderMessage, subscribeTo, unsubscribeFrom } from 'src';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 const debug = debugFactory( 'happychat-client:standalone' );
@@ -35,9 +35,7 @@ const initHappychat = ( nodeId, groups, formOptions ) => {
 				};
 				renderTo( nodeId, user, formOptions );
 			} )
-			.catch( error => {
-				debug( 'could not get user info: ', error );
-			} );
+			.catch( error => renderMessage( nodeId, 'Could not load support form. ' + error ) );
 		/* eslint-enable camelcase */
 	} );
 };
