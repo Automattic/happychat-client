@@ -3,8 +3,7 @@
 /**
  * External dependencies
  */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 
 /**
@@ -35,34 +34,9 @@ import isHCServerReachable from 'src/state/selectors/is-server-reachable';
 // UI components
 import { mockLocalize } from 'src/ui/components/localize'; // TODO implement localize
 import { HappychatConnection } from 'src/ui/components/connection';
-import { Composer } from 'src/ui/components/composer';
-import { Notices } from 'src/ui/components/notices';
-import { Timeline } from 'src/ui/components/timeline';
+import { HappychatForm } from 'src/ui/components/happychat-form';
 
-/**
- * React component for rendering a happychat client as a full page
- */
-export class HappychatPage extends Component {
-	constructor( props ) {
-		super( props );
-		this.onUnload = this.onUnload.bind( this );
-	}
-
-	componentDidMount() {
-		this.props.setFocused();
-		window.addEventListener( 'beforeunload', this.onUnload );
-	}
-
-	componentWillUnmount() {
-		this.props.setBlurred();
-		window.removeEventListener( 'beforeunload', this.onUnload );
-	}
-
-	onUnload( e ) {
-		e.returnValue = 'The chat session will end if the page is reloaded';
-		return e.returnValue;
-	}
-
+export class Form extends React.Component {
 	render() {
 		const {
 			accessToken,
@@ -82,72 +56,44 @@ export class HappychatPage extends Component {
 			onSendNotTyping,
 			onSendTyping,
 			onSetCurrentMessage,
+			setBlurred,
+			setFocused,
 			timeline,
 			translate,
 			twemojiUrl,
 		} = this.props;
-
 		return (
-			<div className="happychat__page" aria-live="polite" aria-relevant="additions">
+			<div>
 				<HappychatConnection
 					accessToken={ accessToken }
 					getAuth={ getAuth }
-					initConnection={ onInitConnection }
 					isConnectionUninitialized={ isConnectionUninitialized }
 					isHappychatEnabled={ isHappychatEnabled }
+					onInitConnection={ onInitConnection }
 				/>
-				<Timeline
-					currentUserEmail={ currentUserEmail }
-					isCurrentUser={ isCurrentUser }
-					isExternalUrl={ isExternalUrl }
-					timeline={ timeline }
-					translate={ translate }
-					twemojiUrl={ twemojiUrl }
-				/>
-				<Notices
+				<HappychatForm
 					chatStatus={ chatStatus }
 					connectionStatus={ connectionStatus }
-					isServerReachable={ isServerReachable }
-					translate={ translate }
-				/>
-				<Composer
+					currentUserEmail={ currentUserEmail }
 					disabled={ disabled }
+					isCurrentUser={ isCurrentUser }
+					isExternalUrl={ isExternalUrl }
+					isServerReachable={ isServerReachable }
 					message={ message }
 					onSendMessage={ onSendMessage }
 					onSendNotTyping={ onSendNotTyping }
 					onSendTyping={ onSendTyping }
 					onSetCurrentMessage={ onSetCurrentMessage }
+					setBlurred={ setBlurred }
+					setFocused={ setFocused }
+					timeline={ timeline }
 					translate={ translate }
+					twemojiUrl={ twemojiUrl }
 				/>
 			</div>
 		);
 	}
 }
-
-HappychatPage.propTypes = {
-	accessToken: PropTypes.string,
-	chatStatus: PropTypes.string,
-	connectionStatus: PropTypes.string,
-	currentUserEmail: PropTypes.string,
-	disabled: PropTypes.bool,
-	getAuth: PropTypes.func,
-	isConnectionUninitialized: PropTypes.bool,
-	isCurrentUser: PropTypes.func,
-	isExternalUrl: PropTypes.func,
-	isHappychatEnabled: PropTypes.bool,
-	isServerReachable: PropTypes.bool,
-	message: PropTypes.string,
-	onInitConnection: PropTypes.func,
-	onSendMessage: PropTypes.func,
-	onSendNotTyping: PropTypes.func,
-	onSendTyping: PropTypes.func,
-	onSetCurrentMessage: PropTypes.func,
-	setBlurred: PropTypes.func,
-	setFocused: PropTypes.func,
-	timeline: PropTypes.array,
-	translate: PropTypes.func,
-	twemojiUrl: PropTypes.string,
-};
 
 const mapState = state => {
 	const currentUser = getUser( state );
@@ -180,4 +126,4 @@ const mapDispatch = {
 	setFocused: focus,
 };
 
-export default connect( mapState, mapDispatch )( mockLocalize( HappychatPage ) );
+export default connect( mapState, mapDispatch )( mockLocalize( Form ) );

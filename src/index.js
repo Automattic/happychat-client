@@ -13,7 +13,7 @@ import debugFactory from 'debug';
 /**
  * Internal dependencies
  */
-import Happychat from 'src/ui';
+import Happychat from 'src/form';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';

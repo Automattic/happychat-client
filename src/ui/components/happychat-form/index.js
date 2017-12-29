@@ -105,5 +105,3 @@ HappychatForm.propTypes = {
 	translate: PropTypes.func,
 	twemojiUrl: PropTypes.string,
 };
-
-export default HappychatForm;

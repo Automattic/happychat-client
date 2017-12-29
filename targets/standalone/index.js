@@ -10,13 +10,12 @@ import debugFactory from 'debug';
  */
 import getUser from 'targets/common/get-wpcom-user';
 import config from 'src/config';
-import { renderTo as renderChatForm, subscribeTo, unsubscribeFrom } from 'src';
-import { renderTo as renderSupportForm } from 'src/ui/form';
+import { renderTo, subscribeTo, unsubscribeFrom } from 'src';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 const debug = debugFactory( 'happychat-client:standalone' );
 
-const initHappychat = ( nodeId, groups, options = [] ) => {
+const initHappychat = ( nodeId, groups ) => {
 	debug( 'get token from wpcom' );
 	wpcomOAuth.get( () => {
 		/* eslint-disable camelcase */
@@ -34,10 +33,7 @@ const initHappychat = ( nodeId, groups, options = [] ) => {
 					groups,
 					accessToken,
 				};
-				const delayedChatForm = () => renderChatForm( nodeId, user );
-				options.length > 0
-					? renderSupportForm( nodeId, options, delayedChatForm )
-					: renderChatForm( nodeId, user );
+				renderTo( nodeId, user );
 			} )
 			.catch( error => {
 				debug( 'could not get user info: ', error );

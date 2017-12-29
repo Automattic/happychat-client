@@ -1,9 +1,9 @@
 /** @format */
 
-@import 'components/button/style';
-@import 'components/form-button/style';
-@import 'components/form-label/style';
-@import 'components/segmented-control/style';
+@import '../button/style';
+@import '../form-button/style';
+@import '../form-label/style';
+@import '../segmented-control/style';
 
 .contact-form {
 	.form-textarea {
