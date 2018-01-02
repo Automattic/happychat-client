@@ -32,6 +32,7 @@ import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
 import isHCServerReachable from 'src/state/selectors/is-server-reachable';
 import isChatFormOpen from 'src/state/selectors/is-chatform-open';
+import isAvailable from 'src/state/selectors/is-available';
 
 // UI components
 import { mockLocalize } from 'src/ui/components/localize'; // TODO implement localize
@@ -44,11 +45,19 @@ export class Form extends React.Component {
 	constructor( props ) {
 		super( props );
 		this.submitForm = this.submitForm.bind( this );
+		this.canSubmitForm = this.canSubmitForm.bind( this );
 	}
 
 	submitForm( formState ) {
-		this.props.onOpenChat();
-		this.props.onSendMessage( formState.message );
+		const { onOpenChat, onSendMessage } = this.props;
+		if ( this.canSubmitForm() ) {
+			onOpenChat();
+			onSendMessage( formState.message );
+		}
+	}
+
+	canSubmitForm() {
+		return this.props.isChatAvailable;
 	}
 
 	renderForm() {
@@ -74,7 +83,13 @@ export class Form extends React.Component {
 			twemojiUrl,
 		} = this.props;
 
-		const contactForm = <ContactForm options={ formOptions } submitForm={ this.submitForm } />;
+		const contactForm = (
+			<ContactForm
+				canSubmitForm={ this.canSubmitForm }
+				options={ formOptions }
+				submitForm={ this.submitForm }
+			/>
+		);
 		const chatForm = (
 			<HappychatForm
 				chatStatus={ chatStatus }
@@ -145,6 +160,7 @@ const mapState = state => {
 		disabled: ! canUserSendMessages( state ),
 		getAuth: getHappychatAuth( state ),
 		isChatOpen: isChatFormOpen( state ),
+		isChatAvailable: isAvailable( state ),
 		isConnectionUninitialized: isHCConnectionUninitialized( state ),
 		isCurrentUser: ( { source } ) => {
 			return source === 'customer';

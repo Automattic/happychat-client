@@ -6,9 +6,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import debugFactory from 'debug';
-const debug = debugFactory( 'happychat-client:ui:contact-form' );
-
 /**
  * Internal dependencies
  */
@@ -26,13 +23,11 @@ export class ContactForm extends React.Component {
 	}
 
 	handleChange( e ) {
-		debug( 'setState to ', e.target.value );
 		this.setState( { message: e.target.value } );
 	}
 
-	canSubmitForm() {
-		debug( 'canSubmitForm ', this.state.message !== '' );
-		return this.state.message !== '';
+	prepareCanSubmitForm() {
+		return this.state.message !== '' && this.props.canSubmitForm();
 	}
 
 	prepareSubmitForm() {
@@ -57,7 +52,7 @@ export class ContactForm extends React.Component {
 				/>
 
 				<FormButton
-					disabled={ ! this.canSubmitForm() }
+					disabled={ ! this.prepareCanSubmitForm() }
 					type="button"
 					onClick={ this.prepareSubmitForm }
 				>
@@ -69,11 +64,13 @@ export class ContactForm extends React.Component {
 }
 
 ContactForm.propTypes = {
+	canSubmitForm: PropTypes.func.isRequired,
 	options: PropTypes.array.isRequired,
 	submitForm: PropTypes.func.isRequired,
 };
 
 ContactForm.defaultProps = {
+	canSubmitForm: () => true,
 	options: [],
 	submitForm: () => {},
 };
