@@ -28,7 +28,8 @@ const store = createStore(
 export const renderTo = (
 	nodeId,
 	{ ID, email, username, display_name, avatar_URL, language, groups, accessToken },
-	formOptions = []
+	howCanWeHelpOptions = [],
+	howDoYouFeelOptions = []
 ) => {
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
@@ -36,7 +37,11 @@ export const renderTo = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat accessToken={ accessToken } formOptions={ formOptions } />
+			<Happychat
+				accessToken={ accessToken }
+				howCanWeHelpOptions={ howCanWeHelpOptions }
+				howDoYouFeelOptions={ howDoYouFeelOptions }
+			/>
 		</Provider>,
 		document.getElementById( nodeId )
 	);

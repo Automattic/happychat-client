@@ -36,13 +36,22 @@ export class ContactForm extends React.Component {
 	}
 
 	render() {
-		const { options } = this.props;
+		const { howCanWeHelpOptions, howDoYouFeelOptions } = this.props;
 
 		return (
 			<div className="contact-form">
-				<FormLabel>How can we help?</FormLabel>
-				<SegmentedControl options={ options } primary />
-
+				<div>
+					<FormLabel>How can we help?</FormLabel>
+					<SegmentedControl options={ howCanWeHelpOptions } primary />
+				</div>
+				{ howDoYouFeelOptions && howDoYouFeelOptions.length > 0 ? (
+					<div>
+						<FormLabel>Mind sharing how do you feel?</FormLabel>
+						<SegmentedControl options={ howDoYouFeelOptions } primary />
+					</div>
+				) : (
+					''
+				) }
 				<FormLabel>What are you trying to do?</FormLabel>
 				<FormTextarea
 					placeholder="Please be descriptive"
@@ -50,7 +59,6 @@ export class ContactForm extends React.Component {
 					value={ this.state.message }
 					onChange={ this.handleChange }
 				/>
-
 				<FormButton
 					disabled={ ! this.prepareCanSubmitForm() }
 					type="button"
@@ -65,12 +73,14 @@ export class ContactForm extends React.Component {
 
 ContactForm.propTypes = {
 	canSubmitForm: PropTypes.func.isRequired,
-	options: PropTypes.array.isRequired,
+	howCanWeHelpOptions: PropTypes.array.isRequired,
+	howDoYouFeelOptions: PropTypes.array,
 	submitForm: PropTypes.func.isRequired,
 };
 
 ContactForm.defaultProps = {
 	canSubmitForm: () => true,
-	options: [],
+	howCanWeHelpOptions: [],
+	howDoYouFeelOptions: [],
 	submitForm: () => {},
 };

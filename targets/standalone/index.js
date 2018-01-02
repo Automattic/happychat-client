@@ -15,7 +15,7 @@ import { renderTo, renderMessage, subscribeTo, unsubscribeFrom } from 'src';
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 const debug = debugFactory( 'happychat-client:standalone' );
 
-const initHappychat = ( nodeId, groups, formOptions ) => {
+const initHappychat = ( nodeId, groups, howCanWeHelpOptions, howDoYouFeelOptions ) => {
 	debug( 'get token from wpcom' );
 	wpcomOAuth.get( () => {
 		/* eslint-disable camelcase */
@@ -33,7 +33,7 @@ const initHappychat = ( nodeId, groups, formOptions ) => {
 					groups,
 					accessToken,
 				};
-				renderTo( nodeId, user, formOptions );
+				renderTo( nodeId, user, howCanWeHelpOptions, howDoYouFeelOptions );
 			} )
 			.catch( error => renderMessage( nodeId, 'Could not load support form. ' + error ) );
 		/* eslint-enable camelcase */
@@ -41,8 +41,8 @@ const initHappychat = ( nodeId, groups, formOptions ) => {
 };
 
 window.Happychat = {
-	open: ( nodeId, groups, formOptions ) => {
-		initHappychat( nodeId, groups, formOptions );
+	open: ( nodeId, groups, howCanWeHelpOptions, howDoYouFeelOptions ) => {
+		initHappychat( nodeId, groups, howCanWeHelpOptions, howDoYouFeelOptions );
 	},
 	on: ( eventName, callback ) => {
 		subscribeTo( eventName, callback );

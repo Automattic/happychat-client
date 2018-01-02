@@ -66,7 +66,8 @@ export class Form extends React.Component {
 			connectionStatus,
 			currentUserEmail,
 			disabled,
-			formOptions,
+			howCanWeHelpOptions,
+			howDoYouFeelOptions,
 			isChatOpen,
 			isCurrentUser,
 			isExternalUrl,
@@ -86,7 +87,8 @@ export class Form extends React.Component {
 		const contactForm = (
 			<ContactForm
 				canSubmitForm={ this.canSubmitForm }
-				options={ formOptions }
+				howCanWeHelpOptions={ howCanWeHelpOptions }
+				howDoYouFeelOptions={ howDoYouFeelOptions }
 				submitForm={ this.submitForm }
 			/>
 		);
@@ -115,7 +117,7 @@ export class Form extends React.Component {
 		let form = <MessageForm />;
 		if ( isChatOpen ) {
 			form = chatForm;
-		} else if ( formOptions && formOptions.length > 0 ) {
+		} else if ( howCanWeHelpOptions && howCanWeHelpOptions.length > 0 ) {
 			form = contactForm;
 		}
 		return form;
@@ -148,7 +150,8 @@ export class Form extends React.Component {
 
 Form.propTypes = {
 	accessToken: PropTypes.string.isRequired,
-	formOptions: PropTypes.array,
+	howCanWeHelpOptions: PropTypes.array,
+	howDoYouFeelOptions: PropTypes.array,
 };
 
 const mapState = state => {

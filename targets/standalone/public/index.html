@@ -12,15 +12,22 @@
   </style>
 </head>
 <body>
-    <div id="support"></div>
-    <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
-    <script type="text/javascript">
-    /** @format */
-Happychat.open(
-	'support',
-	[ 'woo' ],
-	[ { value: 'account', label: 'Account' }, { value: 'other', label: 'Other' } ]
-);
+  <div id="support"></div>
+  <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  Happychat.open(
+    'support',
+    [ 'woo' ],
+    [ { value: 'account', label: 'Account' }, { value: 'other', label: 'Other' } ],
+    [
+      { value: 'unspecified', label: "I'd rather not" },
+      { value: 'happy', label: 'Happy' },
+      { value: 'confused', label: 'Confused' },
+      { value: 'discouraged', label: 'Discouraged' },
+      { value: 'upset', label: 'Upset' },
+      { value: 'panicked', label: 'Panicked' },
+    ]
+  );
 </script>
 </body>
 </html>
