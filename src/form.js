@@ -46,8 +46,9 @@ export class Form extends React.Component {
 		this.submitForm = this.submitForm.bind( this );
 	}
 
-	submitForm() {
+	submitForm( formState ) {
 		this.props.onOpenChat();
+		this.props.onSendMessage( formState.message );
 	}
 
 	renderForm() {

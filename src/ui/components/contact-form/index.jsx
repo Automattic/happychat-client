@@ -22,6 +22,7 @@ export class ContactForm extends React.Component {
 		super( props );
 		this.state = { message: '' };
 		this.handleChange = this.handleChange.bind( this );
+		this.prepareSubmitForm = this.prepareSubmitForm.bind( this );
 	}
 
 	handleChange( e ) {
@@ -34,8 +35,13 @@ export class ContactForm extends React.Component {
 		return this.state.message !== '';
 	}
 
+	prepareSubmitForm() {
+		const { submitForm } = this.props;
+		submitForm( { message: this.state.message } );
+	}
+
 	render() {
-		const { options, submitForm } = this.props;
+		const { options } = this.props;
 
 		return (
 			<div className="contact-form">
@@ -50,7 +56,11 @@ export class ContactForm extends React.Component {
 					onChange={ this.handleChange }
 				/>
 
-				<FormButton disabled={ ! this.canSubmitForm() } type="button" onClick={ submitForm }>
+				<FormButton
+					disabled={ ! this.canSubmitForm() }
+					type="button"
+					onClick={ this.prepareSubmitForm }
+				>
 					Send
 				</FormButton>
 			</div>
