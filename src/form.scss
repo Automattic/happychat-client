@@ -8,6 +8,18 @@
 @import 'ui/css/shared/mixins/clear-text';
 @import 'ui/css/shared/forms';
 
-// components
+// contact-form dependencies
+@import 'ui/components/button/style';
+@import 'ui/components/form-button/style';
+@import 'ui/components/form-label/style';
+@import 'ui/components/segmented-control/style';
+
+// happychat-form dependencies
+@import 'ui/components/emojify/style';
+@import 'ui/components/timeline';
+@import 'ui/components/notices';
+@import 'ui/components/composer';
+
+// main components
 @import 'ui/components/happychat-form/style';
 @import 'ui/components/contact-form/style';
