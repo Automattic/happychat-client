@@ -14,7 +14,7 @@ import Card from 'src/ui/components/card';
 import FormTextarea from 'src/ui/components/form-textarea';
 import FormLabel from 'src/ui/components/form-label';
 import FormButton from 'src/ui/components/form-button';
-import SegmentedControl from 'src/ui/components/segmented-control';
+import FormSelection from 'src/ui/components/form-selection';
 
 export class ContactForm extends React.Component {
 	constructor( props ) {
@@ -48,12 +48,14 @@ export class ContactForm extends React.Component {
 				<Card>
 					<div>
 						<FormLabel>How can we help?</FormLabel>
-						<SegmentedControl options={ howCanWeHelpOptions } primary />
+						<FormSelection
+							options={ howCanWeHelpOptions }
+						/>
 					</div>
 					{ howDoYouFeelOptions && howDoYouFeelOptions.length > 0 ? (
 						<div>
 							<FormLabel>Mind sharing how do you feel?</FormLabel>
-							<SegmentedControl options={ howDoYouFeelOptions } primary />
+							<FormSelection options={ howDoYouFeelOptions } />
 						</div>
 					) : (
 						''

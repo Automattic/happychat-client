@@ -28,8 +28,7 @@ const store = createStore(
 export const renderTo = (
 	nodeId,
 	{ ID, email, username, display_name, avatar_URL, language, groups, accessToken },
-	howCanWeHelpOptions = [],
-	howDoYouFeelOptions = []
+	{ howCanWeHelpOptions = [], howDoYouFeelOptions = [] }
 ) => {
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );

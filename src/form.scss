@@ -7,14 +7,18 @@
 @import 'ui/css/shared/mixins/breakpoints';
 @import 'ui/css/shared/mixins/clear-fix';
 @import 'ui/css/shared/mixins/clear-text';
+@import 'ui/css/shared/mixins/noticon';
 @import 'ui/css/shared/forms';
 
 // contact-form dependencies
-@import 'ui/components/card/style';
 @import 'ui/components/button/style';
+@import 'ui/components/count/style';
+@import 'ui/components/card/style';
+@import 'ui/components/segmented-control/style';
+@import 'ui/components/select-dropdown/style';
 @import 'ui/components/form-button/style';
 @import 'ui/components/form-label/style';
-@import 'ui/components/segmented-control/style';
+@import 'ui/components/form-selection/style';
 
 // happychat-form dependencies
 @import 'ui/components/emojify/style';

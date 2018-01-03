@@ -1,0 +1,44 @@
+/** @format */
+
+.form-selection {
+	margin-bottom: 24px;
+
+	@include breakpoint( '>960px' ) {
+		margin-bottom: 32px;
+	}
+}
+
+.form-selection {
+	.select-dropdown__container {
+		// Make the dropdown span the width of the page
+		width: 100%;
+	}
+
+	.segmented-control {
+		// Hide the segmented control by default since it's only viewable in browsers wider than 960px
+		display: none;
+	}
+
+	@include breakpoint( '>960px' ) {
+		.segmented-control {
+			// Show the segmented control when the browser is wider than 960px
+			display: flex;
+		}
+
+		.segmented-control__text {
+			font-size: 14px;
+			line-height: 18px;
+		}
+
+		.select-dropdown {
+			// Hide the dropdown since we are now displaying the segmented control
+			display: none;
+		}
+	}
+}
+
+.form-selection__subtext {
+	display: block;
+	font-size: 11px;
+	line-height: 16px;
+}
