@@ -43,7 +43,7 @@ export class ContactForm extends React.Component {
 		return (
 			<div className="contact-form">
 				<CompactCard>
-					<p className="contact-form__header-title">Support</p>
+					<p className="contact-form__header-title">Contact Us</p>
 				</CompactCard>
 				<Card>
 					<div>
