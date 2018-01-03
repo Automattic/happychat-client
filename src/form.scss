@@ -5,10 +5,12 @@
 @import 'ui/css/shared/colors';
 @import 'ui/css/shared/typography';
 @import 'ui/css/shared/mixins/breakpoints';
+@import 'ui/css/shared/mixins/clear-fix';
 @import 'ui/css/shared/mixins/clear-text';
 @import 'ui/css/shared/forms';
 
 // contact-form dependencies
+@import 'ui/components/card/style';
 @import 'ui/components/button/style';
 @import 'ui/components/form-button/style';
 @import 'ui/components/form-label/style';

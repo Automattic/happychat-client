@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
+import CompactCard from 'src/ui/components/card/compact';
+import Card from 'src/ui/components/card';
 import FormTextarea from 'src/ui/components/form-textarea';
 import FormLabel from 'src/ui/components/form-label';
 import FormButton from 'src/ui/components/form-button';
@@ -40,32 +42,39 @@ export class ContactForm extends React.Component {
 
 		return (
 			<div className="contact-form">
-				<div>
-					<FormLabel>How can we help?</FormLabel>
-					<SegmentedControl options={ howCanWeHelpOptions } primary />
-				</div>
-				{ howDoYouFeelOptions && howDoYouFeelOptions.length > 0 ? (
+				<CompactCard>
+					<p className="contact-form__header-title">Support</p>
+				</CompactCard>
+				<Card>
 					<div>
-						<FormLabel>Mind sharing how do you feel?</FormLabel>
-						<SegmentedControl options={ howDoYouFeelOptions } primary />
+						<FormLabel>How can we help?</FormLabel>
+						<SegmentedControl options={ howCanWeHelpOptions } primary />
 					</div>
-				) : (
-					''
-				) }
-				<FormLabel>What are you trying to do?</FormLabel>
-				<FormTextarea
-					placeholder="Please be descriptive"
-					name="message"
-					value={ this.state.message }
-					onChange={ this.handleChange }
-				/>
-				<FormButton
-					disabled={ ! this.prepareCanSubmitForm() }
-					type="button"
-					onClick={ this.prepareSubmitForm }
-				>
-					Send
-				</FormButton>
+					{ howDoYouFeelOptions && howDoYouFeelOptions.length > 0 ? (
+						<div>
+							<FormLabel>Mind sharing how do you feel?</FormLabel>
+							<SegmentedControl options={ howDoYouFeelOptions } primary />
+						</div>
+					) : (
+						''
+					) }
+
+					<FormLabel>What are you trying to do?</FormLabel>
+					<FormTextarea
+						placeholder="Please be descriptive"
+						name="message"
+						value={ this.state.message }
+						onChange={ this.handleChange }
+					/>
+
+					<FormButton
+						disabled={ ! this.prepareCanSubmitForm() }
+						type="button"
+						onClick={ this.prepareSubmitForm }
+					>
+						Send
+					</FormButton>
+				</Card>
 			</div>
 		);
 	}
