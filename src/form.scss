@@ -4,7 +4,9 @@
 	// general styles
 	@import 'ui/css/shared/reset';
 
+	@import 'ui/css/shared/functions';
 	@import 'ui/css/shared/colors';
+	@import 'ui/css/shared/color-schemes';
 	@import 'ui/css/shared/typography';
 	@import 'ui/css/shared/mixins/breakpoints';
 	@import 'ui/css/shared/mixins/clear-fix';
