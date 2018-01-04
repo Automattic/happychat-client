@@ -15,19 +15,17 @@
   <div id="support"></div>
   <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
   <script type="text/javascript">
-  Happychat.open(
-    'support',
-    [ 'woo' ],
-    {
-      howCanWeHelpOptions: [
-        { value: 'before-buy', label: 'Before you buy' },
-        { value: 'account', label: 'Help with my account' },
-        { value: 'config', label: 'Help configuring' },
-        { value: 'order', label: 'Help with an order' },
-        { value: 'broken', label: 'Something is broken' },
-      ]
-    }
-  );
+  Happychat.open( {
+    nodeId: 'support',
+    groups: [ 'woo' ],
+    howCanWeHelpOptions: [
+      { value: 'before-buy', label: 'Before you buy' },
+      { value: 'account', label: 'Help with my account' },
+      { value: 'config', label: 'Help configuring' },
+      { value: 'order', label: 'Help with an order' },
+      { value: 'broken', label: 'Something is broken' },
+    ],
+  } );
 </script>
 </body>
 </html>

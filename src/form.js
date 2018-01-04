@@ -114,10 +114,8 @@ export class Form extends React.Component {
 			/>
 		);
 
-		let form = <MessageForm />;
-		if ( isChatOpen ) {
-			form = chatForm;
-		} else if ( howCanWeHelpOptions && howCanWeHelpOptions.length > 0 ) {
+		let form = chatForm;
+		if ( ! isChatOpen && howCanWeHelpOptions && howCanWeHelpOptions.length > 0 ) {
 			form = contactForm;
 		}
 		return form;

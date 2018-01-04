@@ -15,9 +15,6 @@ import ControlItem from 'src/ui/components/segmented-control/item';
 import SelectDropdown from 'src/ui/components/select-dropdown';
 import DropdownItem from 'src/ui/components/select-dropdown/item';
 
-import debugFactory from 'debug';
-const debug = debugFactory( 'happychat-client:options' );
-
 class FormSelection extends React.Component {
 	constructor( props ) {
 		super( props );
@@ -43,7 +40,6 @@ class FormSelection extends React.Component {
 			},
 		} ) );
 		const selectedItem = find( opts, 'props.selected' );
-		debug( 'selected ', selectedItem );
 
 		return (
 			<div className="form-selection">
