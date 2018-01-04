@@ -21,7 +21,7 @@ const debug = debugFactory( 'happychat-client:options' );
 class FormSelection extends React.Component {
 	constructor( props ) {
 		super( props );
-		this.state = { selection: props.defaultSelection || null };
+		this.state = { selection: this.props.options[ 0 ].value };
 	}
 
 	render() {
