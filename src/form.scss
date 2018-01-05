@@ -11,9 +11,9 @@
 	@import 'ui/css/main'; // globals
 
 	// contact-form dependencies
-	@import 'ui/components/button/style'; // globals
+	@import 'ui/components/button/style'; // global button
 	@import 'ui/components/count/style';
-	@import 'ui/components/card/style'; // globals
+	@import 'ui/components/card/style'; // global a.card
 	@import 'ui/components/segmented-control/style';
 	@import 'ui/components/select-dropdown/style';
 	@import 'ui/components/form-button/style';
@@ -21,7 +21,7 @@
 	@import 'ui/components/form-selection/style';
 
 	// happychat-form dependencies
-	@import 'ui/components/emojify/style'; // globals
+	@import 'ui/components/emojify/style'; // global img.emojify__emoji
 	@import 'ui/components/timeline';
 	@import 'ui/components/notices';
 	@import 'ui/components/composer';
