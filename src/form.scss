@@ -2,22 +2,18 @@
 
 .happychat-wrapper {
 	// general styles
-	@import 'ui/css/shared/reset';
-
-	@import 'ui/css/shared/functions';
-	@import 'ui/css/shared/colors';
+	@import 'ui/css/shared/reset'; // globals
+	@import 'ui/css/shared/utils';
 	@import 'ui/css/shared/color-schemes';
-	@import 'ui/css/shared/typography';
-	@import 'ui/css/shared/mixins/breakpoints';
-	@import 'ui/css/shared/mixins/clear-fix';
-	@import 'ui/css/shared/mixins/clear-text';
-	@import 'ui/css/shared/mixins/noticon';
-	@import 'ui/css/shared/forms';
+	@import 'ui/css/shared/animation'; // globals
+	@import 'ui/css/shared/forms'; // globals
+	@import 'ui/css/shared/dropdowns';
+	@import 'ui/css/main'; // globals
 
 	// contact-form dependencies
-	@import 'ui/components/button/style';
+	@import 'ui/components/button/style'; // globals
 	@import 'ui/components/count/style';
-	@import 'ui/components/card/style';
+	@import 'ui/components/card/style'; // globals
 	@import 'ui/components/segmented-control/style';
 	@import 'ui/components/select-dropdown/style';
 	@import 'ui/components/form-button/style';
@@ -25,7 +21,7 @@
 	@import 'ui/components/form-selection/style';
 
 	// happychat-form dependencies
-	@import 'ui/components/emojify/style';
+	@import 'ui/components/emojify/style'; // globals
 	@import 'ui/components/timeline';
 	@import 'ui/components/notices';
 	@import 'ui/components/composer';
