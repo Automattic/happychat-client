@@ -131,7 +131,7 @@ export class Form extends React.Component {
 		} = this.props;
 
 		return (
-			<div className="happychat-wrapper">
+			<div className="hcewrap">
 				<HappychatConnection
 					accessToken={ accessToken }
 					getAuth={ getAuth }
