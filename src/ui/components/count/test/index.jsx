@@ -1,12 +1,11 @@
 /** @format */
+
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { identity } from 'lodash';
 import React from 'react';
-import { spy } from 'sinon';
 
 /**
  * Internal dependencies
@@ -16,12 +15,12 @@ import { Count } from '../';
 describe( 'Count', () => {
 	test( 'should use the correct class name', () => {
 		const count = shallow( <Count count={ 23 } numberFormat={ identity } /> );
-		expect( count ).to.have.className( 'count' );
+		expect( count.hasClass( 'count' ) ).toBeTruthy();
 	} );
 
 	test( 'should call provided as prop numberFormat function', () => {
-		const numberFormatSpy = spy();
+		const numberFormatSpy = jest.fn();
 		shallow( <Count count={ 23 } numberFormat={ numberFormatSpy } /> );
-		expect( numberFormatSpy ).to.have.been.calledWith( 23 );
+		expect( numberFormatSpy.mock.calls[ 0 ][ 0 ] ).toBe( 23 );
 	} );
 } );
