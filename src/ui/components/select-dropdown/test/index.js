@@ -6,10 +6,8 @@
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import sinon from 'sinon';
 
 /**
  * Internal dependencies
@@ -20,45 +18,47 @@ describe( 'index', () => {
 	describe( 'component rendering', () => {
 		test( 'should render a list with the provided options', () => {
 			const dropdown = mountDropdown();
-			expect(
-				dropdown.find( '.select-dropdown__options li.select-dropdown__label' ).text()
-			).to.eql( 'Statuses' );
-			expect(
-				dropdown.find( '.select-dropdown__options li.select-dropdown__option' )
-			).to.have.lengthOf( 4 );
+			expect( dropdown.find( '.select-dropdown__options li.select-dropdown__label' ).text() ).toBe(
+				'Statuses'
+			);
+			expect( dropdown.find( '.select-dropdown__options li.select-dropdown__option' ).length ).toBe(
+				4
+			);
 		} );
 
 		test( 'should render a separator in place of any falsy option', () => {
 			const dropdown = mountDropdown();
 			expect(
-				dropdown.find( '.select-dropdown__options li.select-dropdown__separator' )
-			).to.have.lengthOf( 1 );
+				dropdown.find( '.select-dropdown__options li.select-dropdown__separator' ).length
+			).toBe( 1 );
 		} );
 
 		test( 'should be initially closed', () => {
 			const dropdown = shallowRenderDropdown();
-			expect( dropdown.find( '.select-dropdown' ) ).to.have.lengthOf( 1 );
-			expect( dropdown.find( '.select-dropdown.is-open' ) ).to.be.empty;
+			expect( dropdown.find( '.select-dropdown' ).length ).toBe( 1 );
+			expect( dropdown.find( '.select-dropdown.is-open' ).length ).toBe( 0 );
 		} );
 
 		test( 'should execute toggleDropdown when clicked', () => {
-			const toggleDropdownStub = sinon.stub( SelectDropdown.prototype, 'toggleDropdown' );
+			const originalToggleDropdown = SelectDropdown.prototype.toggleDropdown;
+			SelectDropdown.prototype.toggleDropdown = jest.fn();
 
 			const dropdown = shallowRenderDropdown();
 			dropdown.find( '.select-dropdown__container' ).simulate( 'click' );
 
-			sinon.assert.calledOnce( toggleDropdownStub );
-			toggleDropdownStub.restore();
+			expect( SelectDropdown.prototype.toggleDropdown.mock.calls.length ).toBe( 1 );
+			SelectDropdown.prototype.toggleDropdown = originalToggleDropdown;
 		} );
 
 		test( 'should be possible to control the dropdown via keyboard', () => {
-			const navigateItemStub = sinon.stub( SelectDropdown.prototype, 'navigateItem' );
+			const originalNavigateItem = SelectDropdown.prototype.navigateItem;
+			SelectDropdown.prototype.navigateItem = jest.fn();
 
 			const dropdown = shallowRenderDropdown();
 			dropdown.find( '.select-dropdown__container' ).simulate( 'keydown' );
 
-			sinon.assert.calledOnce( navigateItemStub );
-			navigateItemStub.restore();
+			expect( SelectDropdown.prototype.navigateItem.mock.calls.length ).toBe( 1 );
+			SelectDropdown.prototype.navigateItem = originalNavigateItem;
 		} );
 	} );
 
@@ -66,18 +66,18 @@ describe( 'index', () => {
 		test( 'should return the initially selected value (if any)', () => {
 			const dropdown = shallowRenderDropdown( { initialSelected: 'drafts' } );
 			const initialSelectedValue = dropdown.instance().getInitialSelectedItem();
-			expect( initialSelectedValue ).to.equal( 'drafts' );
+			expect( initialSelectedValue ).toBe( 'drafts' );
 		} );
 
 		test( "should return `undefined`, when there aren't options", () => {
 			const dropdown = shallow( <SelectDropdown /> );
-			expect( dropdown.instance().getInitialSelectedItem() ).to.be.undefined;
+			expect( dropdown.instance().getInitialSelectedItem() ).toBeUndefined();
 		} );
 
 		test( "should return the first not-label option, when there isn't a preselected value", () => {
 			const dropdown = shallowRenderDropdown();
 			const initialSelectedValue = dropdown.instance().getInitialSelectedItem();
-			expect( initialSelectedValue ).to.equal( 'published' );
+			expect( initialSelectedValue ).toBe( 'published' );
 		} );
 	} );
 
@@ -85,73 +85,60 @@ describe( 'index', () => {
 		test( 'should return the initially selected text (if any)', () => {
 			const dropdown = shallowRenderDropdown( { selectedText: 'Drafts' } );
 			const initialSelectedText = dropdown.instance().getSelectedText();
-			expect( initialSelectedText ).to.equal( 'Drafts' );
+			expect( initialSelectedText ).toBe( 'Drafts' );
 		} );
 
 		test( 'should return the `label` associated to the selected option', () => {
 			const dropdown = shallowRenderDropdown();
 			const initialSelectedText = dropdown.instance().getSelectedText();
-			expect( initialSelectedText ).to.equal( 'Published' );
+			expect( initialSelectedText ).toBe( 'Published' );
 		} );
 
 		test( "should return the `label` associated to the initial selected option, when there isn't any selected option", () => {
-			const getInitialSelectedItemStub = sinon.stub(
-				SelectDropdown.prototype,
-				'getInitialSelectedItem'
-			);
-			getInitialSelectedItemStub.returns( undefined );
-
+			const originalGetInitialSelectedItem = SelectDropdown.prototype.getInitialSelectedItem;
+			SelectDropdown.prototype.getInitialSelectedItem = jest.fn().mockReturnValue( 'scheduled' );
 			const dropdown = shallowRenderDropdown();
-
-			getInitialSelectedItemStub.reset().returns( 'scheduled' );
-
 			const initialSelectedText = dropdown.instance().getSelectedText();
-
-			sinon.assert.calledOnce( getInitialSelectedItemStub );
-			expect( initialSelectedText ).to.equal( 'Scheduled' );
-
-			getInitialSelectedItemStub.restore();
+			expect( initialSelectedText ).toBe( 'Scheduled' );
+			SelectDropdown.prototype.getInitialSelectedItem = originalGetInitialSelectedItem;
 		} );
 	} );
 
 	describe( 'selectItem', () => {
 		test( 'should run the `onSelect` hook, and then update the state', () => {
-			const setStateStub = sinon.stub( React.Component.prototype, 'setState' );
+			const originalSetState = React.Component.prototype.setState;
+			React.Component.prototype.setState = jest.fn();
 
 			const dropdownOptions = getDropdownOptions();
-			const onSelectSpy = sinon.spy();
+			const onSelectSpy = jest.fn();
 			const dropdown = mount(
 				<SelectDropdown options={ dropdownOptions } onSelect={ onSelectSpy } />
 			);
 
-			setStateStub.reset();
-
 			const newSelectedOption = dropdownOptions[ 2 ];
 			dropdown.instance().selectItem( newSelectedOption );
 
-			sinon.assert.calledOnce( onSelectSpy );
-			sinon.assert.calledOnce( setStateStub );
-			sinon.assert.calledWith( setStateStub, { selected: newSelectedOption.value } );
-
-			setStateStub.restore();
+			expect( onSelectSpy.mock.calls.length ).toBe( 1 );
+			expect( React.Component.prototype.setState ).lastCalledWith( {
+				selected: newSelectedOption.value,
+			} );
+			React.Component.prototype.setState = originalSetState;
 		} );
 	} );
 
 	describe( 'toggleDropdown', () => {
 		test( 'should toggle the `isOpen` state property', () => {
 			function runToggleDropdownTest( isCurrentlyOpen ) {
-				const setStateSpy = sinon.spy();
 				const fakeContext = {
-					setState: setStateSpy,
+					setState: jest.fn(),
 					state: {
 						isOpen: isCurrentlyOpen,
 					},
 				};
 
 				SelectDropdown.prototype.toggleDropdown.call( fakeContext );
-
-				sinon.assert.calledOnce( setStateSpy );
-				sinon.assert.calledWith( setStateSpy, { isOpen: ! isCurrentlyOpen } );
+				expect( fakeContext.setState.mock.calls.length ).toBe( 1 );
+				expect( fakeContext.setState ).lastCalledWith( { isOpen: ! isCurrentlyOpen } );
 			}
 
 			runToggleDropdownTest( true );
@@ -161,21 +148,21 @@ describe( 'index', () => {
 
 	describe( 'openDropdown', () => {
 		test( 'should set the `isOpen` state property equal `true`', () => {
-			const setStateSpy = sinon.spy();
+			const setStateSpy = jest.fn();
 			const fakeContext = {
 				setState: setStateSpy,
 			};
 
 			SelectDropdown.prototype.openDropdown.call( fakeContext );
 
-			sinon.assert.calledOnce( setStateSpy );
-			sinon.assert.calledWith( setStateSpy, { isOpen: true } );
+			expect( setStateSpy.mock.calls.length ).toBe( 1 );
+			expect( setStateSpy ).lastCalledWith( { isOpen: true } );
 		} );
 	} );
 
 	describe( 'closeDropdown', () => {
 		test( "shouldn't do anything when the dropdown is already closed", () => {
-			const setStateSpy = sinon.spy();
+			const setStateSpy = jest.fn();
 			const fakeContext = {
 				setState: setStateSpy,
 				state: {
@@ -185,11 +172,11 @@ describe( 'index', () => {
 
 			SelectDropdown.prototype.closeDropdown.call( fakeContext );
 
-			sinon.assert.notCalled( setStateSpy );
+			expect( setStateSpy.mock.calls.length ).toBe( 0 );
 		} );
 
 		test( 'should set the `isOpen` state property equal `false`', () => {
-			const setStateSpy = sinon.spy();
+			const setStateSpy = jest.fn();
 			const fakeContext = {
 				focused: 1,
 				setState: setStateSpy,
@@ -200,10 +187,10 @@ describe( 'index', () => {
 
 			SelectDropdown.prototype.closeDropdown.call( fakeContext );
 
-			sinon.assert.calledOnce( setStateSpy );
-			sinon.assert.calledWith( setStateSpy, { isOpen: false } );
+			expect( setStateSpy.mock.calls.length ).toBe( 1 );
+			expect( setStateSpy ).lastCalledWith( { isOpen: false } );
 
-			expect( fakeContext.focused ).to.be.undefined;
+			expect( fakeContext.focused ).toBeUndefined();
 		} );
 	} );
 
@@ -215,8 +202,8 @@ describe( 'index', () => {
 
 			SelectDropdown.prototype.navigateItem.call( fakeContext, fakeEvent );
 
-			sinon.assert.calledOnce( fakeContext.navigateItemByTabKey );
-			sinon.assert.calledWith( fakeContext.navigateItemByTabKey, fakeEvent );
+			expect( fakeContext.navigateItemByTabKey.mock.calls.length ).toBe( 1 );
+			expect( fakeContext.navigateItemByTabKey ).lastCalledWith( fakeEvent );
 		} );
 
 		test( 'permits to select an option by pressing ENTER, or SPACE', () => {
@@ -226,8 +213,8 @@ describe( 'index', () => {
 
 				SelectDropdown.prototype.navigateItem.call( fakeContext, fakeEvent );
 
-				sinon.assert.calledOnce( fakeEvent.preventDefault );
-				sinon.assert.calledOnce( fakeContext.activateItem );
+				expect( fakeEvent.preventDefault.mock.calls.length ).toBe( 1 );
+				expect( fakeContext.activateItem.mock.calls.length ).toBe( 1 );
 			}
 
 			const enterKeyCode = 13;
@@ -243,14 +230,14 @@ describe( 'index', () => {
 
 			SelectDropdown.prototype.navigateItem.call( fakeContext, fakeEvent );
 
-			sinon.assert.calledOnce( fakeEvent.preventDefault );
+			expect( fakeEvent.preventDefault.mock.calls.length ).toBe( 1 );
 
 			const {
 				refs: { dropdownContainer: { focus: focusSpy } },
 				closeDropdown: closeDropdownSpy,
 			} = fakeContext;
-			sinon.assert.calledOnce( closeDropdownSpy );
-			sinon.assert.calledOnce( focusSpy );
+			expect( closeDropdownSpy.mock.calls.length ).toBe( 1 );
+			expect( focusSpy.mock.calls.length ).toBe( 1 );
 		} );
 
 		test( "permits to open the dropdown, and navigate through the dropdown's options by pressing the arrow UP/DOWN keys", () => {
@@ -260,12 +247,12 @@ describe( 'index', () => {
 
 				SelectDropdown.prototype.navigateItem.call( fakeContext, fakeEvent );
 
-				sinon.assert.calledOnce( fakeEvent.preventDefault );
+				expect( fakeEvent.preventDefault.mock.calls.length ).toBe( 1 );
 
-				sinon.assert.calledOnce( fakeContext.focusSibling );
-				sinon.assert.calledWith( fakeContext.focusSibling, direction );
+				expect( fakeContext.focusSibling.mock.calls.length ).toBe( 1 );
+				expect( fakeContext.focusSibling ).lastCalledWith( direction );
 
-				sinon.assert.calledOnce( fakeContext.openDropdown );
+				expect( fakeContext.openDropdown.mock.calls.length ).toBe( 1 );
 			}
 
 			const arrowUp = { keyCode: 38, direction: 'previous' };
@@ -278,21 +265,21 @@ describe( 'index', () => {
 			return {
 				refs: {
 					dropdownContainer: {
-						focus: sinon.spy(),
+						focus: jest.fn(),
 					},
 				},
-				activateItem: sinon.spy(),
-				closeDropdown: sinon.spy(),
-				focusSibling: sinon.spy(),
-				navigateItemByTabKey: sinon.spy(),
-				openDropdown: sinon.spy(),
+				activateItem: jest.fn(),
+				closeDropdown: jest.fn(),
+				focusSibling: jest.fn(),
+				navigateItemByTabKey: jest.fn(),
+				openDropdown: jest.fn(),
 			};
 		}
 
 		function prepareFakeEvent( keyCode ) {
 			return {
 				keyCode,
-				preventDefault: sinon.spy(),
+				preventDefault: jest.fn(),
 			};
 		}
 	} );
