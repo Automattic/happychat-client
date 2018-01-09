@@ -10,7 +10,7 @@ describe( 'Connection', () => {
 	beforeEach( () => {
 		component = new HappychatConnection();
 		component.props = {
-			initConnection: jest.fn(),
+			onInitConnection: jest.fn(),
 			getAuth: jest.fn(),
 		};
 	} );
@@ -19,20 +19,20 @@ describe( 'Connection', () => {
 		component.props.isConnectionUninitialized = true;
 		component.props.isHappychatEnabled = true;
 		component.componentDidMount();
-		expect( component.props.initConnection ).toHaveBeenCalled();
+		expect( component.props.onInitConnection ).toHaveBeenCalled();
 	} );
 
 	test( 'do not initConnection if connection is not uninitialized', () => {
 		component.props.isConnectionUninitialized = false;
 		component.props.isHappychatEnabled = true;
 		component.componentDidMount();
-		expect( component.props.initConnection ).not.toHaveBeenCalled();
+		expect( component.props.onInitConnection ).not.toHaveBeenCalled();
 	} );
 
 	test( 'do not initConnection if happychat is not enabled', () => {
 		component.props.isConnectionUninitialized = true;
 		component.props.isHappychatEnabled = false;
 		component.componentDidMount();
-		expect( component.props.initConnection ).not.toHaveBeenCalled();
+		expect( component.props.onInitConnection ).not.toHaveBeenCalled();
 	} );
 } );
