@@ -1,8 +1,8 @@
 /** @format */
+
 /**
  * External dependencies
  */
-import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import Gridicon from 'gridicons';
 import React from 'react';
@@ -16,34 +16,32 @@ describe( 'Button', () => {
 	describe( 'renders', () => {
 		test( 'with modifiers', () => {
 			const button = shallow( <Button scary primary borderless compact /> );
-			expect( button ).to.have.className( 'is-compact' );
-			expect( button ).to.have.className( 'is-primary' );
-			expect( button ).to.have.className( 'is-scary' );
-			expect( button ).to.have.className( 'is-borderless' );
+			expect( button.hasClass( 'is-compact' ) ).toBeTruthy();
+			expect( button.hasClass( 'is-primary' ) ).toBeTruthy();
+			expect( button.hasClass( 'is-scary' ) ).toBeTruthy();
+			expect( button.hasClass( 'is-borderless' ) ).toBeTruthy;
 		} );
 
 		test( 'without modifiers', () => {
 			const button = shallow( <Button /> );
-			expect( button ).to.have.className( 'button' );
-			expect( button ).to.not.have.className( 'is-compact' );
-			expect( button ).to.not.have.className( 'is-primary' );
-			expect( button ).to.not.have.className( 'is-scary' );
-			expect( button ).to.not.have.className( 'is-borderless' );
+			expect( button.hasClass( 'button' ) ).toBeTruthy();
+			expect( button.hasClass( 'is-compact' ) ).not.toBeTruthy();
+			expect( button.hasClass( 'is-primary' ) ).not.toBeTruthy();
+			expect( button.hasClass( 'is-scary' ) ).not.toBeTruthy();
+			expect( button.hasClass( 'is-borderless' ) ).not.toBeTruthy();
 		} );
 
 		test( 'disabled', () => {
 			const button = shallow( <Button disabled /> );
-			expect( button ).to.be.disabled;
+			expect( button.html() ).toBe( '<button disabled="" type="button" class="button"></button>' );
 		} );
 
 		test( 'with child', () => {
 			const iconType = 'arrow-left';
 			const icon = <Gridicon size={ 18 } icon={ iconType } />;
 			const button = shallow( <Button>{ icon }</Button> );
-			expect( button ).to.contain( icon );
-			expect( button.find( Gridicon ) )
-				.to.have.prop( 'icon' )
-				.equal( iconType );
+			expect( button.contains( icon ) ).toBeTruthy();
+			expect( button.find( Gridicon ).prop( 'icon' ) ).toBe( iconType );
 		} );
 	} );
 
@@ -51,16 +49,14 @@ describe( 'Button', () => {
 		test( 'renders as a link', () => {
 			const button = shallow( <Button href="https://wordpress.com/" /> );
 
-			expect( button ).to.match( 'a' );
-			expect( button )
-				.to.have.prop( 'href' )
-				.equal( 'https://wordpress.com/' );
+			expect( button.is( 'a' ) ).toBeTruthy();
+			expect( button.prop( 'href' ) ).toBe( 'https://wordpress.com/' );
 		} );
 
 		test( 'ignores type prop and renders a link without type attribute', () => {
 			const button = shallow( <Button href="https://wordpress.com/" type="submit" /> );
 
-			expect( button ).to.not.have.prop( 'type' );
+			expect( button.prop( 'type' ) ).toBeUndefined();
 		} );
 
 		test( 'including target and rel props renders a link with target and rel attributes', () => {
@@ -68,23 +64,15 @@ describe( 'Button', () => {
 				<Button href="https://wordpress.com/" target="_blank" rel="noopener noreferrer" />
 			);
 
-			expect( button )
-				.to.have.prop( 'target' )
-				.equal( '_blank' );
-			expect( button )
-				.to.have.prop( 'rel' )
-				.equal( 'noopener noreferrer' );
+			expect( button.prop( 'target' ) ).toBe( '_blank' );
+			expect( button.prop( 'rel' ) ).toBe( 'noopener noreferrer' );
 		} );
 
 		test( 'adds noopener noreferrer rel if target is specified', () => {
 			const button = shallow( <Button href="https://wordpress.com/" target="_blank" /> );
 
-			expect( button )
-				.to.have.prop( 'target' )
-				.equal( '_blank' );
-			expect( button )
-				.to.have.prop( 'rel' )
-				.equal( 'noopener noreferrer' );
+			expect( button.prop( 'target' ) ).toBe( '_blank' );
+			expect( button.prop( 'rel' ) ).toBe( 'noopener noreferrer' );
 		} );
 	} );
 
@@ -92,14 +80,12 @@ describe( 'Button', () => {
 		const button = shallow( <Button target="_blank" rel="noopener noreferrer" /> );
 
 		test( 'renders as a button', () => {
-			expect( button ).to.match( 'button' );
-			expect( button ).to.not.have.prop( 'href' );
+			expect( button.is( 'button' ) ).toBeTruthy();
+			expect( button.prop( 'href' ) ).toBeUndefined();
 		} );
 
 		test( 'renders button with type attribute set to "button" by default', () => {
-			expect( button )
-				.to.have.prop( 'type' )
-				.equal( 'button' );
+			expect( button.prop( 'type' ) ).toBe( 'button' );
 		} );
 
 		test( 'renders button with type attribute set to type prop if specified', () => {
@@ -108,14 +94,12 @@ describe( 'Button', () => {
 				<Button target="_blank" rel="noopener noreferrer" type={ typeProp } />
 			);
 
-			expect( submitButton )
-				.to.have.prop( 'type' )
-				.equal( typeProp );
+			expect( submitButton.prop( 'type' ) ).toBe( typeProp );
 		} );
 
 		test( 'renders button without rel and target attributes', () => {
-			expect( button ).to.not.have.prop( 'target' );
-			expect( button ).to.not.have.prop( 'rel' );
+			expect( button.prop( 'target' ) ).toBeUndefined();
+			expect( button.prop( 'rel' ) ).toBeUndefined();
 		} );
 	} );
 } );
