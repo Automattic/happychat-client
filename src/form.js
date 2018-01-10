@@ -3,7 +3,7 @@
 /**
  * External dependencies
  */
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -19,7 +19,7 @@ import {
 	sendNotTyping,
 	sendTyping,
 } from 'src/state/connection/actions';
-import { blur, focus, setCurrentMessage } from 'src/state/ui/actions';
+import { blur, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
 
 // selectors
 import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
@@ -31,122 +31,125 @@ import getUser from 'src/state/selectors/get-user';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
 import isHCServerReachable from 'src/state/selectors/is-server-reachable';
+import isChatFormOpen from 'src/state/selectors/is-chatform-open';
+import isAvailable from 'src/state/selectors/is-available';
 
 // UI components
 import { mockLocalize } from 'src/ui/components/localize'; // TODO implement localize
 import { HappychatConnection } from 'src/ui/components/connection';
-import { Composer } from 'src/ui/components/composer';
-import { Notices } from 'src/ui/components/notices';
-import { Timeline } from 'src/ui/components/timeline';
+import { HappychatForm } from 'src/ui/components/happychat-form';
+import { ContactForm } from 'src/ui/components/contact-form';
+import { MessageForm } from 'src/ui/components/message-form';
 
-/**
- * React component for rendering a happychat client as a full page
- */
-export class HappychatPage extends Component {
+export class Form extends React.Component {
 	constructor( props ) {
 		super( props );
-		this.onUnload = this.onUnload.bind( this );
+		this.submitForm = this.submitForm.bind( this );
+		this.canSubmitForm = this.canSubmitForm.bind( this );
 	}
 
-	componentDidMount() {
-		this.props.setFocused();
-		window.addEventListener( 'beforeunload', this.onUnload );
+	submitForm( formState ) {
+		const { onOpenChat, onSendMessage } = this.props;
+		if ( this.canSubmitForm() ) {
+			onOpenChat();
+			onSendMessage( formState.message );
+		}
 	}
 
-	componentWillUnmount() {
-		this.props.setBlurred();
-		window.removeEventListener( 'beforeunload', this.onUnload );
+	canSubmitForm() {
+		return this.props.isChatAvailable;
 	}
 
-	onUnload( e ) {
-		e.returnValue = 'The chat session will end if the page is reloaded';
-		return e.returnValue;
-	}
-
-	render() {
+	renderForm() {
 		const {
-			accessToken,
 			chatStatus,
 			connectionStatus,
 			currentUserEmail,
 			disabled,
-			getAuth,
-			isConnectionUninitialized,
+			howCanWeHelpOptions,
+			howDoYouFeelOptions,
+			isChatOpen,
 			isCurrentUser,
 			isExternalUrl,
-			isHappychatEnabled,
 			isServerReachable,
 			message,
-			onInitConnection,
 			onSendMessage,
 			onSendNotTyping,
 			onSendTyping,
 			onSetCurrentMessage,
+			setBlurred,
+			setFocused,
 			timeline,
 			translate,
 			twemojiUrl,
 		} = this.props;
 
+		const contactForm = (
+			<ContactForm
+				canSubmitForm={ this.canSubmitForm }
+				howCanWeHelpOptions={ howCanWeHelpOptions }
+				howDoYouFeelOptions={ howDoYouFeelOptions }
+				submitForm={ this.submitForm }
+			/>
+		);
+		const chatForm = (
+			<HappychatForm
+				chatStatus={ chatStatus }
+				connectionStatus={ connectionStatus }
+				currentUserEmail={ currentUserEmail }
+				disabled={ disabled }
+				isCurrentUser={ isCurrentUser }
+				isExternalUrl={ isExternalUrl }
+				isServerReachable={ isServerReachable }
+				message={ message }
+				onSendMessage={ onSendMessage }
+				onSendNotTyping={ onSendNotTyping }
+				onSendTyping={ onSendTyping }
+				onSetCurrentMessage={ onSetCurrentMessage }
+				setBlurred={ setBlurred }
+				setFocused={ setFocused }
+				timeline={ timeline }
+				translate={ translate }
+				twemojiUrl={ twemojiUrl }
+			/>
+		);
+
+		let form = chatForm;
+		if ( ! isChatOpen && howCanWeHelpOptions && howCanWeHelpOptions.length > 0 ) {
+			form = contactForm;
+		}
+		return form;
+	}
+
+	render() {
+		const {
+			accessToken,
+			getAuth,
+			isConnectionUninitialized,
+			isHappychatEnabled,
+			onInitConnection,
+		} = this.props;
+
 		return (
-			<div className="happychat__page" aria-live="polite" aria-relevant="additions">
+			<div className="hcewrap">
 				<HappychatConnection
 					accessToken={ accessToken }
 					getAuth={ getAuth }
-					initConnection={ onInitConnection }
 					isConnectionUninitialized={ isConnectionUninitialized }
 					isHappychatEnabled={ isHappychatEnabled }
+					onInitConnection={ onInitConnection }
 				/>
-				<Timeline
-					currentUserEmail={ currentUserEmail }
-					isCurrentUser={ isCurrentUser }
-					isExternalUrl={ isExternalUrl }
-					timeline={ timeline }
-					translate={ translate }
-					twemojiUrl={ twemojiUrl }
-				/>
-				<Notices
-					chatStatus={ chatStatus }
-					connectionStatus={ connectionStatus }
-					isServerReachable={ isServerReachable }
-					translate={ translate }
-				/>
-				<Composer
-					disabled={ disabled }
-					message={ message }
-					onSendMessage={ onSendMessage }
-					onSendNotTyping={ onSendNotTyping }
-					onSendTyping={ onSendTyping }
-					onSetCurrentMessage={ onSetCurrentMessage }
-					translate={ translate }
-				/>
+
+				{ this.renderForm() }
 			</div>
 		);
 	}
 }
 
-HappychatPage.propTypes = {
-	accessToken: PropTypes.string,
-	chatStatus: PropTypes.string,
-	connectionStatus: PropTypes.string,
-	currentUserEmail: PropTypes.string,
-	disabled: PropTypes.bool,
-	getAuth: PropTypes.func,
-	isConnectionUninitialized: PropTypes.bool,
-	isCurrentUser: PropTypes.func,
-	isExternalUrl: PropTypes.func,
-	isHappychatEnabled: PropTypes.bool,
-	isServerReachable: PropTypes.bool,
-	message: PropTypes.string,
-	onInitConnection: PropTypes.func,
-	onSendMessage: PropTypes.func,
-	onSendNotTyping: PropTypes.func,
-	onSendTyping: PropTypes.func,
-	onSetCurrentMessage: PropTypes.func,
-	setBlurred: PropTypes.func,
-	setFocused: PropTypes.func,
-	timeline: PropTypes.array,
-	translate: PropTypes.func,
-	twemojiUrl: PropTypes.string,
+Form.propTypes = {
+	accessToken: PropTypes.string.isRequired,
+	howCanWeHelpOptions: PropTypes.array,
+	howDoYouFeelOptions: PropTypes.array,
 };
 
 const mapState = state => {
@@ -157,6 +160,8 @@ const mapState = state => {
 		currentUserEmail: currentUser.email,
 		disabled: ! canUserSendMessages( state ),
 		getAuth: getHappychatAuth( state ),
+		isChatOpen: isChatFormOpen( state ),
+		isChatAvailable: isAvailable( state ),
 		isConnectionUninitialized: isHCConnectionUninitialized( state ),
 		isCurrentUser: ( { source } ) => {
 			return source === 'customer';
@@ -172,6 +177,7 @@ const mapState = state => {
 
 const mapDispatch = {
 	onInitConnection: initConnection,
+	onOpenChat: openChat,
 	onSendMessage: sendMessage,
 	onSendNotTyping: sendNotTyping,
 	onSendTyping: sendTyping,
@@ -180,4 +186,4 @@ const mapDispatch = {
 	setFocused: focus,
 };
 
-export default connect( mapState, mapDispatch )( mockLocalize( HappychatPage ) );
+export default connect( mapState, mapDispatch )( mockLocalize( Form ) );

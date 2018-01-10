@@ -24,7 +24,11 @@ if ( window.Happychat ) {
 	// Render Happychat to the HTML node provided, but hide it by default
 	jQuery( 'div.post.wrap .entry' ).append( '<div id="happychat-form"></div>' );
 	jQuery( happychat ).css( 'display', 'none' );
-	Happychat.open( 'happychat-form', happychatSettings.groups, happychatSettings.token );
+	Happychat.open( {
+		nodeId: 'happychat-form',
+		groups: happychatSettings.groups,
+		accessToken: happychatSettings.token,
+	} );
 
 	var isHappychatAvailable = false;
 	var hasOngoingConversation = false;

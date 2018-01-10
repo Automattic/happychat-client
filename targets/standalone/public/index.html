@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <meta charset="utf-8">
-        <title>Happychat Embedded</title>
-        <link rel="stylesheet" href="./happychat.css">
-        <style>
-        body {
-          margin-left: 25%;
-          margin-right: 25%;
-        }
-        </style>
+  <meta charset="utf-8">
+  <title>Happychat Embedded</title>
+  <link rel="stylesheet" href="./happychat.css">
+  <link rel="stylesheet" href="http://s1.wp.com/i/noticons/noticons.css">
+  <style>
+  body {
+    margin-left: 12%;
+    margin-right: 12%;
+  }
+  </style>
 </head>
 <body>
-        <article>
-          <h3>Title</h3>
-          <p>Occaecati qui hic quia totam eos similique adipisci quis.
-            Nesciunt qui voluptatem qui. Qui deleniti rem fugit possimus
-            et cupiditate vel commodi. Quasi nam consequatur exercitationem
-            ut sit qui delectus quia. Quas occaecati est vel perferendis.</p>
-          <div id="chat"></div>
-          <p>Occaecati qui hic quia totam eos similique adipisci quis.
-            Nesciunt qui voluptatem qui. Qui deleniti rem fugit possimus
-            et cupiditate vel commodi. Quasi nam consequatur exercitationem
-            ut sit qui delectus quia. Quas occaecati est vel perferendis.</p>
-        </article>
-        <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
-        <script type="text/javascript">
-            Happychat.open( 'chat', [ 'woo' ] );
-            Happychat.on( 'availability', function( isAvailable ){
-              console.log( 'isAvailable: ', isAvailable );
-            });
-            Happychat.on( 'ongoingConversation', function( hasOngoingConversation ){
-              console.log( 'hasOngoingConversation: ', hasOngoingConversation );
-            })
-        </script>
+  <div id="support"></div>
+  <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
+  <script type="text/javascript">
+  Happychat.open( {
+    nodeId: 'support',
+    groups: [ 'woo' ],
+    howCanWeHelpOptions: [
+      { value: 'before-buy', label: 'Before you buy' },
+      { value: 'account', label: 'Help with my account' },
+      { value: 'config', label: 'Help configuring' },
+      { value: 'order', label: 'Help with an order' },
+      { value: 'broken', label: 'Something is broken' },
+    ],
+  } );
+</script>
 </body>
 </html>

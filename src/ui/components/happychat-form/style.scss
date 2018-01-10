@@ -1,8 +1,5 @@
 /** @format */
 
-@import 'css/shared/colors';
-@import 'css/shared/typography';
-
 // experiment: style scrollbars
 .happychat__page {
 	::-webkit-scrollbar {
@@ -47,8 +44,3 @@
 .happychat__submit {
 	border: 0;
 }
-
-@import 'components/emojify/style';
-@import 'components/timeline';
-@import 'components/notices';
-@import 'components/composer';

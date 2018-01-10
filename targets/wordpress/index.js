@@ -1,55 +1,18 @@
 /** @format */
 
 /**
- * External dependencies
- */
-import debugFactory from 'debug';
-
-/**
  * Internal dependencies
  */
-import getUser from 'targets/common/get-wpcom-user';
-import { renderTo, subscribeTo, unsubscribeFrom } from 'src';
+import { initHappychat, subscribeTo, unsubscribeFrom } from 'src';
 
-const debug = debugFactory( 'happychat-client:standalone' );
-debug( 'loading happychat library ' );
-
-const initHappychat = ( nodeId, groups, accessToken ) => {
-	debug( 'starting happychat' );
-	/* eslint-disable camelcase */
-	getUser( accessToken )
-		.then( ( { ID, email, username, display_name, avatar_URL, language } ) => {
-			debug( 'render Happychat' );
-			// it is the host responsibility to set the groups on init, although that
-			// although that data is not in the wpcom API response
-			renderTo(
-				nodeId,
-				{
-					ID,
-					email,
-					username,
-					display_name,
-					avatar_URL,
-					language,
-					groups,
-				},
-				accessToken
-			);
-		} )
-		.catch( error => {
-			debug( 'could not get user info: ', error );
-		} );
-	/* eslint-enable camelcase */
-};
-
+// TODO enable form
+// form is not ready to be embedded, so hold off enabling the API in the meanwhile
 window.Happychat = {
-	open: ( nodeId, groups, accessToken ) => {
-		initHappychat( nodeId, groups, accessToken );
+	// open: ( { nodeId, groups, accessToken, howCanWeHelpOptions, howDoYouFeelOptions } ) => {
+	open: ( { nodeId, groups, accessToken } ) => {
+		// initHappychat( { nodeId, groups, accessToken, howCanWeHelpOptions, howDoYouFeelOptions } );
+		initHappychat( { nodeId, groups, accessToken } );
 	},
-	on: ( eventName, callback ) => {
-		subscribeTo( eventName, callback );
-	},
-	off: ( eventName, callback ) => {
-		unsubscribeFrom( eventName, callback );
-	},
+	on: ( eventName, subscriber ) => subscribeTo( eventName, subscriber ),
+	off: ( eventName, subscriber ) => unsubscribeFrom( eventName, subscriber ),
 };
