@@ -41,6 +41,7 @@
     "deep-freeze": "0.0.1",
     "enzyme": "3.2.0",
     "enzyme-adapter-react-15": "1.0.3",
+    "enzyme-to-json": "3.3.0",
     "eslint": "3.8.1",
     "eslint-config-wpcalypso": "1.2.0",
     "eslint-plugin-react": "7.1.0",
