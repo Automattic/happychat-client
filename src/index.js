@@ -38,6 +38,16 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
+const getTargetNode = nodeId => {
+	const iframeElement = document.createElement( 'iframe' );
+	// React advises to use an element -not the body itself- as the target render,
+	// that's why we create this wrapperElement.
+	const wrapperElement = document.createElement( 'div' );
+	document.getElementById( nodeId ).appendChild( iframeElement );
+	iframeElement.contentDocument.body.appendChild( wrapperElement );
+	return wrapperElement;
+};
+
 /* eslint-disable camelcase */
 const renderTo = ( { nodeId, user, howCanWeHelpOptions = [], howDoYouFeelOptions = [] } ) => {
 	const { ID, email, username, display_name, avatar_URL, language, groups, accessToken } = user;
@@ -53,13 +63,13 @@ const renderTo = ( { nodeId, user, howCanWeHelpOptions = [], howDoYouFeelOptions
 				howDoYouFeelOptions={ howDoYouFeelOptions }
 			/>
 		</Provider>,
-		document.getElementById( nodeId )
+		getTargetNode( nodeId )
 	);
 };
 /* eslint-enable camelcase */
 
 const renderMessage = ( nodeId, msg ) =>
-	ReactDOM.render( <MessageForm message={ msg } />, document.getElementById( nodeId ) );
+	ReactDOM.render( <MessageForm message={ msg } />, getTargetNode( nodeId ) );
 
 const renderHappychat = ( { nodeId, howCanWeHelpOptions, howDoYouFeelOptions } ) => user =>
 	renderTo( { nodeId, user, howCanWeHelpOptions, howDoYouFeelOptions } );
