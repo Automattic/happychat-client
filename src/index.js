@@ -40,11 +40,29 @@ const store = createStore(
 
 const getTargetNode = nodeId => {
 	const iframeElement = document.createElement( 'iframe' );
+	iframeElement.width = '100%';
+	iframeElement.height = '400em';
+	iframeElement.frameBorder = 0;
+	iframeElement.scrolling = 'no';
+
 	// React advises to use an element -not the body itself- as the target render,
 	// that's why we create this wrapperElement.
 	const wrapperElement = document.createElement( 'div' );
 	document.getElementById( nodeId ).appendChild( iframeElement );
 	iframeElement.contentDocument.body.appendChild( wrapperElement );
+
+	const styleNoticon = document.createElement( 'link' );
+	styleNoticon.setAttribute( 'rel', 'stylesheet' );
+	styleNoticon.setAttribute( 'type', 'text/css' );
+	styleNoticon.setAttribute( 'href', 'http://s1.wp.com/i/noticons/noticons.css' );
+	iframeElement.contentDocument.head.appendChild( styleNoticon );
+
+	const styleHC = document.createElement( 'link' );
+	styleHC.setAttribute( 'rel', 'stylesheet' );
+	styleHC.setAttribute( 'type', 'text/css' );
+	styleHC.setAttribute( 'href', './happychat.css' );
+	iframeElement.contentDocument.head.appendChild( styleHC );
+
 	return wrapperElement;
 };
 
