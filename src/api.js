@@ -60,7 +60,7 @@ const getTargetNode = nodeId => {
 	const styleHC = document.createElement( 'link' );
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute( 'href', './happychat.css' );
+	styleHC.setAttribute( 'href', 'https://rawgit.com/Automattic/happychat-client/7aaccc6eaa5d1f2e6d280f2c618892126df838d1/dist/happychat.min.css' ); // eslint-disable-line max-len
 	iframeElement.contentDocument.head.appendChild( styleHC );
 
 	return wrapperElement;
