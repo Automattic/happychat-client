@@ -41,7 +41,7 @@ const store = createStore(
 const getTargetNode = nodeId => {
 	const iframeElement = document.createElement( 'iframe' );
 	iframeElement.width = '100%';
-	iframeElement.height = '400em';
+	iframeElement.height = '500em';
 	iframeElement.frameBorder = 0;
 	iframeElement.scrolling = 'no';
 
