@@ -54,7 +54,7 @@ const getTargetNode = nodeId => {
 	const styleNoticon = document.createElement( 'link' );
 	styleNoticon.setAttribute( 'rel', 'stylesheet' );
 	styleNoticon.setAttribute( 'type', 'text/css' );
-	styleNoticon.setAttribute( 'href', 'http://s1.wp.com/i/noticons/noticons.css' );
+	styleNoticon.setAttribute( 'href', 'https://s1.wp.com/i/noticons/noticons.css' );
 	iframeElement.contentDocument.head.appendChild( styleNoticon );
 
 	const styleHC = document.createElement( 'link' );
