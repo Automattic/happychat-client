@@ -6,7 +6,7 @@ const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 module.exports = {
 	entry: './src/index.js',
 	output: {
-		filename: './targets/wordpress/plugin/assets/happychat.js',
+		filename: './dist/happychat.min.js',
 	},
 	module: {
 		rules: [

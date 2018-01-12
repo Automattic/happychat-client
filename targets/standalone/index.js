@@ -4,7 +4,7 @@
  * Internal dependencies
  */
 import config from 'src/config';
-import { initHappychat } from 'src';
+import { initHappychat } from 'src/api';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 
