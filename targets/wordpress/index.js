@@ -3,7 +3,7 @@
 /**
  * Internal dependencies
  */
-import { initHappychat, subscribeTo, unsubscribeFrom } from 'src';
+import { initHappychat, subscribeTo, unsubscribeFrom } from 'src/api';
 
 // TODO enable form
 // form is not ready to be embedded, so hold off enabling the API in the meanwhile
