@@ -23,6 +23,7 @@ import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
 import isChatBeingAssigned from 'src/state/selectors/is-chat-being-assigned';
 import isChatAssigned from 'src/state/selectors/is-chat-assigned';
 import isAvailable from 'src/state/selectors/is-available';
+import { hasTouch } from 'src/lib/touch-detect';
 
 /**
  * Subscribers object. Each key is an event exposed by the Happychat API.
@@ -44,6 +45,13 @@ const renderTo = ( { nodeId, user, howCanWeHelpOptions = [], howDoYouFeelOptions
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
 	store.dispatch( setGroups( groups ) );
+
+	// some CSS styles depend on theses classes
+	if ( hasTouch() ) {
+		document.getElementById( nodeId ).classList.add( 'touch' );
+	} else {
+		document.getElementById( nodeId ).classList.add( 'notouch' );
+	}
 
 	ReactDOM.render(
 		<Provider store={ store }>
