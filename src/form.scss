@@ -2,6 +2,7 @@
 
 .hcewrap {
 	// general styles
+	@import 'ui/css/shared/vendor';
 	@import 'ui/css/shared/reset'; // globals
 	@import 'ui/css/shared/utils';
 	@import 'ui/css/shared/color-schemes';
