@@ -1,33 +1,31 @@
 /** @format */
 
-.hcewrap {
-	// general styles
-	@import 'ui/css/vendor';
-	@import 'ui/css/shared/reset'; // globals
-	@import 'ui/css/shared/utils';
-	@import 'ui/css/shared/color-schemes';
-	@import 'ui/css/shared/animation'; // globals
-	@import 'ui/css/shared/forms'; // globals
-	@import 'ui/css/shared/dropdowns';
-	@import 'ui/css/main'; // globals
+// general styles
+@import 'ui/css/vendor';
+@import 'ui/css/shared/reset'; // globals
+@import 'ui/css/shared/utils';
+@import 'ui/css/shared/color-schemes';
+@import 'ui/css/shared/animation'; // globals
+@import 'ui/css/shared/forms'; // globals
+@import 'ui/css/shared/dropdowns';
+@import 'ui/css/main'; // globals
 
-	// contact-form dependencies
-	@import 'ui/components/button/style'; // global button
-	@import 'ui/components/count/style';
-	@import 'ui/components/card/style'; // global a.card
-	@import 'ui/components/segmented-control/style';
-	@import 'ui/components/select-dropdown/style';
-	@import 'ui/components/form-button/style';
-	@import 'ui/components/form-label/style';
-	@import 'ui/components/form-selection/style';
+// contact-form dependencies
+@import 'ui/components/button/style'; // global button
+@import 'ui/components/count/style';
+@import 'ui/components/card/style'; // global a.card
+@import 'ui/components/segmented-control/style';
+@import 'ui/components/select-dropdown/style';
+@import 'ui/components/form-button/style';
+@import 'ui/components/form-label/style';
+@import 'ui/components/form-selection/style';
 
-	// happychat-form dependencies
-	@import 'ui/components/emojify/style'; // global img.emojify__emoji
-	@import 'ui/components/timeline';
-	@import 'ui/components/notices';
-	@import 'ui/components/composer';
+// happychat-form dependencies
+@import 'ui/components/emojify/style'; // global img.emojify__emoji
+@import 'ui/components/timeline';
+@import 'ui/components/notices';
+@import 'ui/components/composer';
 
-	// main components
-	@import 'ui/components/happychat-form/style';
-	@import 'ui/components/contact-form/style';
-}
+// main components
+@import 'ui/components/happychat-form/style';
+@import 'ui/components/contact-form/style';
