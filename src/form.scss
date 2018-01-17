@@ -20,7 +20,6 @@
 @import 'ui/css/shared/vendor/noticon'; // .noticon
 @import 'ui/css/shared/vendor/gridicon'; // .gridicon
 @import 'ui/css/shared/forms'; // globals
-@import 'ui/css/main'; // globals
 
 // contact-form dependencies
 @import 'ui/components/button/style'; // global button
@@ -41,3 +40,4 @@
 // main components
 @import 'ui/components/happychat-form/style';
 @import 'ui/components/contact-form/style';
+@import 'ui/css/new-main'; // shared styles: typography, colors, and so
