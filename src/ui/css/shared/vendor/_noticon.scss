@@ -1,0 +1,9 @@
+/** @format */
+
+.noticon:before,
+.noticon:after {
+	@include clear-text;
+
+	font-family: Noticons;
+	line-height: 1;
+}

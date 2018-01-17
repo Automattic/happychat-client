@@ -1,7 +1,6 @@
 /** @format */
 
 // General styles
-@import 'ui/css/vendor';
 @import 'ui/css/shared/reset'; // globals
 
 // Variables: SASS functions, SASS mixins, custom properties, animations
@@ -17,7 +16,9 @@
 @import 'ui/css/shared/color-schemes';
 @import 'ui/css/shared/animation';
 
-// General
+// General styles
+@import 'ui/css/shared/vendor/noticon'; // .noticon
+@import 'ui/css/shared/vendor/gridicon'; // .gridicon
 @import 'ui/css/shared/forms'; // globals
 @import 'ui/css/main'; // globals
 

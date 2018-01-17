@@ -157,25 +157,6 @@ a:active {
 	color: $link-highlight;
 }
 
-.noticon:before,
-.noticon:after {
-	@include clear-text;
-
-	font-family: Noticons;
-	line-height: 1;
-}
-
-/* Emoji and smileys */
-img.emoji {
-	height: 1em;
-	max-height: 1em;
-	display: inline;
-	margin: 0;
-	padding: 0 0.2em;
-	vertical-align: -0.1em;
-	width: 1em;
-}
-
 /* =Media
 ----------------------------------------------- */
 
