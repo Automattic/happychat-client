@@ -8,3 +8,12 @@
 	background: rgba($blue-light, 0.7);
 	color: $gray-dark;
 }
+
+body,
+button,
+input,
+select,
+textarea,
+.button {
+	font-family: $sans;
+}
