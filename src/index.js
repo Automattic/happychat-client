@@ -39,19 +39,54 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
+let targetNode;
+const getTargetNode = nodeId => {
+	if ( ! targetNode ) {
+		targetNode = document.getElementById( nodeId );
+		const iframeElement = document.createElement( 'iframe' );
+
+		// style iframe element
+		iframeElement.width = '100%';
+		iframeElement.height = '500em';
+		iframeElement.frameBorder = 0;
+		// iframeElement.scrolling = 'no';
+
+		document.getElementById( nodeId ).appendChild( iframeElement );
+
+		// and noticon custom font
+		const styleNoticon = document.createElement( 'link' );
+		styleNoticon.setAttribute( 'rel', 'stylesheet' );
+		styleNoticon.setAttribute( 'type', 'text/css' );
+		styleNoticon.setAttribute( 'href', 'https://s1.wp.com/i/noticons/noticons.css' );
+		iframeElement.contentDocument.head.appendChild( styleNoticon );
+
+		// add happychat styles
+		const styleHC = document.createElement( 'link' );
+		styleHC.setAttribute( 'rel', 'stylesheet' );
+		styleHC.setAttribute( 'type', 'text/css' );
+		styleHC.setAttribute(
+			'href',
+			'https://rawgit.com/Automattic/happychat-client/20f247d26f50c84d1261597e8538c4700c2cd0a5/dist/happychat.full.css'
+		);
+		iframeElement.contentDocument.head.appendChild( styleHC );
+
+		// some CSS styles depend on these top-level classes being present
+		iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
+
+		// React advises to use an element -not the body itself- as the target render,
+		// that's why we create this wrapperElement inside the iframe.
+		targetNode = document.createElement( 'div' );
+		iframeElement.contentDocument.body.appendChild( targetNode );
+	}
+	return targetNode;
+};
+
 /* eslint-disable camelcase */
 const renderTo = ( { nodeId, user, howCanWeHelpOptions = [], howDoYouFeelOptions = [] } ) => {
 	const { ID, email, username, display_name, avatar_URL, language, groups, accessToken } = user;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
 	store.dispatch( setGroups( groups ) );
-
-	// some CSS styles depend on theses classes
-	if ( hasTouch() ) {
-		document.getElementById( nodeId ).classList.add( 'touch' );
-	} else {
-		document.getElementById( nodeId ).classList.add( 'notouch' );
-	}
 
 	ReactDOM.render(
 		<Provider store={ store }>
@@ -61,13 +96,13 @@ const renderTo = ( { nodeId, user, howCanWeHelpOptions = [], howDoYouFeelOptions
 				howDoYouFeelOptions={ howDoYouFeelOptions }
 			/>
 		</Provider>,
-		document.getElementById( nodeId )
+		getTargetNode( nodeId )
 	);
 };
 /* eslint-enable camelcase */
 
 const renderMessage = ( nodeId, msg ) =>
-	ReactDOM.render( <MessageForm message={ msg } />, document.getElementById( nodeId ) );
+	ReactDOM.render( <MessageForm message={ msg } />, getTargetNode( nodeId ) );
 
 const renderHappychat = ( { nodeId, howCanWeHelpOptions, howDoYouFeelOptions } ) => user =>
 	renderTo( { nodeId, user, howCanWeHelpOptions, howDoYouFeelOptions } );
