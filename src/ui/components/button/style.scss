@@ -1,3 +1,4 @@
+/** @format */
 // ==========================================================================
 // Buttons
 // ==========================================================================
@@ -16,7 +17,7 @@ button {
 
 .button {
 	background: $white;
-	border-color: lighten( $gray, 20% );
+	border-color: lighten($gray, 20%);
 	border-style: solid;
 	border-width: 1px 1px 2px;
 	color: $gray-dark;
@@ -38,7 +39,7 @@ button {
 	appearance: none;
 
 	&:hover {
-		border-color: lighten( $gray, 10% );
+		border-color: lighten($gray, 10%);
 		color: $gray-dark;
 	}
 	&:active {
@@ -50,9 +51,9 @@ button {
 	&[disabled],
 	&:disabled,
 	&.disabled {
-		color: lighten( $gray, 30% );
+		color: lighten($gray, 30%);
 		background: $white;
-		border-color: lighten( $gray, 30% );
+		border-color: lighten($gray, 30%);
 		cursor: default;
 
 		&:active {
@@ -60,8 +61,8 @@ button {
 		}
 	}
 	.accessible-focus &:focus {
-			border-color: $blue-medium;
-			box-shadow: 0 0 0 2px $blue-light;
+		border-color: $blue-medium;
+		box-shadow: 0 0 0 2px $blue-light;
 	}
 	&.is-compact {
 		padding: 7px;
@@ -70,7 +71,7 @@ button {
 		line-height: 1;
 
 		&:disabled {
-			color: lighten( $gray, 30% );
+			color: lighten($gray, 30%);
 		}
 		.gridicon {
 			top: 5px;
@@ -93,14 +94,20 @@ button {
 	&.is-busy {
 		animation: button__busy-animation 3000ms infinite linear;
 		background-size: 120px 100%;
-		background-image: linear-gradient( -45deg, lighten( $gray, 30% ) 28%, $white 28%, $white 72%, lighten( $gray, 30% ) 72%);
+		background-image: linear-gradient(
+			-45deg,
+			lighten($gray, 30%) 28%,
+			$white 28%,
+			$white 72%,
+			lighten($gray, 30%) 72%
+		);
 	}
 	&.hidden {
 		display: none;
 	}
 	.gridicon {
 		position: relative;
-			top: 4px;
+		top: 4px;
 		margin-top: -2px;
 		width: 18px;
 		height: 18px;
@@ -110,7 +117,7 @@ button {
 // Primary buttons
 .button.is-primary {
 	background: $blue-medium;
-	border-color: darken( $blue-medium, 8% );
+	border-color: darken($blue-medium, 8%);
 	color: $white;
 
 	&:hover,
@@ -124,14 +131,20 @@ button {
 	&[disabled],
 	&:disabled,
 	&.disabled {
-		color: lighten( $gray, 30% );
+		color: lighten($gray, 30%);
 		background: $white;
-		border-color: lighten( $gray, 30% );
+		border-color: lighten($gray, 30%);
 	}
 	&.is-busy {
 		background-size: 120px 100%;
-		background-image: linear-gradient( -45deg, $blue-medium 28%, darken( $blue-medium, 5% ) 28%, darken( $blue-medium, 5% ) 72%, $blue-medium 72%);
-		border-color: darken( $blue-medium, 8% );
+		background-image: linear-gradient(
+			-45deg,
+			$blue-medium 28%,
+			darken($blue-medium, 5%) 28%,
+			darken($blue-medium, 5%) 72%,
+			$blue-medium 72%
+		);
+		border-color: darken($blue-medium, 8%);
 	}
 }
 
@@ -145,36 +158,36 @@ button {
 	}
 
 	.accessible-focus &:focus {
-			box-shadow: 0 0 0 2px lighten( $alert-red, 20% );
+		box-shadow: 0 0 0 2px lighten($alert-red, 20%);
 	}
 
 	&[disabled],
 	&:disabled {
-		color: lighten( $alert-red, 30% );
-		border-color: lighten( $gray, 30% );
+		color: lighten($alert-red, 30%);
+		border-color: lighten($gray, 30%);
 	}
 }
 
 .button.is-primary.is-scary {
 	background: $alert-red;
-	border-color: darken( $alert-red, 20% );
+	border-color: darken($alert-red, 20%);
 	color: $white;
 
 	&:hover,
 	&:focus {
-		border-color: darken( $alert-red, 40% );
+		border-color: darken($alert-red, 40%);
 	}
 	&[disabled],
 	&:disabled {
-		background: lighten( $alert-red, 20% );
-		border-color: tint( $alert-red, 30% );
+		background: lighten($alert-red, 20%);
+		border-color: tint($alert-red, 30%);
 	}
 }
 
 .button.is-borderless {
 	border: none;
 	background: none;
-	color: var( --button-is-borderless-color );
+	color: var(--button-is-borderless-color);
 	padding-left: 0;
 	padding-right: 0;
 
@@ -191,7 +204,7 @@ button {
 
 	&[disabled],
 	&:disabled {
-		color: lighten( $gray, 30% );
+		color: lighten($gray, 30%);
 		cursor: default;
 
 		&:active {
@@ -203,11 +216,11 @@ button {
 
 		&:hover,
 		&:focus {
-			color: darken( $alert-red, 20% );
+			color: darken($alert-red, 20%);
 		}
 
 		&[disabled] {
-			color: lighten( $alert-red, 30% );
+			color: lighten($alert-red, 30%);
 		}
 	}
 
@@ -236,12 +249,11 @@ button {
 // ==========================================================================
 
 // Turn Reset 'buttons' into regular text links
-.layout__content input,
-.dialog__content input {
-	&[type=reset],
-	&[type=reset]:hover,
-	&[type=reset]:active,
-	&[type=reset]:focus {
+input {
+	&[type='reset'],
+	&[type='reset']:hover,
+	&[type='reset']:active,
+	&[type='reset']:focus {
 		background: 0 0;
 		border: 0;
 		padding: 0 2px 1px;
@@ -251,20 +263,15 @@ button {
 }
 
 // Buttons within sentences sit on the text baseline.
-.layout__content p .button,
-.dialog__content p .button {
+p .button {
 	vertical-align: baseline;
 }
 
 // Firefox Junk
-.layout__content button::-moz-focus-inner,
-.layout__content input[type=reset]::-moz-focus-inner,
-.layout__content input[type=button]::-moz-focus-inner,
-.layout__content input[type=submit]::-moz-focus-inner ,
-.dialog__content button::-moz-focus-inner,
-.dialog__content input[type=reset]::-moz-focus-inner,
-.dialog__content input[type=button]::-moz-focus-inner,
-.dialog__content input[type=submit]::-moz-focus-inner {
+button::-moz-focus-inner,
+input[type='reset']::-moz-focus-inner,
+input[type='button']::-moz-focus-inner,
+input[type='submit']::-moz-focus-inner {
 	border: 0;
 	padding: 0;
 }
@@ -305,7 +312,8 @@ button {
 	}
 }
 
-
 @keyframes button__busy-animation {
-  0%   { background-position: 240px 0; }
+	0% {
+		background-position: 240px 0;
+	}
 }
