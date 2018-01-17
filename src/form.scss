@@ -1,20 +1,23 @@
 /** @format */
 
-// general styles
+// General styles
 @import 'ui/css/vendor';
 @import 'ui/css/shared/reset'; // globals
 
-// SASS variables, functions, mixins
+// Variables: SASS functions, SASS mixins, custom properties, animations
 @import 'ui/css/shared/functions/hex-to-rgb';
 @import 'ui/css/shared/functions/tint-and-shade';
 @import 'ui/css/shared/functions/z-index';
 @import 'ui/css/shared/colors';
 @import 'ui/css/shared/typography';
-@import 'ui/css/shared/mixins/mixins'; // sass mixins for gradients, bordius radii, etc.
+@import 'ui/css/shared/mixins/breakpoint';
+@import 'ui/css/shared/mixins/clear-fix';
+@import 'ui/css/shared/mixins/clear-text';
+@import 'ui/css/shared/mixins/noticon';
+@import 'ui/css/shared/color-schemes';
+@import 'ui/css/shared/animation';
 
-// CSS custom properties, animations, etc
-@import 'ui/css/shared/color-schemes'; // CSS custom properties
-@import 'ui/css/shared/animation'; // globals
+// General
 @import 'ui/css/shared/forms'; // globals
 @import 'ui/css/main'; // globals
 
