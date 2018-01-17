@@ -12,10 +12,10 @@
 @import 'ui/css/shared/typography';
 @import 'ui/css/shared/mixins/mixins'; // sass mixins for gradients, bordius radii, etc.
 
+// CSS custom properties, animations, etc
 @import 'ui/css/shared/color-schemes'; // CSS custom properties
 @import 'ui/css/shared/animation'; // globals
 @import 'ui/css/shared/forms'; // globals
-@import 'ui/css/shared/dropdowns';
 @import 'ui/css/main'; // globals
 
 // contact-form dependencies

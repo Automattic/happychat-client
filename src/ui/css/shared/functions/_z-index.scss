@@ -34,10 +34,8 @@
 $z-layers: (
 	'root':
 		(
-			'.gear-dropdown:after': 0,
 			'.select-dropdown.is-open .select-dropdown__container': 170,
-			'.accessible-focus .select-dropdown.is-open .select-dropdown__container': 170,
-			'.dropdown-menu': 9999
+			'.accessible-focus .select-dropdown.is-open .select-dropdown__container': 170
 		)
 );
 
