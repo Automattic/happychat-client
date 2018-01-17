@@ -49,7 +49,7 @@ const getTargetNode = nodeId => {
 		iframeElement.width = '100%';
 		iframeElement.height = '500em';
 		iframeElement.frameBorder = 0;
-		// iframeElement.scrolling = 'no';
+		iframeElement.scrolling = 'no';
 
 		document.getElementById( nodeId ).appendChild( iframeElement );
 
@@ -66,7 +66,7 @@ const getTargetNode = nodeId => {
 		styleHC.setAttribute( 'type', 'text/css' );
 		styleHC.setAttribute(
 			'href',
-			'https://rawgit.com/Automattic/happychat-client/da07ff706e4bd2c0f59ddab504936aaf8055d3b4/dist/happychat.full.css'
+			'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.full.css'
 		);
 		iframeElement.contentDocument.head.appendChild( styleHC );
 
