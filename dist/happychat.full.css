@@ -1785,9 +1785,13 @@ img.emojify__emoji {
 }
 
 .happychat__conversation {
-  height: 50vh;
+  height: 80vh;
   padding-left: 6px;
   padding-right: 6px;
+}
+
+.happychat__composer {
+  height: 18vh;
 }
 
 .happychat__submit {
