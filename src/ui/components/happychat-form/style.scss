@@ -35,9 +35,13 @@
 
 // small tweaks to conversation container
 .happychat__conversation {
-	height: 50vh; // set height so it can be scrolled
+	height: 80vh; // set height so it can be scrolled
 	padding-left: 6px;
 	padding-right: 6px;
+}
+
+.happychat__composer {
+	height: 18vh;
 }
 
 // clean grey border on submit button
