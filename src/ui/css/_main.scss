@@ -1,14 +1,4 @@
-/**
- * General styles
- *
- * @format
- */
-
-$sidebar-width-max: 272px;
-$sidebar-width-min: 228px;
-
-/* =Global
------------------------------------------------ */
+/** @format */
 
 // make sure layout can fill the viewport
 html,
@@ -35,9 +25,7 @@ button,
 input,
 select,
 textarea,
-.button,
-#footer,
-#footer a.readmore {
+.button {
 	font-family: $sans;
 }
 
@@ -201,13 +189,6 @@ embed,
 iframe,
 object {
 	max-width: 100%;
-}
-
-@include breakpoint( '<960px' ) {
-	// Don't show environment badge on smaller screens. It just gets in the way.
-	.environment-badge {
-		display: none;
-	}
 }
 
 // added to the html element when we don't want the background content to scroll
