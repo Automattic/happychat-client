@@ -163,21 +163,6 @@ class Happychat_Client {
 	}
 
 	private function do_enqueue_scripts() {
-		wp_register_style(
-			'noticons-css',
-			'http://s1.wp.com/i/noticons/noticons.css',
-			array(),
-			self::VERSION,
-			'all'
-		);
-
-		wp_register_style(
-			'happychat-form-css',
-			plugins_url( 'assets/happychat.css', __FILE__ ),
-			array(),
-			self::VERSION
-		);
-
 		wp_register_script(
 			'happychat-form-js',
 			plugins_url( 'assets/happychat.js', __FILE__ ),
@@ -186,10 +171,7 @@ class Happychat_Client {
 			true
 		);
 
-		wp_enqueue_style( 'noticons-css' );
-		wp_enqueue_style( 'happychat-form-css' );
 		wp_enqueue_script( 'happychat-form-js' );
-
 	}
 
 	public function enqueue_scripts() {
