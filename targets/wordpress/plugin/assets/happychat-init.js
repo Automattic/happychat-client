@@ -28,6 +28,13 @@ if ( window.Happychat ) {
 		nodeId: 'happychat-form',
 		groups: happychatSettings.groups,
 		accessToken: happychatSettings.token,
+		howCanWeHelpOptions: [
+			{ value: 'before-buy', label: 'Before you buy' },
+			{ value: 'account', label: 'Help with my account' },
+			{ value: 'config', label: 'Help configuring' },
+			{ value: 'order', label: 'Help with an order' },
+			{ value: 'broken', label: 'Something is broken' },
+		],
 	} );
 
 	var isHappychatAvailable = false;
