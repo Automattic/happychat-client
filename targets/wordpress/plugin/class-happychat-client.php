@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -7,6 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Happychat_Client {
 	private static $_instance = null;
 	const VERSION = '0.0.1-dev';
+    const NODE_ID = 'happychat-form';
 
 	/**
 	* Create instance of class
@@ -20,7 +21,6 @@ class Happychat_Client {
 	}
 
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_shortcode( 'happychat', array( $this, 'shortcode_to_happychat_form' ) );
 	}
 
@@ -30,16 +30,8 @@ class Happychat_Client {
 	}
 
 	public function shortcode_to_happychat_form( $atts ) {
-		self::do_enqueue_scripts();
-
-		$happychat_node_id = 'happychat-form';
-		return '<span id="' . $happychat_node_id . '">
-					<button class="button view"
-							onclick="Happychat.open( \'' . $happychat_node_id . '\', [ \'woo\' ], \'' . self::get_token() . '\' )"
-					>
-					Chat with us
-					</button>
-				</span>';
+		self::enqueue_scripts();
+		return '<div id="'. self::NODE_ID .'"></div>';
 	}
 
 	/**
@@ -148,48 +140,45 @@ class Happychat_Client {
 	 * @return bool
 	 */
 	private function should_offer_chat() {
-		global $wp;
-		$should_offer_chat = false;
 
 		if ( ! $this->is_happychat_enabled() || ! $this->is_user_eligible() ) {
 			return false;
 		}
-
-		if ( in_array( $wp->request, array( 'my-account/create-a-ticket', 'my-account/marketplace-ticket-form' ) ) ) {
-			$should_offer_chat = true;
-		}
-
-		return $should_offer_chat;
+        return true;
 	}
 
-	private function do_enqueue_scripts() {
-		wp_register_script(
-			'happychat-form-js',
-			plugins_url( 'assets/happychat.js', __FILE__ ),
-			array(),
-			self::VERSION,
-			true
-		);
+	private function enqueue_scripts() {
+        if ( self::should_offer_chat() ) {
+            // load happychat library
+            wp_register_script(
+                'happychat-form-js',
+                plugins_url( 'assets/happychat.js', __FILE__ ),
+                array(),
+                self::VERSION,
+                true
+            );
+            wp_enqueue_script( 'happychat-form-js' );
 
-		wp_enqueue_script( 'happychat-form-js' );
-	}
-
-	public function enqueue_scripts() {
-		if ( self::should_offer_chat() ) {
-			self::do_enqueue_scripts();
-
+            // init happychat
 			wp_register_script(
 				'happychat-form-js-init',
 				plugins_url( 'assets/happychat-init.js', __FILE__ ),
-				array( 'jquery-core' ),
+				array(),
 				self::VERSION,
 				true
 			);
-
 			$happychat_settings = array(
-				'token' => self::get_token(),
+				'token'  => self::get_token(),
 				'groups' => [ 'woo' ],
-			);
+                'nodeId' => self::NODE_ID,
+                'howCanWeHelpOptions' => [
+                    array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
+                    array( 'value' => 'account',    'label' => 'Help with my account' ),
+                    array( 'value' => 'config',     'label' => 'Help configuring' ),
+                    array( 'value' => 'order',      'label'  => 'Help with an order' ),
+                    array( 'value' => 'broken',     'label' => 'Something is broken' ),
+                    ]
+                );
 			wp_localize_script( 'happychat-form-js-init', 'happychatSettings', $happychat_settings );
 			wp_enqueue_script( 'happychat-form-js-init' );
 		}
