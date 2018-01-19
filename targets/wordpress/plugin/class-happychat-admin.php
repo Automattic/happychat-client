@@ -43,26 +43,9 @@ class Happychat_Admin {
 	}
 
 	public function register_settings() {
-
-		//Add settings section
 		add_settings_section( 'happychat_settings' , '' , null, 'happychat' );
-
-		//Add settings fields
-		add_settings_field( 'happychat_enable' , 'Enable Happychat:' , array( $this, 'happychat_enable_html' )  , 'happychat' , 'happychat_settings' );
 		add_settings_field( 'happychat_user_eligibility' , 'User eligibility:' , array( $this, 'happychat_user_eligibility_html' )  , 'happychat' , 'happychat_settings' );
-
-		//Register settings fields
-		register_setting( 'happychat' , 'happychat_enable' );
 		register_setting( 'happychat' , 'happychat_user_eligibility' );
-
-	}
-
-	public function happychat_enable_html() {
-		echo '<input id="happychat_enable" type="checkbox" name="happychat_enable" ' .
-			( get_option( 'happychat_enable' ) ? 'checked' : '' ) .
-			'> If this box is checked, the "Create Ticket" form will be replaced with a Happychat chat box.' .
-			' Happychat will only show if an operator is available, and the customer has purchased products that are either paid or a revenue share.' .
-			'<br/><br/><a href="/wp-admin/edit.php?taxonomy=pa_revenue-share&term=true&post_type=product">See all products with attribute Revenue Share = true.';
 	}
 
 	public function happychat_user_eligibility_html() {
