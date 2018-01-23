@@ -15,6 +15,7 @@ import config from 'src/config';
 // actions
 import {
 	initConnection,
+	requestFallbackTicket,
 	sendMessage,
 	sendNotTyping,
 	sendTyping,
@@ -53,20 +54,33 @@ class HappychatSupportProvider {
 	}
 }
 
+class TicketSupportProvider {
+	canSubmitForm() {
+		return true;
+	}
+
+	submitForm( props, state ) {
+		props.onRequestFallbackTicket( '/', state.message );
+	}
+}
+
 export class Form extends React.Component {
 	constructor( props ) {
 		super( props );
-		this.happychatSupportProvider = new HappychatSupportProvider();
+		this.supportProvider = {
+			canSubmitForm: () => false,
+			submitForm: () => {},
+		};
 		this.submitForm = this.submitForm.bind( this );
 		this.canSubmitForm = this.canSubmitForm.bind( this );
 	}
 
 	submitForm( formState ) {
-		this.happychatSupportProvider.submitForm( this.props, formState );
+		this.supportProvider.submitForm( this.props, formState );
 	}
 
 	canSubmitForm() {
-		return this.happychatSupportProvider.canSubmitForm( this.props );
+		return this.supportProvider.canSubmitForm( this.props );
 	}
 
 	renderForm() {
@@ -139,6 +153,7 @@ export class Form extends React.Component {
 			onInitConnection,
 		} = this.props;
 
+		this.supportProvider = new HappychatSupportProvider();
 		return (
 			<div>
 				<HappychatConnection
@@ -187,6 +202,7 @@ const mapState = state => {
 const mapDispatch = {
 	onInitConnection: initConnection,
 	onOpenChat: openChat,
+	onRequestFallbackTicket: requestFallbackTicket,
 	onSendMessage: sendMessage,
 	onSendNotTyping: sendNotTyping,
 	onSendTyping: sendTyping,
