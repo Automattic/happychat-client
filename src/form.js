@@ -39,25 +39,34 @@ import { mockLocalize } from 'src/ui/components/localize'; // TODO implement loc
 import { HappychatConnection } from 'src/ui/components/connection';
 import { HappychatForm } from 'src/ui/components/happychat-form';
 import { ContactForm } from 'src/ui/components/contact-form';
-import { MessageForm } from 'src/ui/components/message-form';
+
+class HappychatSupportProvider {
+	canSubmitForm( props ) {
+		return props.isChatAvailable;
+	}
+
+	submitForm( props, state ) {
+		if ( this.canSubmitForm( props ) ) {
+			props.onOpenChat();
+			props.onSendMessage( state.message );
+		}
+	}
+}
 
 export class Form extends React.Component {
 	constructor( props ) {
 		super( props );
+		this.happychatSupportProvider = new HappychatSupportProvider();
 		this.submitForm = this.submitForm.bind( this );
 		this.canSubmitForm = this.canSubmitForm.bind( this );
 	}
 
 	submitForm( formState ) {
-		const { onOpenChat, onSendMessage } = this.props;
-		if ( this.canSubmitForm() ) {
-			onOpenChat();
-			onSendMessage( formState.message );
-		}
+		this.happychatSupportProvider.submitForm( this.props, formState );
 	}
 
 	canSubmitForm() {
-		return this.props.isChatAvailable;
+		return this.happychatSupportProvider.canSubmitForm( this.props );
 	}
 
 	renderForm() {
