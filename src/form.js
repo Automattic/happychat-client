@@ -64,6 +64,11 @@ class TicketSupportProvider {
 	}
 }
 
+const getSupportProvider = props =>
+	props.isUserEligibleForChat && props.isChatAvailable
+		? new HappychatSupportProvider()
+		: new TicketSupportProvider();
+
 export class Form extends React.Component {
 	constructor( props ) {
 		super( props );
@@ -153,7 +158,7 @@ export class Form extends React.Component {
 			onInitConnection,
 		} = this.props;
 
-		this.supportProvider = new HappychatSupportProvider();
+		this.supportProvider = getSupportProvider( this.props );
 		return (
 			<div>
 				<HappychatConnection
@@ -179,6 +184,7 @@ Form.propTypes = {
 const mapState = state => {
 	const currentUser = getUser( state );
 	return {
+		isUserEligibleForChat: true,
 		chatStatus: getChatStatus( state ),
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
