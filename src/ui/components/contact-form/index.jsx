@@ -38,7 +38,7 @@ export class ContactForm extends React.Component {
 	}
 
 	render() {
-		const { howCanWeHelpOptions, howDoYouFeelOptions } = this.props;
+		const { howCanWeHelpOptions, howDoYouFeelOptions, submitFormText } = this.props;
 
 		return (
 			<div className="contact-form">
@@ -48,9 +48,7 @@ export class ContactForm extends React.Component {
 				<Card>
 					<div>
 						<FormLabel>How can we help?</FormLabel>
-						<FormSelection
-							options={ howCanWeHelpOptions }
-						/>
+						<FormSelection options={ howCanWeHelpOptions } />
 					</div>
 					{ howDoYouFeelOptions && howDoYouFeelOptions.length > 0 ? (
 						<div>
@@ -74,7 +72,7 @@ export class ContactForm extends React.Component {
 						type="button"
 						onClick={ this.prepareSubmitForm }
 					>
-						Send
+						{ submitFormText }
 					</FormButton>
 				</Card>
 			</div>
@@ -87,6 +85,7 @@ ContactForm.propTypes = {
 	howCanWeHelpOptions: PropTypes.array.isRequired,
 	howDoYouFeelOptions: PropTypes.array,
 	submitForm: PropTypes.func.isRequired,
+	submitFormText: PropTypes.string,
 };
 
 ContactForm.defaultProps = {
@@ -94,4 +93,5 @@ ContactForm.defaultProps = {
 	howCanWeHelpOptions: [],
 	howDoYouFeelOptions: [],
 	submitForm: () => {},
+	submitFormText: 'Send',
 };

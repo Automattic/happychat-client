@@ -89,6 +89,7 @@ class HappychatSupportProvider {
 				howCanWeHelpOptions={ howCanWeHelpOptions }
 				howDoYouFeelOptions={ howDoYouFeelOptions }
 				submitForm={ this.submitForm }
+				submitFormText={ 'Chat with us' }
 			/>
 		);
 		const chatForm = (
@@ -144,6 +145,7 @@ class TicketSupportProvider {
 				howCanWeHelpOptions={ howCanWeHelpOptions }
 				howDoYouFeelOptions={ howDoYouFeelOptions }
 				submitForm={ this.submitForm }
+				submitFormText={ 'Send a ticket' }
 			/>
 		);
 	}
