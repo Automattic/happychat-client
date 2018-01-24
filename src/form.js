@@ -40,7 +40,6 @@ import { mockLocalize } from 'src/ui/components/localize'; // TODO implement loc
 import { HappychatConnection } from 'src/ui/components/connection';
 import { HappychatForm } from 'src/ui/components/happychat-form';
 import { ContactForm } from 'src/ui/components/contact-form';
-import { MessageForm } from 'src/ui/components/message-form';
 
 class HappychatSupportProvider {
 	constructor( props ) {
@@ -156,17 +155,6 @@ const getSupportProvider = props =>
 		: new TicketSupportProvider( props );
 
 export class Form extends React.Component {
-	constructor( props ) {
-		super( props );
-		this.supportProvider = {
-			canSubmitForm: () => false,
-			submitForm: () => {},
-			renderForm: () => {
-				return <MessageForm message="Loading..." />;
-			},
-		};
-	}
-
 	render() {
 		const {
 			accessToken,
