@@ -40,52 +40,24 @@ import { mockLocalize } from 'src/ui/components/localize'; // TODO implement loc
 import { HappychatConnection } from 'src/ui/components/connection';
 import { HappychatForm } from 'src/ui/components/happychat-form';
 import { ContactForm } from 'src/ui/components/contact-form';
+import { MessageForm } from 'src/ui/components/message-form';
 
 class HappychatSupportProvider {
-	canSubmitForm( props ) {
-		return props.isChatAvailable;
-	}
-
-	submitForm( props, state ) {
-		if ( this.canSubmitForm( props ) ) {
-			props.onOpenChat();
-			props.onSendMessage( state.message );
-		}
-	}
-}
-
-class TicketSupportProvider {
-	canSubmitForm() {
-		return true;
-	}
-
-	submitForm( props, state ) {
-		props.onRequestFallbackTicket( '/', state.message );
-	}
-}
-
-const getSupportProvider = props =>
-	props.isUserEligibleForChat && props.isChatAvailable
-		? new HappychatSupportProvider()
-		: new TicketSupportProvider();
-
-export class Form extends React.Component {
 	constructor( props ) {
-		super( props );
-		this.supportProvider = {
-			canSubmitForm: () => false,
-			submitForm: () => {},
-		};
+		this.props = props;
 		this.submitForm = this.submitForm.bind( this );
 		this.canSubmitForm = this.canSubmitForm.bind( this );
 	}
 
-	submitForm( formState ) {
-		this.supportProvider.submitForm( this.props, formState );
+	canSubmitForm() {
+		return this.props.isChatAvailable;
 	}
 
-	canSubmitForm() {
-		return this.supportProvider.canSubmitForm( this.props );
+	submitForm( formState ) {
+		if ( this.canSubmitForm() ) {
+			this.props.onOpenChat();
+			this.props.onSendMessage( formState.message );
+		}
 	}
 
 	renderForm() {
@@ -148,6 +120,52 @@ export class Form extends React.Component {
 		}
 		return form;
 	}
+}
+
+class TicketSupportProvider {
+	constructor( props ) {
+		this.props = props;
+		this.submitForm = this.submitForm.bind( this );
+		this.canSubmitForm = this.canSubmitForm.bind( this );
+	}
+
+	canSubmitForm() {
+		return true;
+	}
+
+	submitForm( formState ) {
+		this.props.onRequestFallbackTicket( '/', formState.message );
+	}
+
+	renderForm() {
+		const { howCanWeHelpOptions, howDoYouFeelOptions } = this.props;
+		return (
+			<ContactForm
+				canSubmitForm={ this.canSubmitForm }
+				howCanWeHelpOptions={ howCanWeHelpOptions }
+				howDoYouFeelOptions={ howDoYouFeelOptions }
+				submitForm={ this.submitForm }
+			/>
+		);
+	}
+}
+
+const getSupportProvider = props =>
+	props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable )
+		? new HappychatSupportProvider( props )
+		: new TicketSupportProvider( props );
+
+export class Form extends React.Component {
+	constructor( props ) {
+		super( props );
+		this.supportProvider = {
+			canSubmitForm: () => false,
+			submitForm: () => {},
+			renderForm: () => {
+				return <MessageForm message="Loading..." />;
+			},
+		};
+	}
 
 	render() {
 		const {
@@ -159,6 +177,7 @@ export class Form extends React.Component {
 		} = this.props;
 
 		this.supportProvider = getSupportProvider( this.props );
+
 		return (
 			<div>
 				<HappychatConnection
@@ -169,7 +188,7 @@ export class Form extends React.Component {
 					onInitConnection={ onInitConnection }
 				/>
 
-				{ this.renderForm() }
+				{ this.supportProvider.renderForm() }
 			</div>
 		);
 	}
