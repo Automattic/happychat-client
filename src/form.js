@@ -133,7 +133,7 @@ class TicketSupportProvider {
 	}
 
 	submitForm( formState ) {
-		this.props.onRequestFallbackTicket( '/', formState.message );
+		this.props.onRequestFallbackTicket( this.props.fallbackTicketPath, formState.message );
 	}
 
 	renderForm() {
@@ -188,22 +188,30 @@ Form.propTypes = {
 	howDoYouFeelOptions: PropTypes.array,
 };
 
+// Whether URL should open a new tab or not.
+// Legacy code from Calypso, where it wouldn't open a new window
+// if the URL was from WordPress.com.
+const isExternalUrl = () => true;
+
+const isCurrentUser = ( { source } ) => {
+	return source === 'customer';
+};
+
 const mapState = state => {
 	const currentUser = getUser( state );
 	return {
-		isUserEligibleForChat: true,
+		isUserEligibleForChat: true, // TODO implement logic
 		chatStatus: getChatStatus( state ),
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
 		disabled: ! canUserSendMessages( state ),
+		fallbackTicketPath: config( 'fallback_ticket_path' ),
 		getAuth: getHappychatAuth( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
 		isConnectionUninitialized: isHCConnectionUninitialized( state ),
-		isCurrentUser: ( { source } ) => {
-			return source === 'customer';
-		},
-		isExternalUrl: () => true,
+		isCurrentUser,
+		isExternalUrl,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
 		isServerReachable: isHCServerReachable( state ),
 		message: getUICurrentMessage( state ),
