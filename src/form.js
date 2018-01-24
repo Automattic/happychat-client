@@ -21,7 +21,13 @@ import {
 	sendTyping,
 } from 'src/state/connection/actions';
 import { blur, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
-import { HAPPYCHAT_FALLBACK_TICKET_NEW } from 'src/state/constants';
+import {
+	HAPPYCHAT_FALLBACK_TICKET_NEW,
+	HAPPYCHAT_FALLBACK_TICKET_SENDING,
+	HAPPYCHAT_FALLBACK_TICKET_SUCCESS,
+	HAPPYCHAT_FALLBACK_TICKET_FAILURE,
+	HAPPYCHAT_FALLBACK_TICKET_TIMEOUT,
+} from 'src/state/constants';
 
 // selectors
 import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
@@ -142,17 +148,32 @@ class TicketSupportProvider {
 
 	renderForm() {
 		const { fallbackTicketStatus, howCanWeHelpOptions, howDoYouFeelOptions } = this.props;
-		let form = (
-			<ContactForm
-				canSubmitForm={ this.canSubmitForm }
-				howCanWeHelpOptions={ howCanWeHelpOptions }
-				howDoYouFeelOptions={ howDoYouFeelOptions }
-				submitForm={ this.submitForm }
-				submitFormText={ 'Send a ticket' }
-			/>
-		);
-		if ( fallbackTicketStatus !== HAPPYCHAT_FALLBACK_TICKET_NEW ) {
-			form = <MessageForm message="Sending ticket..." />;
+
+		let form;
+		switch ( fallbackTicketStatus ) {
+			case HAPPYCHAT_FALLBACK_TICKET_SENDING:
+				form = <MessageForm message="Sending ticket..." />;
+				break;
+			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
+				form = <MessageForm message="Sorry, ticket could not be created - something went wrong." />;
+				break;
+			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
+				form = <MessageForm message="Ticket succesfully created." />;
+				break;
+			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
+				form = <MessageForm message="Sorry, ticket could not be created - API timed out." />;
+				break;
+			case HAPPYCHAT_FALLBACK_TICKET_NEW:
+			default:
+				form = (
+					<ContactForm
+						canSubmitForm={ this.canSubmitForm }
+						howCanWeHelpOptions={ howCanWeHelpOptions }
+						howDoYouFeelOptions={ howDoYouFeelOptions }
+						submitForm={ this.submitForm }
+						submitFormText={ 'Send a ticket' }
+					/>
+				);
 		}
 		return form;
 	}
