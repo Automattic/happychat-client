@@ -152,7 +152,7 @@ class TicketSupportProvider {
 			/>
 		);
 		if ( fallbackTicketStatus !== HAPPYCHAT_FALLBACK_TICKET_NEW ) {
-			form = <MessageForm message="Sending" />;
+			form = <MessageForm message="Sending ticket..." />;
 		}
 		return form;
 	}

@@ -10,13 +10,20 @@ import PropTypes from 'prop-types';
  * Internal dependencies
  */
 import FormLabel from 'src/ui/components/form-label';
+import CompactCard from 'src/ui/components/card/compact';
+import Card from 'src/ui/components/card';
 
 export class MessageForm extends React.Component {
 	render() {
 		const { message } = this.props;
 		return (
 			<div className="message-form">
-				<FormLabel>{ message }</FormLabel>
+				<CompactCard>
+					<p className="message-form__header-title">Contact Us</p>
+				</CompactCard>
+				<Card>
+					<FormLabel>{ message }</FormLabel>
+				</Card>
 			</div>
 		);
 	}
