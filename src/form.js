@@ -21,6 +21,7 @@ import {
 	sendTyping,
 } from 'src/state/connection/actions';
 import { blur, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
+import { HAPPYCHAT_FALLBACK_TICKET_NEW } from 'src/state/constants';
 
 // selectors
 import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
@@ -28,6 +29,7 @@ import canUserSendMessages from 'src/state/selectors/can-user-send-messages';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
+import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
@@ -40,6 +42,7 @@ import { mockLocalize } from 'src/ui/components/localize'; // TODO implement loc
 import { HappychatConnection } from 'src/ui/components/connection';
 import { HappychatForm } from 'src/ui/components/happychat-form';
 import { ContactForm } from 'src/ui/components/contact-form';
+import { MessageForm } from 'src/ui/components/message-form';
 
 class HappychatSupportProvider {
 	constructor( props ) {
@@ -138,8 +141,8 @@ class TicketSupportProvider {
 	}
 
 	renderForm() {
-		const { howCanWeHelpOptions, howDoYouFeelOptions } = this.props;
-		return (
+		const { fallbackTicketStatus, howCanWeHelpOptions, howDoYouFeelOptions } = this.props;
+		let form = (
 			<ContactForm
 				canSubmitForm={ this.canSubmitForm }
 				howCanWeHelpOptions={ howCanWeHelpOptions }
@@ -148,6 +151,10 @@ class TicketSupportProvider {
 				submitFormText={ 'Send a ticket' }
 			/>
 		);
+		if ( fallbackTicketStatus !== HAPPYCHAT_FALLBACK_TICKET_NEW ) {
+			form = <MessageForm message="Sending" />;
+		}
+		return form;
 	}
 }
 
@@ -208,6 +215,7 @@ const mapState = state => {
 		currentUserEmail: currentUser.email,
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketPath: config( 'fallback_ticket_path' ),
+		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		getAuth: getHappychatAuth( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
