@@ -167,6 +167,12 @@ class Happychat_Client {
 				self::VERSION,
 				true
 			);
+
+            $fallback_ticket_path = get_option( 'happychat_fallback_ticket_path' );
+            $fallback_ticket_path = ( substr( $fallback_ticket_path, 0, 1 ) == '/' )
+                ? $fallback_ticket_path
+                : '/' . $fallback_ticket_path;
+
 			$happychat_settings = array(
 				'token'  => self::get_token(),
 				'groups' => [ 'woo' ],
@@ -178,8 +184,9 @@ class Happychat_Client {
                     array( 'value' => 'order',      'label'  => 'Help with an order' ),
                     array( 'value' => 'broken',     'label' => 'Something is broken' ),
                 ],
-                'fallbackTicketPath' => get_option( 'happychat_fallback_ticket_path' )
-                );
+                'fallbackTicketPath' => $fallback_ticket_path
+            );
+
 			wp_localize_script( 'happychat-form-js-init', 'happychatSettings', $happychat_settings );
 			wp_enqueue_script( 'happychat-form-js-init' );
 		}
