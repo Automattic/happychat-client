@@ -177,7 +177,8 @@ class Happychat_Client {
                     array( 'value' => 'config',     'label' => 'Help configuring' ),
                     array( 'value' => 'order',      'label'  => 'Help with an order' ),
                     array( 'value' => 'broken',     'label' => 'Something is broken' ),
-                    ]
+                ],
+                'fallbackTicketPath' => get_option( 'happychat_fallback_ticket_path' )
                 );
 			wp_localize_script( 'happychat-form-js-init', 'happychatSettings', $happychat_settings );
 			wp_enqueue_script( 'happychat-form-js-init' );

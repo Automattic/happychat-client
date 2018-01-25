@@ -23,6 +23,9 @@ import {
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT,
+	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
+	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE,
+	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT,
 	HAPPYCHAT_IO_SEND_MESSAGE_EVENT,
 	HAPPYCHAT_IO_SEND_MESSAGE_LOG,
 	HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE,
@@ -161,6 +164,27 @@ export const receiveTranscriptTimeout = () => ( {
 } );
 
 /**
+ * Returns an action object with the success status
+ * of the fallback ticket request.
+ *
+ * @param  { Boolean } success Success status. True = succesful, False = not successful.
+ * @return { Object } Action object
+ */
+export const receiveFallbackTicket = success => ( {
+	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE,
+	success,
+} );
+
+/**
+ * Returns an action object for the timeout of the fallback ticket request.
+ *
+ * @return { Object } Action object
+ */
+export const receiveFallbackTicketTimeout = () => ( {
+	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT,
+} );
+
+/**
  * Returns an action object that prepares the transcript request
  * to be send to happychat as a SocketIO event.
  *
@@ -177,6 +201,29 @@ export const requestTranscript = ( timestamp, timeout = 10000 ) => ( {
 	timeout: timeout,
 	callback: receiveTranscript,
 	callbackTimeout: receiveTranscriptTimeout,
+} );
+
+/**
+ * Returns an action object that prepares the fallback ticket message
+ * to be sent as a XHR POST request to the fallback ticket API endpoint.
+ *
+ * Note that this action is never sent through SocketIO, that's why
+ * it doesn't include the payload.event property, but the payload.path.
+ *
+ * @param  { String } path URL path that will be used to send the request.
+ * @param  { Object } message Message to be sent
+ * @param { Number } timeout The number of milliseconds to wait for server response.
+ *                 	 If it hasn't responded after the timeout, the connection library
+ *                 	 will dispatch the receiveTranscriptTimeout action.
+ * @return { Object } Action object
+ */
+export const requestFallbackTicket = ( path, message, timeout = 10000 ) => ( {
+	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
+	path,
+	payload: { message },
+	timeout,
+	callback: receiveFallbackTicket,
+	callbackTimeout: receiveFallbackTicketTimeout,
 } );
 
 /**

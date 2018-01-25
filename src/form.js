@@ -15,11 +15,19 @@ import config from 'src/config';
 // actions
 import {
 	initConnection,
+	requestFallbackTicket,
 	sendMessage,
 	sendNotTyping,
 	sendTyping,
 } from 'src/state/connection/actions';
 import { blur, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
+import {
+	HAPPYCHAT_FALLBACK_TICKET_NEW,
+	HAPPYCHAT_FALLBACK_TICKET_SENDING,
+	HAPPYCHAT_FALLBACK_TICKET_SUCCESS,
+	HAPPYCHAT_FALLBACK_TICKET_FAILURE,
+	HAPPYCHAT_FALLBACK_TICKET_TIMEOUT,
+} from 'src/state/constants';
 
 // selectors
 import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
@@ -27,6 +35,7 @@ import canUserSendMessages from 'src/state/selectors/can-user-send-messages';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
+import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
@@ -41,23 +50,22 @@ import { HappychatForm } from 'src/ui/components/happychat-form';
 import { ContactForm } from 'src/ui/components/contact-form';
 import { MessageForm } from 'src/ui/components/message-form';
 
-export class Form extends React.Component {
+class HappychatSupportProvider {
 	constructor( props ) {
-		super( props );
+		this.props = props;
 		this.submitForm = this.submitForm.bind( this );
 		this.canSubmitForm = this.canSubmitForm.bind( this );
 	}
 
-	submitForm( formState ) {
-		const { onOpenChat, onSendMessage } = this.props;
-		if ( this.canSubmitForm() ) {
-			onOpenChat();
-			onSendMessage( formState.message );
-		}
-	}
-
 	canSubmitForm() {
 		return this.props.isChatAvailable;
+	}
+
+	submitForm( formState ) {
+		if ( this.canSubmitForm() ) {
+			this.props.onOpenChat();
+			this.props.onSendMessage( formState.message );
+		}
 	}
 
 	renderForm() {
@@ -90,6 +98,7 @@ export class Form extends React.Component {
 				howCanWeHelpOptions={ howCanWeHelpOptions }
 				howDoYouFeelOptions={ howDoYouFeelOptions }
 				submitForm={ this.submitForm }
+				submitFormText={ 'Chat with us' }
 			/>
 		);
 		const chatForm = (
@@ -120,7 +129,62 @@ export class Form extends React.Component {
 		}
 		return form;
 	}
+}
 
+class TicketSupportProvider {
+	constructor( props ) {
+		this.props = props;
+		this.submitForm = this.submitForm.bind( this );
+		this.canSubmitForm = this.canSubmitForm.bind( this );
+	}
+
+	canSubmitForm() {
+		return true;
+	}
+
+	submitForm( formState ) {
+		this.props.onRequestFallbackTicket( this.props.fallbackTicketPath, formState.message );
+	}
+
+	renderForm() {
+		const { fallbackTicketStatus, howCanWeHelpOptions, howDoYouFeelOptions } = this.props;
+
+		let form;
+		switch ( fallbackTicketStatus ) {
+			case HAPPYCHAT_FALLBACK_TICKET_SENDING:
+				form = <MessageForm message="Sending ticket..." />;
+				break;
+			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
+				form = <MessageForm message="Sorry, ticket could not be created - something went wrong." />;
+				break;
+			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
+				form = <MessageForm message="Ticket succesfully created." />;
+				break;
+			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
+				form = <MessageForm message="Sorry, ticket could not be created - API timed out." />;
+				break;
+			case HAPPYCHAT_FALLBACK_TICKET_NEW:
+			default:
+				form = (
+					<ContactForm
+						canSubmitForm={ this.canSubmitForm }
+						howCanWeHelpOptions={ howCanWeHelpOptions }
+						howDoYouFeelOptions={ howDoYouFeelOptions }
+						submitForm={ this.submitForm }
+						submitFormText={ 'Send a ticket' }
+					/>
+				);
+		}
+		return form;
+	}
+}
+
+const getSupportProvider = props =>
+	props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable )
+		? new HappychatSupportProvider( props )
+		: new TicketSupportProvider( props );
+
+export class Form extends React.Component {
 	render() {
 		const {
 			accessToken,
@@ -129,6 +193,8 @@ export class Form extends React.Component {
 			isHappychatEnabled,
 			onInitConnection,
 		} = this.props;
+
+		this.supportProvider = getSupportProvider( this.props );
 
 		return (
 			<div>
@@ -140,7 +206,7 @@ export class Form extends React.Component {
 					onInitConnection={ onInitConnection }
 				/>
 
-				{ this.renderForm() }
+				{ this.supportProvider.renderForm() }
 			</div>
 		);
 	}
@@ -152,21 +218,30 @@ Form.propTypes = {
 	howDoYouFeelOptions: PropTypes.array,
 };
 
+// Whether URL should open a new tab or not.
+// Legacy code from Calypso, where it wouldn't open a new window
+// if the URL was from WordPress.com.
+const isExternalUrl = () => true;
+
+const isCurrentUser = ( { source } ) => {
+	return source === 'customer';
+};
+
 const mapState = state => {
 	const currentUser = getUser( state );
 	return {
+		isUserEligibleForChat: true, // TODO implement logic
 		chatStatus: getChatStatus( state ),
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
 		disabled: ! canUserSendMessages( state ),
+		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		getAuth: getHappychatAuth( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
 		isConnectionUninitialized: isHCConnectionUninitialized( state ),
-		isCurrentUser: ( { source } ) => {
-			return source === 'customer';
-		},
-		isExternalUrl: () => true,
+		isCurrentUser,
+		isExternalUrl,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
 		isServerReachable: isHCServerReachable( state ),
 		message: getUICurrentMessage( state ),
@@ -178,6 +253,7 @@ const mapState = state => {
 const mapDispatch = {
 	onInitConnection: initConnection,
 	onOpenChat: openChat,
+	onRequestFallbackTicket: requestFallbackTicket,
 	onSendMessage: sendMessage,
 	onSendNotTyping: sendNotTyping,
 	onSendTyping: sendTyping,

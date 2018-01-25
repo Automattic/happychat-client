@@ -3,12 +3,24 @@
 /**
  * Internal dependencies
  */
-import { initHappychat, subscribeTo, unsubscribeFrom } from 'src';
+import { initHappychat } from 'src';
 
 window.Happychat = {
-	open: ( { nodeId, groups, accessToken, howCanWeHelpOptions, howDoYouFeelOptions } ) => {
-		initHappychat( { nodeId, groups, accessToken, howCanWeHelpOptions, howDoYouFeelOptions } );
+	open: ( {
+		nodeId,
+		groups,
+		accessToken,
+		howCanWeHelpOptions,
+		howDoYouFeelOptions,
+		fallbackTicketPath,
+	} ) => {
+		initHappychat( {
+			nodeId,
+			groups,
+			accessToken,
+			howCanWeHelpOptions,
+			howDoYouFeelOptions,
+			fallbackTicketPath,
+		} );
 	},
-	on: ( eventName, subscriber ) => subscribeTo( eventName, subscriber ),
-	off: ( eventName, subscriber ) => unsubscribeFrom( eventName, subscriber ),
 };

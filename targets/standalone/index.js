@@ -3,8 +3,8 @@
 /**
  * Internal dependencies
  */
-import config from 'src/config';
 import { initHappychat } from 'src';
+import config from 'targets/standalone/config';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 
@@ -16,13 +16,14 @@ const accessToken = () =>
 	} );
 
 window.Happychat = {
-	open: ( { nodeId, groups, howCanWeHelpOptions, howDoYouFeelOptions } ) => {
+	open: ( { nodeId, groups, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } ) => {
 		initHappychat( {
 			nodeId,
 			groups,
 			accessToken,
 			howCanWeHelpOptions,
 			howDoYouFeelOptions,
+			fallbackTicketPath,
 		} );
 	},
 };

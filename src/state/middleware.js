@@ -12,6 +12,7 @@ import {
 	HAPPYCHAT_BLUR,
 	HAPPYCHAT_FOCUS,
 	HAPPYCHAT_IO_INIT,
+	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT,
 	HAPPYCHAT_IO_SEND_MESSAGE_EVENT,
 	HAPPYCHAT_IO_SEND_MESSAGE_LOG,
@@ -22,6 +23,7 @@ import {
 } from 'src/state/action-types';
 import { sendEvent } from 'src/state/connection/actions';
 import buildConnection from 'src/state/socketio';
+import makeRequest from 'src/state/xhr';
 import isConnectionConnected from 'src/state/selectors/is-connection-connected';
 import isChatAssigned from 'src/state/selectors/is-chat-assigned';
 
@@ -45,6 +47,10 @@ export const socketMiddleware = ( connection = null ) => {
 
 			case HAPPYCHAT_IO_REQUEST_TRANSCRIPT:
 				connection.request( action, action.timeout );
+				break;
+
+			case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
+				makeRequest( store.dispatch, action, action.timeout );
 				break;
 
 			case HAPPYCHAT_IO_SEND_MESSAGE_EVENT:

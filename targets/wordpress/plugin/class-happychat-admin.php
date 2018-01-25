@@ -46,6 +46,13 @@ class Happychat_Admin {
 		add_settings_section( 'happychat_settings' , '' , null, 'happychat' );
 		add_settings_field( 'happychat_user_eligibility' , 'User eligibility:' , array( $this, 'happychat_user_eligibility_html' )  , 'happychat' , 'happychat_settings' );
 		register_setting( 'happychat' , 'happychat_user_eligibility' );
+		add_settings_field( 'happychat_fallback_ticket_path' , 'Fallback ticket path:' , array( $this, 'happychat_fallback_ticket_path_html' )  , 'happychat' , 'happychat_settings' );
+		register_setting( 'happychat' , 'happychat_fallback_ticket_path' );
+	}
+
+	public function happychat_fallback_ticket_path_html() {
+		$fallback_ticket_path = get_option( 'happychat_fallback_ticket_path' );
+		print '<input id="happychat_fallback_ticket_path" name="happychat_fallback_ticket_path" type="text" value="' . $fallback_ticket_path . '"/>';
 	}
 
 	public function happychat_user_eligibility_html() {
