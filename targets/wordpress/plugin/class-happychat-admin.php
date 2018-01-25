@@ -47,19 +47,33 @@ class Happychat_Admin {
 		add_settings_section( 'happychat_settings' , '' , null, 'happychat' );
 		add_settings_field( 'happychat_user_eligibility' , 'User eligibility:' , array( $this, 'happychat_user_eligibility_html' )  , 'happychat' , 'happychat_settings' );
 		register_setting( 'happychat' , 'happychat_user_eligibility' );
+		add_settings_field( 'happychat_fallback_ticket_active' , 'Fallback ticket:' , array( $this, 'happychat_fallback_ticket_active_html' )  , 'happychat' , 'happychat_settings' );
+		register_setting( 'happychat' , 'happychat_fallback_ticket_active' );
 		add_settings_field( 'happychat_fallback_ticket_path' , 'Fallback ticket path:' , array( $this, 'happychat_fallback_ticket_path_html' )  , 'happychat' , 'happychat_settings' );
 		register_setting( 'happychat' , 'happychat_fallback_ticket_path' );
 	}
 
 	private function enqueue_scripts() {
 		wp_register_script(
-			'happychat-update-fallback-ticket-path',
-			plugins_url( 'assets/update-fallback-ticket-path.js', __FILE__ ),
+			'fallback-ticket',
+			plugins_url( 'assets/fallback-ticket.js', __FILE__ ),
 			array( 'jquery' ),
 			self::VERSION,
 			true
 		);
-		wp_enqueue_script( 'happychat-update-fallback-ticket-path' );
+		wp_enqueue_script( 'fallback-ticket' );
+	}
+
+	public function happychat_fallback_ticket_active_html() {
+		$fallback_ticket_active = get_option( 'happychat_fallback_ticket_active' );
+		error_log( $fallback_ticket_active == true );
+		$maybe_checked = '';
+		if ( true == $fallback_ticket_active ) {
+			$maybe_checked = 'checked="checked"';
+		};
+		print '<label for="happychat_fallback_ticket_active">';
+		print '<input id="happychat_fallback_ticket_active" name="happychat_fallback_ticket_active" type="checkbox" ' . $maybe_checked . ' />';
+		print 'Send a fallback ticket if the user cannot Happychat.</label>';
 	}
 
 	public function happychat_fallback_ticket_path_html() {
