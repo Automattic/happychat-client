@@ -235,7 +235,6 @@ const mapState = state => {
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
 		disabled: ! canUserSendMessages( state ),
-		fallbackTicketPath: config( 'fallback_ticket_path' ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		getAuth: getHappychatAuth( state ),
 		isChatOpen: isChatFormOpen( state ),

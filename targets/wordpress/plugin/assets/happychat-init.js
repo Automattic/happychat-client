@@ -14,4 +14,5 @@ window.Happychat &&
 		groups: happychatSettings.groups,
 		accessToken: happychatSettings.token,
 		howCanWeHelpOptions: happychatSettings.howCanWeHelpOptions,
+		fallbackTicketPath: happychatSettings.fallbackTicketPath,
 	} );

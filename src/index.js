@@ -82,7 +82,13 @@ const getTargetNode = nodeId => {
 };
 
 /* eslint-disable camelcase */
-const renderTo = ( { nodeId, user, howCanWeHelpOptions = [], howDoYouFeelOptions = [] } ) => {
+const renderTo = ( {
+	nodeId,
+	user,
+	howCanWeHelpOptions = [],
+	howDoYouFeelOptions = [],
+	fallbackTicketPath,
+} ) => {
 	const { ID, email, username, display_name, avatar_URL, language, groups, accessToken } = user;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
@@ -94,6 +100,7 @@ const renderTo = ( { nodeId, user, howCanWeHelpOptions = [], howDoYouFeelOptions
 				accessToken={ accessToken }
 				howCanWeHelpOptions={ howCanWeHelpOptions }
 				howDoYouFeelOptions={ howDoYouFeelOptions }
+				fallbackTicketPath={ fallbackTicketPath }
 			/>
 		</Provider>,
 		getTargetNode( nodeId )
@@ -104,8 +111,13 @@ const renderTo = ( { nodeId, user, howCanWeHelpOptions = [], howDoYouFeelOptions
 const renderMessage = ( nodeId, msg ) =>
 	ReactDOM.render( <MessageForm message={ msg } />, getTargetNode( nodeId ) );
 
-const renderHappychat = ( { nodeId, howCanWeHelpOptions, howDoYouFeelOptions } ) => user =>
-	renderTo( { nodeId, user, howCanWeHelpOptions, howDoYouFeelOptions } );
+const renderHappychat = ( {
+	nodeId,
+	howCanWeHelpOptions,
+	howDoYouFeelOptions,
+	fallbackTicketPath,
+} ) => user =>
+	renderTo( { nodeId, user, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } );
 
 const renderError = nodeId => error => renderMessage( nodeId, 'Could not load form. ' + error );
 
@@ -143,6 +155,7 @@ export const initHappychat = ( {
 	accessToken,
 	howCanWeHelpOptions,
 	howDoYouFeelOptions,
+	fallbackTicketPath,
 } ) => {
 	let getAccessToken = accessToken;
 	if ( typeof accessToken === 'string' ) {
@@ -151,7 +164,9 @@ export const initHappychat = ( {
 
 	getAccessToken()
 		.then( getWPComUser( groups ) )
-		.then( renderHappychat( { nodeId, howCanWeHelpOptions, howDoYouFeelOptions } ) )
+		.then(
+			renderHappychat( { nodeId, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } )
+		)
 		.catch( renderError( nodeId ) );
 };
 

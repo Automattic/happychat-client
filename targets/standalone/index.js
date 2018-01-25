@@ -16,13 +16,14 @@ const accessToken = () =>
 	} );
 
 window.Happychat = {
-	open: ( { nodeId, groups, howCanWeHelpOptions, howDoYouFeelOptions } ) => {
+	open: ( { nodeId, groups, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } ) => {
 		initHappychat( {
 			nodeId,
 			groups,
 			accessToken,
 			howCanWeHelpOptions,
 			howDoYouFeelOptions,
+			fallbackTicketPath,
 		} );
 	},
 };
