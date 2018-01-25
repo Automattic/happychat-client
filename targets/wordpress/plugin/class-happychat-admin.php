@@ -52,7 +52,12 @@ class Happychat_Admin {
 
 	public function happychat_fallback_ticket_path_html() {
 		$fallback_ticket_path = get_option( 'happychat_fallback_ticket_path' );
-		print '<input id="happychat_fallback_ticket_path" name="happychat_fallback_ticket_path" type="text" value="' . $fallback_ticket_path . '"/>';
+		$fallback_ticket_path = substr( $fallback_ticket_path, 0, 1 ) == '/' ? $fallback_ticket_path : '/' . $fallback_ticket_path;
+		$endpoint = $_SERVER['HTTPS'] ? 'https://' : 'http://';
+		$endpoint .= $_SERVER['SERVER_NAME'];
+		$endpoint .= $fallback_ticket_path;
+		print '<input id="happychat_fallback_ticket_path" name="happychat_fallback_ticket_path" type="text" class="regular-text" value="' . $fallback_ticket_path . '"/>';
+		print '<p class="description">' . $endpoint . '</p>';
 	}
 
 	public function happychat_user_eligibility_html() {
