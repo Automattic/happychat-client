@@ -1,4 +1,4 @@
- <?php
+<?php
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Happychat_Client {
 	private static $_instance = null;
 	const VERSION = '0.0.1-dev';
-    const NODE_ID = 'happychat-form';
+	const NODE_ID = 'happychat-form';
 
 	/**
 	* Create instance of class
@@ -31,23 +31,23 @@ class Happychat_Client {
 
 	public function shortcode_to_happychat_form( $atts ) {
 		self::enqueue_scripts();
-		return '<div id="'. self::NODE_ID .'"></div>';
+		return '<div id="' . self::NODE_ID . '"></div>';
 	}
 
 	/**
-	 * Returns whether Happychat is enabled or not.
-	 *
-	 * @return bool
-	 */
+	* Returns whether Happychat is enabled or not.
+	*
+	* @return bool
+	*/
 	private function is_happychat_enabled() {
 		return get_option( 'happychat_enable' );
 	}
 
 	/**
-	 * Get all product IDs that have attribute "Revenue Share" = true.
-	 *
-	 * @return array
-	 */
+	* Get all product IDs that have attribute "Revenue Share" = true.
+	*
+	* @return array
+	*/
 	public function get_revenue_share_products() {
 		$result = array();
 		$page = 0;
@@ -144,22 +144,22 @@ class Happychat_Client {
 		if ( ! $this->is_happychat_enabled() || ! $this->is_user_eligible() ) {
 			return false;
 		}
-        return true;
+		return true;
 	}
 
 	private function enqueue_scripts() {
-        if ( self::should_offer_chat() ) {
-            // load happychat library
-            wp_register_script(
-                'happychat-form-js',
-                plugins_url( 'assets/happychat.js', __FILE__ ),
-                array(),
-                self::VERSION,
-                true
-            );
-            wp_enqueue_script( 'happychat-form-js' );
+		if ( self::should_offer_chat() ) {
+			// load happychat library
+			wp_register_script(
+				'happychat-form-js',
+				plugins_url( 'assets/happychat.js', __FILE__ ),
+				array(),
+				self::VERSION,
+				true
+			);
+			wp_enqueue_script( 'happychat-form-js' );
 
-            // init happychat
+			// init happychat
 			wp_register_script(
 				'happychat-form-js-init',
 				plugins_url( 'assets/happychat-init.js', __FILE__ ),
@@ -168,24 +168,24 @@ class Happychat_Client {
 				true
 			);
 
-            $fallback_ticket_path = get_option( 'happychat_fallback_ticket_path' );
-            $fallback_ticket_path = ( substr( $fallback_ticket_path, 0, 1 ) == '/' )
-                ? $fallback_ticket_path
-                : '/' . $fallback_ticket_path;
+			$fallback_ticket_path = get_option( 'happychat_fallback_ticket_path' );
+			$fallback_ticket_path = ( substr( $fallback_ticket_path, 0, 1 ) == '/' )
+				? $fallback_ticket_path
+				: '/' . $fallback_ticket_path;
 
 			$happychat_settings = array(
 				'token'  => self::get_token(),
 				'groups' => [ 'woo' ],
-                'nodeId' => self::NODE_ID,
-                'howCanWeHelpOptions' => [
-                    array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
-                    array( 'value' => 'account',    'label' => 'Help with my account' ),
-                    array( 'value' => 'config',     'label' => 'Help configuring' ),
-                    array( 'value' => 'order',      'label'  => 'Help with an order' ),
-                    array( 'value' => 'broken',     'label' => 'Something is broken' ),
-                ],
-                'fallbackTicketPath' => $fallback_ticket_path
-            );
+				'nodeId' => self::NODE_ID,
+				'howCanWeHelpOptions' => [
+					array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
+					array( 'value' => 'account',    'label' => 'Help with my account' ),
+					array( 'value' => 'config',     'label' => 'Help configuring' ),
+					array( 'value' => 'order',      'label' => 'Help with an order' ),
+					array( 'value' => 'broken',     'label' => 'Something is broken' ),
+					],
+				'fallbackTicketPath' => $fallback_ticket_path,
+			);
 
 			wp_localize_script( 'happychat-form-js-init', 'happychatSettings', $happychat_settings );
 			wp_enqueue_script( 'happychat-form-js-init' );
