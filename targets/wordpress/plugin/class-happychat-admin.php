@@ -54,7 +54,7 @@ class Happychat_Admin {
 	private function enqueue_scripts() {
 		wp_register_script(
 			'fallback-ticket',
-			plugins_url( 'assets/fallback-ticket.js', __FILE__ ),
+			plugins_url( 'assets/admin-fallback-ticket.js', __FILE__ ),
 			array( 'jquery' ),
 			self::VERSION,
 			true
