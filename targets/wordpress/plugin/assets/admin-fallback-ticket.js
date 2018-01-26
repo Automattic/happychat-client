@@ -6,7 +6,7 @@
 
 // Teach no-undef ESLint rule not to fail for these variables,
 // because they are declared for us in the global scope.
-/* global window, jQuery */
+/* global location, jQuery */
 
 ( function() {
 	var host =
