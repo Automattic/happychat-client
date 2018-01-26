@@ -8,12 +8,14 @@
 // because they are declared for us in the global scope.
 /* global window, jQuery */
 
-var host =
-	location.protocol + '//' + location.hostname + ( location.port ? ':' + location.port : '' );
-jQuery( '#happychat_fallback_ticket_path' )
-	.keyup( function() {
-		var path = jQuery( this ).val();
-		path = path.startsWith( '/' ) ? path : '/' + path;
-		jQuery( '#happychat_fallback_ticket_path_desc' ).text( host + path );
-	} )
-	.keyup();
+( function() {
+	var host =
+		location.protocol + '//' + location.hostname + ( location.port ? ':' + location.port : '' );
+	jQuery( '#happychat_fallback_ticket_path' )
+		.keyup( function() {
+			var path = jQuery( this ).val();
+			path = path.startsWith( '/' ) ? path : '/' + path;
+			jQuery( '#happychat_fallback_ticket_path_desc' ).text( host + path );
+		} )
+		.keyup();
+} )();
