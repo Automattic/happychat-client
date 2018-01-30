@@ -27,6 +27,7 @@ const makeRequest = ( dispatch, action, timeout ) => {
 		new Promise( ( resolve, reject ) => {
 			const xhr = new XMLHttpRequest();
 			xhr.open( 'POST', action.path, true );
+			xhr.setRequestHeader( 'Content-type', 'application/json; charset=UTF-8' );
 			xhr.onreadystatechange = () => {
 				if ( xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200 ) {
 					return resolve();
@@ -34,7 +35,7 @@ const makeRequest = ( dispatch, action, timeout ) => {
 					return reject( new Error( xhr.status ) );
 				}
 			};
-			xhr.send( action.payload );
+			xhr.send( JSON.stringify( action.payload ) );
 		} ),
 		new Promise( ( resolve, reject ) => {
 			setTimeout( () => {
