@@ -143,7 +143,7 @@ class TicketSupportProvider {
 	}
 
 	submitForm( formState ) {
-		this.props.onRequestFallbackTicket( this.props.fallbackTicketPath, formState.message );
+		this.props.onRequestFallbackTicket( this.props.fallbackTicketPath, formState );
 	}
 
 	renderForm() {

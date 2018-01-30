@@ -217,10 +217,10 @@ export const requestTranscript = ( timestamp, timeout = 10000 ) => ( {
  *                 	 will dispatch the receiveTranscriptTimeout action.
  * @return { Object } Action object
  */
-export const requestFallbackTicket = ( path, message, timeout = 10000 ) => ( {
+export const requestFallbackTicket = ( path, payload, timeout = 10000 ) => ( {
 	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
 	path,
-	payload: { message },
+	payload,
 	timeout,
 	callback: receiveFallbackTicket,
 	callbackTimeout: receiveFallbackTicketTimeout,
