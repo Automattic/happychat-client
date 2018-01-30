@@ -151,18 +151,18 @@ class Happychat_Client {
 		if ( self::should_offer_chat() ) {
 			// load happychat library
 			wp_register_script(
-				'happychat-form-js',
+				'happychat-api',
 				plugins_url( 'assets/happychat.js', __FILE__ ),
 				array(),
 				self::VERSION,
 				true
 			);
-			wp_enqueue_script( 'happychat-form-js' );
+			wp_enqueue_script( 'happychat-api' );
 
 			// init happychat
 			wp_register_script(
-				'happychat-form-js-init',
-				plugins_url( 'assets/happychat-init.js', __FILE__ ),
+				'happychat-init',
+				plugins_url( 'assets/client-happychat-init.js', __FILE__ ),
 				array(),
 				self::VERSION,
 				true
@@ -187,8 +187,8 @@ class Happychat_Client {
 				'fallbackTicketPath' => $fallback_ticket_path,
 			);
 
-			wp_localize_script( 'happychat-form-js-init', 'happychatSettings', $happychat_settings );
-			wp_enqueue_script( 'happychat-form-js-init' );
+			wp_localize_script( 'happychat-init', 'happychatSettings', $happychat_settings );
+			wp_enqueue_script( 'happychat-init' );
 		}
 	}
 }
