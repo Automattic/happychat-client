@@ -30,7 +30,7 @@ const makeRequest = ( dispatch, action, timeout ) => {
 			xhr.setRequestHeader( 'Content-type', 'application/json; charset=UTF-8' );
 			xhr.onreadystatechange = () => {
 				if ( xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200 ) {
-					return resolve();
+					return resolve( xhr.responseText );
 				} else if ( xhr.readyState === XMLHttpRequest.DONE ) {
 					return reject( new Error( xhr.status ) );
 				}
@@ -45,7 +45,7 @@ const makeRequest = ( dispatch, action, timeout ) => {
 	] );
 
 	promiseRace.then(
-		() => dispatch( action.callback( true ) ),
+		responseText => dispatch( action.callback( responseText ) ),
 		e =>
 			e.message === 'timeout'
 				? dispatch( action.callbackTimeout() )

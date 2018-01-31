@@ -35,6 +35,7 @@ import canUserSendMessages from 'src/state/selectors/can-user-send-messages';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
+import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
@@ -49,6 +50,9 @@ import { HappychatConnection } from 'src/ui/components/connection';
 import { HappychatForm } from 'src/ui/components/happychat-form';
 import { ContactForm } from 'src/ui/components/contact-form';
 import { MessageForm } from 'src/ui/components/message-form';
+import Card from 'src/ui/components/card';
+import CompactCard from 'src/ui/components/card/compact';
+import FormLabel from 'src/ui/components/form-label';
 
 class HappychatSupportProvider {
 	constructor( props ) {
@@ -147,7 +151,13 @@ class TicketSupportProvider {
 	}
 
 	renderForm() {
-		const { fallbackTicketStatus, howCanWeHelpOptions, howDoYouFeelOptions } = this.props;
+		const {
+			fallbackTicketResponse,
+			fallbackTicketUrl,
+			fallbackTicketStatus,
+			howCanWeHelpOptions,
+			howDoYouFeelOptions,
+		} = this.props;
 
 		let form;
 		switch ( fallbackTicketStatus ) {
@@ -158,7 +168,23 @@ class TicketSupportProvider {
 				form = <MessageForm message="Sorry, ticket could not be created - something went wrong." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
-				form = <MessageForm message="Ticket succesfully created." />;
+				const link = fallbackTicketUrl + fallbackTicketResponse;
+				form = (
+					<div className="message-form">
+						<CompactCard>
+							<p className="message-form__header-title">Contact Us</p>
+						</CompactCard>
+						<Card>
+							<FormLabel>
+								Thanks! Ticket{' '}
+								<a href={ link } target="_blank">
+									{ fallbackTicketResponse }
+								</a>{' '}
+								has been successfully created.
+							</FormLabel>
+						</Card>
+					</div>
+				);
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
 				form = <MessageForm message="Sorry, ticket could not be created - API timed out." />;
@@ -235,6 +261,8 @@ const mapState = state => {
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
 		disabled: ! canUserSendMessages( state ),
+		fallbackTicketResponse: getFallbackTicketResponse( state ),
+		fallbackTicketUrl: config( 'fallback_ticket_url' ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		getAuth: getHappychatAuth( state ),
 		isChatOpen: isChatFormOpen( state ),
