@@ -167,12 +167,12 @@ export const receiveTranscriptTimeout = () => ( {
  * Returns an action object with the success status
  * of the fallback ticket request.
  *
- * @param  { Boolean } success Success status. True = succesful, False = not successful.
+ * @param  { String } response The XHR response received. The message to shown or null if something went wrong.
  * @return { Object } Action object
  */
-export const receiveFallbackTicket = success => ( {
+export const receiveFallbackTicket = response => ( {
 	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE,
-	success,
+	response,
 } );
 
 /**

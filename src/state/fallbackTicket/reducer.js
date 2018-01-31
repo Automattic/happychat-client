@@ -26,10 +26,24 @@ const status = ( state = HAPPYCHAT_FALLBACK_TICKET_NEW, action ) => {
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
 			return HAPPYCHAT_FALLBACK_TICKET_SENDING;
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE:
-			return action.success ? HAPPYCHAT_FALLBACK_TICKET_SUCCESS : HAPPYCHAT_FALLBACK_TICKET_FAILURE;
+			return action.response === null
+				? HAPPYCHAT_FALLBACK_TICKET_FAILURE
+				: HAPPYCHAT_FALLBACK_TICKET_SUCCESS;
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT:
 			return HAPPYCHAT_FALLBACK_TICKET_TIMEOUT;
 	}
 	return state;
 };
-export default combineReducers( { status } );
+
+const response = ( state = null, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE:
+			return action.response;
+		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
+		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT:
+			return null;
+	}
+	return state;
+};
+
+export default combineReducers( { status, response } );
