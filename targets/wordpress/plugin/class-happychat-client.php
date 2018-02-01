@@ -51,6 +51,27 @@ class Happychat_Client {
 		return false;
 	}
 
+	private function is_valid_group( $group ) {
+		// These are the accepted values for Happychat groups/products
+		// https://github.com/Automattic/happychat/blob/staging/src/setup-system-defaults.js#L25-L35
+		if( ( $group === 'WP.com' ) || ( $group === 'woo' ) || ( $group === 'jpop' ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	private function get_user_group() {
+		// By default, we'll take what is configured in the Happychat plugin,
+		// but we also want to provide an opportunity for the host to
+		// have different groups at runtime.
+		$group = get_option( 'happychat_user_group' );
+		$group = apply_filters( 'happychat_user_group', $group );
+		if( ! $group || ! is_valid_group( $group ) ) {
+			$group = 'WP.com'; // default group
+		}
+		return $group;
+	}
+
 	private function enqueue_scripts() {
 		if ( self::should_offer_chat() ) {
 
@@ -62,10 +83,7 @@ class Happychat_Client {
 				return;
 			}
 
-			// By default, we'll take what is configured in the Happychat plugin,
-			// but we also want to provide an opportunity for the host to
-			// have different groups at runtime.
-			$groups = apply_filters( 'happychat_get_user_groups', [ 'woo' ] );
+			$group = get_user_group();
 
 			// load happychat library
 			wp_register_script(
@@ -93,7 +111,7 @@ class Happychat_Client {
 
 			$happychat_settings = array(
 				'token'  => $token,
-				'groups' => $groups,
+				'groups' => [ $group ],
 				'nodeId' => self::NODE_ID,
 				'howCanWeHelpOptions' => [
 					array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
