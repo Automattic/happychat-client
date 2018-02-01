@@ -54,7 +54,7 @@ class Happychat_Client {
 	private function is_valid_group( $group ) {
 		// These are the accepted values for Happychat groups/products
 		// https://github.com/Automattic/happychat/blob/staging/src/setup-system-defaults.js#L25-L35
-		if( ( $group === 'WP.com' ) || ( $group === 'woo' ) || ( $group === 'jpop' ) ) {
+		if ( ( $group === 'WP.com' ) || ( $group === 'woo' ) || ( $group === 'jpop' ) ) {
 			return true;
 		}
 		return false;
@@ -66,7 +66,7 @@ class Happychat_Client {
 		// have different groups at runtime.
 		$group = get_option( 'happychat_user_group' );
 		$group = apply_filters( 'happychat_user_group', $group );
-		if( ! $group || ! $this->is_valid_group( $group ) ) {
+		if ( ! $group || ! $this->is_valid_group( $group ) ) {
 			$group = 'WP.com'; // default group
 		}
 		return $group;
@@ -80,7 +80,7 @@ class Happychat_Client {
 			// on its behalf.
 			$token = null;
 			$token = apply_filters( 'happychat_wpcom_token', $token );
-			if( ! $token ) {
+			if ( ! $token ) {
 				error_log( 'happychat: token not provided' );
 				return;
 			}
