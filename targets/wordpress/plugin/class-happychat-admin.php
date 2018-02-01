@@ -23,7 +23,6 @@ class Happychat_Admin {
 		add_action( 'admin_init' , array( $this, 'register_settings' ) );
 		add_action( 'admin_menu' , array( $this, 'add_menu_item' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( $file ) , array( $this, 'add_settings_link' ) );
-		add_filter( 'option_page_capability_olark', array( $this, 'capability_filter' ) );
 	}
 
 	public function add_menu_item() {
@@ -34,13 +33,6 @@ class Happychat_Admin {
 		$settings_link = '<a href="options-general.php?page=happychat">Settings</a>';
 		array_push( $links, $settings_link );
 		return $links;
-	}
-
-	/**
-	 * Allows this form to be submitted by Shop Managers.
-	 */
-	public function capability_filter( $capability ) {
-		return 'edit_posts';
 	}
 
 	public function register_settings() {
