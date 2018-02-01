@@ -24,11 +24,6 @@ class Happychat_Client {
 		add_shortcode( 'happychat', array( $this, 'shortcode_to_happychat_form' ) );
 	}
 
-	private function get_token() {
-		$current_user = wp_get_current_user();
-		return get_user_meta( $current_user->ID, 'wp_woocommerce_wpcom_signin_access_token', true );
-	}
-
 	public function shortcode_to_happychat_form( $atts ) {
 		self::enqueue_scripts();
 		return '<div id="' . self::NODE_ID . '"></div>';
@@ -149,6 +144,15 @@ class Happychat_Client {
 
 	private function enqueue_scripts() {
 		if ( self::should_offer_chat() ) {
+
+			// The host should provide a valid WordPress.com token
+			// for the user, so we can make authenticated requests
+			// on its behalf.
+			$token = apply_filters( 'happychat_get_wpcom_token', null );
+			if( !$token ) {
+				return;
+			}
+
 			// load happychat library
 			wp_register_script(
 				'happychat-api',
@@ -174,7 +178,7 @@ class Happychat_Client {
 				: '/' . $fallback_ticket_path;
 
 			$happychat_settings = array(
-				'token'  => self::get_token(),
+				'token'  => $token,
 				'groups' => [ 'woo' ],
 				'nodeId' => self::NODE_ID,
 				'howCanWeHelpOptions' => [
