@@ -8,7 +8,6 @@
 * Author URI: http://automattic.com
 *
 * @package Happychat
-* @category Core
 * @author Automattic
 */
 
@@ -17,11 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( is_admin() ) {
-	$happychat_admin = '/class-happychat-admin.php';
-	require_once dirname( __FILE__ ) . $happychat_admin;
+	require_once dirname( __FILE__ ) . '/class-happychat-admin.php';
 	Happychat_Admin::instance( __FILE__ );
 } else {
-	$happychat_client = '/class-happychat-client.php';
-	require_once dirname( __FILE__ ) . $happychat_client;
+	require_once dirname( __FILE__ ) . '/class-happychat-client.php';
 	Happychat_Client::instance();
 }
