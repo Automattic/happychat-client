@@ -1,31 +1,13 @@
 # Happychat as a WordPress plugin
 
-This WordPress plugin uses the [Happychat client library](https://github.com/automattic/happychat-client) to integrate Happychat within WordPress, and is developed within the same repository.
+This WordPress plugin provides a `happychat` shortcode that will render the Happychat component in any page or post it is included.
 
-## API
+It needs a valid WordPress.com user token to make authenticated request on the user behalf, which needs to be provided through the `happychat_wpcom_token` filter.
 
-### Init connection
+## Filters
 
-`Happychat.open( domNode, groups, authToken );`
-
-* `domNode` - HTML node where Happychat will be rendered.
-* `groups` - array of groups this chat belongs to. It can be any of the groups declared in the the [Happychat constants](../../src/state/constants.js), and will be used to route the chat to the corresponding operator. For example, `[ 'woo' ]` will route the chat to a WooCommerce Happiness Engineer.
-* `authToken` - the WordPress.com auth token that Happychat will use to authenticate the customer.
-
-### Listen to events
-
-#### availability
-
-It reports whether or not the Happychat server can take new chats. It's fired every time the Happychat server availability stats change - for example, when a new operator joins or when chats are assigned.
-
-`Happychat.on( 'availability', function( newStatus ) {
-    // do something
-} );`
-
-#### ongoingConversation
-
-It reports whether or not the customer is in an ongoingConversation, meaning that the chat has been assigned to an operator.
-
-`Happychat.on( 'ongoingConversation', function( newStatus ) {
-    // do something
-} );`
+| Tag | Value | Default | Description |
+| --- | --- | --- | --- |
+| `happychat_is_user_eligible` | boolean `$eligibility` | `true` | Whether the user is eligible for a chat session. |
+| `happychat_user_group` | string `$group` | `WP.com` | What group the chat session should be routed to. Valid values are `WP.com`, `woo`, and `jpop`. |
+| `happychat_wpcom_token` | string `$token` | `null` | A valid WordPress.com token to make authenticated request on the user behalf. Happychat will not be renderer if the token is not provided. |
