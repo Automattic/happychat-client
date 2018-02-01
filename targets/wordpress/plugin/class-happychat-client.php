@@ -25,8 +25,8 @@ class Happychat_Client {
 	}
 
 	public function shortcode_to_happychat_form( $atts ) {
-		self::enqueue_scripts();
-		return '<div id="' . self::NODE_ID . '"></div>';
+		$this->enqueue_scripts();
+		return '<div id="' . Happychat_Client::NODE_ID . '"></div>';
 	}
 
 	/**
@@ -73,7 +73,7 @@ class Happychat_Client {
 	}
 
 	private function enqueue_scripts() {
-		if ( self::should_offer_chat() ) {
+		if ( $this->should_offer_chat() ) {
 
 			// The host should provide a valid WordPress.com token
 			// for the user, so we can make authenticated requests
@@ -92,7 +92,7 @@ class Happychat_Client {
 				'happychat-api',
 				plugins_url( 'assets/happychat.js', __FILE__ ),
 				array(),
-				self::VERSION,
+				Happychat_Client::VERSION,
 				true
 			);
 			wp_enqueue_script( 'happychat-api' );
@@ -102,7 +102,7 @@ class Happychat_Client {
 				'happychat-init',
 				plugins_url( 'assets/client-happychat-init.js', __FILE__ ),
 				array(),
-				self::VERSION,
+				Happychat_Client::VERSION,
 				true
 			);
 
@@ -114,7 +114,7 @@ class Happychat_Client {
 			$happychat_settings = array(
 				'token'  => $token,
 				'groups' => [ $group ],
-				'nodeId' => self::NODE_ID,
+				'nodeId' => Happychat_Client::NODE_ID,
 				'howCanWeHelpOptions' => [
 					array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
 					array( 'value' => 'account',    'label' => 'Help with my account' ),

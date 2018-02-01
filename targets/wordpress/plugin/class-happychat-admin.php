@@ -48,14 +48,14 @@ class Happychat_Admin {
 			'fallback-ticket',
 			plugins_url( 'assets/admin-fallback-ticket.js', __FILE__ ),
 			array( 'jquery' ),
-			self::VERSION,
+			Happychat_Admin::VERSION,
 			true
 		);
 		wp_enqueue_script( 'fallback-ticket' );
 	}
 
 	public function happychat_fallback_ticket_path_html() {
-		self::enqueue_scripts();
+		$this->enqueue_scripts();
 		$fallback_ticket_path = get_option( 'happychat_fallback_ticket_path' );
 		$endpoint = $_SERVER['HTTPS'] ? 'https://' : 'http://';
 		$endpoint .= $_SERVER['SERVER_NAME'];
