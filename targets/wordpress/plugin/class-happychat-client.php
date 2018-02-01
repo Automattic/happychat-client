@@ -62,6 +62,11 @@ class Happychat_Client {
 				return;
 			}
 
+			// By default, we'll take what is configured in the Happychat plugin,
+			// but we also want to provide an opportunity for the host to
+			// have different groups at runtime.
+			$groups = apply_filters( 'happychat_get_user_groups', [ 'woo' ] );
+
 			// load happychat library
 			wp_register_script(
 				'happychat-api',
@@ -88,7 +93,7 @@ class Happychat_Client {
 
 			$happychat_settings = array(
 				'token'  => $token,
-				'groups' => [ 'woo' ],
+				'groups' => $groups,
 				'nodeId' => self::NODE_ID,
 				'howCanWeHelpOptions' => [
 					array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
