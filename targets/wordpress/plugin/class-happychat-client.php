@@ -54,7 +54,7 @@ class Happychat_Client {
 	private function is_valid_group( $group ) {
 		// These are the accepted values for Happychat groups/products
 		// https://github.com/Automattic/happychat/blob/staging/src/setup-system-defaults.js#L25-L35
-		if ( ( $group === 'WP.com' ) || ( $group === 'woo' ) || ( $group === 'jpop' ) ) {
+		if ( ( 'WP.com' === $group  ) || ( 'woo' === $group ) || ( 'jpop' === $group ) ) {
 			return true;
 		}
 		return false;
@@ -81,7 +81,6 @@ class Happychat_Client {
 			$token = null;
 			$token = apply_filters( 'happychat_wpcom_token', $token );
 			if ( ! $token ) {
-				error_log( 'happychat: token not provided' );
 				return;
 			}
 
@@ -117,10 +116,10 @@ class Happychat_Client {
 				'nodeId' => Happychat_Client::NODE_ID,
 				'howCanWeHelpOptions' => [
 					array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
-					array( 'value' => 'account',    'label' => 'Help with my account' ),
-					array( 'value' => 'config',     'label' => 'Help configuring' ),
-					array( 'value' => 'order',      'label' => 'Help with an order' ),
-					array( 'value' => 'broken',     'label' => 'Something is broken' ),
+					array( 'value' => 'account', 'label' => 'Help with my account' ),
+					array( 'value' => 'config', 'label' => 'Help configuring' ),
+					array( 'value' => 'order', 'label' => 'Help with an order' ),
+					array( 'value' => 'broken', 'label' => 'Something is broken' ),
 					],
 				'fallbackTicketPath' => $fallback_ticket_path,
 			);
