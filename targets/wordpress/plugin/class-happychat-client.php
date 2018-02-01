@@ -66,7 +66,7 @@ class Happychat_Client {
 		// have different groups at runtime.
 		$group = get_option( 'happychat_user_group' );
 		$group = apply_filters( 'happychat_user_group', $group );
-		if( ! $group || ! is_valid_group( $group ) ) {
+		if( ! $group || ! $this->is_valid_group( $group ) ) {
 			$group = 'WP.com'; // default group
 		}
 		return $group;
@@ -78,12 +78,14 @@ class Happychat_Client {
 			// The host should provide a valid WordPress.com token
 			// for the user, so we can make authenticated requests
 			// on its behalf.
-			$token = apply_filters( 'happychat_get_wpcom_token', null );
-			if( !$token ) {
+			$token = null;
+			$token = apply_filters( 'happychat_wpcom_token', $token );
+			if( ! $token ) {
+				error_log( 'happychat: token not provided' );
 				return;
 			}
 
-			$group = get_user_group();
+			$group = $this->get_user_group();
 
 			// load happychat library
 			wp_register_script(
