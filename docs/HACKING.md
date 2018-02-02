@@ -2,6 +2,7 @@
 
 ### Code structure
 
+- `docs`: docs about the project.
 - `src`: the source code for the Happychat library.
 	- `config`: data that is not likely to change at runtime or needs to be configured.
 	- `lib`: utils.
