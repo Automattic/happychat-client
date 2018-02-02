@@ -1,12 +1,19 @@
 # Happychat client
 
-Currently, customer facing code for Happychat lives in Calypso. This project intends to extract it and prepare the Happychat client to be embeddable in any environment.
+A JavaScript library to embed customer-facing Happychat in any host.
 
-## Running
+## Running the demo
 
     npm install
     npm run start
 
 Visit localhost:9000 and click the Happychat button to start a chat. The first time, you'll be redirected to the WordPress.com token approval screen.
 
-By default, it will connect to Happychat staging SocketIO server, so make sure you are connected as an available operator.
+By default, it will connect to Happychat staging server, so make sure there is an available operator to chat with.
+
+## Targets
+
+It provides two integration examples:
+
+- A standalone app: Happychat in a bare HTML page. See `targets/standalone` for more info.
+- A WordPress plugin: exposes Happychat as a shortcode. See `targets/wordpress` for more info.
