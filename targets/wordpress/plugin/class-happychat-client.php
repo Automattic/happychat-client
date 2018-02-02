@@ -30,22 +30,13 @@ class Happychat_Client {
 	}
 
 	/**
-	* Returns whether Happychat is enabled or not.
-	*
-	* @return bool
-	*/
-	private function is_happychat_enabled() {
-		return get_option( 'happychat_enable' );
-	}
-
-	/**
 	 * Returns true if chat should be offered.
 	 *
 	 * @return bool
 	 */
 	private function should_offer_chat() {
 		$is_user_eligible = apply_filters( 'happychat_is_user_eligible', true );
-		if ( $this->is_happychat_enabled() && $is_user_eligible ) {
+		if ( $is_user_eligible ) {
 			return true;
 		}
 		return false;
