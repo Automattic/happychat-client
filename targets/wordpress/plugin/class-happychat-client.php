@@ -30,22 +30,13 @@ class Happychat_Client {
 	}
 
 	/**
-	* Returns whether Happychat is enabled or not.
-	*
-	* @return bool
-	*/
-	private function is_happychat_enabled() {
-		return get_option( 'happychat_enable' );
-	}
-
-	/**
 	 * Returns true if chat should be offered.
 	 *
 	 * @return bool
 	 */
 	private function should_offer_chat() {
 		$is_user_eligible = apply_filters( 'happychat_is_user_eligible', true );
-		if ( $this->is_happychat_enabled() && $is_user_eligible ) {
+		if ( $is_user_eligible ) {
 			return true;
 		}
 		return false;
@@ -72,6 +63,17 @@ class Happychat_Client {
 		return $group;
 	}
 
+	private function get_fallback_ticket_path() {
+		// If the fallback ticket path passed to Happychat is null,
+		// this feature will be unavailable.
+		$fallback_ticket_path = null;
+		$fallback_ticket_path = apply_filters( 'happychat_create_ticket_endpoint', $fallback_ticket_path );
+		$fallback_ticket_path = ( '/' === substr( $fallback_ticket_path, 0, 1 ) )
+			? $fallback_ticket_path
+			: '/' . $fallback_ticket_path;
+		return $fallback_ticket_path;
+	}
+
 	private function enqueue_scripts() {
 		if ( $this->should_offer_chat() ) {
 
@@ -84,6 +86,7 @@ class Happychat_Client {
 				return;
 			}
 
+			$fallback_ticket_path = $this->get_fallback_ticket_path();
 			$group = $this->get_user_group();
 
 			// load happychat library
@@ -104,11 +107,6 @@ class Happychat_Client {
 				Happychat_Client::VERSION,
 				true
 			);
-
-			$fallback_ticket_path = get_option( 'happychat_fallback_ticket_path' );
-			$fallback_ticket_path = ( substr( $fallback_ticket_path, 0, 1 ) == '/' )
-				? $fallback_ticket_path
-				: '/' . $fallback_ticket_path;
 
 			$happychat_settings = array(
 				'token'  => $token,

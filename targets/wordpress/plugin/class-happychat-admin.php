@@ -39,8 +39,6 @@ class Happychat_Admin {
 		add_settings_section( 'happychat_settings' , '' , null, 'happychat' );
 		add_settings_field( 'happychat_user_group' , 'User group:' , array( $this, 'happychat_user_group_html' )  , 'happychat' , 'happychat_settings' );
 		register_setting( 'happychat' , 'happychat_user_group' );
-		add_settings_field( 'happychat_fallback_ticket_path' , 'Fallback ticket path:' , array( $this, 'happychat_fallback_ticket_path_html' )  , 'happychat' , 'happychat_settings' );
-		register_setting( 'happychat' , 'happychat_fallback_ticket_path' );
 	}
 
 	private function enqueue_scripts() {
@@ -52,17 +50,6 @@ class Happychat_Admin {
 			true
 		);
 		wp_enqueue_script( 'fallback-ticket' );
-	}
-
-	public function happychat_fallback_ticket_path_html() {
-		$this->enqueue_scripts();
-		$fallback_ticket_path = get_option( 'happychat_fallback_ticket_path' );
-		$endpoint = $_SERVER['HTTPS'] ? 'https://' : 'http://';
-		$endpoint .= $_SERVER['SERVER_NAME'];
-		$endpoint .= $fallback_ticket_path;
-		$endpoint .= substr( $fallback_ticket_path, 0, 1 ) == '/' ? $fallback_ticket_path : '/' . $fallback_ticket_path;
-		print '<input id="happychat_fallback_ticket_path" name="happychat_fallback_ticket_path" type="text" class="regular-text" value="' . $fallback_ticket_path . '"/>';
-		print '<p id="happychat_fallback_ticket_path_desc" class="description">' . $endpoint . '</p>';
 	}
 
 	public function happychat_user_group_html() {
