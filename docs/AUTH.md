@@ -1,10 +1,10 @@
 # Authentication
 
-Happychat Embedded uses a token for querying the WordPress.com REST API. Currently, `src/api.js` is responsible for making the token available via the `wpcom-oauth-cors` library, but this may change in the future as the project adapts to real hosts system.
+Happychat Embedded uses an user token for querying the WordPress.com REST API.
 
 ## Wordpress.com REST API endpoints in use
 
-See `src/lib/wp/index.js` for more info.
+See `src/lib/wpcom/` for more info.
 
 * `/me` - to retrieve user info.
 * `/happychat/sessions` - to get a session id and user location info.
