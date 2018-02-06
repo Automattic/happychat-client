@@ -64,4 +64,4 @@ export const setCurrentMessage = message => ( { type: HAPPYCHAT_SET_CURRENT_MESS
  *
  * @return { Object } Action object
  */
-export const setUIReady = () => ( { type: HAPPYCHAT_ASSETS_LOADED } );
+export const setAssetsLoaded = () => ( { type: HAPPYCHAT_ASSETS_LOADED } );

@@ -18,6 +18,7 @@ import { MessageForm } from 'src/ui/components/message-form';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
+import { setAssetsLoaded } from 'src/state/ui/actions';
 import { hasTouch } from 'src/lib/touch-detect';
 
 const store = createStore(
@@ -26,7 +27,9 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
-const createIframe = ( renderMethod, props ) => {
+const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
+
+const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 	const { nodeId } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
@@ -38,15 +41,25 @@ const createIframe = ( renderMethod, props ) => {
 
 	document.getElementById( nodeId ).appendChild( iframeElement );
 
-	// and noticon custom font
+	// We are going to inject two stylesheets: the noticon custom font and Happychat.
+	// We want to tell Happychat when they are downloaded, and we do so by Promise.all()
 	const styleNoticon = document.createElement( 'link' );
+	const styleNoticonPromise = new Promise( resolve => {
+		styleNoticon.onload = () => resolve();
+	} );
+	const styleHC = document.createElement( 'link' );
+	const styleHCPromise = new Promise( resolve => {
+		styleHC.onload = () => resolve();
+	} );
+	Promise.all( [ styleNoticonPromise, styleHCPromise ] ).then( () => assetsLoadedHook() );
+
+	// config noticon styles: append it to the iframe's head will trigger the network request
 	styleNoticon.setAttribute( 'rel', 'stylesheet' );
 	styleNoticon.setAttribute( 'type', 'text/css' );
 	styleNoticon.setAttribute( 'href', 'https://s1.wp.com/i/noticons/noticons.css' );
 	iframeElement.contentDocument.head.appendChild( styleNoticon );
 
-	// add happychat styles
-	const styleHC = document.createElement( 'link' );
+	// config noticon styles: append it to the iframe's head will trigger the network request
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
 	styleHC.setAttribute(
@@ -137,13 +150,17 @@ export const initHappychat = ( {
 	getAccessToken()
 		.then( token => getWPComUser( token, groups ) )
 		.then( user =>
-			createIframe( renderHappychat, {
-				nodeId,
-				user,
-				howCanWeHelpOptions,
-				howDoYouFeelOptions,
-				fallbackTicketPath,
-			} )
+			createIframe(
+				renderHappychat,
+				{
+					nodeId,
+					user,
+					howCanWeHelpOptions,
+					howDoYouFeelOptions,
+					fallbackTicketPath,
+				},
+				dispatchAssetsFinishedDownloading
+			)
 		)
 		.catch( error => createIframe( renderError, { nodeId, error } ) );
 };
