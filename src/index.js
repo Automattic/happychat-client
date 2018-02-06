@@ -18,6 +18,7 @@ import { MessageForm } from 'src/ui/components/message-form';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
+import { setAssetsLoaded } from 'src/state/ui/actions';
 import { hasTouch } from 'src/lib/touch-detect';
 
 const store = createStore(
@@ -26,56 +27,73 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
-let targetNode;
-const getTargetNode = nodeId => {
-	if ( ! targetNode ) {
-		targetNode = document.getElementById( nodeId );
-		const iframeElement = document.createElement( 'iframe' );
+const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
-		// style iframe element
-		iframeElement.width = '100%';
-		iframeElement.height = '500em';
-		iframeElement.frameBorder = 0;
-		iframeElement.scrolling = 'no';
+/**
+ * Creates an iframe in the node provided by the nodeId prop.
+ *
+ * We want this iframe to be non-blocking respect of the main window onload event,
+ * but also we want to notify happychat when all assets are done downloading.
+ *
+ * @param  {Function} renderMethod A method that will render the Happychat widget.
+ * @param  {Object} props Properties used by the renderMethod.
+ * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
+ */
+const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
+	const { nodeId } = props;
+	const iframeElement = document.createElement( 'iframe' );
 
-		document.getElementById( nodeId ).appendChild( iframeElement );
+	// style iframe element
+	iframeElement.width = '100%';
+	iframeElement.height = '500em';
+	iframeElement.frameBorder = 0;
+	iframeElement.scrolling = 'no';
 
-		// and noticon custom font
-		const styleNoticon = document.createElement( 'link' );
-		styleNoticon.setAttribute( 'rel', 'stylesheet' );
-		styleNoticon.setAttribute( 'type', 'text/css' );
-		styleNoticon.setAttribute( 'href', 'https://s1.wp.com/i/noticons/noticons.css' );
-		iframeElement.contentDocument.head.appendChild( styleNoticon );
+	document.getElementById( nodeId ).appendChild( iframeElement );
 
-		// add happychat styles
-		const styleHC = document.createElement( 'link' );
-		styleHC.setAttribute( 'rel', 'stylesheet' );
-		styleHC.setAttribute( 'type', 'text/css' );
-		styleHC.setAttribute(
-			'href',
-			'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.full.css'
-		);
-		iframeElement.contentDocument.head.appendChild( styleHC );
+	// We are going to inject two stylesheets: the noticon custom font and Happychat.
+	// We want to tell Happychat when they are downloaded, and we do so by Promise.all()
+	const styleNoticon = document.createElement( 'link' );
+	const styleNoticonPromise = new Promise( resolve => {
+		styleNoticon.onload = () => resolve();
+	} );
+	const styleHC = document.createElement( 'link' );
+	const styleHCPromise = new Promise( resolve => {
+		styleHC.onload = () => resolve();
+	} );
+	Promise.all( [ styleNoticonPromise, styleHCPromise ] ).then( () => assetsLoadedHook() );
 
-		// some CSS styles depend on these top-level classes being present
-		iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
+	// config noticon styles: append it to the iframe's head will trigger the network request
+	styleNoticon.setAttribute( 'rel', 'stylesheet' );
+	styleNoticon.setAttribute( 'type', 'text/css' );
+	styleNoticon.setAttribute( 'href', 'https://s1.wp.com/i/noticons/noticons.css' );
+	iframeElement.contentDocument.head.appendChild( styleNoticon );
 
-		// React advises to use an element -not the body itself- as the target render,
-		// that's why we create this wrapperElement inside the iframe.
-		targetNode = document.createElement( 'div' );
-		iframeElement.contentDocument.body.appendChild( targetNode );
-	}
-	return targetNode;
+	// config noticon styles: append it to the iframe's head will trigger the network request
+	styleHC.setAttribute( 'rel', 'stylesheet' );
+	styleHC.setAttribute( 'type', 'text/css' );
+	styleHC.setAttribute(
+		'href',
+		'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.css'
+	);
+	iframeElement.contentDocument.head.appendChild( styleHC );
+
+	// some CSS styles depend on these top-level classes being present
+	iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
+
+	// React advises to use an element -not the body itself- as the target render,
+	// that's why we create this wrapperElement inside the iframe.
+	const targetNode = document.createElement( 'div' );
+	iframeElement.contentDocument.body.appendChild( targetNode );
+
+	renderMethod( targetNode, props );
 };
 
 /* eslint-disable camelcase */
-const renderTo = ( {
-	nodeId,
-	user,
-	howCanWeHelpOptions = [],
-	howDoYouFeelOptions = [],
-	fallbackTicketPath,
-} ) => {
+const renderHappychat = (
+	targetNode,
+	{ user, howCanWeHelpOptions = [], howDoYouFeelOptions = [], fallbackTicketPath }
+) => {
 	const { ID, email, username, display_name, avatar_URL, language, groups, accessToken } = user;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
@@ -90,26 +108,16 @@ const renderTo = ( {
 				fallbackTicketPath={ fallbackTicketPath }
 			/>
 		</Provider>,
-		getTargetNode( nodeId )
+		targetNode
 	);
 };
 /* eslint-enable camelcase */
 
-const renderMessage = ( nodeId, msg ) =>
-	ReactDOM.render( <MessageForm message={ msg } />, getTargetNode( nodeId ) );
-
-const renderHappychat = ( {
-	nodeId,
-	howCanWeHelpOptions,
-	howDoYouFeelOptions,
-	fallbackTicketPath,
-} ) => user =>
-	renderTo( { nodeId, user, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } );
-
-const renderError = nodeId => error => renderMessage( nodeId, 'Could not load form. ' + error );
+const renderError = ( targetNode, { error } ) =>
+	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
 
 /* eslint-disable camelcase */
-const getWPComUser = groups => accessToken =>
+const getWPComUser = ( accessToken, groups ) =>
 	getUser(
 		accessToken
 	).then( ( { ID, email, username, display_name, avatar_URL, language } ) => ( {
@@ -150,9 +158,19 @@ export const initHappychat = ( {
 	}
 
 	getAccessToken()
-		.then( getWPComUser( groups ) )
-		.then(
-			renderHappychat( { nodeId, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } )
+		.then( token => getWPComUser( token, groups ) )
+		.then( user =>
+			createIframe(
+				renderHappychat,
+				{
+					nodeId,
+					user,
+					howCanWeHelpOptions,
+					howDoYouFeelOptions,
+					fallbackTicketPath,
+				},
+				dispatchAssetsFinishedDownloading
+			)
 		)
-		.catch( renderError( nodeId ) );
+		.catch( error => createIframe( renderError, { nodeId, error } ) );
 };

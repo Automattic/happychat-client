@@ -9,6 +9,7 @@ import { combineReducers } from 'redux';
  * Internal dependencies
  */
 import {
+	HAPPYCHAT_ASSETS_LOADED,
 	HAPPYCHAT_OPEN,
 	HAPPYCHAT_MINIMIZING,
 	HAPPYCHAT_BLUR,
@@ -86,4 +87,12 @@ export const isMinimizing = ( state = false, action ) => {
 	return state;
 };
 
-export default combineReducers( { currentMessage, isMinimizing, isOpen, lostFocusAt } );
+export const isReady = ( state = false, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_ASSETS_LOADED:
+			return true;
+	}
+	return state;
+};
+
+export default combineReducers( { currentMessage, isMinimizing, isOpen, isReady, lostFocusAt } );

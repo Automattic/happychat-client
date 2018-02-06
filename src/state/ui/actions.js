@@ -4,6 +4,7 @@
  * Internal dependencies
  */
 import {
+	HAPPYCHAT_ASSETS_LOADED,
 	HAPPYCHAT_OPEN,
 	HAPPYCHAT_MINIMIZING,
 	HAPPYCHAT_BLUR,
@@ -57,3 +58,10 @@ export const focus = () => ( { type: HAPPYCHAT_FOCUS } );
  * @return { Object } Action object
  */
 export const setCurrentMessage = message => ( { type: HAPPYCHAT_SET_CURRENT_MESSAGE, message } );
+
+/**
+ * Returns an action object that indicates whether the assets are ready.
+ *
+ * @return { Object } Action object
+ */
+export const setAssetsLoaded = () => ( { type: HAPPYCHAT_ASSETS_LOADED } );

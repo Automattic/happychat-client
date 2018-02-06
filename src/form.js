@@ -43,6 +43,7 @@ import isHCConnectionUninitialized from 'src/state/selectors/is-connection-unini
 import isHCServerReachable from 'src/state/selectors/is-server-reachable';
 import isChatFormOpen from 'src/state/selectors/is-chatform-open';
 import isAvailable from 'src/state/selectors/is-available';
+import isUIReady from 'src/state/selectors/is-ui-ready';
 
 // UI components
 import { mockLocalize } from 'src/ui/components/localize'; // TODO implement localize
@@ -53,6 +54,7 @@ import { MessageForm } from 'src/ui/components/message-form';
 import Card from 'src/ui/components/card';
 import CompactCard from 'src/ui/components/card/compact';
 import FormLabel from 'src/ui/components/form-label';
+import SpinnerLine from 'src/ui/components/spinner-line';
 
 class HappychatSupportProvider {
 	constructor( props ) {
@@ -205,10 +207,20 @@ class TicketSupportProvider {
 	}
 }
 
-const getSupportProvider = props =>
-	props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable )
-		? new HappychatSupportProvider( props )
-		: new TicketSupportProvider( props );
+class LoadingSupportProvider {
+	renderForm() {
+		return <SpinnerLine />;
+	}
+}
+
+const getSupportProvider = props => {
+	if ( ! props.isUIReady ) {
+		return new LoadingSupportProvider( props );
+	} else if ( props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable ) ) {
+		return new HappychatSupportProvider( props );
+	}
+	return new TicketSupportProvider( props );
+};
 
 export class Form extends React.Component {
 	render() {
@@ -272,6 +284,7 @@ const mapState = state => {
 		isExternalUrl,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
 		isServerReachable: isHCServerReachable( state ),
+		isUIReady: isUIReady( state ),
 		message: getUICurrentMessage( state ),
 		timeline: getChatTimeline( state ),
 		twemojiUrl: config( 'twemoji_cdn_url' ),
