@@ -68,7 +68,7 @@ const getTargetNode = nodeId => {
 };
 
 /* eslint-disable camelcase */
-const renderTo = ( {
+const renderHappychat = ( {
 	nodeId,
 	user,
 	howCanWeHelpOptions = [],
@@ -97,18 +97,10 @@ const renderTo = ( {
 const renderMessage = ( nodeId, msg ) =>
 	ReactDOM.render( <MessageForm message={ msg } />, getTargetNode( nodeId ) );
 
-const renderHappychat = ( {
-	nodeId,
-	howCanWeHelpOptions,
-	howDoYouFeelOptions,
-	fallbackTicketPath,
-} ) => user =>
-	renderTo( { nodeId, user, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } );
-
-const renderError = nodeId => error => renderMessage( nodeId, 'Could not load form. ' + error );
+const renderError = ( nodeId, error ) => renderMessage( nodeId, 'Could not load form. ' + error );
 
 /* eslint-disable camelcase */
-const getWPComUser = groups => accessToken =>
+const getWPComUser = ( accessToken, groups ) =>
 	getUser(
 		accessToken
 	).then( ( { ID, email, username, display_name, avatar_URL, language } ) => ( {
@@ -149,9 +141,15 @@ export const initHappychat = ( {
 	}
 
 	getAccessToken()
-		.then( getWPComUser( groups ) )
-		.then(
-			renderHappychat( { nodeId, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } ) // eslint-disable-line max-len
+		.then( token => getWPComUser( token, groups ) )
+		.then( user =>
+			renderHappychat( {
+				nodeId,
+				user,
+				howCanWeHelpOptions,
+				howDoYouFeelOptions,
+				fallbackTicketPath,
+			} )
 		)
-		.catch( renderError( nodeId ) );
+		.catch( error => renderError( nodeId, error ) );
 };
