@@ -29,7 +29,6 @@ const store = createStore(
 let targetNode;
 const getTargetNode = nodeId => {
 	if ( ! targetNode ) {
-		targetNode = document.getElementById( nodeId );
 		const iframeElement = document.createElement( 'iframe' );
 
 		// style iframe element
