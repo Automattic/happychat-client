@@ -21,6 +21,7 @@
     "build:wordpress": "webpack --config webpack.wordpress.config.js",
     "dist": "run-p dist:*",
     "dist:css": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o dist/happychat.css",
+    "dist:css-expanded": "node-sass src/form.scss --output-style expanded | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o dist/happychat.expanded.css",
 		"dist:js": "webpack --config webpack.dist.config.js",
     "prestart": "npm run build:standalone",
     "start": "webpack-dev-server --config webpack.standalone.config.js",

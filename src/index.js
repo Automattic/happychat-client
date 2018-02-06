@@ -74,7 +74,7 @@ const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 	styleHC.setAttribute( 'type', 'text/css' );
 	styleHC.setAttribute(
 		'href',
-		'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.css'
+		'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.expanded.css'
 	);
 	iframeElement.contentDocument.head.appendChild( styleHC );
 
