@@ -152,7 +152,7 @@ export const initHappychat = ( {
 	getAccessToken()
 		.then( getWPComUser( groups ) )
 		.then(
-			renderHappychat( { nodeId, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } )
+			renderHappychat( { nodeId, howCanWeHelpOptions, howDoYouFeelOptions, fallbackTicketPath } ) // eslint-disable-line max-len
 		)
 		.catch( renderError( nodeId ) );
 };
