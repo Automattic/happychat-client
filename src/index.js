@@ -26,55 +26,51 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
-let targetNode;
-const getTargetNode = nodeId => {
-	if ( ! targetNode ) {
-		const iframeElement = document.createElement( 'iframe' );
+const createIframe = ( renderMethod, props ) => {
+	const { nodeId } = props;
+	const iframeElement = document.createElement( 'iframe' );
 
-		// style iframe element
-		iframeElement.width = '100%';
-		iframeElement.height = '500em';
-		iframeElement.frameBorder = 0;
-		iframeElement.scrolling = 'no';
+	// style iframe element
+	iframeElement.width = '100%';
+	iframeElement.height = '500em';
+	iframeElement.frameBorder = 0;
+	iframeElement.scrolling = 'no';
 
-		document.getElementById( nodeId ).appendChild( iframeElement );
+	document.getElementById( nodeId ).appendChild( iframeElement );
 
-		// and noticon custom font
-		const styleNoticon = document.createElement( 'link' );
-		styleNoticon.setAttribute( 'rel', 'stylesheet' );
-		styleNoticon.setAttribute( 'type', 'text/css' );
-		styleNoticon.setAttribute( 'href', 'https://s1.wp.com/i/noticons/noticons.css' );
-		iframeElement.contentDocument.head.appendChild( styleNoticon );
+	// and noticon custom font
+	const styleNoticon = document.createElement( 'link' );
+	styleNoticon.setAttribute( 'rel', 'stylesheet' );
+	styleNoticon.setAttribute( 'type', 'text/css' );
+	styleNoticon.setAttribute( 'href', 'https://s1.wp.com/i/noticons/noticons.css' );
+	iframeElement.contentDocument.head.appendChild( styleNoticon );
 
-		// add happychat styles
-		const styleHC = document.createElement( 'link' );
-		styleHC.setAttribute( 'rel', 'stylesheet' );
-		styleHC.setAttribute( 'type', 'text/css' );
-		styleHC.setAttribute(
-			'href',
-			'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.css'
-		);
-		iframeElement.contentDocument.head.appendChild( styleHC );
+	// add happychat styles
+	const styleHC = document.createElement( 'link' );
+	styleHC.setAttribute( 'rel', 'stylesheet' );
+	styleHC.setAttribute( 'type', 'text/css' );
+	styleHC.setAttribute(
+		'href',
+		'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.css'
+	);
+	iframeElement.contentDocument.head.appendChild( styleHC );
 
-		// some CSS styles depend on these top-level classes being present
-		iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
+	// some CSS styles depend on these top-level classes being present
+	iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
 
-		// React advises to use an element -not the body itself- as the target render,
-		// that's why we create this wrapperElement inside the iframe.
-		targetNode = document.createElement( 'div' );
-		iframeElement.contentDocument.body.appendChild( targetNode );
-	}
-	return targetNode;
+	// React advises to use an element -not the body itself- as the target render,
+	// that's why we create this wrapperElement inside the iframe.
+	const targetNode = document.createElement( 'div' );
+	iframeElement.contentDocument.body.appendChild( targetNode );
+
+	renderMethod( targetNode, props );
 };
 
 /* eslint-disable camelcase */
-const renderHappychat = ( {
-	nodeId,
-	user,
-	howCanWeHelpOptions = [],
-	howDoYouFeelOptions = [],
-	fallbackTicketPath,
-} ) => {
+const renderHappychat = (
+	targetNode,
+	{ user, howCanWeHelpOptions = [], howDoYouFeelOptions = [], fallbackTicketPath }
+) => {
 	const { ID, email, username, display_name, avatar_URL, language, groups, accessToken } = user;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
@@ -89,15 +85,13 @@ const renderHappychat = ( {
 				fallbackTicketPath={ fallbackTicketPath }
 			/>
 		</Provider>,
-		getTargetNode( nodeId )
+		targetNode
 	);
 };
 /* eslint-enable camelcase */
 
-const renderMessage = ( nodeId, msg ) =>
-	ReactDOM.render( <MessageForm message={ msg } />, getTargetNode( nodeId ) );
-
-const renderError = ( nodeId, error ) => renderMessage( nodeId, 'Could not load form. ' + error );
+const renderError = ( targetNode, { error } ) =>
+	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
 
 /* eslint-disable camelcase */
 const getWPComUser = ( accessToken, groups ) =>
@@ -143,7 +137,7 @@ export const initHappychat = ( {
 	getAccessToken()
 		.then( token => getWPComUser( token, groups ) )
 		.then( user =>
-			renderHappychat( {
+			createIframe( renderHappychat, {
 				nodeId,
 				user,
 				howCanWeHelpOptions,
@@ -151,5 +145,5 @@ export const initHappychat = ( {
 				fallbackTicketPath,
 			} )
 		)
-		.catch( error => renderError( nodeId, error ) );
+		.catch( error => createIframe( renderError, { nodeId, error } ) );
 };
