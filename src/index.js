@@ -29,6 +29,16 @@ const store = createStore(
 
 const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
+/**
+ * Creates an iframe in the node provided by the nodeId prop.
+ *
+ * We want this iframe to be non-blocking respect of the main window onload event,
+ * but also we want to notify happychat when all assets are done downloading.
+ *
+ * @param  {Function} renderMethod A method that will render the Happychat widget.
+ * @param  {Object} props Properties used by the renderMethod.
+ * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
+ */
 const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 	const { nodeId } = props;
 	const iframeElement = document.createElement( 'iframe' );
