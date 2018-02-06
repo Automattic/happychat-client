@@ -53,7 +53,7 @@ const getTargetNode = nodeId => {
 		styleHC.setAttribute( 'type', 'text/css' );
 		styleHC.setAttribute(
 			'href',
-			'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.full.css'
+			'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.css'
 		);
 		iframeElement.contentDocument.head.appendChild( styleHC );
 
