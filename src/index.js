@@ -51,7 +51,44 @@ const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 
 	document.getElementById( nodeId ).appendChild( iframeElement );
 
-	// We are going to inject two stylesheets: the noticon custom font and Happychat.
+	// We want to show a loading indicator while the rest of assets
+	// are downloading. This CSS pertains to the loading indicator
+	// and needs to be available since the very beginning.
+	const styleLoading = document.createElement( 'style' );
+	styleLoading.setAttribute( 'type', 'text/css' );
+	styleLoading.appendChild(
+		document.createTextNode( `
+			@-webkit-keyframes spinner-line__animation {
+			  0% {
+			    background-position: 0 0;
+			  }
+			  100% {
+			    background-position: 600px 0;
+			  }
+			}
+			@keyframes spinner-line__animation {
+			  0% {
+			    background-position: 0 0;
+			  }
+			  100% {
+			    background-position: 600px 0;
+			  }
+			}
+
+			hr.spinner-line {
+			  border: none;
+			  height: 3px;
+			  margin: 24px 0;
+			  background-image: linear-gradient(to right, #a8bece 0%, #c8d7e1 50%, #a8bece 100%);
+			  background-size: 300px 100%;
+			  -webkit-animation: spinner-line__animation 1.2s infinite linear;
+			          animation: spinner-line__animation 1.2s infinite linear;
+			}
+		` )
+	);
+	iframeElement.contentDocument.head.appendChild( styleLoading );
+
+	// Then, we inject two stylesheets: the noticon custom font and Happychat.
 	// We want to tell Happychat when they are downloaded, and we do so by Promise.all()
 	const styleNoticon = document.createElement( 'link' );
 	const styleNoticonPromise = new Promise( resolve => {
