@@ -16,14 +16,14 @@
   "scripts": {
     "preanalyze-bundles": "webpack --config webpack.wordpress.config.js --profile --json > stats.json",
     "analyze-bundles": "webpack-bundle-analyzer stats.json .",
-    "build": "run-p build:*",
-    "build:standalone": "webpack --config webpack.standalone.config.js",
-    "build:wordpress": "webpack --config webpack.wordpress.config.js",
     "dist": "run-p dist:*",
     "dist:css": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o dist/happychat.css",
 		"dist:js": "webpack --config webpack.dist.config.js",
-    "prestart": "npm run build:standalone",
+    "prestart": "npm run targets:standalone",
     "start": "webpack-dev-server --config webpack.standalone.config.js",
+		"targets": "run-p targets:*",
+		"targets:standalone": "webpack --config webpack.standalone.config.js",
+		"targets:wordpress": "webpack --config webpack.wordpress.config.js",
     "test": "jest -c jest.config.json"
   },
   "devDependencies": {
