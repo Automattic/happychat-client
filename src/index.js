@@ -109,10 +109,7 @@ const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 	// config noticon styles: append it to the iframe's head will trigger the network request
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute(
-		'href',
-		'https://rawgit.com/Automattic/happychat-client/master/dist/happychat.css'
-	);
+	styleHC.setAttribute( 'href', 'https://widgets.wp.com/happychat/happychat.css' );
 	iframeElement.contentDocument.head.appendChild( styleHC );
 
 	// some CSS styles depend on these top-level classes being present
