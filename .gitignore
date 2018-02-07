@@ -2,7 +2,5 @@ node_modules/
 tokens
 targets/standalone/public/tokens
 targets/standalone/public/happychat.css
-targets/standalone/public/happychat.js
 targets/wordpress/plugin/assets/happychat.css
-targets/wordpress/plugin/assets/happychat.js
 stats.json
