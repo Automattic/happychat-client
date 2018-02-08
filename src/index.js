@@ -20,6 +20,7 @@ import { socketMiddleware } from 'src/state/middleware';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
 import { setAssetsLoaded } from 'src/state/ui/actions';
 import { hasTouch } from 'src/lib/touch-detect';
+import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
 
 const store = createStore(
 	reducer,
@@ -127,7 +128,16 @@ const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 const renderHappychat = (
 	targetNode,
 	{
-		user,
+		user: {
+			ID,
+			email,
+			username,
+			display_name,
+			avatar_URL,
+			language,
+			groups = [ HAPPYCHAT_GROUP_WPCOM ],
+			accessToken,
+		},
 		entry = ENTRY_FORM,
 		entryOptions = {
 			primaryOptions: [],
@@ -136,7 +146,6 @@ const renderHappychat = (
 		},
 	}
 ) => {
-	const { ID, email, username, display_name, avatar_URL, language, groups, accessToken } = user;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
 	store.dispatch( setGroups( groups ) );
@@ -183,7 +192,7 @@ const getWPComUser = ( accessToken, groups ) =>
  */
 export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOptions } ) => {
 	let getAccessToken = accessToken;
-	if ( typeof accessToken === 'string' ) {
+	if ( 'string' === typeof accessToken ) {
 		getAccessToken = () => Promise.resolve( accessToken );
 	}
 
