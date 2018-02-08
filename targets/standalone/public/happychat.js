@@ -36039,6 +36039,7 @@ window.Happychat = {
 	open: function open(_ref) {
 		var nodeId = _ref.nodeId,
 		    groups = _ref.groups,
+		    entry = _ref.entry,
 		    howCanWeHelpOptions = _ref.howCanWeHelpOptions,
 		    howDoYouFeelOptions = _ref.howDoYouFeelOptions,
 		    fallbackTicketPath = _ref.fallbackTicketPath;
@@ -36047,6 +36048,7 @@ window.Happychat = {
 			nodeId: nodeId,
 			groups: groups,
 			accessToken: accessToken,
+			entry: entry,
 			howCanWeHelpOptions: howCanWeHelpOptions,
 			howDoYouFeelOptions: howDoYouFeelOptions,
 			fallbackTicketPath: fallbackTicketPath
@@ -36194,6 +36196,8 @@ var createIframe = function createIframe(renderMethod, props) {
 /* eslint-disable camelcase */
 var renderHappychat = function renderHappychat(targetNode, _ref) {
 	var user = _ref.user,
+	    _ref$entry = _ref.entry,
+	    entry = _ref$entry === undefined ? _form.ENTRY_FORM : _ref$entry,
 	    _ref$howCanWeHelpOpti = _ref.howCanWeHelpOptions,
 	    howCanWeHelpOptions = _ref$howCanWeHelpOpti === undefined ? [] : _ref$howCanWeHelpOpti,
 	    _ref$howDoYouFeelOpti = _ref.howDoYouFeelOptions,
@@ -36217,6 +36221,7 @@ var renderHappychat = function renderHappychat(targetNode, _ref) {
 		{ store: store },
 		_react2.default.createElement(_form2.default, {
 			accessToken: accessToken,
+			entry: entry,
 			howCanWeHelpOptions: howCanWeHelpOptions,
 			howDoYouFeelOptions: howDoYouFeelOptions,
 			fallbackTicketPath: fallbackTicketPath
@@ -36269,6 +36274,7 @@ var initHappychat = exports.initHappychat = function initHappychat(_ref4) {
 	var nodeId = _ref4.nodeId,
 	    groups = _ref4.groups,
 	    accessToken = _ref4.accessToken,
+	    entry = _ref4.entry,
 	    howCanWeHelpOptions = _ref4.howCanWeHelpOptions,
 	    howDoYouFeelOptions = _ref4.howDoYouFeelOptions,
 	    fallbackTicketPath = _ref4.fallbackTicketPath;
@@ -36286,6 +36292,7 @@ var initHappychat = exports.initHappychat = function initHappychat(_ref4) {
 		return createIframe(renderHappychat, {
 			nodeId: nodeId,
 			user: user,
+			entry: entry,
 			howCanWeHelpOptions: howCanWeHelpOptions,
 			howDoYouFeelOptions: howDoYouFeelOptions,
 			fallbackTicketPath: fallbackTicketPath
@@ -50796,7 +50803,7 @@ function plural(ms, n, name) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.Form = undefined;
+exports.ENTRY_CHAT = exports.ENTRY_FORM = exports.Form = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /** @format */
 
@@ -50929,6 +50936,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ENTRY_FORM = 'form';
+var ENTRY_CHAT = 'chat';
 
 var HappychatSupportProvider = function () {
 	function HappychatSupportProvider(props) {
@@ -51123,12 +51133,19 @@ var LoadingSupportProvider = function () {
 }();
 
 var getSupportProvider = function getSupportProvider(props) {
-	if (!props.isUIReady) {
-		return new LoadingSupportProvider(props);
-	} else if (props.isChatOpen || props.isUserEligibleForChat && props.isChatAvailable) {
-		return new HappychatSupportProvider(props);
+	if (ENTRY_FORM === props.entry) {
+		// - Are the assets being loaded? Wait and show loading indicator until they're ready.
+		// - Do we meet the right conditions to offer chat? Show the chat form if so.
+		// - In any other case, show the contact form.
+		if (!props.isUIReady) {
+			return new LoadingSupportProvider(props);
+		} else if (props.isChatOpen || props.isUserEligibleForChat && props.isChatAvailable) {
+			return new HappychatSupportProvider(props);
+		}
+		return new TicketSupportProvider(props);
 	}
-	return new TicketSupportProvider(props);
+	// ENTRY_CHAT: show chat as the entry point for Happychat.
+	return new HappychatSupportProvider(props);
 };
 
 var Form = exports.Form = function (_React$Component) {
@@ -51229,6 +51246,8 @@ var mapDispatch = {
 };
 
 exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)((0, _localize.mockLocalize)(Form));
+exports.ENTRY_FORM = ENTRY_FORM;
+exports.ENTRY_CHAT = ENTRY_CHAT;
 
 /***/ }),
 /* 358 */

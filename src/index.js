@@ -13,7 +13,7 @@ import { devToolsEnhancer } from 'redux-devtools-extension';
  * Internal dependencies
  */
 import getUser from 'src/lib/wpcom/get-wpcom-user';
-import Happychat from 'src/form';
+import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
@@ -126,7 +126,13 @@ const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 /* eslint-disable camelcase */
 const renderHappychat = (
 	targetNode,
-	{ user, howCanWeHelpOptions = [], howDoYouFeelOptions = [], fallbackTicketPath }
+	{
+		user,
+		entry = ENTRY_FORM,
+		howCanWeHelpOptions = [],
+		howDoYouFeelOptions = [],
+		fallbackTicketPath,
+	}
 ) => {
 	const { ID, email, username, display_name, avatar_URL, language, groups, accessToken } = user;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
@@ -137,6 +143,7 @@ const renderHappychat = (
 		<Provider store={ store }>
 			<Happychat
 				accessToken={ accessToken }
+				entry={ entry }
 				howCanWeHelpOptions={ howCanWeHelpOptions }
 				howDoYouFeelOptions={ howDoYouFeelOptions }
 				fallbackTicketPath={ fallbackTicketPath }
@@ -182,6 +189,7 @@ export const initHappychat = ( {
 	nodeId,
 	groups,
 	accessToken,
+	entry,
 	howCanWeHelpOptions,
 	howDoYouFeelOptions,
 	fallbackTicketPath,
@@ -199,6 +207,7 @@ export const initHappychat = ( {
 				{
 					nodeId,
 					user,
+					entry,
 					howCanWeHelpOptions,
 					howDoYouFeelOptions,
 					fallbackTicketPath,

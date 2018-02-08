@@ -56,6 +56,9 @@ import CompactCard from 'src/ui/components/card/compact';
 import FormLabel from 'src/ui/components/form-label';
 import SpinnerLine from 'src/ui/components/spinner-line';
 
+const ENTRY_FORM = 'form';
+const ENTRY_CHAT = 'chat';
+
 class HappychatSupportProvider {
 	constructor( props ) {
 		this.props = props;
@@ -214,12 +217,19 @@ class LoadingSupportProvider {
 }
 
 const getSupportProvider = props => {
-	if ( ! props.isUIReady ) {
-		return new LoadingSupportProvider( props );
-	} else if ( props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable ) ) {
-		return new HappychatSupportProvider( props );
+	if ( ENTRY_FORM === props.entry ) {
+		// - Are the assets being loaded? Wait and show loading indicator until they're ready.
+		// - Do we meet the right conditions to offer chat? Show the chat form if so.
+		// - In any other case, show the contact form.
+		if ( ! props.isUIReady ) {
+			return new LoadingSupportProvider( props );
+		} else if ( props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable ) ) {
+			return new HappychatSupportProvider( props );
+		}
+		return new TicketSupportProvider( props );
 	}
-	return new TicketSupportProvider( props );
+	// ENTRY_CHAT: show chat as the entry point for Happychat.
+	return new HappychatSupportProvider( props );
 };
 
 export class Form extends React.Component {
@@ -304,3 +314,4 @@ const mapDispatch = {
 };
 
 export default connect( mapState, mapDispatch )( mockLocalize( Form ) );
+export { ENTRY_FORM, ENTRY_CHAT };
