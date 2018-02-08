@@ -122,7 +122,7 @@ class ChatComponent {
 	}
 }
 
-class TicketSupportProvider {
+class FormComponent {
 	constructor( props ) {
 		this.props = props;
 		this.submitForm = this.submitForm.bind( this );
@@ -201,7 +201,7 @@ const getSupportComponent = props => {
 		} else if ( props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable ) ) {
 			return new ChatComponent( props );
 		}
-		return new TicketSupportProvider( props );
+		return new FormComponent( props );
 	}
 	// ENTRY_CHAT: show chat as the entry point for Happychat.
 	return new ChatComponent( props );
