@@ -3,7 +3,7 @@
 /**
  * Internal dependencies
  */
-import { initHappychat } from 'src';
+import { initHappychat, subscribeTo, unsubscribeFrom } from 'src';
 
 window.Happychat = {
 	open: ( { nodeId, groups, accessToken, entry, entryOptions } ) => {
@@ -14,5 +14,11 @@ window.Happychat = {
 			entry,
 			entryOptions,
 		} );
+	},
+	on: ( eventName, callback ) => {
+		subscribeTo( eventName, callback );
+	},
+	off: ( eventName, callback ) => {
+		unsubscribeFrom( eventName, callback );
 	},
 };

@@ -21,12 +21,26 @@ import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
 import { setAssetsLoaded } from 'src/state/ui/actions';
 import { hasTouch } from 'src/lib/touch-detect';
 import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
+import isAvailable from 'src/state/selectors/is-available';
 
 const store = createStore(
 	reducer,
 	{},
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
+
+const subscribers = {
+	availability: [],
+};
+
+let oldAvailability = false;
+store.subscribe( () => {
+	const newAvailability = isAvailable( store.getState() );
+	if ( newAvailability !== oldAvailability ) {
+		oldAvailability = newAvailability;
+		subscribers.availability.forEach( subscriber => subscriber( newAvailability ) );
+	}
+} );
 
 const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
@@ -208,3 +222,13 @@ export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOption
 		)
 		.catch( error => createIframe( renderError, { nodeId, error } ) );
 };
+
+export const subscribeTo = ( eventName, subscriber ) =>
+	subscribers.hasOwnProperty( eventName ) && subscribers[ eventName ].indexOf( subscriber ) === -1
+		? subscribers[ eventName ].push( subscriber )
+		: ''; // do nothing, the subscriber is already in the observers list
+
+export const unsubscribeFrom = ( eventName, subscriber ) =>
+	subscribers.hasOwnProperty( eventName ) && subscribers[ eventName ].indexOf( subscriber ) > -1
+		? subscribers[ eventName ].splice( subscribers[ eventName ].indexOf( subscriber ), 1 )
+		: ''; // do nothing, the subscriber is not in the observers list
