@@ -223,7 +223,7 @@ export class Form extends React.Component {
 			onInitConnection,
 		} = this.props;
 
-		this.supportProvider = getSupportComponent( this.props );
+		this.supportComponent = getSupportComponent( this.props );
 
 		return (
 			<div>
@@ -235,7 +235,7 @@ export class Form extends React.Component {
 					onInitConnection={ onInitConnection }
 				/>
 
-				{ this.supportProvider.renderForm() }
+				{ this.supportComponent.renderForm() }
 			</div>
 		);
 	}
