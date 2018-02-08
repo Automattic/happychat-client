@@ -83,9 +83,6 @@ class HappychatSupportProvider {
 			connectionStatus,
 			currentUserEmail,
 			disabled,
-			primaryOptions,
-			secondaryOptions,
-			isChatOpen,
 			isCurrentUser,
 			isExternalUrl,
 			isServerReachable,
@@ -101,16 +98,7 @@ class HappychatSupportProvider {
 			twemojiUrl,
 		} = this.props;
 
-		const contactForm = (
-			<ContactForm
-				canSubmitForm={ this.canSubmitForm }
-				primaryOptions={ primaryOptions }
-				secondaryOptions={ secondaryOptions }
-				submitForm={ this.submitForm }
-				submitFormText={ 'Chat with us' }
-			/>
-		);
-		const chatForm = (
+		return (
 			<HappychatForm
 				chatStatus={ chatStatus }
 				connectionStatus={ connectionStatus }
@@ -131,12 +119,6 @@ class HappychatSupportProvider {
 				twemojiUrl={ twemojiUrl }
 			/>
 		);
-
-		let form = chatForm;
-		if ( ! isChatOpen && primaryOptions && primaryOptions.length > 0 ) {
-			form = contactForm;
-		}
-		return form;
 	}
 }
 
