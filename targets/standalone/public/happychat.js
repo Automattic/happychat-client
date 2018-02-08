@@ -50957,9 +50957,6 @@ var HappychatSupportProvider = function () {
 			    connectionStatus = _props.connectionStatus,
 			    currentUserEmail = _props.currentUserEmail,
 			    disabled = _props.disabled,
-			    primaryOptions = _props.primaryOptions,
-			    secondaryOptions = _props.secondaryOptions,
-			    isChatOpen = _props.isChatOpen,
 			    isCurrentUser = _props.isCurrentUser,
 			    isExternalUrl = _props.isExternalUrl,
 			    isServerReachable = _props.isServerReachable,
@@ -50975,14 +50972,7 @@ var HappychatSupportProvider = function () {
 			    twemojiUrl = _props.twemojiUrl;
 
 
-			var contactForm = _react2.default.createElement(_contactForm.ContactForm, {
-				canSubmitForm: this.canSubmitForm,
-				primaryOptions: primaryOptions,
-				secondaryOptions: secondaryOptions,
-				submitForm: this.submitForm,
-				submitFormText: 'Chat with us'
-			});
-			var chatForm = _react2.default.createElement(_happychatForm.HappychatForm, {
+			return _react2.default.createElement(_happychatForm.HappychatForm, {
 				chatStatus: chatStatus,
 				connectionStatus: connectionStatus,
 				currentUserEmail: currentUserEmail,
@@ -51001,12 +50991,6 @@ var HappychatSupportProvider = function () {
 				translate: translate,
 				twemojiUrl: twemojiUrl
 			});
-
-			var form = chatForm;
-			if (!isChatOpen && primaryOptions && primaryOptions.length > 0) {
-				form = contactForm;
-			}
-			return form;
 		}
 	}]);
 
@@ -57762,7 +57746,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 				_react2.default.createElement(
 					_card2.default,
 					null,
-					_react2.default.createElement(
+					primaryOptions && primaryOptions.length > 0 ? _react2.default.createElement(
 						'div',
 						null,
 						_react2.default.createElement(
@@ -57771,7 +57755,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 							primaryOptionsTitle
 						),
 						_react2.default.createElement(_formSelection2.default, { options: primaryOptions })
-					),
+					) : '',
 					secondaryOptions && secondaryOptions.length > 0 ? _react2.default.createElement(
 						'div',
 						null,
@@ -57812,7 +57796,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 
 ContactForm.propTypes = {
 	canSubmitForm: _propTypes2.default.func.isRequired,
-	primaryOptions: _propTypes2.default.array.isRequired,
+	primaryOptions: _propTypes2.default.array,
 	primaryOptionsTitle: _propTypes2.default.string,
 	secondaryOptions: _propTypes2.default.array,
 	secondaryOptionsTitle: _propTypes2.default.string,
