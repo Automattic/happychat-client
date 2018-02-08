@@ -3,7 +3,7 @@
 /**
  * Internal dependencies
  */
-import { initHappychat } from 'src';
+import { initHappychat, subscribeTo, unsubscribeFrom } from 'src';
 import config from 'targets/standalone/config';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
@@ -24,5 +24,11 @@ window.Happychat = {
 			entry,
 			entryOptions,
 		} );
+	},
+	on: ( eventName, callback ) => {
+		subscribeTo( eventName, callback );
+	},
+	off: ( eventName, callback ) => {
+		unsubscribeFrom( eventName, callback );
 	},
 };
