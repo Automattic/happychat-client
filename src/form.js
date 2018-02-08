@@ -59,7 +59,7 @@ import SpinnerLine from 'src/ui/components/spinner-line';
 const ENTRY_FORM = 'form';
 const ENTRY_CHAT = 'chat';
 
-class HappychatSupportProvider {
+class ChatComponent {
 	constructor( props ) {
 		this.props = props;
 		this.submitForm = this.submitForm.bind( this );
@@ -199,12 +199,12 @@ const getSupportComponent = props => {
 		if ( ! props.isUIReady ) {
 			return <SpinnerLine />;
 		} else if ( props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable ) ) {
-			return new HappychatSupportProvider( props );
+			return new ChatComponent( props );
 		}
 		return new TicketSupportProvider( props );
 	}
 	// ENTRY_CHAT: show chat as the entry point for Happychat.
-	return new HappychatSupportProvider( props );
+	return new ChatComponent( props );
 };
 
 export class Form extends React.Component {
