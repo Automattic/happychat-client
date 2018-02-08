@@ -197,7 +197,7 @@ class LoadingSupportProvider {
 	}
 }
 
-const getSupportProvider = props => {
+const getSupportComponent = props => {
 	if ( ENTRY_FORM === props.entry ) {
 		// - Are the assets being loaded? Wait and show loading indicator until they're ready.
 		// - Do we meet the right conditions to offer chat? Show the chat form if so.
@@ -223,7 +223,7 @@ export class Form extends React.Component {
 			onInitConnection,
 		} = this.props;
 
-		this.supportProvider = getSupportProvider( this.props );
+		this.supportProvider = getSupportComponent( this.props );
 
 		return (
 			<div>
