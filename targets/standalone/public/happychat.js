@@ -885,6 +885,68 @@ module.exports = classNames;
 
 /***/ }),
 /* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+/** @format */
+
+// These CONNECTION_ERROR constants come directly from the Socket.IO client library.
+// These are the possible reasons for a connection disconnect.
+var HAPPYCHAT_CONNECTION_ERROR_FORCED_CLOSE = exports.HAPPYCHAT_CONNECTION_ERROR_FORCED_CLOSE = 'forced close';
+var HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT = exports.HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT = 'ping timeout';
+var HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE = exports.HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE = 'transport close';
+var HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR = exports.HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR = 'transport error';
+
+// connection status
+var HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED = exports.HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED = 'uninitialized';
+var HAPPYCHAT_CONNECTION_STATUS_CONNECTING = exports.HAPPYCHAT_CONNECTION_STATUS_CONNECTING = 'connecting';
+var HAPPYCHAT_CONNECTION_STATUS_CONNECTED = exports.HAPPYCHAT_CONNECTION_STATUS_CONNECTED = 'connected';
+var HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED = exports.HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED = 'disconnected';
+var HAPPYCHAT_CONNECTION_STATUS_RECONNECTING = exports.HAPPYCHAT_CONNECTION_STATUS_RECONNECTING = 'reconnecting';
+var HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED = exports.HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED = 'unauthorized';
+
+// Skills
+var HAPPYCHAT_SKILL_PRODUCT = exports.HAPPYCHAT_SKILL_PRODUCT = 'product';
+var HAPPYCHAT_SKILL_LANGUAGE = exports.HAPPYCHAT_SKILL_LANGUAGE = 'language';
+
+// Groups
+var HAPPYCHAT_GROUP_JPOP = exports.HAPPYCHAT_GROUP_JPOP = 'jpop';
+var HAPPYCHAT_GROUP_WOO = exports.HAPPYCHAT_GROUP_WOO = 'woo';
+var HAPPYCHAT_GROUP_JPPHP = exports.HAPPYCHAT_GROUP_JPPHP = 'jpphp';
+var HAPPYCHAT_GROUP_WPCOM = exports.HAPPYCHAT_GROUP_WPCOM = 'WP.com';
+
+// Message types
+var HAPPYCHAT_MESSAGE_TYPES = exports.HAPPYCHAT_MESSAGE_TYPES = {
+	CUSTOMER_EVENT: 'customer-event',
+	CUSTOMER_INFO: 'customer-info',
+	LOG: 'log'
+};
+
+// Chat status
+var HAPPYCHAT_CHAT_STATUS_ABANDONED = exports.HAPPYCHAT_CHAT_STATUS_ABANDONED = 'abandoned';
+var HAPPYCHAT_CHAT_STATUS_ASSIGNED = exports.HAPPYCHAT_CHAT_STATUS_ASSIGNED = 'assigned';
+var HAPPYCHAT_CHAT_STATUS_ASSIGNING = exports.HAPPYCHAT_CHAT_STATUS_ASSIGNING = 'assigning';
+var HAPPYCHAT_CHAT_STATUS_BLOCKED = exports.HAPPYCHAT_CHAT_STATUS_BLOCKED = 'blocked';
+var HAPPYCHAT_CHAT_STATUS_CLOSED = exports.HAPPYCHAT_CHAT_STATUS_CLOSED = 'closed';
+var HAPPYCHAT_CHAT_STATUS_DEFAULT = exports.HAPPYCHAT_CHAT_STATUS_DEFAULT = 'default';
+var HAPPYCHAT_CHAT_STATUS_NEW = exports.HAPPYCHAT_CHAT_STATUS_NEW = 'new';
+var HAPPYCHAT_CHAT_STATUS_MISSED = exports.HAPPYCHAT_CHAT_STATUS_MISSED = 'missed';
+var HAPPYCHAT_CHAT_STATUS_PENDING = exports.HAPPYCHAT_CHAT_STATUS_PENDING = 'pending';
+
+// Fallback ticket status
+var HAPPYCHAT_FALLBACK_TICKET_NEW = exports.HAPPYCHAT_FALLBACK_TICKET_NEW = 'new';
+var HAPPYCHAT_FALLBACK_TICKET_SENDING = exports.HAPPYCHAT_FALLBACK_TICKET_SENDING = 'sending';
+var HAPPYCHAT_FALLBACK_TICKET_FAILURE = exports.HAPPYCHAT_FALLBACK_TICKET_FAILURE = 'failure';
+var HAPPYCHAT_FALLBACK_TICKET_SUCCESS = exports.HAPPYCHAT_FALLBACK_TICKET_SUCCESS = 'success';
+var HAPPYCHAT_FALLBACK_TICKET_TIMEOUT = exports.HAPPYCHAT_FALLBACK_TICKET_TIMEOUT = 'timeout';
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports) {
 
 /**
@@ -916,7 +978,7 @@ module.exports = isArray;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1296,68 +1358,6 @@ var ReactComponentTreeHook = {
 };
 
 module.exports = ReactComponentTreeHook;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-/** @format */
-
-// These CONNECTION_ERROR constants come directly from the Socket.IO client library.
-// These are the possible reasons for a connection disconnect.
-var HAPPYCHAT_CONNECTION_ERROR_FORCED_CLOSE = exports.HAPPYCHAT_CONNECTION_ERROR_FORCED_CLOSE = 'forced close';
-var HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT = exports.HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT = 'ping timeout';
-var HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE = exports.HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE = 'transport close';
-var HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR = exports.HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR = 'transport error';
-
-// connection status
-var HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED = exports.HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED = 'uninitialized';
-var HAPPYCHAT_CONNECTION_STATUS_CONNECTING = exports.HAPPYCHAT_CONNECTION_STATUS_CONNECTING = 'connecting';
-var HAPPYCHAT_CONNECTION_STATUS_CONNECTED = exports.HAPPYCHAT_CONNECTION_STATUS_CONNECTED = 'connected';
-var HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED = exports.HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED = 'disconnected';
-var HAPPYCHAT_CONNECTION_STATUS_RECONNECTING = exports.HAPPYCHAT_CONNECTION_STATUS_RECONNECTING = 'reconnecting';
-var HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED = exports.HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED = 'unauthorized';
-
-// Skills
-var HAPPYCHAT_SKILL_PRODUCT = exports.HAPPYCHAT_SKILL_PRODUCT = 'product';
-var HAPPYCHAT_SKILL_LANGUAGE = exports.HAPPYCHAT_SKILL_LANGUAGE = 'language';
-
-// Groups
-var HAPPYCHAT_GROUP_JPOP = exports.HAPPYCHAT_GROUP_JPOP = 'jpop';
-var HAPPYCHAT_GROUP_WOO = exports.HAPPYCHAT_GROUP_WOO = 'woo';
-var HAPPYCHAT_GROUP_JPPHP = exports.HAPPYCHAT_GROUP_JPPHP = 'jpphp';
-var HAPPYCHAT_GROUP_WPCOM = exports.HAPPYCHAT_GROUP_WPCOM = 'WP.com';
-
-// Message types
-var HAPPYCHAT_MESSAGE_TYPES = exports.HAPPYCHAT_MESSAGE_TYPES = {
-	CUSTOMER_EVENT: 'customer-event',
-	CUSTOMER_INFO: 'customer-info',
-	LOG: 'log'
-};
-
-// Chat status
-var HAPPYCHAT_CHAT_STATUS_ABANDONED = exports.HAPPYCHAT_CHAT_STATUS_ABANDONED = 'abandoned';
-var HAPPYCHAT_CHAT_STATUS_ASSIGNED = exports.HAPPYCHAT_CHAT_STATUS_ASSIGNED = 'assigned';
-var HAPPYCHAT_CHAT_STATUS_ASSIGNING = exports.HAPPYCHAT_CHAT_STATUS_ASSIGNING = 'assigning';
-var HAPPYCHAT_CHAT_STATUS_BLOCKED = exports.HAPPYCHAT_CHAT_STATUS_BLOCKED = 'blocked';
-var HAPPYCHAT_CHAT_STATUS_CLOSED = exports.HAPPYCHAT_CHAT_STATUS_CLOSED = 'closed';
-var HAPPYCHAT_CHAT_STATUS_DEFAULT = exports.HAPPYCHAT_CHAT_STATUS_DEFAULT = 'default';
-var HAPPYCHAT_CHAT_STATUS_NEW = exports.HAPPYCHAT_CHAT_STATUS_NEW = 'new';
-var HAPPYCHAT_CHAT_STATUS_MISSED = exports.HAPPYCHAT_CHAT_STATUS_MISSED = 'missed';
-var HAPPYCHAT_CHAT_STATUS_PENDING = exports.HAPPYCHAT_CHAT_STATUS_PENDING = 'pending';
-
-// Fallback ticket status
-var HAPPYCHAT_FALLBACK_TICKET_NEW = exports.HAPPYCHAT_FALLBACK_TICKET_NEW = 'new';
-var HAPPYCHAT_FALLBACK_TICKET_SENDING = exports.HAPPYCHAT_FALLBACK_TICKET_SENDING = 'sending';
-var HAPPYCHAT_FALLBACK_TICKET_FAILURE = exports.HAPPYCHAT_FALLBACK_TICKET_FAILURE = 'failure';
-var HAPPYCHAT_FALLBACK_TICKET_SUCCESS = exports.HAPPYCHAT_FALLBACK_TICKET_SUCCESS = 'success';
-var HAPPYCHAT_FALLBACK_TICKET_TIMEOUT = exports.HAPPYCHAT_FALLBACK_TICKET_TIMEOUT = 'timeout';
 
 /***/ }),
 /* 15 */
@@ -20315,7 +20315,7 @@ module.exports = keys;
 var baseMatches = __webpack_require__(397),
     baseMatchesProperty = __webpack_require__(423),
     identity = __webpack_require__(179),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     property = __webpack_require__(427);
 
 /**
@@ -23055,7 +23055,7 @@ module.exports = getMapData;
 /* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArray = __webpack_require__(12),
+var isArray = __webpack_require__(13),
     isSymbol = __webpack_require__(43);
 
 /** Used to match property names within property paths. */
@@ -25262,7 +25262,7 @@ var _uuid = __webpack_require__(359);
 
 var _actionTypes = __webpack_require__(22);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 /**
  * Returns an action object indicating that the connection is being stablished.
@@ -25860,7 +25860,7 @@ exports.default = function (state) {
   return (0, _getConnectionStatus2.default)(state) === _constants.HAPPYCHAT_CONNECTION_STATUS_CONNECTED;
 };
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getConnectionStatus = __webpack_require__(94);
 
@@ -25896,7 +25896,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var arrayMap = __webpack_require__(90),
     baseIteratee = __webpack_require__(37),
     baseMap = __webpack_require__(180),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /**
  * Creates an array of values by running each element in `collection` thru
@@ -27093,7 +27093,7 @@ module.exports = getIteratorFn;
 
 
 var ReactCurrentOwner = __webpack_require__(17);
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 var ReactElement = __webpack_require__(27);
 
 var checkReactTypeSpec = __webpack_require__(214);
@@ -32570,7 +32570,7 @@ module.exports = baseGet;
 /* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArray = __webpack_require__(12),
+var isArray = __webpack_require__(13),
     stringToPath = __webpack_require__(362);
 
 /**
@@ -32893,7 +32893,7 @@ var _get = __webpack_require__(8);
 
 var _get2 = _interopRequireDefault(_get);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33003,7 +33003,7 @@ module.exports = baseFindIndex;
 /* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArray = __webpack_require__(12),
+var isArray = __webpack_require__(13),
     isObjectLike = __webpack_require__(44);
 
 /** `Object#toString` result references. */
@@ -33630,7 +33630,7 @@ module.exports = factory(
 
 var getTag = __webpack_require__(175),
     isArguments = __webpack_require__(61),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     isArrayLike = __webpack_require__(23),
     isBuffer = __webpack_require__(451),
     isPrototype = __webpack_require__(92),
@@ -36100,15 +36100,19 @@ var _actions2 = __webpack_require__(153);
 
 var _touchDetect = __webpack_require__(528);
 
+var _constants = __webpack_require__(12);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Internal dependencies
- */
-var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware.socketMiddleware)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)())); /** @format */
+/** @format */
 
 /**
  * External dependencies
+ */
+var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware.socketMiddleware)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)()));
+
+/**
+ * Internal dependencies
  */
 
 
@@ -36191,7 +36195,16 @@ var createIframe = function createIframe(renderMethod, props) {
 
 /* eslint-disable camelcase */
 var renderHappychat = function renderHappychat(targetNode, _ref) {
-	var user = _ref.user,
+	var _ref$user = _ref.user,
+	    ID = _ref$user.ID,
+	    email = _ref$user.email,
+	    username = _ref$user.username,
+	    display_name = _ref$user.display_name,
+	    avatar_URL = _ref$user.avatar_URL,
+	    language = _ref$user.language,
+	    _ref$user$groups = _ref$user.groups,
+	    groups = _ref$user$groups === undefined ? [_constants.HAPPYCHAT_GROUP_WPCOM] : _ref$user$groups,
+	    accessToken = _ref$user.accessToken,
 	    _ref$entry = _ref.entry,
 	    entry = _ref$entry === undefined ? _form.ENTRY_FORM : _ref$entry,
 	    _ref$entryOptions = _ref.entryOptions,
@@ -36200,14 +36213,6 @@ var renderHappychat = function renderHappychat(targetNode, _ref) {
 		secondaryOptions: [],
 		fallbackTicketPath: null
 	} : _ref$entryOptions;
-	var ID = user.ID,
-	    email = user.email,
-	    username = user.username,
-	    display_name = user.display_name,
-	    avatar_URL = user.avatar_URL,
-	    language = user.language,
-	    groups = user.groups,
-	    accessToken = user.accessToken;
 
 	store.dispatch((0, _actions.setCurrentUser)({ ID: ID, email: email, username: username, display_name: display_name, avatar_URL: avatar_URL }));
 	store.dispatch((0, _actions.setLocale)(language));
@@ -36269,7 +36274,7 @@ var initHappychat = exports.initHappychat = function initHappychat(_ref4) {
 	    entryOptions = _ref4.entryOptions;
 
 	var getAccessToken = accessToken;
-	if (typeof accessToken === 'string') {
+	if ('string' === typeof accessToken) {
 		getAccessToken = function getAccessToken() {
 			return Promise.resolve(accessToken);
 		};
@@ -37042,7 +37047,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(13);
+  ReactComponentTreeHook = __webpack_require__(14);
 }
 
 var loggedTypeFailures = {};
@@ -37084,7 +37089,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
         if (true) {
           if (!ReactComponentTreeHook) {
-            ReactComponentTreeHook = __webpack_require__(13);
+            ReactComponentTreeHook = __webpack_require__(14);
           }
           if (debugID !== null) {
             componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -38689,7 +38694,7 @@ module.exports = ReactOwner;
 
 var ReactInvalidSetStateWarningHook = __webpack_require__(233);
 var ReactHostOperationHistoryHook = __webpack_require__(234);
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 var ExecutionEnvironment = __webpack_require__(9);
 
 var performanceNow = __webpack_require__(235);
@@ -42735,7 +42740,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(13);
+  ReactComponentTreeHook = __webpack_require__(14);
 }
 
 function instantiateChild(childInstances, child, name, selfDebugID) {
@@ -42743,7 +42748,7 @@ function instantiateChild(childInstances, child, name, selfDebugID) {
   var keyUnique = childInstances[name] === undefined;
   if (true) {
     if (!ReactComponentTreeHook) {
-      ReactComponentTreeHook = __webpack_require__(13);
+      ReactComponentTreeHook = __webpack_require__(14);
     }
     if (!keyUnique) {
        true ? warning(false, 'flattenChildren(...): Encountered two children with the same key, ' + '`%s`. Child keys must be unique; when two children share a key, only ' + 'the first child will be used.%s', KeyEscapeUtils.unescape(name), ReactComponentTreeHook.getStackAddendumByID(selfDebugID)) : void 0;
@@ -43795,7 +43800,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(13);
+  ReactComponentTreeHook = __webpack_require__(14);
 }
 
 var loggedTypeFailures = {};
@@ -43837,7 +43842,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
         if (true) {
           if (!ReactComponentTreeHook) {
-            ReactComponentTreeHook = __webpack_require__(13);
+            ReactComponentTreeHook = __webpack_require__(14);
           }
           if (debugID !== null) {
             componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -44002,7 +44007,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(13);
+  ReactComponentTreeHook = __webpack_require__(14);
 }
 
 /**
@@ -44018,7 +44023,7 @@ function flattenSingleChildIntoContext(traverseContext, child, name, selfDebugID
     var keyUnique = result[name] === undefined;
     if (true) {
       if (!ReactComponentTreeHook) {
-        ReactComponentTreeHook = __webpack_require__(13);
+        ReactComponentTreeHook = __webpack_require__(14);
       }
       if (!keyUnique) {
          true ? warning(false, 'flattenChildren(...): Encountered two children with the same key, ' + '`%s`. Child keys must be unique; when two children share a key, only ' + 'the first child will be used.%s', KeyEscapeUtils.unescape(name), ReactComponentTreeHook.getStackAddendumByID(selfDebugID)) : void 0;
@@ -47042,7 +47047,7 @@ module.exports = ReactMount.renderSubtreeIntoContainer;
 
 var DOMProperty = __webpack_require__(24);
 var EventPluginRegistry = __webpack_require__(48);
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 
 var warning = __webpack_require__(1);
 
@@ -47155,7 +47160,7 @@ module.exports = ReactDOMUnknownPropertyHook;
 
 
 
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 
 var warning = __webpack_require__(1);
 
@@ -47202,7 +47207,7 @@ module.exports = ReactDOMNullInputValuePropHook;
 
 
 var DOMProperty = __webpack_require__(24);
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 
 var warning = __webpack_require__(1);
 
@@ -50790,7 +50795,7 @@ function plural(ms, n, name) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.ENTRY_CHAT = exports.ENTRY_FORM = exports.Form = undefined;
+exports.ENTRY_CHAT = exports.ENTRY_FORM = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /** @format */
 
@@ -50832,7 +50837,7 @@ var _actions = __webpack_require__(84);
 
 var _actions2 = __webpack_require__(153);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getHappychatAuth = __webpack_require__(361);
 
@@ -50927,31 +50932,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var ENTRY_FORM = 'form';
 var ENTRY_CHAT = 'chat';
 
-var HappychatSupportProvider = function () {
-	function HappychatSupportProvider(props) {
-		_classCallCheck(this, HappychatSupportProvider);
+var ChatComponent = function () {
+	function ChatComponent(props) {
+		_classCallCheck(this, ChatComponent);
 
 		this.props = props;
-		this.submitForm = this.submitForm.bind(this);
-		this.canSubmitForm = this.canSubmitForm.bind(this);
 	}
 
-	_createClass(HappychatSupportProvider, [{
-		key: 'canSubmitForm',
-		value: function canSubmitForm() {
-			return this.props.isChatAvailable;
-		}
-	}, {
-		key: 'submitForm',
-		value: function submitForm(formState) {
-			if (this.canSubmitForm()) {
-				this.props.onOpenChat();
-				this.props.onSendMessage(formState.message);
-			}
-		}
-	}, {
-		key: 'renderForm',
-		value: function renderForm() {
+	_createClass(ChatComponent, [{
+		key: 'render',
+		value: function render() {
 			var _props = this.props,
 			    chatStatus = _props.chatStatus,
 			    connectionStatus = _props.connectionStatus,
@@ -50994,22 +50984,68 @@ var HappychatSupportProvider = function () {
 		}
 	}]);
 
-	return HappychatSupportProvider;
+	return ChatComponent;
 }();
 
-var TicketSupportProvider = function () {
-	function TicketSupportProvider(props) {
-		_classCallCheck(this, TicketSupportProvider);
+var ChatFormComponent = function () {
+	function ChatFormComponent(props) {
+		_classCallCheck(this, ChatFormComponent);
 
 		this.props = props;
-		this.submitForm = this.submitForm.bind(this);
 		this.canSubmitForm = this.canSubmitForm.bind(this);
+		this.submitForm = this.submitForm.bind(this);
+		this.render = this.render.bind(this);
 	}
 
-	_createClass(TicketSupportProvider, [{
+	_createClass(ChatFormComponent, [{
 		key: 'canSubmitForm',
 		value: function canSubmitForm() {
-			return true;
+			var _props2 = this.props,
+			    isUserEligibleForChat = _props2.isUserEligibleForChat,
+			    isChatAvailable = _props2.isChatAvailable;
+
+			return isUserEligibleForChat && isChatAvailable;
+		}
+	}, {
+		key: 'submitForm',
+		value: function submitForm(formState) {
+			this.props.onOpenChat();
+			this.props.onSendMessage(formState.message);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _props$entryOptions = this.props.entryOptions,
+			    primaryOptions = _props$entryOptions.primaryOptions,
+			    secondaryOptions = _props$entryOptions.secondaryOptions;
+
+			return _react2.default.createElement(_contactForm.ContactForm, {
+				canSubmitForm: this.canSubmitForm,
+				primaryOptions: primaryOptions,
+				secondaryOptions: secondaryOptions,
+				submitForm: this.submitForm,
+				submitFormText: 'Chat with us'
+			});
+		}
+	}]);
+
+	return ChatFormComponent;
+}();
+
+var TicketFormComponent = function () {
+	function TicketFormComponent(props) {
+		_classCallCheck(this, TicketFormComponent);
+
+		this.props = props;
+		this.canSubmitForm = this.canSubmitForm.bind(this);
+		this.submitForm = this.submitForm.bind(this);
+		this.render = this.render.bind(this);
+	}
+
+	_createClass(TicketFormComponent, [{
+		key: 'canSubmitForm',
+		value: function canSubmitForm() {
+			return this.props.entryOptions && this.props.entryOptions.fallbackTicketPath;
 		}
 	}, {
 		key: 'submitForm',
@@ -51017,13 +51053,13 @@ var TicketSupportProvider = function () {
 			this.props.onRequestFallbackTicket(this.props.entryOptions.fallbackTicketPath, formState);
 		}
 	}, {
-		key: 'renderForm',
-		value: function renderForm() {
-			var _props2 = this.props,
-			    fallbackTicketResponse = _props2.fallbackTicketResponse,
-			    fallbackTicketUrl = _props2.fallbackTicketUrl,
-			    fallbackTicketStatus = _props2.fallbackTicketStatus,
-			    entryOptions = _props2.entryOptions;
+		key: 'render',
+		value: function render() {
+			var _props3 = this.props,
+			    fallbackTicketResponse = _props3.fallbackTicketResponse,
+			    fallbackTicketUrl = _props3.fallbackTicketUrl,
+			    fallbackTicketStatus = _props3.fallbackTicketStatus,
+			    entryOptions = _props3.entryOptions;
 
 
 			var form = void 0;
@@ -51084,61 +51120,90 @@ var TicketSupportProvider = function () {
 		}
 	}]);
 
-	return TicketSupportProvider;
+	return TicketFormComponent;
 }();
 
-var LoadingSupportProvider = function () {
-	function LoadingSupportProvider() {
-		_classCallCheck(this, LoadingSupportProvider);
+var FormComponent = function () {
+	function FormComponent(props) {
+		_classCallCheck(this, FormComponent);
+
+		this.props = props;
 	}
 
-	_createClass(LoadingSupportProvider, [{
-		key: 'renderForm',
-		value: function renderForm() {
+	_createClass(FormComponent, [{
+		key: 'getSupportVariation',
+		value: function getSupportVariation() {
+			if (!this.props.entryOptions.fallbackTicketPath || this.props.isUserEligibleForChat && this.props.isChatAvailable) {
+				return new ChatFormComponent(this.props);
+			}
+			return new TicketFormComponent(this.props);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return this.getSupportVariation().render();
+		}
+	}]);
+
+	return FormComponent;
+}();
+
+var LoadingComponent = function () {
+	function LoadingComponent() {
+		_classCallCheck(this, LoadingComponent);
+	}
+
+	_createClass(LoadingComponent, [{
+		key: 'render',
+		value: function render() {
 			return _react2.default.createElement(_spinnerLine2.default, null);
 		}
 	}]);
 
-	return LoadingSupportProvider;
+	return LoadingComponent;
 }();
 
-var getSupportProvider = function getSupportProvider(props) {
-	if (ENTRY_FORM === props.entry) {
-		// - Are the assets being loaded? Wait and show loading indicator until they're ready.
-		// - Do we meet the right conditions to offer chat? Show the chat form if so.
-		// - In any other case, show the contact form.
-		if (!props.isUIReady) {
-			return new LoadingSupportProvider(props);
-		} else if (props.isChatOpen || props.isUserEligibleForChat && props.isChatAvailable) {
-			return new HappychatSupportProvider(props);
-		}
-		return new TicketSupportProvider(props);
-	}
-	// ENTRY_CHAT: show chat as the entry point for Happychat.
-	return new HappychatSupportProvider(props);
-};
-
-var Form = exports.Form = function (_React$Component) {
+var Form = function (_React$Component) {
 	_inherits(Form, _React$Component);
 
-	function Form() {
+	function Form(props) {
 		_classCallCheck(this, Form);
 
-		return _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+
+		_this.getSupportComponent = _this.getSupportComponent.bind(_this);
+		return _this;
 	}
 
 	_createClass(Form, [{
+		key: 'getSupportComponent',
+		value: function getSupportComponent() {
+			var _props4 = this.props,
+			    entry = _props4.entry,
+			    isChatOpen = _props4.isChatOpen,
+			    isFormUIReady = _props4.isFormUIReady;
+
+			if (ENTRY_FORM === entry) {
+				if (isChatOpen) {
+					return new ChatComponent(this.props);
+				} else if (!isFormUIReady) {
+					return new LoadingComponent();
+				}
+				return new FormComponent(this.props);
+			}
+			// ENTRY_CHAT: show chat as the entry point for Happychat.
+			return new ChatComponent(this.props);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			var _props3 = this.props,
-			    accessToken = _props3.accessToken,
-			    getAuth = _props3.getAuth,
-			    isConnectionUninitialized = _props3.isConnectionUninitialized,
-			    isHappychatEnabled = _props3.isHappychatEnabled,
-			    onInitConnection = _props3.onInitConnection;
+			var _props5 = this.props,
+			    accessToken = _props5.accessToken,
+			    getAuth = _props5.getAuth,
+			    isConnectionUninitialized = _props5.isConnectionUninitialized,
+			    isHappychatEnabled = _props5.isHappychatEnabled,
+			    onInitConnection = _props5.onInitConnection;
 
-
-			this.supportProvider = getSupportProvider(this.props);
 
 			return _react2.default.createElement(
 				'div',
@@ -51150,7 +51215,7 @@ var Form = exports.Form = function (_React$Component) {
 					isHappychatEnabled: isHappychatEnabled,
 					onInitConnection: onInitConnection
 				}),
-				this.supportProvider.renderForm()
+				this.getSupportComponent().render()
 			);
 		}
 	}]);
@@ -51196,7 +51261,7 @@ var mapState = function mapState(state) {
 		isExternalUrl: isExternalUrl,
 		isHappychatEnabled: _config2.default.isEnabled('happychat'),
 		isServerReachable: (0, _isServerReachable2.default)(state),
-		isUIReady: (0, _isUiReady2.default)(state),
+		isFormUIReady: (0, _isUiReady2.default)(state),
 		message: (0, _getUiCurrentmessage2.default)(state),
 		timeline: (0, _getChatTimeline2.default)(state),
 		twemojiUrl: (0, _config2.default)('twemoji_cdn_url')
@@ -52190,7 +52255,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getUserGroups = __webpack_require__(165);
 
@@ -52243,7 +52308,7 @@ var _includes = __webpack_require__(166);
 
 var _includes2 = _interopRequireDefault(_includes);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getChatStatus = __webpack_require__(171);
 
@@ -52447,7 +52512,7 @@ module.exports = baseValues;
 
 var baseTimes = __webpack_require__(392),
     isArguments = __webpack_require__(61),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     isIndex = __webpack_require__(91);
 
 /** Used for built-in method references. */
@@ -52873,7 +52938,7 @@ var Stack = __webpack_require__(172),
     equalByTag = __webpack_require__(409),
     equalObjects = __webpack_require__(413),
     getTag = __webpack_require__(175),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     isHostObject = __webpack_require__(159),
     isTypedArray = __webpack_require__(419);
 
@@ -53685,7 +53750,7 @@ module.exports = baseHasIn;
 
 var castPath = __webpack_require__(156),
     isArguments = __webpack_require__(61),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     isIndex = __webpack_require__(91),
     isKey = __webpack_require__(59),
     isLength = __webpack_require__(88),
@@ -54249,7 +54314,7 @@ exports.default = function (state) {
   return (0, _getConnectionStatus2.default)(state) === _constants.HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED;
 };
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getConnectionStatus = __webpack_require__(94);
 
@@ -54276,7 +54341,7 @@ var _get = __webpack_require__(8);
 
 var _get2 = _interopRequireDefault(_get);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55680,7 +55745,7 @@ var _get = __webpack_require__(8);
 
 var _get2 = _interopRequireDefault(_get);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55821,7 +55886,7 @@ var _assign = __webpack_require__(458);
 
 var _assign2 = _interopRequireDefault(_assign);
 
-var _isArray = __webpack_require__(12);
+var _isArray = __webpack_require__(13);
 
 var _isArray2 = _interopRequireDefault(_isArray);
 
@@ -56652,7 +56717,7 @@ module.exports = findIndex;
 var arrayEach = __webpack_require__(466),
     baseEach = __webpack_require__(96),
     baseIteratee = __webpack_require__(37),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /**
  * Iterates over elements of `collection` and invokes `iteratee` for each element.
@@ -59207,7 +59272,7 @@ var _sortBy2 = _interopRequireDefault(_sortBy);
 
 var _actionTypes = __webpack_require__(22);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59374,7 +59439,7 @@ exports.default = (0, _redux.combineReducers)({
 var arrayPush = __webpack_require__(193),
     baseFlatten = __webpack_require__(194),
     copyArray = __webpack_require__(487),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /**
  * Creates a new array concatenating `array` with any additional arrays
@@ -59421,7 +59486,7 @@ module.exports = concat;
 
 var Symbol = __webpack_require__(87),
     isArguments = __webpack_require__(61),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /** Built-in value references. */
 var spreadableSymbol = Symbol ? Symbol.isConcatSpreadable : undefined;
@@ -59474,7 +59539,7 @@ module.exports = copyArray;
 var arrayFilter = __webpack_require__(489),
     baseFilter = __webpack_require__(490),
     baseIteratee = __webpack_require__(37),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /**
  * Iterates over elements of `collection`, returning an array of all elements
@@ -59819,7 +59884,7 @@ var _redux = __webpack_require__(21);
 
 var _actionTypes = __webpack_require__(22);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 /**
  * Tracks connection errors as defined by the SocketIO library
@@ -59916,7 +59981,7 @@ var _redux = __webpack_require__(21);
 
 var _actionTypes = __webpack_require__(22);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 /**
  * Internal dependencies
@@ -64258,7 +64323,7 @@ var _get = __webpack_require__(8);
 
 var _get2 = _interopRequireDefault(_get);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
