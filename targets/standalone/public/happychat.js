@@ -36208,11 +36208,7 @@ var renderHappychat = function renderHappychat(targetNode, _ref) {
 	    _ref$entry = _ref.entry,
 	    entry = _ref$entry === undefined ? _form.ENTRY_FORM : _ref$entry,
 	    _ref$entryOptions = _ref.entryOptions,
-	    entryOptions = _ref$entryOptions === undefined ? {
-		primaryOptions: [],
-		secondaryOptions: [],
-		fallbackTicketPath: null
-	} : _ref$entryOptions;
+	    entryOptions = _ref$entryOptions === undefined ? {} : _ref$entryOptions;
 
 	store.dispatch((0, _actions.setCurrentUser)({ ID: ID, email: email, username: username, display_name: display_name, avatar_URL: avatar_URL }));
 	store.dispatch((0, _actions.setLocale)(language));
@@ -51016,13 +51012,19 @@ var ChatFormComponent = function () {
 		key: 'render',
 		value: function render() {
 			var _props$entryOptions = this.props.entryOptions,
+			    formTitle = _props$entryOptions.formTitle,
 			    primaryOptions = _props$entryOptions.primaryOptions,
-			    secondaryOptions = _props$entryOptions.secondaryOptions;
+			    primaryOptionsTitle = _props$entryOptions.primaryOptionsTitle,
+			    secondaryOptions = _props$entryOptions.secondaryOptions,
+			    secondaryOptionsTitle = _props$entryOptions.secondaryOptionsTitle;
 
 			return _react2.default.createElement(_contactForm.ContactForm, {
 				canSubmitForm: this.canSubmitForm,
+				formTitle: formTitle,
 				primaryOptions: primaryOptions,
+				primaryOptionsTitle: primaryOptionsTitle,
 				secondaryOptions: secondaryOptions,
+				secondaryOptionsTitle: secondaryOptionsTitle,
 				submitForm: this.submitForm,
 				submitFormText: 'Chat with us'
 			});
@@ -51045,12 +51047,16 @@ var TicketFormComponent = function () {
 	_createClass(TicketFormComponent, [{
 		key: 'canSubmitForm',
 		value: function canSubmitForm() {
-			return this.props.entryOptions && this.props.entryOptions.fallbackTicketPath;
+			var fallbackTicketPath = this.props.entryOptions;
+
+			return fallbackTicketPath;
 		}
 	}, {
 		key: 'submitForm',
 		value: function submitForm(formState) {
-			this.props.onRequestFallbackTicket(this.props.entryOptions.fallbackTicketPath, formState);
+			var fallbackTicketPath = this.props.entryOptions;
+
+			this.props.onRequestFallbackTicket(fallbackTicketPath, formState);
 		}
 	}, {
 		key: 'render',
@@ -51059,7 +51065,12 @@ var TicketFormComponent = function () {
 			    fallbackTicketResponse = _props3.fallbackTicketResponse,
 			    fallbackTicketUrl = _props3.fallbackTicketUrl,
 			    fallbackTicketStatus = _props3.fallbackTicketStatus,
-			    entryOptions = _props3.entryOptions;
+			    _props3$entryOptions = _props3.entryOptions,
+			    formTitle = _props3$entryOptions.formTitle,
+			    primaryOptions = _props3$entryOptions.primaryOptions,
+			    primaryOptionsTitle = _props3$entryOptions.primaryOptionsTitle,
+			    secondaryOptions = _props3$entryOptions.secondaryOptions,
+			    secondaryOptionsTitle = _props3$entryOptions.secondaryOptionsTitle;
 
 
 			var form = void 0;
@@ -51110,8 +51121,11 @@ var TicketFormComponent = function () {
 				default:
 					form = _react2.default.createElement(_contactForm.ContactForm, {
 						canSubmitForm: this.canSubmitForm,
-						primaryOptions: entryOptions.primaryOptions,
-						secondaryOptions: entryOptions.secondaryOptions,
+						formTitle: formTitle,
+						primaryOptions: primaryOptions,
+						primaryOptionsTitle: primaryOptionsTitle,
+						secondaryOptions: secondaryOptions,
+						secondaryOptionsTitle: secondaryOptionsTitle,
 						submitForm: this.submitForm,
 						submitFormText: 'Send a ticket'
 					});
@@ -51133,7 +51147,12 @@ var FormComponent = function () {
 	_createClass(FormComponent, [{
 		key: 'getSupportVariation',
 		value: function getSupportVariation() {
-			if (!this.props.entryOptions.fallbackTicketPath || this.props.isUserEligibleForChat && this.props.isChatAvailable) {
+			var _props4 = this.props,
+			    fallbackTicketPath = _props4.entryOptions,
+			    isUserEligibleForChat = _props4.isUserEligibleForChat,
+			    isChatAvailable = _props4.isChatAvailable;
+
+			if (!fallbackTicketPath || isUserEligibleForChat && isChatAvailable) {
 				return new ChatFormComponent(this.props);
 			}
 			return new TicketFormComponent(this.props);
@@ -51178,10 +51197,10 @@ var Form = function (_React$Component) {
 	_createClass(Form, [{
 		key: 'getSupportComponent',
 		value: function getSupportComponent() {
-			var _props4 = this.props,
-			    entry = _props4.entry,
-			    isChatOpen = _props4.isChatOpen,
-			    isFormUIReady = _props4.isFormUIReady;
+			var _props5 = this.props,
+			    entry = _props5.entry,
+			    isChatOpen = _props5.isChatOpen,
+			    isFormUIReady = _props5.isFormUIReady;
 
 			if (ENTRY_FORM === entry) {
 				if (isChatOpen) {
@@ -51197,12 +51216,12 @@ var Form = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var _props5 = this.props,
-			    accessToken = _props5.accessToken,
-			    getAuth = _props5.getAuth,
-			    isConnectionUninitialized = _props5.isConnectionUninitialized,
-			    isHappychatEnabled = _props5.isHappychatEnabled,
-			    onInitConnection = _props5.onInitConnection;
+			var _props6 = this.props,
+			    accessToken = _props6.accessToken,
+			    getAuth = _props6.getAuth,
+			    isConnectionUninitialized = _props6.isConnectionUninitialized,
+			    isHappychatEnabled = _props6.isHappychatEnabled,
+			    onInitConnection = _props6.onInitConnection;
 
 
 			return _react2.default.createElement(
@@ -57789,6 +57808,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var _props = this.props,
+			    formTitle = _props.formTitle,
 			    primaryOptions = _props.primaryOptions,
 			    primaryOptionsTitle = _props.primaryOptionsTitle,
 			    secondaryOptions = _props.secondaryOptions,
@@ -57805,7 +57825,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 					_react2.default.createElement(
 						'p',
 						{ className: 'contact-form__header-title' },
-						'Contact Us'
+						formTitle
 					)
 				),
 				_react2.default.createElement(
@@ -57861,6 +57881,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 
 ContactForm.propTypes = {
 	canSubmitForm: _propTypes2.default.func.isRequired,
+	formTitle: _propTypes2.default.string,
 	primaryOptions: _propTypes2.default.array,
 	primaryOptionsTitle: _propTypes2.default.string,
 	secondaryOptions: _propTypes2.default.array,
@@ -57873,6 +57894,7 @@ ContactForm.defaultProps = {
 	canSubmitForm: function canSubmitForm() {
 		return true;
 	},
+	formTitle: 'Contact us',
 	primaryOptions: [],
 	primaryOptionsTitle: 'How can we help?',
 	secondaryOptions: [],
