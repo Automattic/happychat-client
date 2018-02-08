@@ -110,16 +110,18 @@ class Happychat_Client {
 
 			$happychat_settings = array(
 				'token'  => $token,
-				'groups' => [ $group ],
 				'nodeId' => Happychat_Client::NODE_ID,
-				'howCanWeHelpOptions' => [
-					array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
-					array( 'value' => 'account', 'label' => 'Help with my account' ),
-					array( 'value' => 'config', 'label' => 'Help configuring' ),
-					array( 'value' => 'order', 'label' => 'Help with an order' ),
-					array( 'value' => 'broken', 'label' => 'Something is broken' ),
+				'groups' => [ $group ],
+				'entryOptions' => [
+					'primaryOptions' => [
+						array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
+						array( 'value' => 'account', 'label' => 'Help with my account' ),
+						array( 'value' => 'config', 'label' => 'Help configuring' ),
+						array( 'value' => 'order', 'label' => 'Help with an order' ),
+						array( 'value' => 'broken', 'label' => 'Something is broken' ),
 					],
-				'fallbackTicketPath' => $fallback_ticket_path,
+					'fallbackTicketPath' => $fallback_ticket_path,
+				],
 			);
 
 			wp_localize_script( 'happychat-init', 'happychatSettings', $happychat_settings );

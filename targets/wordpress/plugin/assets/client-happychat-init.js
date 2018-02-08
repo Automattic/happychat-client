@@ -10,9 +10,11 @@
 
 window.Happychat &&
 	Happychat.open( {
+		accessToken: happychatSettings.token,
 		nodeId: happychatSettings.nodeId,
 		groups: happychatSettings.groups,
-		accessToken: happychatSettings.token,
-		howCanWeHelpOptions: happychatSettings.howCanWeHelpOptions,
-		fallbackTicketPath: happychatSettings.fallbackTicketPath,
+		entryOptions: {
+			primaryOptions: happychatSettings.primaryOptions,
+			fallbackTicketPath: happychatSettings.fallbackTicketPath,
+		},
 	} );
