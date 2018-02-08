@@ -128,12 +128,23 @@ class ChatFormComponent {
 	}
 
 	render() {
-		const { entryOptions: { primaryOptions, secondaryOptions } } = this.props;
+		const {
+			entryOptions: {
+				formTitle,
+				primaryOptions,
+				primaryOptionsTitle,
+				secondaryOptions,
+				secondaryOptionsTitle,
+			},
+		} = this.props;
 		return (
 			<ContactForm
 				canSubmitForm={ this.canSubmitForm }
+				formTitle={ formTitle }
 				primaryOptions={ primaryOptions }
+				primaryOptionsTitle={ primaryOptionsTitle }
 				secondaryOptions={ secondaryOptions }
+				secondaryOptionsTitle={ secondaryOptionsTitle }
 				submitForm={ this.submitForm }
 				submitFormText={ 'Chat with us' }
 			/>
@@ -150,11 +161,13 @@ class TicketFormComponent {
 	}
 
 	canSubmitForm() {
-		return this.props.entryOptions && this.props.entryOptions.fallbackTicketPath;
+		const { entryOptions: fallbackTicketPath } = this.props;
+		return fallbackTicketPath;
 	}
 
 	submitForm( formState ) {
-		this.props.onRequestFallbackTicket( this.props.entryOptions.fallbackTicketPath, formState );
+		const { entryOptions: fallbackTicketPath } = this.props;
+		this.props.onRequestFallbackTicket( fallbackTicketPath, formState );
 	}
 
 	render() {
@@ -162,7 +175,13 @@ class TicketFormComponent {
 			fallbackTicketResponse,
 			fallbackTicketUrl,
 			fallbackTicketStatus,
-			entryOptions,
+			entryOptions: {
+				formTitle,
+				primaryOptions,
+				primaryOptionsTitle,
+				secondaryOptions,
+				secondaryOptionsTitle,
+			},
 		} = this.props;
 
 		let form;
@@ -200,8 +219,11 @@ class TicketFormComponent {
 				form = (
 					<ContactForm
 						canSubmitForm={ this.canSubmitForm }
-						primaryOptions={ entryOptions.primaryOptions }
-						secondaryOptions={ entryOptions.secondaryOptions }
+						formTitle={ formTitle }
+						primaryOptions={ primaryOptions }
+						primaryOptionsTitle={ primaryOptionsTitle }
+						secondaryOptions={ secondaryOptions }
+						secondaryOptionsTitle={ secondaryOptionsTitle }
 						submitForm={ this.submitForm }
 						submitFormText={ 'Send a ticket' }
 					/>
@@ -217,10 +239,8 @@ class FormComponent {
 	}
 
 	getSupportVariation() {
-		if (
-			! this.props.entryOptions.fallbackTicketPath ||
-			( this.props.isUserEligibleForChat && this.props.isChatAvailable )
-		) {
+		const { entryOptions: fallbackTicketPath, isUserEligibleForChat, isChatAvailable } = this.props;
+		if ( ! fallbackTicketPath || ( isUserEligibleForChat && isChatAvailable ) ) {
 			return new ChatFormComponent( this.props );
 		}
 		return new TicketFormComponent( this.props );

@@ -139,11 +139,7 @@ const renderHappychat = (
 			accessToken,
 		},
 		entry = ENTRY_FORM,
-		entryOptions = {
-			primaryOptions: [],
-			secondaryOptions: [],
-			fallbackTicketPath: null,
-		},
+		entryOptions = {},
 	}
 ) => {
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
