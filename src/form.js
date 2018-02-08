@@ -62,19 +62,6 @@ const ENTRY_CHAT = 'chat';
 class ChatComponent {
 	constructor( props ) {
 		this.props = props;
-		this.submitForm = this.submitForm.bind( this );
-		this.canSubmitForm = this.canSubmitForm.bind( this );
-	}
-
-	canSubmitForm() {
-		return this.props.isChatAvailable;
-	}
-
-	submitForm( formState ) {
-		if ( this.canSubmitForm() ) {
-			this.props.onOpenChat();
-			this.props.onSendMessage( formState.message );
-		}
 	}
 
 	render() {
@@ -122,15 +109,48 @@ class ChatComponent {
 	}
 }
 
-class FormComponent {
+class ChatFormComponent {
 	constructor( props ) {
 		this.props = props;
-		this.submitForm = this.submitForm.bind( this );
 		this.canSubmitForm = this.canSubmitForm.bind( this );
+		this.submitForm = this.submitForm.bind( this );
+		this.render = this.render.bind( this );
 	}
 
 	canSubmitForm() {
-		return true;
+		const { isUserEligibleForChat, isChatAvailable } = this.props;
+		return isUserEligibleForChat && isChatAvailable;
+	}
+
+	submitForm( formState ) {
+		this.props.onOpenChat();
+		this.props.onSendMessage( formState.message );
+	}
+
+	render() {
+		const { entryOptions: { primaryOptions, secondaryOptions } } = this.props;
+		return (
+			<ContactForm
+				canSubmitForm={ this.canSubmitForm }
+				primaryOptions={ primaryOptions }
+				secondaryOptions={ secondaryOptions }
+				submitForm={ this.submitForm }
+				submitFormText={ 'Chat with us' }
+			/>
+		);
+	}
+}
+
+class TicketFormComponent {
+	constructor( props ) {
+		this.props = props;
+		this.canSubmitForm = this.canSubmitForm.bind( this );
+		this.submitForm = this.submitForm.bind( this );
+		this.render = this.render.bind( this );
+	}
+
+	canSubmitForm() {
+		return this.props.entryOptions && this.props.entryOptions.fallbackTicketPath;
 	}
 
 	submitForm( formState ) {
@@ -191,23 +211,52 @@ class FormComponent {
 	}
 }
 
-const getSupportComponent = props => {
-	if ( ENTRY_FORM === props.entry ) {
-		// - Are the assets being loaded? Wait and show loading indicator until they're ready.
-		// - Do we meet the right conditions to offer chat? Show the chat form if so.
-		// - In any other case, show the contact form.
-		if ( ! props.isUIReady ) {
-			return <SpinnerLine />;
-		} else if ( props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable ) ) {
-			return new ChatComponent( props );
-		}
-		return new FormComponent( props );
+class FormComponent {
+	constructor( props ) {
+		this.props = props;
 	}
-	// ENTRY_CHAT: show chat as the entry point for Happychat.
-	return new ChatComponent( props );
-};
 
-export class Form extends React.Component {
+	getSupportVariation() {
+		if (
+			! this.props.entryOptions.fallbackTicketPath ||
+			( this.props.isUserEligibleForChat && this.props.isChatAvailable )
+		) {
+			return new ChatFormComponent( this.props );
+		}
+		return new TicketFormComponent( this.props );
+	}
+
+	render() {
+		return this.getSupportVariation().render();
+	}
+}
+
+class LoadingComponent {
+	render() {
+		return <SpinnerLine />;
+	}
+}
+
+class Form extends React.Component {
+	constructor( props ) {
+		super( props );
+		this.getSupportComponent = this.getSupportComponent.bind( this );
+	}
+
+	getSupportComponent() {
+		const { entry, isChatOpen, isFormUIReady } = this.props;
+		if ( ENTRY_FORM === entry ) {
+			if ( isChatOpen ) {
+				return new ChatComponent( this.props );
+			} else if ( ! isFormUIReady ) {
+				return new LoadingComponent();
+			}
+			return new FormComponent( this.props );
+		}
+		// ENTRY_CHAT: show chat as the entry point for Happychat.
+		return new ChatComponent( this.props );
+	}
+
 	render() {
 		const {
 			accessToken,
@@ -216,8 +265,6 @@ export class Form extends React.Component {
 			isHappychatEnabled,
 			onInitConnection,
 		} = this.props;
-
-		this.supportComponent = getSupportComponent( this.props );
 
 		return (
 			<div>
@@ -229,7 +276,7 @@ export class Form extends React.Component {
 					onInitConnection={ onInitConnection }
 				/>
 
-				{ this.supportComponent.render() }
+				{ this.getSupportComponent().render() }
 			</div>
 		);
 	}
@@ -269,7 +316,7 @@ const mapState = state => {
 		isExternalUrl,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
 		isServerReachable: isHCServerReachable( state ),
-		isUIReady: isUIReady( state ),
+		isFormUIReady: isUIReady( state ),
 		message: getUICurrentMessage( state ),
 		timeline: getChatTimeline( state ),
 		twemojiUrl: config( 'twemoji_cdn_url' ),
