@@ -191,19 +191,13 @@ class TicketSupportProvider {
 	}
 }
 
-class LoadingSupportProvider {
-	render() {
-		return <SpinnerLine />;
-	}
-}
-
 const getSupportComponent = props => {
 	if ( ENTRY_FORM === props.entry ) {
 		// - Are the assets being loaded? Wait and show loading indicator until they're ready.
 		// - Do we meet the right conditions to offer chat? Show the chat form if so.
 		// - In any other case, show the contact form.
 		if ( ! props.isUIReady ) {
-			return new LoadingSupportProvider( props );
+			return <SpinnerLine />;
 		} else if ( props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable ) ) {
 			return new HappychatSupportProvider( props );
 		}
