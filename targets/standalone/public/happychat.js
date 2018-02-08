@@ -51307,7 +51307,7 @@ exports.ENTRY_CHAT = ENTRY_CHAT;
 /* 358 */
 /***/ (function(module, exports) {
 
-module.exports = {"fallback_ticket_url":"https://woocommerce.test/my-account/tickets/?id=","happychat_url":"https://happychat-io-staging.go-vip.co/customer","twemoji_cdn_url":"https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/","features":{"happychat":true}}
+module.exports = {"fallback_ticket_url":null,"happychat_url":"https://happychat-io-staging.go-vip.co/customer","twemoji_cdn_url":"https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/","features":{"happychat":true}}
 
 /***/ }),
 /* 359 */
