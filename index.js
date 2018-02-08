@@ -6,21 +6,13 @@
 import { initHappychat } from 'src';
 
 window.Happychat = {
-	open: ( {
-		nodeId,
-		groups,
-		accessToken,
-		howCanWeHelpOptions,
-		howDoYouFeelOptions,
-		fallbackTicketPath,
-	} ) => {
+	open: ( { nodeId, groups, accessToken, entry, entryOptions } ) => {
 		initHappychat( {
 			nodeId,
 			groups,
 			accessToken,
-			howCanWeHelpOptions,
-			howDoYouFeelOptions,
-			fallbackTicketPath,
+			entry,
+			entryOptions,
 		} );
 	},
 };

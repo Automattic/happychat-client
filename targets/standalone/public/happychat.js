@@ -885,6 +885,68 @@ module.exports = classNames;
 
 /***/ }),
 /* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+/** @format */
+
+// These CONNECTION_ERROR constants come directly from the Socket.IO client library.
+// These are the possible reasons for a connection disconnect.
+var HAPPYCHAT_CONNECTION_ERROR_FORCED_CLOSE = exports.HAPPYCHAT_CONNECTION_ERROR_FORCED_CLOSE = 'forced close';
+var HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT = exports.HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT = 'ping timeout';
+var HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE = exports.HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE = 'transport close';
+var HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR = exports.HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR = 'transport error';
+
+// connection status
+var HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED = exports.HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED = 'uninitialized';
+var HAPPYCHAT_CONNECTION_STATUS_CONNECTING = exports.HAPPYCHAT_CONNECTION_STATUS_CONNECTING = 'connecting';
+var HAPPYCHAT_CONNECTION_STATUS_CONNECTED = exports.HAPPYCHAT_CONNECTION_STATUS_CONNECTED = 'connected';
+var HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED = exports.HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED = 'disconnected';
+var HAPPYCHAT_CONNECTION_STATUS_RECONNECTING = exports.HAPPYCHAT_CONNECTION_STATUS_RECONNECTING = 'reconnecting';
+var HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED = exports.HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED = 'unauthorized';
+
+// Skills
+var HAPPYCHAT_SKILL_PRODUCT = exports.HAPPYCHAT_SKILL_PRODUCT = 'product';
+var HAPPYCHAT_SKILL_LANGUAGE = exports.HAPPYCHAT_SKILL_LANGUAGE = 'language';
+
+// Groups
+var HAPPYCHAT_GROUP_JPOP = exports.HAPPYCHAT_GROUP_JPOP = 'jpop';
+var HAPPYCHAT_GROUP_WOO = exports.HAPPYCHAT_GROUP_WOO = 'woo';
+var HAPPYCHAT_GROUP_JPPHP = exports.HAPPYCHAT_GROUP_JPPHP = 'jpphp';
+var HAPPYCHAT_GROUP_WPCOM = exports.HAPPYCHAT_GROUP_WPCOM = 'WP.com';
+
+// Message types
+var HAPPYCHAT_MESSAGE_TYPES = exports.HAPPYCHAT_MESSAGE_TYPES = {
+	CUSTOMER_EVENT: 'customer-event',
+	CUSTOMER_INFO: 'customer-info',
+	LOG: 'log'
+};
+
+// Chat status
+var HAPPYCHAT_CHAT_STATUS_ABANDONED = exports.HAPPYCHAT_CHAT_STATUS_ABANDONED = 'abandoned';
+var HAPPYCHAT_CHAT_STATUS_ASSIGNED = exports.HAPPYCHAT_CHAT_STATUS_ASSIGNED = 'assigned';
+var HAPPYCHAT_CHAT_STATUS_ASSIGNING = exports.HAPPYCHAT_CHAT_STATUS_ASSIGNING = 'assigning';
+var HAPPYCHAT_CHAT_STATUS_BLOCKED = exports.HAPPYCHAT_CHAT_STATUS_BLOCKED = 'blocked';
+var HAPPYCHAT_CHAT_STATUS_CLOSED = exports.HAPPYCHAT_CHAT_STATUS_CLOSED = 'closed';
+var HAPPYCHAT_CHAT_STATUS_DEFAULT = exports.HAPPYCHAT_CHAT_STATUS_DEFAULT = 'default';
+var HAPPYCHAT_CHAT_STATUS_NEW = exports.HAPPYCHAT_CHAT_STATUS_NEW = 'new';
+var HAPPYCHAT_CHAT_STATUS_MISSED = exports.HAPPYCHAT_CHAT_STATUS_MISSED = 'missed';
+var HAPPYCHAT_CHAT_STATUS_PENDING = exports.HAPPYCHAT_CHAT_STATUS_PENDING = 'pending';
+
+// Fallback ticket status
+var HAPPYCHAT_FALLBACK_TICKET_NEW = exports.HAPPYCHAT_FALLBACK_TICKET_NEW = 'new';
+var HAPPYCHAT_FALLBACK_TICKET_SENDING = exports.HAPPYCHAT_FALLBACK_TICKET_SENDING = 'sending';
+var HAPPYCHAT_FALLBACK_TICKET_FAILURE = exports.HAPPYCHAT_FALLBACK_TICKET_FAILURE = 'failure';
+var HAPPYCHAT_FALLBACK_TICKET_SUCCESS = exports.HAPPYCHAT_FALLBACK_TICKET_SUCCESS = 'success';
+var HAPPYCHAT_FALLBACK_TICKET_TIMEOUT = exports.HAPPYCHAT_FALLBACK_TICKET_TIMEOUT = 'timeout';
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports) {
 
 /**
@@ -916,7 +978,7 @@ module.exports = isArray;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1296,68 +1358,6 @@ var ReactComponentTreeHook = {
 };
 
 module.exports = ReactComponentTreeHook;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-/** @format */
-
-// These CONNECTION_ERROR constants come directly from the Socket.IO client library.
-// These are the possible reasons for a connection disconnect.
-var HAPPYCHAT_CONNECTION_ERROR_FORCED_CLOSE = exports.HAPPYCHAT_CONNECTION_ERROR_FORCED_CLOSE = 'forced close';
-var HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT = exports.HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT = 'ping timeout';
-var HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE = exports.HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_CLOSE = 'transport close';
-var HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR = exports.HAPPYCHAT_CONNECTION_ERROR_TRANSPORT_ERROR = 'transport error';
-
-// connection status
-var HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED = exports.HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED = 'uninitialized';
-var HAPPYCHAT_CONNECTION_STATUS_CONNECTING = exports.HAPPYCHAT_CONNECTION_STATUS_CONNECTING = 'connecting';
-var HAPPYCHAT_CONNECTION_STATUS_CONNECTED = exports.HAPPYCHAT_CONNECTION_STATUS_CONNECTED = 'connected';
-var HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED = exports.HAPPYCHAT_CONNECTION_STATUS_DISCONNECTED = 'disconnected';
-var HAPPYCHAT_CONNECTION_STATUS_RECONNECTING = exports.HAPPYCHAT_CONNECTION_STATUS_RECONNECTING = 'reconnecting';
-var HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED = exports.HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED = 'unauthorized';
-
-// Skills
-var HAPPYCHAT_SKILL_PRODUCT = exports.HAPPYCHAT_SKILL_PRODUCT = 'product';
-var HAPPYCHAT_SKILL_LANGUAGE = exports.HAPPYCHAT_SKILL_LANGUAGE = 'language';
-
-// Groups
-var HAPPYCHAT_GROUP_JPOP = exports.HAPPYCHAT_GROUP_JPOP = 'jpop';
-var HAPPYCHAT_GROUP_WOO = exports.HAPPYCHAT_GROUP_WOO = 'woo';
-var HAPPYCHAT_GROUP_JPPHP = exports.HAPPYCHAT_GROUP_JPPHP = 'jpphp';
-var HAPPYCHAT_GROUP_WPCOM = exports.HAPPYCHAT_GROUP_WPCOM = 'WP.com';
-
-// Message types
-var HAPPYCHAT_MESSAGE_TYPES = exports.HAPPYCHAT_MESSAGE_TYPES = {
-	CUSTOMER_EVENT: 'customer-event',
-	CUSTOMER_INFO: 'customer-info',
-	LOG: 'log'
-};
-
-// Chat status
-var HAPPYCHAT_CHAT_STATUS_ABANDONED = exports.HAPPYCHAT_CHAT_STATUS_ABANDONED = 'abandoned';
-var HAPPYCHAT_CHAT_STATUS_ASSIGNED = exports.HAPPYCHAT_CHAT_STATUS_ASSIGNED = 'assigned';
-var HAPPYCHAT_CHAT_STATUS_ASSIGNING = exports.HAPPYCHAT_CHAT_STATUS_ASSIGNING = 'assigning';
-var HAPPYCHAT_CHAT_STATUS_BLOCKED = exports.HAPPYCHAT_CHAT_STATUS_BLOCKED = 'blocked';
-var HAPPYCHAT_CHAT_STATUS_CLOSED = exports.HAPPYCHAT_CHAT_STATUS_CLOSED = 'closed';
-var HAPPYCHAT_CHAT_STATUS_DEFAULT = exports.HAPPYCHAT_CHAT_STATUS_DEFAULT = 'default';
-var HAPPYCHAT_CHAT_STATUS_NEW = exports.HAPPYCHAT_CHAT_STATUS_NEW = 'new';
-var HAPPYCHAT_CHAT_STATUS_MISSED = exports.HAPPYCHAT_CHAT_STATUS_MISSED = 'missed';
-var HAPPYCHAT_CHAT_STATUS_PENDING = exports.HAPPYCHAT_CHAT_STATUS_PENDING = 'pending';
-
-// Fallback ticket status
-var HAPPYCHAT_FALLBACK_TICKET_NEW = exports.HAPPYCHAT_FALLBACK_TICKET_NEW = 'new';
-var HAPPYCHAT_FALLBACK_TICKET_SENDING = exports.HAPPYCHAT_FALLBACK_TICKET_SENDING = 'sending';
-var HAPPYCHAT_FALLBACK_TICKET_FAILURE = exports.HAPPYCHAT_FALLBACK_TICKET_FAILURE = 'failure';
-var HAPPYCHAT_FALLBACK_TICKET_SUCCESS = exports.HAPPYCHAT_FALLBACK_TICKET_SUCCESS = 'success';
-var HAPPYCHAT_FALLBACK_TICKET_TIMEOUT = exports.HAPPYCHAT_FALLBACK_TICKET_TIMEOUT = 'timeout';
 
 /***/ }),
 /* 15 */
@@ -20315,7 +20315,7 @@ module.exports = keys;
 var baseMatches = __webpack_require__(397),
     baseMatchesProperty = __webpack_require__(423),
     identity = __webpack_require__(179),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     property = __webpack_require__(427);
 
 /**
@@ -23055,7 +23055,7 @@ module.exports = getMapData;
 /* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArray = __webpack_require__(12),
+var isArray = __webpack_require__(13),
     isSymbol = __webpack_require__(43);
 
 /** Used to match property names within property paths. */
@@ -25262,7 +25262,7 @@ var _uuid = __webpack_require__(359);
 
 var _actionTypes = __webpack_require__(22);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 /**
  * Returns an action object indicating that the connection is being stablished.
@@ -25860,7 +25860,7 @@ exports.default = function (state) {
   return (0, _getConnectionStatus2.default)(state) === _constants.HAPPYCHAT_CONNECTION_STATUS_CONNECTED;
 };
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getConnectionStatus = __webpack_require__(94);
 
@@ -25896,7 +25896,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var arrayMap = __webpack_require__(90),
     baseIteratee = __webpack_require__(37),
     baseMap = __webpack_require__(180),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /**
  * Creates an array of values by running each element in `collection` thru
@@ -27093,7 +27093,7 @@ module.exports = getIteratorFn;
 
 
 var ReactCurrentOwner = __webpack_require__(17);
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 var ReactElement = __webpack_require__(27);
 
 var checkReactTypeSpec = __webpack_require__(214);
@@ -32570,7 +32570,7 @@ module.exports = baseGet;
 /* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArray = __webpack_require__(12),
+var isArray = __webpack_require__(13),
     stringToPath = __webpack_require__(362);
 
 /**
@@ -32893,7 +32893,7 @@ var _get = __webpack_require__(8);
 
 var _get2 = _interopRequireDefault(_get);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33003,7 +33003,7 @@ module.exports = baseFindIndex;
 /* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArray = __webpack_require__(12),
+var isArray = __webpack_require__(13),
     isObjectLike = __webpack_require__(44);
 
 /** `Object#toString` result references. */
@@ -33630,7 +33630,7 @@ module.exports = factory(
 
 var getTag = __webpack_require__(175),
     isArguments = __webpack_require__(61),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     isArrayLike = __webpack_require__(23),
     isBuffer = __webpack_require__(451),
     isPrototype = __webpack_require__(92),
@@ -36039,17 +36039,15 @@ window.Happychat = {
 	open: function open(_ref) {
 		var nodeId = _ref.nodeId,
 		    groups = _ref.groups,
-		    howCanWeHelpOptions = _ref.howCanWeHelpOptions,
-		    howDoYouFeelOptions = _ref.howDoYouFeelOptions,
-		    fallbackTicketPath = _ref.fallbackTicketPath;
+		    entry = _ref.entry,
+		    entryOptions = _ref.entryOptions;
 
 		(0, _src.initHappychat)({
 			nodeId: nodeId,
 			groups: groups,
 			accessToken: accessToken,
-			howCanWeHelpOptions: howCanWeHelpOptions,
-			howDoYouFeelOptions: howDoYouFeelOptions,
-			fallbackTicketPath: fallbackTicketPath
+			entry: entry,
+			entryOptions: entryOptions
 		});
 	}
 };
@@ -36102,15 +36100,19 @@ var _actions2 = __webpack_require__(153);
 
 var _touchDetect = __webpack_require__(528);
 
+var _constants = __webpack_require__(12);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Internal dependencies
- */
-var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware.socketMiddleware)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)())); /** @format */
+/** @format */
 
 /**
  * External dependencies
+ */
+var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware.socketMiddleware)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)()));
+
+/**
+ * Internal dependencies
  */
 
 
@@ -36193,20 +36195,20 @@ var createIframe = function createIframe(renderMethod, props) {
 
 /* eslint-disable camelcase */
 var renderHappychat = function renderHappychat(targetNode, _ref) {
-	var user = _ref.user,
-	    _ref$howCanWeHelpOpti = _ref.howCanWeHelpOptions,
-	    howCanWeHelpOptions = _ref$howCanWeHelpOpti === undefined ? [] : _ref$howCanWeHelpOpti,
-	    _ref$howDoYouFeelOpti = _ref.howDoYouFeelOptions,
-	    howDoYouFeelOptions = _ref$howDoYouFeelOpti === undefined ? [] : _ref$howDoYouFeelOpti,
-	    fallbackTicketPath = _ref.fallbackTicketPath;
-	var ID = user.ID,
-	    email = user.email,
-	    username = user.username,
-	    display_name = user.display_name,
-	    avatar_URL = user.avatar_URL,
-	    language = user.language,
-	    groups = user.groups,
-	    accessToken = user.accessToken;
+	var _ref$user = _ref.user,
+	    ID = _ref$user.ID,
+	    email = _ref$user.email,
+	    username = _ref$user.username,
+	    display_name = _ref$user.display_name,
+	    avatar_URL = _ref$user.avatar_URL,
+	    language = _ref$user.language,
+	    _ref$user$groups = _ref$user.groups,
+	    groups = _ref$user$groups === undefined ? [_constants.HAPPYCHAT_GROUP_WPCOM] : _ref$user$groups,
+	    accessToken = _ref$user.accessToken,
+	    _ref$entry = _ref.entry,
+	    entry = _ref$entry === undefined ? _form.ENTRY_FORM : _ref$entry,
+	    _ref$entryOptions = _ref.entryOptions,
+	    entryOptions = _ref$entryOptions === undefined ? {} : _ref$entryOptions;
 
 	store.dispatch((0, _actions.setCurrentUser)({ ID: ID, email: email, username: username, display_name: display_name, avatar_URL: avatar_URL }));
 	store.dispatch((0, _actions.setLocale)(language));
@@ -36215,12 +36217,7 @@ var renderHappychat = function renderHappychat(targetNode, _ref) {
 	_reactDom2.default.render(_react2.default.createElement(
 		_reactRedux.Provider,
 		{ store: store },
-		_react2.default.createElement(_form2.default, {
-			accessToken: accessToken,
-			howCanWeHelpOptions: howCanWeHelpOptions,
-			howDoYouFeelOptions: howDoYouFeelOptions,
-			fallbackTicketPath: fallbackTicketPath
-		})
+		_react2.default.createElement(_form2.default, { accessToken: accessToken, entry: entry, entryOptions: entryOptions })
 	), targetNode);
 };
 /* eslint-enable camelcase */
@@ -36255,26 +36252,25 @@ var getWPComUser = function getWPComUser(accessToken, groups) {
 
 /**
  * Renders a Happychat or Support form in the HTML Element provided by the nodeId.
- * If howCanWeHelpOptions option is present will render the Support form,
- * Happychat will be rendered otherwise.
  *
  * @param  {String} nodeId Mandatory. HTML Node id where Happychat will be rendered.
  * @param  {Array} groups Mandatory. Happychat groups this user belongs to.
  * @param  {String|Promise} accessToken Mandatory. A valid WP.com access token,
  *  					or a Promise that returns one.
- * @param  {Array} howCanWeHelpOptions Optional. If present will render the support form.
- * @param  {Array} howDoYouFeelOptions Optional.
+ * @param  {String} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
+ * 			  ENTRY_FORM is the default and will render the contact form.
+ * 			  ENTRY_CHAT will render the chat form.
+ * @param  {Object} entryOptions Optional. Contains options to configure the selected entry.
  */
 var initHappychat = exports.initHappychat = function initHappychat(_ref4) {
 	var nodeId = _ref4.nodeId,
 	    groups = _ref4.groups,
 	    accessToken = _ref4.accessToken,
-	    howCanWeHelpOptions = _ref4.howCanWeHelpOptions,
-	    howDoYouFeelOptions = _ref4.howDoYouFeelOptions,
-	    fallbackTicketPath = _ref4.fallbackTicketPath;
+	    entry = _ref4.entry,
+	    entryOptions = _ref4.entryOptions;
 
 	var getAccessToken = accessToken;
-	if (typeof accessToken === 'string') {
+	if ('string' === typeof accessToken) {
 		getAccessToken = function getAccessToken() {
 			return Promise.resolve(accessToken);
 		};
@@ -36286,9 +36282,8 @@ var initHappychat = exports.initHappychat = function initHappychat(_ref4) {
 		return createIframe(renderHappychat, {
 			nodeId: nodeId,
 			user: user,
-			howCanWeHelpOptions: howCanWeHelpOptions,
-			howDoYouFeelOptions: howDoYouFeelOptions,
-			fallbackTicketPath: fallbackTicketPath
+			entry: entry,
+			entryOptions: entryOptions
 		}, dispatchAssetsFinishedDownloading);
 	}).catch(function (error) {
 		return createIframe(renderError, { nodeId: nodeId, error: error });
@@ -37048,7 +37043,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(13);
+  ReactComponentTreeHook = __webpack_require__(14);
 }
 
 var loggedTypeFailures = {};
@@ -37090,7 +37085,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
         if (true) {
           if (!ReactComponentTreeHook) {
-            ReactComponentTreeHook = __webpack_require__(13);
+            ReactComponentTreeHook = __webpack_require__(14);
           }
           if (debugID !== null) {
             componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -38695,7 +38690,7 @@ module.exports = ReactOwner;
 
 var ReactInvalidSetStateWarningHook = __webpack_require__(233);
 var ReactHostOperationHistoryHook = __webpack_require__(234);
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 var ExecutionEnvironment = __webpack_require__(9);
 
 var performanceNow = __webpack_require__(235);
@@ -42741,7 +42736,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(13);
+  ReactComponentTreeHook = __webpack_require__(14);
 }
 
 function instantiateChild(childInstances, child, name, selfDebugID) {
@@ -42749,7 +42744,7 @@ function instantiateChild(childInstances, child, name, selfDebugID) {
   var keyUnique = childInstances[name] === undefined;
   if (true) {
     if (!ReactComponentTreeHook) {
-      ReactComponentTreeHook = __webpack_require__(13);
+      ReactComponentTreeHook = __webpack_require__(14);
     }
     if (!keyUnique) {
        true ? warning(false, 'flattenChildren(...): Encountered two children with the same key, ' + '`%s`. Child keys must be unique; when two children share a key, only ' + 'the first child will be used.%s', KeyEscapeUtils.unescape(name), ReactComponentTreeHook.getStackAddendumByID(selfDebugID)) : void 0;
@@ -43801,7 +43796,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(13);
+  ReactComponentTreeHook = __webpack_require__(14);
 }
 
 var loggedTypeFailures = {};
@@ -43843,7 +43838,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 
         if (true) {
           if (!ReactComponentTreeHook) {
-            ReactComponentTreeHook = __webpack_require__(13);
+            ReactComponentTreeHook = __webpack_require__(14);
           }
           if (debugID !== null) {
             componentStackInfo = ReactComponentTreeHook.getStackAddendumByID(debugID);
@@ -44008,7 +44003,7 @@ if (typeof process !== 'undefined' && process.env && "development" === 'test') {
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(13);
+  ReactComponentTreeHook = __webpack_require__(14);
 }
 
 /**
@@ -44024,7 +44019,7 @@ function flattenSingleChildIntoContext(traverseContext, child, name, selfDebugID
     var keyUnique = result[name] === undefined;
     if (true) {
       if (!ReactComponentTreeHook) {
-        ReactComponentTreeHook = __webpack_require__(13);
+        ReactComponentTreeHook = __webpack_require__(14);
       }
       if (!keyUnique) {
          true ? warning(false, 'flattenChildren(...): Encountered two children with the same key, ' + '`%s`. Child keys must be unique; when two children share a key, only ' + 'the first child will be used.%s', KeyEscapeUtils.unescape(name), ReactComponentTreeHook.getStackAddendumByID(selfDebugID)) : void 0;
@@ -47048,7 +47043,7 @@ module.exports = ReactMount.renderSubtreeIntoContainer;
 
 var DOMProperty = __webpack_require__(24);
 var EventPluginRegistry = __webpack_require__(48);
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 
 var warning = __webpack_require__(1);
 
@@ -47161,7 +47156,7 @@ module.exports = ReactDOMUnknownPropertyHook;
 
 
 
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 
 var warning = __webpack_require__(1);
 
@@ -47208,7 +47203,7 @@ module.exports = ReactDOMNullInputValuePropHook;
 
 
 var DOMProperty = __webpack_require__(24);
-var ReactComponentTreeHook = __webpack_require__(13);
+var ReactComponentTreeHook = __webpack_require__(14);
 
 var warning = __webpack_require__(1);
 
@@ -50796,7 +50791,7 @@ function plural(ms, n, name) {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.Form = undefined;
+exports.ENTRY_CHAT = exports.ENTRY_FORM = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /** @format */
 
@@ -50838,7 +50833,7 @@ var _actions = __webpack_require__(84);
 
 var _actions2 = __webpack_require__(153);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getHappychatAuth = __webpack_require__(361);
 
@@ -50930,39 +50925,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var HappychatSupportProvider = function () {
-	function HappychatSupportProvider(props) {
-		_classCallCheck(this, HappychatSupportProvider);
+var ENTRY_FORM = 'form';
+var ENTRY_CHAT = 'chat';
+
+var ChatComponent = function () {
+	function ChatComponent(props) {
+		_classCallCheck(this, ChatComponent);
 
 		this.props = props;
-		this.submitForm = this.submitForm.bind(this);
-		this.canSubmitForm = this.canSubmitForm.bind(this);
 	}
 
-	_createClass(HappychatSupportProvider, [{
-		key: 'canSubmitForm',
-		value: function canSubmitForm() {
-			return this.props.isChatAvailable;
-		}
-	}, {
-		key: 'submitForm',
-		value: function submitForm(formState) {
-			if (this.canSubmitForm()) {
-				this.props.onOpenChat();
-				this.props.onSendMessage(formState.message);
-			}
-		}
-	}, {
-		key: 'renderForm',
-		value: function renderForm() {
+	_createClass(ChatComponent, [{
+		key: 'render',
+		value: function render() {
 			var _props = this.props,
 			    chatStatus = _props.chatStatus,
 			    connectionStatus = _props.connectionStatus,
 			    currentUserEmail = _props.currentUserEmail,
 			    disabled = _props.disabled,
-			    howCanWeHelpOptions = _props.howCanWeHelpOptions,
-			    howDoYouFeelOptions = _props.howDoYouFeelOptions,
-			    isChatOpen = _props.isChatOpen,
 			    isCurrentUser = _props.isCurrentUser,
 			    isExternalUrl = _props.isExternalUrl,
 			    isServerReachable = _props.isServerReachable,
@@ -50978,14 +50958,7 @@ var HappychatSupportProvider = function () {
 			    twemojiUrl = _props.twemojiUrl;
 
 
-			var contactForm = _react2.default.createElement(_contactForm.ContactForm, {
-				canSubmitForm: this.canSubmitForm,
-				howCanWeHelpOptions: howCanWeHelpOptions,
-				howDoYouFeelOptions: howDoYouFeelOptions,
-				submitForm: this.submitForm,
-				submitFormText: 'Chat with us'
-			});
-			var chatForm = _react2.default.createElement(_happychatForm.HappychatForm, {
+			return _react2.default.createElement(_happychatForm.HappychatForm, {
 				chatStatus: chatStatus,
 				connectionStatus: connectionStatus,
 				currentUserEmail: currentUserEmail,
@@ -51004,46 +50977,100 @@ var HappychatSupportProvider = function () {
 				translate: translate,
 				twemojiUrl: twemojiUrl
 			});
-
-			var form = chatForm;
-			if (!isChatOpen && howCanWeHelpOptions && howCanWeHelpOptions.length > 0) {
-				form = contactForm;
-			}
-			return form;
 		}
 	}]);
 
-	return HappychatSupportProvider;
+	return ChatComponent;
 }();
 
-var TicketSupportProvider = function () {
-	function TicketSupportProvider(props) {
-		_classCallCheck(this, TicketSupportProvider);
+var ChatFormComponent = function () {
+	function ChatFormComponent(props) {
+		_classCallCheck(this, ChatFormComponent);
 
 		this.props = props;
-		this.submitForm = this.submitForm.bind(this);
 		this.canSubmitForm = this.canSubmitForm.bind(this);
+		this.submitForm = this.submitForm.bind(this);
+		this.render = this.render.bind(this);
 	}
 
-	_createClass(TicketSupportProvider, [{
+	_createClass(ChatFormComponent, [{
 		key: 'canSubmitForm',
 		value: function canSubmitForm() {
-			return true;
+			var _props2 = this.props,
+			    isUserEligibleForChat = _props2.isUserEligibleForChat,
+			    isChatAvailable = _props2.isChatAvailable;
+
+			return isUserEligibleForChat && isChatAvailable;
 		}
 	}, {
 		key: 'submitForm',
 		value: function submitForm(formState) {
-			this.props.onRequestFallbackTicket(this.props.fallbackTicketPath, formState);
+			this.props.onOpenChat();
+			this.props.onSendMessage(formState.message);
 		}
 	}, {
-		key: 'renderForm',
-		value: function renderForm() {
-			var _props2 = this.props,
-			    fallbackTicketResponse = _props2.fallbackTicketResponse,
-			    fallbackTicketUrl = _props2.fallbackTicketUrl,
-			    fallbackTicketStatus = _props2.fallbackTicketStatus,
-			    howCanWeHelpOptions = _props2.howCanWeHelpOptions,
-			    howDoYouFeelOptions = _props2.howDoYouFeelOptions;
+		key: 'render',
+		value: function render() {
+			var _props$entryOptions = this.props.entryOptions,
+			    formTitle = _props$entryOptions.formTitle,
+			    primaryOptions = _props$entryOptions.primaryOptions,
+			    primaryOptionsTitle = _props$entryOptions.primaryOptionsTitle,
+			    secondaryOptions = _props$entryOptions.secondaryOptions,
+			    secondaryOptionsTitle = _props$entryOptions.secondaryOptionsTitle;
+
+			return _react2.default.createElement(_contactForm.ContactForm, {
+				canSubmitForm: this.canSubmitForm,
+				formTitle: formTitle,
+				primaryOptions: primaryOptions,
+				primaryOptionsTitle: primaryOptionsTitle,
+				secondaryOptions: secondaryOptions,
+				secondaryOptionsTitle: secondaryOptionsTitle,
+				submitForm: this.submitForm,
+				submitFormText: 'Chat with us'
+			});
+		}
+	}]);
+
+	return ChatFormComponent;
+}();
+
+var TicketFormComponent = function () {
+	function TicketFormComponent(props) {
+		_classCallCheck(this, TicketFormComponent);
+
+		this.props = props;
+		this.canSubmitForm = this.canSubmitForm.bind(this);
+		this.submitForm = this.submitForm.bind(this);
+		this.render = this.render.bind(this);
+	}
+
+	_createClass(TicketFormComponent, [{
+		key: 'canSubmitForm',
+		value: function canSubmitForm() {
+			var fallbackTicketPath = this.props.entryOptions;
+
+			return fallbackTicketPath;
+		}
+	}, {
+		key: 'submitForm',
+		value: function submitForm(formState) {
+			var fallbackTicketPath = this.props.entryOptions;
+
+			this.props.onRequestFallbackTicket(fallbackTicketPath, formState);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _props3 = this.props,
+			    fallbackTicketResponse = _props3.fallbackTicketResponse,
+			    fallbackTicketUrl = _props3.fallbackTicketUrl,
+			    fallbackTicketStatus = _props3.fallbackTicketStatus,
+			    _props3$entryOptions = _props3.entryOptions,
+			    formTitle = _props3$entryOptions.formTitle,
+			    primaryOptions = _props3$entryOptions.primaryOptions,
+			    primaryOptionsTitle = _props3$entryOptions.primaryOptionsTitle,
+			    secondaryOptions = _props3$entryOptions.secondaryOptions,
+			    secondaryOptionsTitle = _props3$entryOptions.secondaryOptionsTitle;
 
 
 			var form = void 0;
@@ -51094,8 +51121,11 @@ var TicketSupportProvider = function () {
 				default:
 					form = _react2.default.createElement(_contactForm.ContactForm, {
 						canSubmitForm: this.canSubmitForm,
-						howCanWeHelpOptions: howCanWeHelpOptions,
-						howDoYouFeelOptions: howDoYouFeelOptions,
+						formTitle: formTitle,
+						primaryOptions: primaryOptions,
+						primaryOptionsTitle: primaryOptionsTitle,
+						secondaryOptions: secondaryOptions,
+						secondaryOptionsTitle: secondaryOptionsTitle,
 						submitForm: this.submitForm,
 						submitFormText: 'Send a ticket'
 					});
@@ -51104,54 +51134,95 @@ var TicketSupportProvider = function () {
 		}
 	}]);
 
-	return TicketSupportProvider;
+	return TicketFormComponent;
 }();
 
-var LoadingSupportProvider = function () {
-	function LoadingSupportProvider() {
-		_classCallCheck(this, LoadingSupportProvider);
+var FormComponent = function () {
+	function FormComponent(props) {
+		_classCallCheck(this, FormComponent);
+
+		this.props = props;
 	}
 
-	_createClass(LoadingSupportProvider, [{
-		key: 'renderForm',
-		value: function renderForm() {
+	_createClass(FormComponent, [{
+		key: 'getSupportVariation',
+		value: function getSupportVariation() {
+			var _props4 = this.props,
+			    fallbackTicketPath = _props4.entryOptions,
+			    isUserEligibleForChat = _props4.isUserEligibleForChat,
+			    isChatAvailable = _props4.isChatAvailable;
+
+			if (!fallbackTicketPath || isUserEligibleForChat && isChatAvailable) {
+				return new ChatFormComponent(this.props);
+			}
+			return new TicketFormComponent(this.props);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return this.getSupportVariation().render();
+		}
+	}]);
+
+	return FormComponent;
+}();
+
+var LoadingComponent = function () {
+	function LoadingComponent() {
+		_classCallCheck(this, LoadingComponent);
+	}
+
+	_createClass(LoadingComponent, [{
+		key: 'render',
+		value: function render() {
 			return _react2.default.createElement(_spinnerLine2.default, null);
 		}
 	}]);
 
-	return LoadingSupportProvider;
+	return LoadingComponent;
 }();
 
-var getSupportProvider = function getSupportProvider(props) {
-	if (!props.isUIReady) {
-		return new LoadingSupportProvider(props);
-	} else if (props.isChatOpen || props.isUserEligibleForChat && props.isChatAvailable) {
-		return new HappychatSupportProvider(props);
-	}
-	return new TicketSupportProvider(props);
-};
-
-var Form = exports.Form = function (_React$Component) {
+var Form = function (_React$Component) {
 	_inherits(Form, _React$Component);
 
-	function Form() {
+	function Form(props) {
 		_classCallCheck(this, Form);
 
-		return _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+
+		_this.getSupportComponent = _this.getSupportComponent.bind(_this);
+		return _this;
 	}
 
 	_createClass(Form, [{
+		key: 'getSupportComponent',
+		value: function getSupportComponent() {
+			var _props5 = this.props,
+			    entry = _props5.entry,
+			    isChatOpen = _props5.isChatOpen,
+			    isFormUIReady = _props5.isFormUIReady;
+
+			if (ENTRY_FORM === entry) {
+				if (isChatOpen) {
+					return new ChatComponent(this.props);
+				} else if (!isFormUIReady) {
+					return new LoadingComponent();
+				}
+				return new FormComponent(this.props);
+			}
+			// ENTRY_CHAT: show chat as the entry point for Happychat.
+			return new ChatComponent(this.props);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			var _props3 = this.props,
-			    accessToken = _props3.accessToken,
-			    getAuth = _props3.getAuth,
-			    isConnectionUninitialized = _props3.isConnectionUninitialized,
-			    isHappychatEnabled = _props3.isHappychatEnabled,
-			    onInitConnection = _props3.onInitConnection;
+			var _props6 = this.props,
+			    accessToken = _props6.accessToken,
+			    getAuth = _props6.getAuth,
+			    isConnectionUninitialized = _props6.isConnectionUninitialized,
+			    isHappychatEnabled = _props6.isHappychatEnabled,
+			    onInitConnection = _props6.onInitConnection;
 
-
-			this.supportProvider = getSupportProvider(this.props);
 
 			return _react2.default.createElement(
 				'div',
@@ -51163,7 +51234,7 @@ var Form = exports.Form = function (_React$Component) {
 					isHappychatEnabled: isHappychatEnabled,
 					onInitConnection: onInitConnection
 				}),
-				this.supportProvider.renderForm()
+				this.getSupportComponent().render()
 			);
 		}
 	}]);
@@ -51173,8 +51244,8 @@ var Form = exports.Form = function (_React$Component) {
 
 Form.propTypes = {
 	accessToken: _propTypes2.default.string.isRequired,
-	howCanWeHelpOptions: _propTypes2.default.array,
-	howDoYouFeelOptions: _propTypes2.default.array
+	entry: _propTypes2.default.string,
+	entryOptions: _propTypes2.default.object
 };
 
 // Whether URL should open a new tab or not.
@@ -51209,7 +51280,7 @@ var mapState = function mapState(state) {
 		isExternalUrl: isExternalUrl,
 		isHappychatEnabled: _config2.default.isEnabled('happychat'),
 		isServerReachable: (0, _isServerReachable2.default)(state),
-		isUIReady: (0, _isUiReady2.default)(state),
+		isFormUIReady: (0, _isUiReady2.default)(state),
 		message: (0, _getUiCurrentmessage2.default)(state),
 		timeline: (0, _getChatTimeline2.default)(state),
 		twemojiUrl: (0, _config2.default)('twemoji_cdn_url')
@@ -51229,6 +51300,8 @@ var mapDispatch = {
 };
 
 exports.default = (0, _reactRedux.connect)(mapState, mapDispatch)((0, _localize.mockLocalize)(Form));
+exports.ENTRY_FORM = ENTRY_FORM;
+exports.ENTRY_CHAT = ENTRY_CHAT;
 
 /***/ }),
 /* 358 */
@@ -52201,7 +52274,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getUserGroups = __webpack_require__(165);
 
@@ -52254,7 +52327,7 @@ var _includes = __webpack_require__(166);
 
 var _includes2 = _interopRequireDefault(_includes);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getChatStatus = __webpack_require__(171);
 
@@ -52458,7 +52531,7 @@ module.exports = baseValues;
 
 var baseTimes = __webpack_require__(392),
     isArguments = __webpack_require__(61),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     isIndex = __webpack_require__(91);
 
 /** Used for built-in method references. */
@@ -52884,7 +52957,7 @@ var Stack = __webpack_require__(172),
     equalByTag = __webpack_require__(409),
     equalObjects = __webpack_require__(413),
     getTag = __webpack_require__(175),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     isHostObject = __webpack_require__(159),
     isTypedArray = __webpack_require__(419);
 
@@ -53696,7 +53769,7 @@ module.exports = baseHasIn;
 
 var castPath = __webpack_require__(156),
     isArguments = __webpack_require__(61),
-    isArray = __webpack_require__(12),
+    isArray = __webpack_require__(13),
     isIndex = __webpack_require__(91),
     isKey = __webpack_require__(59),
     isLength = __webpack_require__(88),
@@ -54260,7 +54333,7 @@ exports.default = function (state) {
   return (0, _getConnectionStatus2.default)(state) === _constants.HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED;
 };
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 var _getConnectionStatus = __webpack_require__(94);
 
@@ -54287,7 +54360,7 @@ var _get = __webpack_require__(8);
 
 var _get2 = _interopRequireDefault(_get);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55691,7 +55764,7 @@ var _get = __webpack_require__(8);
 
 var _get2 = _interopRequireDefault(_get);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -55832,7 +55905,7 @@ var _assign = __webpack_require__(458);
 
 var _assign2 = _interopRequireDefault(_assign);
 
-var _isArray = __webpack_require__(12);
+var _isArray = __webpack_require__(13);
 
 var _isArray2 = _interopRequireDefault(_isArray);
 
@@ -56663,7 +56736,7 @@ module.exports = findIndex;
 var arrayEach = __webpack_require__(466),
     baseEach = __webpack_require__(96),
     baseIteratee = __webpack_require__(37),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /**
  * Iterates over elements of `collection` and invokes `iteratee` for each element.
@@ -57735,8 +57808,11 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var _props = this.props,
-			    howCanWeHelpOptions = _props.howCanWeHelpOptions,
-			    howDoYouFeelOptions = _props.howDoYouFeelOptions,
+			    formTitle = _props.formTitle,
+			    primaryOptions = _props.primaryOptions,
+			    primaryOptionsTitle = _props.primaryOptionsTitle,
+			    secondaryOptions = _props.secondaryOptions,
+			    secondaryOptionsTitle = _props.secondaryOptionsTitle,
 			    submitFormText = _props.submitFormText;
 
 
@@ -57749,31 +57825,31 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 					_react2.default.createElement(
 						'p',
 						{ className: 'contact-form__header-title' },
-						'Contact Us'
+						formTitle
 					)
 				),
 				_react2.default.createElement(
 					_card2.default,
 					null,
-					_react2.default.createElement(
+					primaryOptions && primaryOptions.length > 0 ? _react2.default.createElement(
 						'div',
 						null,
 						_react2.default.createElement(
 							_formLabel2.default,
 							null,
-							'How can we help?'
+							primaryOptionsTitle
 						),
-						_react2.default.createElement(_formSelection2.default, { options: howCanWeHelpOptions })
-					),
-					howDoYouFeelOptions && howDoYouFeelOptions.length > 0 ? _react2.default.createElement(
+						_react2.default.createElement(_formSelection2.default, { options: primaryOptions })
+					) : '',
+					secondaryOptions && secondaryOptions.length > 0 ? _react2.default.createElement(
 						'div',
 						null,
 						_react2.default.createElement(
 							_formLabel2.default,
 							null,
-							'Mind sharing how do you feel?'
+							secondaryOptionsTitle
 						),
-						_react2.default.createElement(_formSelection2.default, { options: howDoYouFeelOptions })
+						_react2.default.createElement(_formSelection2.default, { options: secondaryOptions })
 					) : '',
 					_react2.default.createElement(
 						_formLabel2.default,
@@ -57805,8 +57881,11 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 
 ContactForm.propTypes = {
 	canSubmitForm: _propTypes2.default.func.isRequired,
-	howCanWeHelpOptions: _propTypes2.default.array.isRequired,
-	howDoYouFeelOptions: _propTypes2.default.array,
+	formTitle: _propTypes2.default.string,
+	primaryOptions: _propTypes2.default.array,
+	primaryOptionsTitle: _propTypes2.default.string,
+	secondaryOptions: _propTypes2.default.array,
+	secondaryOptionsTitle: _propTypes2.default.string,
 	submitForm: _propTypes2.default.func.isRequired,
 	submitFormText: _propTypes2.default.string
 };
@@ -57815,8 +57894,11 @@ ContactForm.defaultProps = {
 	canSubmitForm: function canSubmitForm() {
 		return true;
 	},
-	howCanWeHelpOptions: [],
-	howDoYouFeelOptions: [],
+	formTitle: 'Contact us',
+	primaryOptions: [],
+	primaryOptionsTitle: 'How can we help?',
+	secondaryOptions: [],
+	secondaryOptionsTitle: 'Any more info you want to share?',
 	submitForm: function submitForm() {},
 	submitFormText: 'Send'
 };
@@ -59212,7 +59294,7 @@ var _sortBy2 = _interopRequireDefault(_sortBy);
 
 var _actionTypes = __webpack_require__(22);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -59379,7 +59461,7 @@ exports.default = (0, _redux.combineReducers)({
 var arrayPush = __webpack_require__(193),
     baseFlatten = __webpack_require__(194),
     copyArray = __webpack_require__(487),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /**
  * Creates a new array concatenating `array` with any additional arrays
@@ -59426,7 +59508,7 @@ module.exports = concat;
 
 var Symbol = __webpack_require__(87),
     isArguments = __webpack_require__(61),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /** Built-in value references. */
 var spreadableSymbol = Symbol ? Symbol.isConcatSpreadable : undefined;
@@ -59479,7 +59561,7 @@ module.exports = copyArray;
 var arrayFilter = __webpack_require__(489),
     baseFilter = __webpack_require__(490),
     baseIteratee = __webpack_require__(37),
-    isArray = __webpack_require__(12);
+    isArray = __webpack_require__(13);
 
 /**
  * Iterates over elements of `collection`, returning an array of all elements
@@ -59824,7 +59906,7 @@ var _redux = __webpack_require__(21);
 
 var _actionTypes = __webpack_require__(22);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 /**
  * Tracks connection errors as defined by the SocketIO library
@@ -59921,7 +60003,7 @@ var _redux = __webpack_require__(21);
 
 var _actionTypes = __webpack_require__(22);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 /**
  * Internal dependencies
@@ -64263,7 +64345,7 @@ var _get = __webpack_require__(8);
 
 var _get2 = _interopRequireDefault(_get);
 
-var _constants = __webpack_require__(14);
+var _constants = __webpack_require__(12);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

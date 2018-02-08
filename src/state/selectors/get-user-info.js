@@ -10,10 +10,10 @@ import moment from 'moment';
  */
 import getGeoLocation from 'src/state/selectors/get-user-geolocation';
 
-export default state => ( { site, howCanWeHelp, howYouFeel } ) => {
+export default state => ( { site, primaryOptions, secondaryOptions } ) => {
 	const info = {
-		howCanWeHelp,
-		howYouFeel,
+		primaryOptions,
+		secondaryOptions,
 		siteId: site.ID,
 		siteUrl: site.URL,
 		localDateTime: moment().format( 'h:mm a, MMMM Do YYYY' ),

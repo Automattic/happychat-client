@@ -13,13 +13,14 @@ import { devToolsEnhancer } from 'redux-devtools-extension';
  * Internal dependencies
  */
 import getUser from 'src/lib/wpcom/get-wpcom-user';
-import Happychat from 'src/form';
+import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
 import { setAssetsLoaded } from 'src/state/ui/actions';
 import { hasTouch } from 'src/lib/touch-detect';
+import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
 
 const store = createStore(
 	reducer,
@@ -126,21 +127,28 @@ const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 /* eslint-disable camelcase */
 const renderHappychat = (
 	targetNode,
-	{ user, howCanWeHelpOptions = [], howDoYouFeelOptions = [], fallbackTicketPath }
+	{
+		user: {
+			ID,
+			email,
+			username,
+			display_name,
+			avatar_URL,
+			language,
+			groups = [ HAPPYCHAT_GROUP_WPCOM ],
+			accessToken,
+		},
+		entry = ENTRY_FORM,
+		entryOptions = {},
+	}
 ) => {
-	const { ID, email, username, display_name, avatar_URL, language, groups, accessToken } = user;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
 	store.dispatch( setLocale( language ) );
 	store.dispatch( setGroups( groups ) );
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat
-				accessToken={ accessToken }
-				howCanWeHelpOptions={ howCanWeHelpOptions }
-				howDoYouFeelOptions={ howDoYouFeelOptions }
-				fallbackTicketPath={ fallbackTicketPath }
-			/>
+			<Happychat accessToken={ accessToken } entry={ entry } entryOptions={ entryOptions } />
 		</Provider>,
 		targetNode
 	);
@@ -168,26 +176,19 @@ const getWPComUser = ( accessToken, groups ) =>
 
 /**
  * Renders a Happychat or Support form in the HTML Element provided by the nodeId.
- * If howCanWeHelpOptions option is present will render the Support form,
- * Happychat will be rendered otherwise.
  *
  * @param  {String} nodeId Mandatory. HTML Node id where Happychat will be rendered.
  * @param  {Array} groups Mandatory. Happychat groups this user belongs to.
  * @param  {String|Promise} accessToken Mandatory. A valid WP.com access token,
  *  					or a Promise that returns one.
- * @param  {Array} howCanWeHelpOptions Optional. If present will render the support form.
- * @param  {Array} howDoYouFeelOptions Optional.
+ * @param  {String} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
+ * 			  ENTRY_FORM is the default and will render the contact form.
+ * 			  ENTRY_CHAT will render the chat form.
+ * @param  {Object} entryOptions Optional. Contains options to configure the selected entry.
  */
-export const initHappychat = ( {
-	nodeId,
-	groups,
-	accessToken,
-	howCanWeHelpOptions,
-	howDoYouFeelOptions,
-	fallbackTicketPath,
-} ) => {
+export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOptions } ) => {
 	let getAccessToken = accessToken;
-	if ( typeof accessToken === 'string' ) {
+	if ( 'string' === typeof accessToken ) {
 		getAccessToken = () => Promise.resolve( accessToken );
 	}
 
@@ -199,9 +200,8 @@ export const initHappychat = ( {
 				{
 					nodeId,
 					user,
-					howCanWeHelpOptions,
-					howDoYouFeelOptions,
-					fallbackTicketPath,
+					entry,
+					entryOptions,
 				},
 				dispatchAssetsFinishedDownloading
 			)

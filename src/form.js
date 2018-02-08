@@ -56,33 +56,20 @@ import CompactCard from 'src/ui/components/card/compact';
 import FormLabel from 'src/ui/components/form-label';
 import SpinnerLine from 'src/ui/components/spinner-line';
 
-class HappychatSupportProvider {
+const ENTRY_FORM = 'form';
+const ENTRY_CHAT = 'chat';
+
+class ChatComponent {
 	constructor( props ) {
 		this.props = props;
-		this.submitForm = this.submitForm.bind( this );
-		this.canSubmitForm = this.canSubmitForm.bind( this );
 	}
 
-	canSubmitForm() {
-		return this.props.isChatAvailable;
-	}
-
-	submitForm( formState ) {
-		if ( this.canSubmitForm() ) {
-			this.props.onOpenChat();
-			this.props.onSendMessage( formState.message );
-		}
-	}
-
-	renderForm() {
+	render() {
 		const {
 			chatStatus,
 			connectionStatus,
 			currentUserEmail,
 			disabled,
-			howCanWeHelpOptions,
-			howDoYouFeelOptions,
-			isChatOpen,
 			isCurrentUser,
 			isExternalUrl,
 			isServerReachable,
@@ -98,16 +85,7 @@ class HappychatSupportProvider {
 			twemojiUrl,
 		} = this.props;
 
-		const contactForm = (
-			<ContactForm
-				canSubmitForm={ this.canSubmitForm }
-				howCanWeHelpOptions={ howCanWeHelpOptions }
-				howDoYouFeelOptions={ howDoYouFeelOptions }
-				submitForm={ this.submitForm }
-				submitFormText={ 'Chat with us' }
-			/>
-		);
-		const chatForm = (
+		return (
 			<HappychatForm
 				chatStatus={ chatStatus }
 				connectionStatus={ connectionStatus }
@@ -128,37 +106,82 @@ class HappychatSupportProvider {
 				twemojiUrl={ twemojiUrl }
 			/>
 		);
-
-		let form = chatForm;
-		if ( ! isChatOpen && howCanWeHelpOptions && howCanWeHelpOptions.length > 0 ) {
-			form = contactForm;
-		}
-		return form;
 	}
 }
 
-class TicketSupportProvider {
+class ChatFormComponent {
 	constructor( props ) {
 		this.props = props;
-		this.submitForm = this.submitForm.bind( this );
 		this.canSubmitForm = this.canSubmitForm.bind( this );
+		this.submitForm = this.submitForm.bind( this );
+		this.render = this.render.bind( this );
 	}
 
 	canSubmitForm() {
-		return true;
+		const { isUserEligibleForChat, isChatAvailable } = this.props;
+		return isUserEligibleForChat && isChatAvailable;
 	}
 
 	submitForm( formState ) {
-		this.props.onRequestFallbackTicket( this.props.fallbackTicketPath, formState );
+		this.props.onOpenChat();
+		this.props.onSendMessage( formState.message );
 	}
 
-	renderForm() {
+	render() {
+		const {
+			entryOptions: {
+				formTitle,
+				primaryOptions,
+				primaryOptionsTitle,
+				secondaryOptions,
+				secondaryOptionsTitle,
+			},
+		} = this.props;
+		return (
+			<ContactForm
+				canSubmitForm={ this.canSubmitForm }
+				formTitle={ formTitle }
+				primaryOptions={ primaryOptions }
+				primaryOptionsTitle={ primaryOptionsTitle }
+				secondaryOptions={ secondaryOptions }
+				secondaryOptionsTitle={ secondaryOptionsTitle }
+				submitForm={ this.submitForm }
+				submitFormText={ 'Chat with us' }
+			/>
+		);
+	}
+}
+
+class TicketFormComponent {
+	constructor( props ) {
+		this.props = props;
+		this.canSubmitForm = this.canSubmitForm.bind( this );
+		this.submitForm = this.submitForm.bind( this );
+		this.render = this.render.bind( this );
+	}
+
+	canSubmitForm() {
+		const { entryOptions: fallbackTicketPath } = this.props;
+		return fallbackTicketPath;
+	}
+
+	submitForm( formState ) {
+		const { entryOptions: fallbackTicketPath } = this.props;
+		this.props.onRequestFallbackTicket( fallbackTicketPath, formState );
+	}
+
+	render() {
 		const {
 			fallbackTicketResponse,
 			fallbackTicketUrl,
 			fallbackTicketStatus,
-			howCanWeHelpOptions,
-			howDoYouFeelOptions,
+			entryOptions: {
+				formTitle,
+				primaryOptions,
+				primaryOptionsTitle,
+				secondaryOptions,
+				secondaryOptionsTitle,
+			},
 		} = this.props;
 
 		let form;
@@ -196,8 +219,11 @@ class TicketSupportProvider {
 				form = (
 					<ContactForm
 						canSubmitForm={ this.canSubmitForm }
-						howCanWeHelpOptions={ howCanWeHelpOptions }
-						howDoYouFeelOptions={ howDoYouFeelOptions }
+						formTitle={ formTitle }
+						primaryOptions={ primaryOptions }
+						primaryOptionsTitle={ primaryOptionsTitle }
+						secondaryOptions={ secondaryOptions }
+						secondaryOptionsTitle={ secondaryOptionsTitle }
 						submitForm={ this.submitForm }
 						submitFormText={ 'Send a ticket' }
 					/>
@@ -207,22 +233,50 @@ class TicketSupportProvider {
 	}
 }
 
-class LoadingSupportProvider {
-	renderForm() {
+class FormComponent {
+	constructor( props ) {
+		this.props = props;
+	}
+
+	getSupportVariation() {
+		const { entryOptions: fallbackTicketPath, isUserEligibleForChat, isChatAvailable } = this.props;
+		if ( ! fallbackTicketPath || ( isUserEligibleForChat && isChatAvailable ) ) {
+			return new ChatFormComponent( this.props );
+		}
+		return new TicketFormComponent( this.props );
+	}
+
+	render() {
+		return this.getSupportVariation().render();
+	}
+}
+
+class LoadingComponent {
+	render() {
 		return <SpinnerLine />;
 	}
 }
 
-const getSupportProvider = props => {
-	if ( ! props.isUIReady ) {
-		return new LoadingSupportProvider( props );
-	} else if ( props.isChatOpen || ( props.isUserEligibleForChat && props.isChatAvailable ) ) {
-		return new HappychatSupportProvider( props );
+class Form extends React.Component {
+	constructor( props ) {
+		super( props );
+		this.getSupportComponent = this.getSupportComponent.bind( this );
 	}
-	return new TicketSupportProvider( props );
-};
 
-export class Form extends React.Component {
+	getSupportComponent() {
+		const { entry, isChatOpen, isFormUIReady } = this.props;
+		if ( ENTRY_FORM === entry ) {
+			if ( isChatOpen ) {
+				return new ChatComponent( this.props );
+			} else if ( ! isFormUIReady ) {
+				return new LoadingComponent();
+			}
+			return new FormComponent( this.props );
+		}
+		// ENTRY_CHAT: show chat as the entry point for Happychat.
+		return new ChatComponent( this.props );
+	}
+
 	render() {
 		const {
 			accessToken,
@@ -231,8 +285,6 @@ export class Form extends React.Component {
 			isHappychatEnabled,
 			onInitConnection,
 		} = this.props;
-
-		this.supportProvider = getSupportProvider( this.props );
 
 		return (
 			<div>
@@ -244,7 +296,7 @@ export class Form extends React.Component {
 					onInitConnection={ onInitConnection }
 				/>
 
-				{ this.supportProvider.renderForm() }
+				{ this.getSupportComponent().render() }
 			</div>
 		);
 	}
@@ -252,8 +304,8 @@ export class Form extends React.Component {
 
 Form.propTypes = {
 	accessToken: PropTypes.string.isRequired,
-	howCanWeHelpOptions: PropTypes.array,
-	howDoYouFeelOptions: PropTypes.array,
+	entry: PropTypes.string,
+	entryOptions: PropTypes.object,
 };
 
 // Whether URL should open a new tab or not.
@@ -284,7 +336,7 @@ const mapState = state => {
 		isExternalUrl,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
 		isServerReachable: isHCServerReachable( state ),
-		isUIReady: isUIReady( state ),
+		isFormUIReady: isUIReady( state ),
 		message: getUICurrentMessage( state ),
 		timeline: getChatTimeline( state ),
 		twemojiUrl: config( 'twemoji_cdn_url' ),
@@ -304,3 +356,4 @@ const mapDispatch = {
 };
 
 export default connect( mapState, mapDispatch )( mockLocalize( Form ) );
+export { ENTRY_FORM, ENTRY_CHAT };

@@ -38,22 +38,33 @@ export class ContactForm extends React.Component {
 	}
 
 	render() {
-		const { howCanWeHelpOptions, howDoYouFeelOptions, submitFormText } = this.props;
+		const {
+			formTitle,
+			primaryOptions,
+			primaryOptionsTitle,
+			secondaryOptions,
+			secondaryOptionsTitle,
+			submitFormText,
+		} = this.props;
 
 		return (
 			<div className="contact-form">
 				<CompactCard>
-					<p className="contact-form__header-title">Contact Us</p>
+					<p className="contact-form__header-title">{ formTitle }</p>
 				</CompactCard>
 				<Card>
-					<div>
-						<FormLabel>How can we help?</FormLabel>
-						<FormSelection options={ howCanWeHelpOptions } />
-					</div>
-					{ howDoYouFeelOptions && howDoYouFeelOptions.length > 0 ? (
+					{ primaryOptions && primaryOptions.length > 0 ? (
 						<div>
-							<FormLabel>Mind sharing how do you feel?</FormLabel>
-							<FormSelection options={ howDoYouFeelOptions } />
+							<FormLabel>{ primaryOptionsTitle }</FormLabel>
+							<FormSelection options={ primaryOptions } />
+						</div>
+					) : (
+						''
+					) }
+					{ secondaryOptions && secondaryOptions.length > 0 ? (
+						<div>
+							<FormLabel>{ secondaryOptionsTitle }</FormLabel>
+							<FormSelection options={ secondaryOptions } />
 						</div>
 					) : (
 						''
@@ -82,16 +93,22 @@ export class ContactForm extends React.Component {
 
 ContactForm.propTypes = {
 	canSubmitForm: PropTypes.func.isRequired,
-	howCanWeHelpOptions: PropTypes.array.isRequired,
-	howDoYouFeelOptions: PropTypes.array,
+	formTitle: PropTypes.string,
+	primaryOptions: PropTypes.array,
+	primaryOptionsTitle: PropTypes.string,
+	secondaryOptions: PropTypes.array,
+	secondaryOptionsTitle: PropTypes.string,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
 };
 
 ContactForm.defaultProps = {
 	canSubmitForm: () => true,
-	howCanWeHelpOptions: [],
-	howDoYouFeelOptions: [],
+	formTitle: 'Contact us',
+	primaryOptions: [],
+	primaryOptionsTitle: 'How can we help?',
+	secondaryOptions: [],
+	secondaryOptionsTitle: 'Any more info you want to share?',
 	submitForm: () => {},
 	submitFormText: 'Send',
 };
