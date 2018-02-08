@@ -13,22 +13,6 @@
 <body>
   <div id="support"></div>
   <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
-  <script type="text/javascript">
-  Happychat.open( {
-    nodeId: 'support',
-    groups: [ 'woo' ],
-		entry: 'form',
-		entryOptions: {
-			fallbackTicketPath: '/create-ticket',
-			primaryOptions: [
-			  { value: 'before-buy', label: 'Before you buy' },
-			  { value: 'account', label: 'Help with my account' },
-			  { value: 'config', label: 'Help configuring' },
-			  { value: 'order', label: 'Help with an order' },
-			  { value: 'broken', label: 'Something is broken' },
-			],
-		}
-  } );
-</script>
+  <script type="text/javascript">Happychat.open( { nodeId: 'support', groups: ['woo'] } );</script>
 </body>
 </html>
