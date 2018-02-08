@@ -77,7 +77,7 @@ class HappychatSupportProvider {
 		}
 	}
 
-	renderForm() {
+	render() {
 		const {
 			chatStatus,
 			connectionStatus,
@@ -137,7 +137,7 @@ class TicketSupportProvider {
 		this.props.onRequestFallbackTicket( this.props.entryOptions.fallbackTicketPath, formState );
 	}
 
-	renderForm() {
+	render() {
 		const {
 			fallbackTicketResponse,
 			fallbackTicketUrl,
@@ -192,7 +192,7 @@ class TicketSupportProvider {
 }
 
 class LoadingSupportProvider {
-	renderForm() {
+	render() {
 		return <SpinnerLine />;
 	}
 }
@@ -235,7 +235,7 @@ export class Form extends React.Component {
 					onInitConnection={ onInitConnection }
 				/>
 
-				{ this.supportComponent.renderForm() }
+				{ this.supportComponent.render() }
 			</div>
 		);
 	}
