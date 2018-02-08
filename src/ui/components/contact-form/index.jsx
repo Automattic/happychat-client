@@ -52,10 +52,14 @@ export class ContactForm extends React.Component {
 					<p className="contact-form__header-title">Contact Us</p>
 				</CompactCard>
 				<Card>
-					<div>
-						<FormLabel>{ primaryOptionsTitle }</FormLabel>
-						<FormSelection options={ primaryOptions } />
-					</div>
+					{ primaryOptions && primaryOptions.length > 0 ? (
+						<div>
+							<FormLabel>{ primaryOptionsTitle }</FormLabel>
+							<FormSelection options={ primaryOptions } />
+						</div>
+					) : (
+						''
+					) }
 					{ secondaryOptions && secondaryOptions.length > 0 ? (
 						<div>
 							<FormLabel>{ secondaryOptionsTitle }</FormLabel>
@@ -88,7 +92,7 @@ export class ContactForm extends React.Component {
 
 ContactForm.propTypes = {
 	canSubmitForm: PropTypes.func.isRequired,
-	primaryOptions: PropTypes.array.isRequired,
+	primaryOptions: PropTypes.array,
 	primaryOptionsTitle: PropTypes.string,
 	secondaryOptions: PropTypes.array,
 	secondaryOptionsTitle: PropTypes.string,
