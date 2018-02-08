@@ -129,9 +129,11 @@ const renderHappychat = (
 	{
 		user,
 		entry = ENTRY_FORM,
-		howCanWeHelpOptions = [],
-		howDoYouFeelOptions = [],
-		fallbackTicketPath,
+		entryOptions = {
+			primaryOptions: [],
+			secondaryOptions: [],
+			fallbackTicketPath: null,
+		},
 	}
 ) => {
 	const { ID, email, username, display_name, avatar_URL, language, groups, accessToken } = user;
@@ -141,13 +143,7 @@ const renderHappychat = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat
-				accessToken={ accessToken }
-				entry={ entry }
-				howCanWeHelpOptions={ howCanWeHelpOptions }
-				howDoYouFeelOptions={ howDoYouFeelOptions }
-				fallbackTicketPath={ fallbackTicketPath }
-			/>
+			<Happychat accessToken={ accessToken } entry={ entry } entryOptions={ entryOptions } />
 		</Provider>,
 		targetNode
 	);
@@ -175,25 +171,17 @@ const getWPComUser = ( accessToken, groups ) =>
 
 /**
  * Renders a Happychat or Support form in the HTML Element provided by the nodeId.
- * If howCanWeHelpOptions option is present will render the Support form,
- * Happychat will be rendered otherwise.
  *
  * @param  {String} nodeId Mandatory. HTML Node id where Happychat will be rendered.
  * @param  {Array} groups Mandatory. Happychat groups this user belongs to.
  * @param  {String|Promise} accessToken Mandatory. A valid WP.com access token,
  *  					or a Promise that returns one.
- * @param  {Array} howCanWeHelpOptions Optional. If present will render the support form.
- * @param  {Array} howDoYouFeelOptions Optional.
+ * @param  {String} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
+ * 			  ENTRY_FORM is the default and will render the contact form.
+ * 			  ENTRY_CHAT will render the chat form.
+ * @param  {Object} entryOptions Optional. Contains options to configure the selected entry.
  */
-export const initHappychat = ( {
-	nodeId,
-	groups,
-	accessToken,
-	entry,
-	howCanWeHelpOptions,
-	howDoYouFeelOptions,
-	fallbackTicketPath,
-} ) => {
+export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOptions } ) => {
 	let getAccessToken = accessToken;
 	if ( typeof accessToken === 'string' ) {
 		getAccessToken = () => Promise.resolve( accessToken );
@@ -208,9 +196,7 @@ export const initHappychat = ( {
 					nodeId,
 					user,
 					entry,
-					howCanWeHelpOptions,
-					howDoYouFeelOptions,
-					fallbackTicketPath,
+					entryOptions,
 				},
 				dispatchAssetsFinishedDownloading
 			)

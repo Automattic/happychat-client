@@ -36040,18 +36040,14 @@ window.Happychat = {
 		var nodeId = _ref.nodeId,
 		    groups = _ref.groups,
 		    entry = _ref.entry,
-		    howCanWeHelpOptions = _ref.howCanWeHelpOptions,
-		    howDoYouFeelOptions = _ref.howDoYouFeelOptions,
-		    fallbackTicketPath = _ref.fallbackTicketPath;
+		    entryOptions = _ref.entryOptions;
 
 		(0, _src.initHappychat)({
 			nodeId: nodeId,
 			groups: groups,
 			accessToken: accessToken,
 			entry: entry,
-			howCanWeHelpOptions: howCanWeHelpOptions,
-			howDoYouFeelOptions: howDoYouFeelOptions,
-			fallbackTicketPath: fallbackTicketPath
+			entryOptions: entryOptions
 		});
 	}
 };
@@ -36198,11 +36194,12 @@ var renderHappychat = function renderHappychat(targetNode, _ref) {
 	var user = _ref.user,
 	    _ref$entry = _ref.entry,
 	    entry = _ref$entry === undefined ? _form.ENTRY_FORM : _ref$entry,
-	    _ref$howCanWeHelpOpti = _ref.howCanWeHelpOptions,
-	    howCanWeHelpOptions = _ref$howCanWeHelpOpti === undefined ? [] : _ref$howCanWeHelpOpti,
-	    _ref$howDoYouFeelOpti = _ref.howDoYouFeelOptions,
-	    howDoYouFeelOptions = _ref$howDoYouFeelOpti === undefined ? [] : _ref$howDoYouFeelOpti,
-	    fallbackTicketPath = _ref.fallbackTicketPath;
+	    _ref$entryOptions = _ref.entryOptions,
+	    entryOptions = _ref$entryOptions === undefined ? {
+		primaryOptions: [],
+		secondaryOptions: [],
+		fallbackTicketPath: null
+	} : _ref$entryOptions;
 	var ID = user.ID,
 	    email = user.email,
 	    username = user.username,
@@ -36219,13 +36216,7 @@ var renderHappychat = function renderHappychat(targetNode, _ref) {
 	_reactDom2.default.render(_react2.default.createElement(
 		_reactRedux.Provider,
 		{ store: store },
-		_react2.default.createElement(_form2.default, {
-			accessToken: accessToken,
-			entry: entry,
-			howCanWeHelpOptions: howCanWeHelpOptions,
-			howDoYouFeelOptions: howDoYouFeelOptions,
-			fallbackTicketPath: fallbackTicketPath
-		})
+		_react2.default.createElement(_form2.default, { accessToken: accessToken, entry: entry, entryOptions: entryOptions })
 	), targetNode);
 };
 /* eslint-enable camelcase */
@@ -36260,24 +36251,22 @@ var getWPComUser = function getWPComUser(accessToken, groups) {
 
 /**
  * Renders a Happychat or Support form in the HTML Element provided by the nodeId.
- * If howCanWeHelpOptions option is present will render the Support form,
- * Happychat will be rendered otherwise.
  *
  * @param  {String} nodeId Mandatory. HTML Node id where Happychat will be rendered.
  * @param  {Array} groups Mandatory. Happychat groups this user belongs to.
  * @param  {String|Promise} accessToken Mandatory. A valid WP.com access token,
  *  					or a Promise that returns one.
- * @param  {Array} howCanWeHelpOptions Optional. If present will render the support form.
- * @param  {Array} howDoYouFeelOptions Optional.
+ * @param  {String} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
+ * 			  ENTRY_FORM is the default and will render the contact form.
+ * 			  ENTRY_CHAT will render the chat form.
+ * @param  {Object} entryOptions Optional. Contains options to configure the selected entry.
  */
 var initHappychat = exports.initHappychat = function initHappychat(_ref4) {
 	var nodeId = _ref4.nodeId,
 	    groups = _ref4.groups,
 	    accessToken = _ref4.accessToken,
 	    entry = _ref4.entry,
-	    howCanWeHelpOptions = _ref4.howCanWeHelpOptions,
-	    howDoYouFeelOptions = _ref4.howDoYouFeelOptions,
-	    fallbackTicketPath = _ref4.fallbackTicketPath;
+	    entryOptions = _ref4.entryOptions;
 
 	var getAccessToken = accessToken;
 	if (typeof accessToken === 'string') {
@@ -36293,9 +36282,7 @@ var initHappychat = exports.initHappychat = function initHappychat(_ref4) {
 			nodeId: nodeId,
 			user: user,
 			entry: entry,
-			howCanWeHelpOptions: howCanWeHelpOptions,
-			howDoYouFeelOptions: howDoYouFeelOptions,
-			fallbackTicketPath: fallbackTicketPath
+			entryOptions: entryOptions
 		}, dispatchAssetsFinishedDownloading);
 	}).catch(function (error) {
 		return createIframe(renderError, { nodeId: nodeId, error: error });
@@ -50970,8 +50957,8 @@ var HappychatSupportProvider = function () {
 			    connectionStatus = _props.connectionStatus,
 			    currentUserEmail = _props.currentUserEmail,
 			    disabled = _props.disabled,
-			    howCanWeHelpOptions = _props.howCanWeHelpOptions,
-			    howDoYouFeelOptions = _props.howDoYouFeelOptions,
+			    primaryOptions = _props.primaryOptions,
+			    secondaryOptions = _props.secondaryOptions,
 			    isChatOpen = _props.isChatOpen,
 			    isCurrentUser = _props.isCurrentUser,
 			    isExternalUrl = _props.isExternalUrl,
@@ -50990,8 +50977,8 @@ var HappychatSupportProvider = function () {
 
 			var contactForm = _react2.default.createElement(_contactForm.ContactForm, {
 				canSubmitForm: this.canSubmitForm,
-				howCanWeHelpOptions: howCanWeHelpOptions,
-				howDoYouFeelOptions: howDoYouFeelOptions,
+				primaryOptions: primaryOptions,
+				secondaryOptions: secondaryOptions,
 				submitForm: this.submitForm,
 				submitFormText: 'Chat with us'
 			});
@@ -51016,7 +51003,7 @@ var HappychatSupportProvider = function () {
 			});
 
 			var form = chatForm;
-			if (!isChatOpen && howCanWeHelpOptions && howCanWeHelpOptions.length > 0) {
+			if (!isChatOpen && primaryOptions && primaryOptions.length > 0) {
 				form = contactForm;
 			}
 			return form;
@@ -51043,7 +51030,7 @@ var TicketSupportProvider = function () {
 	}, {
 		key: 'submitForm',
 		value: function submitForm(formState) {
-			this.props.onRequestFallbackTicket(this.props.fallbackTicketPath, formState);
+			this.props.onRequestFallbackTicket(this.props.entryOptions.fallbackTicketPath, formState);
 		}
 	}, {
 		key: 'renderForm',
@@ -51052,8 +51039,7 @@ var TicketSupportProvider = function () {
 			    fallbackTicketResponse = _props2.fallbackTicketResponse,
 			    fallbackTicketUrl = _props2.fallbackTicketUrl,
 			    fallbackTicketStatus = _props2.fallbackTicketStatus,
-			    howCanWeHelpOptions = _props2.howCanWeHelpOptions,
-			    howDoYouFeelOptions = _props2.howDoYouFeelOptions;
+			    entryOptions = _props2.entryOptions;
 
 
 			var form = void 0;
@@ -51104,8 +51090,8 @@ var TicketSupportProvider = function () {
 				default:
 					form = _react2.default.createElement(_contactForm.ContactForm, {
 						canSubmitForm: this.canSubmitForm,
-						howCanWeHelpOptions: howCanWeHelpOptions,
-						howDoYouFeelOptions: howDoYouFeelOptions,
+						primaryOptions: entryOptions.primaryOptions,
+						secondaryOptions: entryOptions.secondaryOptions,
 						submitForm: this.submitForm,
 						submitFormText: 'Send a ticket'
 					});
@@ -51190,8 +51176,8 @@ var Form = exports.Form = function (_React$Component) {
 
 Form.propTypes = {
 	accessToken: _propTypes2.default.string.isRequired,
-	howCanWeHelpOptions: _propTypes2.default.array,
-	howDoYouFeelOptions: _propTypes2.default.array
+	entry: _propTypes2.default.string,
+	entryOptions: _propTypes2.default.object
 };
 
 // Whether URL should open a new tab or not.
@@ -57754,8 +57740,10 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var _props = this.props,
-			    howCanWeHelpOptions = _props.howCanWeHelpOptions,
-			    howDoYouFeelOptions = _props.howDoYouFeelOptions,
+			    primaryOptions = _props.primaryOptions,
+			    primaryOptionsTitle = _props.primaryOptionsTitle,
+			    secondaryOptions = _props.secondaryOptions,
+			    secondaryOptionsTitle = _props.secondaryOptionsTitle,
 			    submitFormText = _props.submitFormText;
 
 
@@ -57780,19 +57768,19 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 						_react2.default.createElement(
 							_formLabel2.default,
 							null,
-							'How can we help?'
+							primaryOptionsTitle
 						),
-						_react2.default.createElement(_formSelection2.default, { options: howCanWeHelpOptions })
+						_react2.default.createElement(_formSelection2.default, { options: primaryOptions })
 					),
-					howDoYouFeelOptions && howDoYouFeelOptions.length > 0 ? _react2.default.createElement(
+					secondaryOptions && secondaryOptions.length > 0 ? _react2.default.createElement(
 						'div',
 						null,
 						_react2.default.createElement(
 							_formLabel2.default,
 							null,
-							'Mind sharing how do you feel?'
+							secondaryOptionsTitle
 						),
-						_react2.default.createElement(_formSelection2.default, { options: howDoYouFeelOptions })
+						_react2.default.createElement(_formSelection2.default, { options: secondaryOptions })
 					) : '',
 					_react2.default.createElement(
 						_formLabel2.default,
@@ -57824,8 +57812,10 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 
 ContactForm.propTypes = {
 	canSubmitForm: _propTypes2.default.func.isRequired,
-	howCanWeHelpOptions: _propTypes2.default.array.isRequired,
-	howDoYouFeelOptions: _propTypes2.default.array,
+	primaryOptions: _propTypes2.default.array.isRequired,
+	primaryOptionsTitle: _propTypes2.default.string,
+	secondaryOptions: _propTypes2.default.array,
+	secondaryOptionsTitle: _propTypes2.default.string,
 	submitForm: _propTypes2.default.func.isRequired,
 	submitFormText: _propTypes2.default.string
 };
@@ -57834,8 +57824,10 @@ ContactForm.defaultProps = {
 	canSubmitForm: function canSubmitForm() {
 		return true;
 	},
-	howCanWeHelpOptions: [],
-	howDoYouFeelOptions: [],
+	primaryOptions: [],
+	primaryOptionsTitle: 'How can we help?',
+	secondaryOptions: [],
+	secondaryOptionsTitle: 'Any more info you want to share?',
 	submitForm: function submitForm() {},
 	submitFormText: 'Send'
 };

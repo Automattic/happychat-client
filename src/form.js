@@ -83,8 +83,8 @@ class HappychatSupportProvider {
 			connectionStatus,
 			currentUserEmail,
 			disabled,
-			howCanWeHelpOptions,
-			howDoYouFeelOptions,
+			primaryOptions,
+			secondaryOptions,
 			isChatOpen,
 			isCurrentUser,
 			isExternalUrl,
@@ -104,8 +104,8 @@ class HappychatSupportProvider {
 		const contactForm = (
 			<ContactForm
 				canSubmitForm={ this.canSubmitForm }
-				howCanWeHelpOptions={ howCanWeHelpOptions }
-				howDoYouFeelOptions={ howDoYouFeelOptions }
+				primaryOptions={ primaryOptions }
+				secondaryOptions={ secondaryOptions }
 				submitForm={ this.submitForm }
 				submitFormText={ 'Chat with us' }
 			/>
@@ -133,7 +133,7 @@ class HappychatSupportProvider {
 		);
 
 		let form = chatForm;
-		if ( ! isChatOpen && howCanWeHelpOptions && howCanWeHelpOptions.length > 0 ) {
+		if ( ! isChatOpen && primaryOptions && primaryOptions.length > 0 ) {
 			form = contactForm;
 		}
 		return form;
@@ -152,7 +152,7 @@ class TicketSupportProvider {
 	}
 
 	submitForm( formState ) {
-		this.props.onRequestFallbackTicket( this.props.fallbackTicketPath, formState );
+		this.props.onRequestFallbackTicket( this.props.entryOptions.fallbackTicketPath, formState );
 	}
 
 	renderForm() {
@@ -160,8 +160,7 @@ class TicketSupportProvider {
 			fallbackTicketResponse,
 			fallbackTicketUrl,
 			fallbackTicketStatus,
-			howCanWeHelpOptions,
-			howDoYouFeelOptions,
+			entryOptions,
 		} = this.props;
 
 		let form;
@@ -199,8 +198,8 @@ class TicketSupportProvider {
 				form = (
 					<ContactForm
 						canSubmitForm={ this.canSubmitForm }
-						howCanWeHelpOptions={ howCanWeHelpOptions }
-						howDoYouFeelOptions={ howDoYouFeelOptions }
+						primaryOptions={ entryOptions.primaryOptions }
+						secondaryOptions={ entryOptions.secondaryOptions }
 						submitForm={ this.submitForm }
 						submitFormText={ 'Send a ticket' }
 					/>
@@ -262,8 +261,8 @@ export class Form extends React.Component {
 
 Form.propTypes = {
 	accessToken: PropTypes.string.isRequired,
-	howCanWeHelpOptions: PropTypes.array,
-	howDoYouFeelOptions: PropTypes.array,
+	entry: PropTypes.string,
+	entryOptions: PropTypes.object,
 };
 
 // Whether URL should open a new tab or not.
