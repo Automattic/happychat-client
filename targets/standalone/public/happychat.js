@@ -392,7 +392,7 @@ if (true) {
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMProperty = __webpack_require__(24);
+var DOMProperty = __webpack_require__(25);
 var ReactDOMComponentFlags = __webpack_require__(114);
 
 var invariant = __webpack_require__(0);
@@ -2133,255 +2133,6 @@ module.exports = isArrayLike;
 
 /***/ }),
 /* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var _prodInvariant = __webpack_require__(3);
-
-var invariant = __webpack_require__(0);
-
-function checkMask(value, bitmask) {
-  return (value & bitmask) === bitmask;
-}
-
-var DOMPropertyInjection = {
-  /**
-   * Mapping from normalized, camelcased property names to a configuration that
-   * specifies how the associated DOM property should be accessed or rendered.
-   */
-  MUST_USE_PROPERTY: 0x1,
-  HAS_BOOLEAN_VALUE: 0x4,
-  HAS_NUMERIC_VALUE: 0x8,
-  HAS_POSITIVE_NUMERIC_VALUE: 0x10 | 0x8,
-  HAS_OVERLOADED_BOOLEAN_VALUE: 0x20,
-
-  /**
-   * Inject some specialized knowledge about the DOM. This takes a config object
-   * with the following properties:
-   *
-   * isCustomAttribute: function that given an attribute name will return true
-   * if it can be inserted into the DOM verbatim. Useful for data-* or aria-*
-   * attributes where it's impossible to enumerate all of the possible
-   * attribute names,
-   *
-   * Properties: object mapping DOM property name to one of the
-   * DOMPropertyInjection constants or null. If your attribute isn't in here,
-   * it won't get written to the DOM.
-   *
-   * DOMAttributeNames: object mapping React attribute name to the DOM
-   * attribute name. Attribute names not specified use the **lowercase**
-   * normalized name.
-   *
-   * DOMAttributeNamespaces: object mapping React attribute name to the DOM
-   * attribute namespace URL. (Attribute names not specified use no namespace.)
-   *
-   * DOMPropertyNames: similar to DOMAttributeNames but for DOM properties.
-   * Property names not specified use the normalized name.
-   *
-   * DOMMutationMethods: Properties that require special mutation methods. If
-   * `value` is undefined, the mutation method should unset the property.
-   *
-   * @param {object} domPropertyConfig the config as described above.
-   */
-  injectDOMPropertyConfig: function (domPropertyConfig) {
-    var Injection = DOMPropertyInjection;
-    var Properties = domPropertyConfig.Properties || {};
-    var DOMAttributeNamespaces = domPropertyConfig.DOMAttributeNamespaces || {};
-    var DOMAttributeNames = domPropertyConfig.DOMAttributeNames || {};
-    var DOMPropertyNames = domPropertyConfig.DOMPropertyNames || {};
-    var DOMMutationMethods = domPropertyConfig.DOMMutationMethods || {};
-
-    if (domPropertyConfig.isCustomAttribute) {
-      DOMProperty._isCustomAttributeFunctions.push(domPropertyConfig.isCustomAttribute);
-    }
-
-    for (var propName in Properties) {
-      !!DOMProperty.properties.hasOwnProperty(propName) ?  true ? invariant(false, 'injectDOMPropertyConfig(...): You\'re trying to inject DOM property \'%s\' which has already been injected. You may be accidentally injecting the same DOM property config twice, or you may be injecting two configs that have conflicting property names.', propName) : _prodInvariant('48', propName) : void 0;
-
-      var lowerCased = propName.toLowerCase();
-      var propConfig = Properties[propName];
-
-      var propertyInfo = {
-        attributeName: lowerCased,
-        attributeNamespace: null,
-        propertyName: propName,
-        mutationMethod: null,
-
-        mustUseProperty: checkMask(propConfig, Injection.MUST_USE_PROPERTY),
-        hasBooleanValue: checkMask(propConfig, Injection.HAS_BOOLEAN_VALUE),
-        hasNumericValue: checkMask(propConfig, Injection.HAS_NUMERIC_VALUE),
-        hasPositiveNumericValue: checkMask(propConfig, Injection.HAS_POSITIVE_NUMERIC_VALUE),
-        hasOverloadedBooleanValue: checkMask(propConfig, Injection.HAS_OVERLOADED_BOOLEAN_VALUE)
-      };
-      !(propertyInfo.hasBooleanValue + propertyInfo.hasNumericValue + propertyInfo.hasOverloadedBooleanValue <= 1) ?  true ? invariant(false, 'DOMProperty: Value can be one of boolean, overloaded boolean, or numeric value, but not a combination: %s', propName) : _prodInvariant('50', propName) : void 0;
-
-      if (true) {
-        DOMProperty.getPossibleStandardName[lowerCased] = propName;
-      }
-
-      if (DOMAttributeNames.hasOwnProperty(propName)) {
-        var attributeName = DOMAttributeNames[propName];
-        propertyInfo.attributeName = attributeName;
-        if (true) {
-          DOMProperty.getPossibleStandardName[attributeName] = propName;
-        }
-      }
-
-      if (DOMAttributeNamespaces.hasOwnProperty(propName)) {
-        propertyInfo.attributeNamespace = DOMAttributeNamespaces[propName];
-      }
-
-      if (DOMPropertyNames.hasOwnProperty(propName)) {
-        propertyInfo.propertyName = DOMPropertyNames[propName];
-      }
-
-      if (DOMMutationMethods.hasOwnProperty(propName)) {
-        propertyInfo.mutationMethod = DOMMutationMethods[propName];
-      }
-
-      DOMProperty.properties[propName] = propertyInfo;
-    }
-  }
-};
-
-/* eslint-disable max-len */
-var ATTRIBUTE_NAME_START_CHAR = ':A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD';
-/* eslint-enable max-len */
-
-/**
- * DOMProperty exports lookup objects that can be used like functions:
- *
- *   > DOMProperty.isValid['id']
- *   true
- *   > DOMProperty.isValid['foobar']
- *   undefined
- *
- * Although this may be confusing, it performs better in general.
- *
- * @see http://jsperf.com/key-exists
- * @see http://jsperf.com/key-missing
- */
-var DOMProperty = {
-  ID_ATTRIBUTE_NAME: 'data-reactid',
-  ROOT_ATTRIBUTE_NAME: 'data-reactroot',
-
-  ATTRIBUTE_NAME_START_CHAR: ATTRIBUTE_NAME_START_CHAR,
-  ATTRIBUTE_NAME_CHAR: ATTRIBUTE_NAME_START_CHAR + '\\-.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040',
-
-  /**
-   * Map from property "standard name" to an object with info about how to set
-   * the property in the DOM. Each object contains:
-   *
-   * attributeName:
-   *   Used when rendering markup or with `*Attribute()`.
-   * attributeNamespace
-   * propertyName:
-   *   Used on DOM node instances. (This includes properties that mutate due to
-   *   external factors.)
-   * mutationMethod:
-   *   If non-null, used instead of the property or `setAttribute()` after
-   *   initial render.
-   * mustUseProperty:
-   *   Whether the property must be accessed and mutated as an object property.
-   * hasBooleanValue:
-   *   Whether the property should be removed when set to a falsey value.
-   * hasNumericValue:
-   *   Whether the property must be numeric or parse as a numeric and should be
-   *   removed when set to a falsey value.
-   * hasPositiveNumericValue:
-   *   Whether the property must be positive numeric or parse as a positive
-   *   numeric and should be removed when set to a falsey value.
-   * hasOverloadedBooleanValue:
-   *   Whether the property can be used as a flag as well as with a value.
-   *   Removed when strictly equal to false; present without a value when
-   *   strictly equal to true; present with a value otherwise.
-   */
-  properties: {},
-
-  /**
-   * Mapping from lowercase property names to the properly cased version, used
-   * to warn in the case of missing properties. Available only in __DEV__.
-   *
-   * autofocus is predefined, because adding it to the property whitelist
-   * causes unintended side effects.
-   *
-   * @type {Object}
-   */
-  getPossibleStandardName:  true ? { autofocus: 'autoFocus' } : null,
-
-  /**
-   * All of the isCustomAttribute() functions that have been injected.
-   */
-  _isCustomAttributeFunctions: [],
-
-  /**
-   * Checks whether a property name is a custom attribute.
-   * @method
-   */
-  isCustomAttribute: function (attributeName) {
-    for (var i = 0; i < DOMProperty._isCustomAttributeFunctions.length; i++) {
-      var isCustomAttributeFn = DOMProperty._isCustomAttributeFunctions[i];
-      if (isCustomAttributeFn(attributeName)) {
-        return true;
-      }
-    }
-    return false;
-  },
-
-  injection: DOMPropertyInjection
-};
-
-module.exports = DOMProperty;
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
-function isObject(value) {
-  var type = typeof value;
-  return !!value && (type == 'object' || type == 'function');
-}
-
-module.exports = isObject;
-
-
-/***/ }),
-/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -19122,6 +18873,255 @@ module.exports = isObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(29)(module)))
 
 /***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var _prodInvariant = __webpack_require__(3);
+
+var invariant = __webpack_require__(0);
+
+function checkMask(value, bitmask) {
+  return (value & bitmask) === bitmask;
+}
+
+var DOMPropertyInjection = {
+  /**
+   * Mapping from normalized, camelcased property names to a configuration that
+   * specifies how the associated DOM property should be accessed or rendered.
+   */
+  MUST_USE_PROPERTY: 0x1,
+  HAS_BOOLEAN_VALUE: 0x4,
+  HAS_NUMERIC_VALUE: 0x8,
+  HAS_POSITIVE_NUMERIC_VALUE: 0x10 | 0x8,
+  HAS_OVERLOADED_BOOLEAN_VALUE: 0x20,
+
+  /**
+   * Inject some specialized knowledge about the DOM. This takes a config object
+   * with the following properties:
+   *
+   * isCustomAttribute: function that given an attribute name will return true
+   * if it can be inserted into the DOM verbatim. Useful for data-* or aria-*
+   * attributes where it's impossible to enumerate all of the possible
+   * attribute names,
+   *
+   * Properties: object mapping DOM property name to one of the
+   * DOMPropertyInjection constants or null. If your attribute isn't in here,
+   * it won't get written to the DOM.
+   *
+   * DOMAttributeNames: object mapping React attribute name to the DOM
+   * attribute name. Attribute names not specified use the **lowercase**
+   * normalized name.
+   *
+   * DOMAttributeNamespaces: object mapping React attribute name to the DOM
+   * attribute namespace URL. (Attribute names not specified use no namespace.)
+   *
+   * DOMPropertyNames: similar to DOMAttributeNames but for DOM properties.
+   * Property names not specified use the normalized name.
+   *
+   * DOMMutationMethods: Properties that require special mutation methods. If
+   * `value` is undefined, the mutation method should unset the property.
+   *
+   * @param {object} domPropertyConfig the config as described above.
+   */
+  injectDOMPropertyConfig: function (domPropertyConfig) {
+    var Injection = DOMPropertyInjection;
+    var Properties = domPropertyConfig.Properties || {};
+    var DOMAttributeNamespaces = domPropertyConfig.DOMAttributeNamespaces || {};
+    var DOMAttributeNames = domPropertyConfig.DOMAttributeNames || {};
+    var DOMPropertyNames = domPropertyConfig.DOMPropertyNames || {};
+    var DOMMutationMethods = domPropertyConfig.DOMMutationMethods || {};
+
+    if (domPropertyConfig.isCustomAttribute) {
+      DOMProperty._isCustomAttributeFunctions.push(domPropertyConfig.isCustomAttribute);
+    }
+
+    for (var propName in Properties) {
+      !!DOMProperty.properties.hasOwnProperty(propName) ?  true ? invariant(false, 'injectDOMPropertyConfig(...): You\'re trying to inject DOM property \'%s\' which has already been injected. You may be accidentally injecting the same DOM property config twice, or you may be injecting two configs that have conflicting property names.', propName) : _prodInvariant('48', propName) : void 0;
+
+      var lowerCased = propName.toLowerCase();
+      var propConfig = Properties[propName];
+
+      var propertyInfo = {
+        attributeName: lowerCased,
+        attributeNamespace: null,
+        propertyName: propName,
+        mutationMethod: null,
+
+        mustUseProperty: checkMask(propConfig, Injection.MUST_USE_PROPERTY),
+        hasBooleanValue: checkMask(propConfig, Injection.HAS_BOOLEAN_VALUE),
+        hasNumericValue: checkMask(propConfig, Injection.HAS_NUMERIC_VALUE),
+        hasPositiveNumericValue: checkMask(propConfig, Injection.HAS_POSITIVE_NUMERIC_VALUE),
+        hasOverloadedBooleanValue: checkMask(propConfig, Injection.HAS_OVERLOADED_BOOLEAN_VALUE)
+      };
+      !(propertyInfo.hasBooleanValue + propertyInfo.hasNumericValue + propertyInfo.hasOverloadedBooleanValue <= 1) ?  true ? invariant(false, 'DOMProperty: Value can be one of boolean, overloaded boolean, or numeric value, but not a combination: %s', propName) : _prodInvariant('50', propName) : void 0;
+
+      if (true) {
+        DOMProperty.getPossibleStandardName[lowerCased] = propName;
+      }
+
+      if (DOMAttributeNames.hasOwnProperty(propName)) {
+        var attributeName = DOMAttributeNames[propName];
+        propertyInfo.attributeName = attributeName;
+        if (true) {
+          DOMProperty.getPossibleStandardName[attributeName] = propName;
+        }
+      }
+
+      if (DOMAttributeNamespaces.hasOwnProperty(propName)) {
+        propertyInfo.attributeNamespace = DOMAttributeNamespaces[propName];
+      }
+
+      if (DOMPropertyNames.hasOwnProperty(propName)) {
+        propertyInfo.propertyName = DOMPropertyNames[propName];
+      }
+
+      if (DOMMutationMethods.hasOwnProperty(propName)) {
+        propertyInfo.mutationMethod = DOMMutationMethods[propName];
+      }
+
+      DOMProperty.properties[propName] = propertyInfo;
+    }
+  }
+};
+
+/* eslint-disable max-len */
+var ATTRIBUTE_NAME_START_CHAR = ':A-Z_a-z\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD';
+/* eslint-enable max-len */
+
+/**
+ * DOMProperty exports lookup objects that can be used like functions:
+ *
+ *   > DOMProperty.isValid['id']
+ *   true
+ *   > DOMProperty.isValid['foobar']
+ *   undefined
+ *
+ * Although this may be confusing, it performs better in general.
+ *
+ * @see http://jsperf.com/key-exists
+ * @see http://jsperf.com/key-missing
+ */
+var DOMProperty = {
+  ID_ATTRIBUTE_NAME: 'data-reactid',
+  ROOT_ATTRIBUTE_NAME: 'data-reactroot',
+
+  ATTRIBUTE_NAME_START_CHAR: ATTRIBUTE_NAME_START_CHAR,
+  ATTRIBUTE_NAME_CHAR: ATTRIBUTE_NAME_START_CHAR + '\\-.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040',
+
+  /**
+   * Map from property "standard name" to an object with info about how to set
+   * the property in the DOM. Each object contains:
+   *
+   * attributeName:
+   *   Used when rendering markup or with `*Attribute()`.
+   * attributeNamespace
+   * propertyName:
+   *   Used on DOM node instances. (This includes properties that mutate due to
+   *   external factors.)
+   * mutationMethod:
+   *   If non-null, used instead of the property or `setAttribute()` after
+   *   initial render.
+   * mustUseProperty:
+   *   Whether the property must be accessed and mutated as an object property.
+   * hasBooleanValue:
+   *   Whether the property should be removed when set to a falsey value.
+   * hasNumericValue:
+   *   Whether the property must be numeric or parse as a numeric and should be
+   *   removed when set to a falsey value.
+   * hasPositiveNumericValue:
+   *   Whether the property must be positive numeric or parse as a positive
+   *   numeric and should be removed when set to a falsey value.
+   * hasOverloadedBooleanValue:
+   *   Whether the property can be used as a flag as well as with a value.
+   *   Removed when strictly equal to false; present without a value when
+   *   strictly equal to true; present with a value otherwise.
+   */
+  properties: {},
+
+  /**
+   * Mapping from lowercase property names to the properly cased version, used
+   * to warn in the case of missing properties. Available only in __DEV__.
+   *
+   * autofocus is predefined, because adding it to the property whitelist
+   * causes unintended side effects.
+   *
+   * @type {Object}
+   */
+  getPossibleStandardName:  true ? { autofocus: 'autoFocus' } : null,
+
+  /**
+   * All of the isCustomAttribute() functions that have been injected.
+   */
+  _isCustomAttributeFunctions: [],
+
+  /**
+   * Checks whether a property name is a custom attribute.
+   * @method
+   */
+  isCustomAttribute: function (attributeName) {
+    for (var i = 0; i < DOMProperty._isCustomAttributeFunctions.length; i++) {
+      var isCustomAttributeFn = DOMProperty._isCustomAttributeFunctions[i];
+      if (isCustomAttributeFn(attributeName)) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  injection: DOMPropertyInjection
+};
+
+module.exports = DOMProperty;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+module.exports = isObject;
+
+
+/***/ }),
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23182,7 +23182,7 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lodash = __webpack_require__(26);
+var _lodash = __webpack_require__(24);
 
 var _classnames = __webpack_require__(11);
 
@@ -25424,13 +25424,16 @@ var receiveTranscriptTimeout = exports.receiveTranscriptTimeout = function recei
  * Returns an action object with the success status
  * of the fallback ticket request.
  *
- * @param  { String } response The XHR response received. The message to shown or null if something went wrong.
+ * @param  { Object } response Contains the status (a valid HTTP status code) and the responseText received.
  * @return { Object } Action object
  */
-var receiveFallbackTicket = exports.receiveFallbackTicket = function receiveFallbackTicket(response) {
+var receiveFallbackTicket = exports.receiveFallbackTicket = function receiveFallbackTicket(_ref2) {
+  var status = _ref2.status,
+      responseText = _ref2.responseText;
   return {
     type: _actionTypes.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE,
-    response: response
+    status: status,
+    responseText: responseText
   };
 };
 
@@ -26051,7 +26054,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _lodash = __webpack_require__(26);
+var _lodash = __webpack_require__(24);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29538,7 +29541,7 @@ module.exports = CSSProperty;
 
 
 
-var DOMProperty = __webpack_require__(24);
+var DOMProperty = __webpack_require__(25);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactInstrumentation = __webpack_require__(16);
 
@@ -30708,7 +30711,7 @@ module.exports = getActiveElement;
 var _prodInvariant = __webpack_require__(3);
 
 var DOMLazyTree = __webpack_require__(34);
-var DOMProperty = __webpack_require__(24);
+var DOMProperty = __webpack_require__(25);
 var React = __webpack_require__(31);
 var ReactBrowserEventEmitter = __webpack_require__(53);
 var ReactCurrentOwner = __webpack_require__(17);
@@ -32670,7 +32673,7 @@ module.exports = memoize;
 /* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(25);
+var isObject = __webpack_require__(26);
 
 /** `Object#toString` result references. */
 var funcTag = '[object Function]',
@@ -33048,7 +33051,7 @@ module.exports = isString;
 /* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(25),
+var isObject = __webpack_require__(26),
     isSymbol = __webpack_require__(43);
 
 /** Used as references for various `Number` constants. */
@@ -33195,7 +33198,7 @@ module.exports = Stack;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsEqualDeep = __webpack_require__(405),
-    isObject = __webpack_require__(25),
+    isObject = __webpack_require__(26),
     isObjectLike = __webpack_require__(44);
 
 /**
@@ -33414,7 +33417,7 @@ module.exports = baseUnary;
 /* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(25);
+var isObject = __webpack_require__(26);
 
 /**
  * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
@@ -33897,7 +33900,7 @@ module.exports = baseRest;
 var eq = __webpack_require__(57),
     isArrayLike = __webpack_require__(23),
     isIndex = __webpack_require__(91),
-    isObject = __webpack_require__(25);
+    isObject = __webpack_require__(26);
 
 /**
  * Checks if the given arguments are from an iteratee call.
@@ -34104,7 +34107,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _lodash = __webpack_require__(26);
+var _lodash = __webpack_require__(24);
 
 var _localize = __webpack_require__(182);
 
@@ -39377,7 +39380,7 @@ module.exports = EnterLeaveEventPlugin;
 
 
 
-var DOMProperty = __webpack_require__(24);
+var DOMProperty = __webpack_require__(25);
 
 var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -40057,7 +40060,7 @@ var AutoFocusUtils = __webpack_require__(248);
 var CSSPropertyOperations = __webpack_require__(249);
 var DOMLazyTree = __webpack_require__(34);
 var DOMNamespaces = __webpack_require__(72);
-var DOMProperty = __webpack_require__(24);
+var DOMProperty = __webpack_require__(25);
 var DOMPropertyOperations = __webpack_require__(126);
 var EventPluginHub = __webpack_require__(40);
 var EventPluginRegistry = __webpack_require__(48);
@@ -44999,7 +45002,7 @@ module.exports = getUnboundedScrollPosition;
 
 
 
-var DOMProperty = __webpack_require__(24);
+var DOMProperty = __webpack_require__(25);
 var EventPluginHub = __webpack_require__(40);
 var EventPluginUtils = __webpack_require__(66);
 var ReactComponentEnvironment = __webpack_require__(75);
@@ -47097,7 +47100,7 @@ module.exports = ReactMount.renderSubtreeIntoContainer;
 
 
 
-var DOMProperty = __webpack_require__(24);
+var DOMProperty = __webpack_require__(25);
 var EventPluginRegistry = __webpack_require__(48);
 var ReactComponentTreeHook = __webpack_require__(14);
 
@@ -47258,7 +47261,7 @@ module.exports = ReactDOMNullInputValuePropHook;
 
 
 
-var DOMProperty = __webpack_require__(24);
+var DOMProperty = __webpack_require__(25);
 var ReactComponentTreeHook = __webpack_require__(14);
 
 var warning = __webpack_require__(1);
@@ -51103,14 +51106,14 @@ var TicketFormComponent = function () {
 	_createClass(TicketFormComponent, [{
 		key: 'canSubmitForm',
 		value: function canSubmitForm() {
-			var fallbackTicketPath = this.props.entryOptions;
+			var fallbackTicketPath = this.props.entryOptions.fallbackTicketPath;
 
 			return fallbackTicketPath;
 		}
 	}, {
 		key: 'submitForm',
 		value: function submitForm(formState) {
-			var fallbackTicketPath = this.props.entryOptions;
+			var fallbackTicketPath = this.props.entryOptions.fallbackTicketPath;
 
 			this.props.onRequestFallbackTicket(fallbackTicketPath, formState);
 		}
@@ -51204,7 +51207,7 @@ var FormComponent = function () {
 		key: 'getSupportVariation',
 		value: function getSupportVariation() {
 			var _props4 = this.props,
-			    fallbackTicketPath = _props4.entryOptions,
+			    fallbackTicketPath = _props4.entryOptions.fallbackTicketPath,
 			    isUserEligibleForChat = _props4.isUserEligibleForChat,
 			    isChatAvailable = _props4.isChatAvailable;
 
@@ -51326,8 +51329,8 @@ var mapState = function mapState(state) {
 		currentUserEmail: currentUser.email,
 		disabled: !(0, _canUserSendMessages2.default)(state),
 		fallbackTicketResponse: (0, _getFallbackticketResponse2.default)(state),
-		fallbackTicketUrl: (0, _config2.default)('fallback_ticket_url'),
 		fallbackTicketStatus: (0, _getFallbackticketStatus2.default)(state),
+		fallbackTicketUrl: (0, _config2.default)('fallback_ticket_url'),
 		getAuth: (0, _getHappychatAuth2.default)(state),
 		isChatOpen: (0, _isChatformOpen2.default)(state),
 		isChatAvailable: (0, _isAvailable2.default)(state),
@@ -51854,7 +51857,7 @@ module.exports = hashClear;
 var isFunction = __webpack_require__(158),
     isHostObject = __webpack_require__(159),
     isMasked = __webpack_require__(368),
-    isObject = __webpack_require__(25),
+    isObject = __webpack_require__(26),
     toSource = __webpack_require__(161);
 
 /**
@@ -55476,7 +55479,7 @@ module.exports = stubFalse;
 /***/ (function(module, exports, __webpack_require__) {
 
 var debounce = __webpack_require__(454),
-    isObject = __webpack_require__(25);
+    isObject = __webpack_require__(26);
 
 /** Used as the `TypeError` message for "Functions" methods. */
 var FUNC_ERROR_TEXT = 'Expected a function';
@@ -55550,7 +55553,7 @@ module.exports = throttle;
 /* 454 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(25),
+var isObject = __webpack_require__(26),
     now = __webpack_require__(455),
     toNumber = __webpack_require__(169);
 
@@ -58003,7 +58006,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _lodash = __webpack_require__(26);
+var _lodash = __webpack_require__(24);
 
 var _react = __webpack_require__(2);
 
@@ -58107,7 +58110,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _lodash = __webpack_require__(26);
+var _lodash = __webpack_require__(24);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -58205,7 +58208,7 @@ var _propTypes = __webpack_require__(5);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _lodash = __webpack_require__(26);
+var _lodash = __webpack_require__(24);
 
 var _segmentedControl = __webpack_require__(478);
 
@@ -58338,7 +58341,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(26);
+var _lodash = __webpack_require__(24);
 
 var _propTypes = __webpack_require__(5);
 
@@ -58634,7 +58637,7 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lodash = __webpack_require__(26);
+var _lodash = __webpack_require__(24);
 
 var _classnames = __webpack_require__(11);
 
@@ -60032,12 +60035,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(21);
 
+var _lodash = __webpack_require__(24);
+
 var _actionTypes = __webpack_require__(22);
 
 var _constants = __webpack_require__(12);
 
 /**
  * Internal dependencies
+ */
+/** @format */
+
+/**
+ * External dependencies
  */
 var status = function status() {
 	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _constants.HAPPYCHAT_FALLBACK_TICKET_NEW;
@@ -60047,17 +60057,13 @@ var status = function status() {
 		case _actionTypes.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
 			return _constants.HAPPYCHAT_FALLBACK_TICKET_SENDING;
 		case _actionTypes.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE:
-			return action.response === null ? _constants.HAPPYCHAT_FALLBACK_TICKET_FAILURE : _constants.HAPPYCHAT_FALLBACK_TICKET_SUCCESS;
+			return (0, _lodash.startsWith)(action.status, '2') // HTTP succesful status are 2XX
+			? _constants.HAPPYCHAT_FALLBACK_TICKET_SUCCESS : _constants.HAPPYCHAT_FALLBACK_TICKET_FAILURE;
 		case _actionTypes.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT:
 			return _constants.HAPPYCHAT_FALLBACK_TICKET_TIMEOUT;
 	}
 	return state;
-}; /** @format */
-
-/**
- * External dependencies
- */
-
+};
 
 var response = function response() {
 	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -60065,7 +60071,7 @@ var response = function response() {
 
 	switch (action.type) {
 		case _actionTypes.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE:
-			return action.response;
+			return action.responseText;
 		case _actionTypes.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
 		case _actionTypes.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT:
 			return null;
@@ -64332,31 +64338,22 @@ Object.defineProperty(exports, "__esModule", {
 *                     or rejected (returns an error message)
 */
 var makeRequest = function makeRequest(dispatch, action, timeout) {
-	var promiseRace = Promise.race([new Promise(function (resolve, reject) {
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', action.path, true);
-		xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-				return resolve(xhr.responseText);
-			} else if (xhr.readyState === XMLHttpRequest.DONE) {
-				return reject(new Error(xhr.status));
-			}
-		};
-		xhr.send(JSON.stringify(action.payload));
-	}), new Promise(function (resolve, reject) {
-		setTimeout(function () {
-			return reject(new Error('timeout'));
-		}, timeout);
-	})]);
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', action.path, true);
+	xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
 
-	promiseRace.then(function (responseText) {
-		return dispatch(action.callback(responseText));
-	}, function (e) {
-		return e.message === 'timeout' ? dispatch(action.callbackTimeout()) : dispatch(action.callback(false));
-	});
+	xhr.timeout = timeout;
+	xhr.ontimeout = function () {
+		return dispatch(action.callbackTimeout());
+	};
 
-	return promiseRace;
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState === XMLHttpRequest.DONE) {
+			dispatch(action.callback({ status: xhr.status, responseText: xhr.responseText }));
+		}
+	};
+
+	xhr.send(JSON.stringify(action.payload));
 };
 
 exports.default = makeRequest;

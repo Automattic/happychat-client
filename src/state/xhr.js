@@ -23,36 +23,20 @@
 *                     or rejected (returns an error message)
 */
 const makeRequest = ( dispatch, action, timeout ) => {
-	const promiseRace = Promise.race( [
-		new Promise( ( resolve, reject ) => {
-			const xhr = new XMLHttpRequest();
-			xhr.open( 'POST', action.path, true );
-			xhr.setRequestHeader( 'Content-type', 'application/json; charset=UTF-8' );
-			xhr.onreadystatechange = () => {
-				if ( xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200 ) {
-					return resolve( xhr.responseText );
-				} else if ( xhr.readyState === XMLHttpRequest.DONE ) {
-					return reject( new Error( xhr.status ) );
-				}
-			};
-			xhr.send( JSON.stringify( action.payload ) );
-		} ),
-		new Promise( ( resolve, reject ) => {
-			setTimeout( () => {
-				return reject( new Error( 'timeout' ) );
-			}, timeout );
-		} ),
-	] );
+	const xhr = new XMLHttpRequest();
+	xhr.open( 'POST', action.path, true );
+	xhr.setRequestHeader( 'Content-type', 'application/json; charset=UTF-8' );
 
-	promiseRace.then(
-		responseText => dispatch( action.callback( responseText ) ),
-		e =>
-			e.message === 'timeout'
-				? dispatch( action.callbackTimeout() )
-				: dispatch( action.callback( false ) )
-	);
+	xhr.timeout = timeout;
+	xhr.ontimeout = () => dispatch( action.callbackTimeout() );
 
-	return promiseRace;
+	xhr.onreadystatechange = () => {
+		if ( xhr.readyState === XMLHttpRequest.DONE ) {
+			dispatch( action.callback( { status: xhr.status, responseText: xhr.responseText } ) );
+		}
+	};
+
+	xhr.send( JSON.stringify( action.payload ) );
 };
 
 export default makeRequest;
