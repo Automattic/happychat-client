@@ -36195,6 +36195,12 @@ var createIframe = function createIframe(renderMethod, props) {
 
 	document.getElementById(nodeId).appendChild(iframeElement);
 
+	// Force FF (and maybe other browsers?) to write the changes to this iframe;
+	// otherwise, the changes wont' be applied.
+	iframeElement.contentDocument.open();
+	iframeElement.contentDocument.write();
+	iframeElement.contentDocument.close();
+
 	// We want to show a loading indicator while the rest of assets
 	// are downloading. This CSS pertains to the loading indicator
 	// and needs to be available since the very beginning.
