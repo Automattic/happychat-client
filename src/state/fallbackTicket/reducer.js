@@ -4,6 +4,7 @@
  * External dependencies
  */
 import { combineReducers } from 'redux';
+import { startsWith } from 'lodash';
 
 /**
  * Internal dependencies
@@ -26,9 +27,9 @@ const status = ( state = HAPPYCHAT_FALLBACK_TICKET_NEW, action ) => {
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
 			return HAPPYCHAT_FALLBACK_TICKET_SENDING;
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE:
-			return action.response === null
-				? HAPPYCHAT_FALLBACK_TICKET_FAILURE
-				: HAPPYCHAT_FALLBACK_TICKET_SUCCESS;
+			return startsWith( action.status, '2' ) // HTTP succesful status are 2XX
+				? HAPPYCHAT_FALLBACK_TICKET_SUCCESS
+				: HAPPYCHAT_FALLBACK_TICKET_FAILURE;
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT:
 			return HAPPYCHAT_FALLBACK_TICKET_TIMEOUT;
 	}
@@ -38,7 +39,7 @@ const status = ( state = HAPPYCHAT_FALLBACK_TICKET_NEW, action ) => {
 const response = ( state = null, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE:
-			return action.response;
+			return action.responseText;
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT:
 			return null;
