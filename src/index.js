@@ -14,6 +14,7 @@ import { devToolsEnhancer } from 'redux-devtools-extension';
  */
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
+import getUser from 'src/lib/wpcom/get-wpcom-user';
 // UI components
 import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
@@ -21,10 +22,10 @@ import { MessageForm } from 'src/ui/components/message-form';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
-import { sendEvent } from 'src/state/connection/actions';
+import { sendEvent, sendUserInfo } from 'src/state/connection/actions';
 import { setAssetsLoaded } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
-import getUser from 'src/lib/wpcom/get-wpcom-user';
+import getUserInfo from 'src/state/selectors/get-user-info';
 import isAvailable from 'src/state/selectors/is-available';
 
 const store = createStore(
@@ -244,3 +245,6 @@ export const unsubscribeFrom = ( eventName, subscriber ) =>
 		: ''; // do nothing, the subscriber is not in the observers list
 
 export const sendEventMsg = msg => store.dispatch( sendEvent( msg ) );
+
+export const sendUserInfoMsg = userInfo =>
+	store.dispatch( sendUserInfo( getUserInfo( store.getState() )( userInfo ) ) );
