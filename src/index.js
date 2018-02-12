@@ -25,6 +25,7 @@ import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
 import { sendEvent, sendUserInfo } from 'src/state/connection/actions';
 import { setAssetsLoaded } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
+import getChatStatus from 'src/state/selectors/get-chat-status';
 import getUserInfo from 'src/state/selectors/get-user-info';
 import isAvailable from 'src/state/selectors/is-available';
 
@@ -36,14 +37,22 @@ const store = createStore(
 
 const subscribers = {
 	availability: [],
+	chatStatus: [],
 };
 
 let oldAvailability = false;
+let oldChatStatus = 'new';
 store.subscribe( () => {
 	const newAvailability = isAvailable( store.getState() );
 	if ( newAvailability !== oldAvailability ) {
 		oldAvailability = newAvailability;
 		subscribers.availability.forEach( subscriber => subscriber( newAvailability ) );
+	}
+
+	const newChatStatus = getChatStatus( store.getState() );
+	if ( newChatStatus !== oldChatStatus ) {
+		oldChatStatus = newChatStatus;
+		subscribers.chatStatus.forEach( subscriber => subscriber( newChatStatus ) );
 	}
 } );
 
