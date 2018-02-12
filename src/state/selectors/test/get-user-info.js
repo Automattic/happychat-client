@@ -45,8 +45,8 @@ describe( 'HAPPYCHAT_IO_SEND_MESSAGE_USERINFO action', () => {
 
 	test( 'should send relevant browser information to the connection', () => {
 		const expectedInfo = {
-			primaryOptions: 'primaryOptions',
-			secondaryOptions: 'secondaryOptions',
+			howCanWeHelp: 'howCanWeHelp',
+			howYouFeel: 'howYouFeel',
 			siteId: 'siteId',
 			siteUrl: 'siteUrl',
 			localDateTime: moment().format( 'h:mm a, MMMM Do YYYY' ),
@@ -67,8 +67,8 @@ describe( 'HAPPYCHAT_IO_SEND_MESSAGE_USERINFO action', () => {
 				ID: 'siteId',
 				URL: 'siteUrl',
 			},
-			primaryOptions: 'primaryOptions',
-			secondaryOptions: 'secondaryOptions',
+			howCanWeHelp: 'howCanWeHelp',
+			howYouFeel: 'howYouFeel',
 		} );
 
 		expect( userInfo ).toMatchObject( expectedInfo );
