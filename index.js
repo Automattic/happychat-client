@@ -3,7 +3,13 @@
 /**
  * Internal dependencies
  */
-import { initHappychat, subscribeTo, unsubscribeFrom, sendEventMsg, sendUserInfoMsg } from 'src';
+import {
+	initHappychat,
+	subscribeTo,
+	unsubscribeFrom,
+	sendEventMsg,
+	sendUserInfoMsg,
+} from './src/index';
 
 window.Happychat = {
 	open: ( { nodeId, groups, accessToken, entry, entryOptions } ) =>
