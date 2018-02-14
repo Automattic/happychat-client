@@ -18,7 +18,7 @@
     "analyze-bundles": "webpack-bundle-analyzer stats.json .",
     "dist": "run-p dist:*",
     "dist:css": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o dist/happychat.css",
-    "dist:js": "webpack --config webpack.dist.config.js",
+    "dist:js": "rollup -c rollup.config.js",
     "prestart": "npm run targets:standalone",
     "start": "webpack-dev-server --config webpack.standalone.config.js",
     "targets": "run-p targets:*",
@@ -52,6 +52,7 @@
     "postcss-custom-properties": "6.2.0",
     "prettier": "github:automattic/calypso-prettier#717e62ee",
     "react-test-renderer": "15.6.2",
+    "rollup": "0.55.5",
     "webpack": "3.10.0",
     "webpack-bundle-analyzer": "2.9.1",
     "webpack-dev-server": "2.9.4"
