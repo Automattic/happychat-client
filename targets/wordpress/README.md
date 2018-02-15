@@ -16,4 +16,4 @@ Should you want a production build, execute
 
 	npm run dist:js
 
-Then copy the file `dist/happychat.js` to `targets/wordpress/plugin/assets/happychat.js`.
+Then copy the file `targets/dist/happychat.js` to `targets/wordpress/plugin/assets/happychat.js`.
