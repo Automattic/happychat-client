@@ -111,6 +111,7 @@ class Happychat_Client {
 			$happychat_settings = array(
 				'token'  => $token,
 				'nodeId' => Happychat_Client::NODE_ID,
+				'nonce'  => wp_create_nonce( 'wp_rest' ),
 				'groups' => [ $group ],
 				'entryOptions' => [
 					'primaryOptions' => [
