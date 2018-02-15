@@ -2,5 +2,6 @@
 
 This folder contains every one of the host target we actively maintain:
 
-- standalone: how to integrate Happychat into a bare HTML page.
-- WordPress: how to integrate Happychat as a WordPress plugin.
+- dist: the bare JS/CSS assets.
+- standalone: example of integration Happychat into a bare HTML page.
+- WordPress: a WordPress plugin that exposes a happychat shortcode.
