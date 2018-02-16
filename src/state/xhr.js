@@ -26,6 +26,9 @@ const makeRequest = ( dispatch, action, timeout ) => {
 	const xhr = new XMLHttpRequest();
 	xhr.open( 'POST', action.path, true );
 	xhr.setRequestHeader( 'Content-type', 'application/json; charset=UTF-8' );
+	for ( const header in action.headers ) {
+		xhr.setRequestHeader( header, action.headers[ header ] );
+	}
 
 	xhr.timeout = timeout;
 	xhr.ontimeout = () => dispatch( action.callbackTimeout() );

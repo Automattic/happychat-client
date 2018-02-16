@@ -120,7 +120,12 @@ class Happychat_Client {
 						array( 'value' => 'order', 'label' => 'Help with an order' ),
 						array( 'value' => 'broken', 'label' => 'Something is broken' ),
 					],
-					'fallbackTicketPath' => $fallback_ticket_path,
+					'fallbackTicket' => array(
+						'path' => $fallback_ticket_path,
+						'headers' => array(
+							'X-WP-Nonce' => wp_create_nonce( 'wp_rest' ),
+						)
+					),
 				],
 			);
 
