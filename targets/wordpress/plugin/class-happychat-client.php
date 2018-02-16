@@ -122,9 +122,7 @@ class Happychat_Client {
 					],
 					'fallbackTicket' => array(
 						'path' => $fallback_ticket_path,
-						'headers' => array(
-							'X-WP-Nonce' => wp_create_nonce( 'wp_rest' ),
-						)
+						'headers' => array( 'X-WP-Nonce' => wp_create_nonce( 'wp_rest' ) ),
 					),
 				],
 			);
