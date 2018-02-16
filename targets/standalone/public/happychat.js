@@ -67067,9 +67067,9 @@ var TicketFormComponent = function () {
 	_createClass(TicketFormComponent, [{
 		key: 'canSubmitForm',
 		value: function canSubmitForm() {
-			var path = this.props.entryOptions.fallbackTicket.path;
+			var fallbackTicket = this.props.entryOptions.fallbackTicket;
 
-			return path;
+			return fallbackTicket && fallbackTicket.path;
 		}
 	}, {
 		key: 'submitForm',
@@ -67170,11 +67170,11 @@ var FormComponent = function () {
 		key: 'getSupportVariation',
 		value: function getSupportVariation() {
 			var _props4 = this.props,
-			    path = _props4.entryOptions.fallbackTicket.path,
+			    fallbackTicket = _props4.entryOptions.fallbackTicket,
 			    isUserEligibleForChat = _props4.isUserEligibleForChat,
 			    isChatAvailable = _props4.isChatAvailable;
 
-			if (!path || isUserEligibleForChat && isChatAvailable) {
+			if (!fallbackTicket || !fallbackTicket.path || isUserEligibleForChat && isChatAvailable) {
 				return new ChatFormComponent(this.props);
 			}
 			return new TicketFormComponent(this.props);
