@@ -14,11 +14,11 @@ import { devToolsEnhancer } from 'redux-devtools-extension';
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
 import getUser from 'src/lib/wpcom/get-wpcom-user';
-import eventAPIFactory from 'src/events';
 // UI components
 import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
 // state: general, actions, selectors
+import eventAPIFactory from 'src/state/event-api';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
