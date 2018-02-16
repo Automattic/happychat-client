@@ -111,7 +111,6 @@ class Happychat_Client {
 			$happychat_settings = array(
 				'token'  => $token,
 				'nodeId' => Happychat_Client::NODE_ID,
-				'nonce'  => wp_create_nonce( 'wp_rest' ),
 				'groups' => [ $group ],
 				'entryOptions' => [
 					'primaryOptions' => [
@@ -123,6 +122,9 @@ class Happychat_Client {
 					],
 					'fallbackTicket' => array(
 						'path' => $fallback_ticket_path,
+						'headers' => array(
+							'X-WP-Nonce' => wp_create_nonce( 'wp_rest' ),
+						)
 					),
 				],
 			);

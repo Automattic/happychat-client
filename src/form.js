@@ -166,8 +166,8 @@ class TicketFormComponent {
 	}
 
 	submitForm( formState ) {
-		const { entryOptions: { fallbackTicket: { path } } } = this.props;
-		this.props.onRequestFallbackTicket( path, formState );
+		const { entryOptions: { fallbackTicket: { path, headers } } } = this.props;
+		this.props.onRequestFallbackTicket( { path, headers, payload: formState } );
 	}
 
 	render() {
