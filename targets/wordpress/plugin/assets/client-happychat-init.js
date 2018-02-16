@@ -13,8 +13,5 @@ window.Happychat &&
 		accessToken: happychatSettings.token,
 		nodeId: happychatSettings.nodeId,
 		groups: happychatSettings.groups,
-		entryOptions: {
-			primaryOptions: happychatSettings.primaryOptions,
-			fallbackTicketPath: happychatSettings.fallbackTicketPath,
-		},
+		entryOptions: happychatSettings.entryOptions,
 	} );
