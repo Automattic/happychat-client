@@ -161,13 +161,13 @@ class TicketFormComponent {
 	}
 
 	canSubmitForm() {
-		const { entryOptions: { fallbackTicketPath } } = this.props;
-		return fallbackTicketPath;
+		const { entryOptions: { fallbackTicket: { path } } } = this.props;
+		return path;
 	}
 
 	submitForm( formState ) {
-		const { entryOptions: { fallbackTicketPath } } = this.props;
-		this.props.onRequestFallbackTicket( fallbackTicketPath, formState );
+		const { entryOptions: { fallbackTicket: { path } } } = this.props;
+		this.props.onRequestFallbackTicket( path, formState );
 	}
 
 	render() {
@@ -240,11 +240,11 @@ class FormComponent {
 
 	getSupportVariation() {
 		const {
-			entryOptions: { fallbackTicketPath },
+			entryOptions: { fallbackTicket: { path } },
 			isUserEligibleForChat,
 			isChatAvailable,
 		} = this.props;
-		if ( ! fallbackTicketPath || ( isUserEligibleForChat && isChatAvailable ) ) {
+		if ( ! path || ( isUserEligibleForChat && isChatAvailable ) ) {
 			return new ChatFormComponent( this.props );
 		}
 		return new TicketFormComponent( this.props );
