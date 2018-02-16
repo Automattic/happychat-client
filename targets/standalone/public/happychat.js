@@ -27679,11 +27679,16 @@ var requestTranscript = exports.requestTranscript = function requestTranscript(t
  *                 	 will dispatch the receiveTranscriptTimeout action.
  * @return { Object } Action object
  */
-var requestFallbackTicket = exports.requestFallbackTicket = function requestFallbackTicket(path, payload) {
-  var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10000;
+var requestFallbackTicket = exports.requestFallbackTicket = function requestFallbackTicket(_ref3) {
+  var path = _ref3.path,
+      headers = _ref3.headers,
+      payload = _ref3.payload,
+      _ref3$timeout = _ref3.timeout,
+      timeout = _ref3$timeout === undefined ? 10000 : _ref3$timeout;
   return {
     type: _actionTypes.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
     path: path,
+    headers: headers,
     payload: payload,
     timeout: timeout,
     callback: receiveFallbackTicket,
@@ -67113,16 +67118,18 @@ var TicketFormComponent = function () {
 	_createClass(TicketFormComponent, [{
 		key: 'canSubmitForm',
 		value: function canSubmitForm() {
-			var fallbackTicketPath = this.props.entryOptions.fallbackTicketPath;
+			var path = this.props.entryOptions.fallbackTicket.path;
 
-			return fallbackTicketPath;
+			return path;
 		}
 	}, {
 		key: 'submitForm',
 		value: function submitForm(formState) {
-			var fallbackTicketPath = this.props.entryOptions.fallbackTicketPath;
+			var _props$entryOptions$f = this.props.entryOptions.fallbackTicket,
+			    path = _props$entryOptions$f.path,
+			    headers = _props$entryOptions$f.headers;
 
-			this.props.onRequestFallbackTicket(fallbackTicketPath, formState);
+			this.props.onRequestFallbackTicket({ path: path, headers: headers, payload: formState });
 		}
 	}, {
 		key: 'render',
@@ -67214,11 +67221,11 @@ var FormComponent = function () {
 		key: 'getSupportVariation',
 		value: function getSupportVariation() {
 			var _props4 = this.props,
-			    fallbackTicketPath = _props4.entryOptions.fallbackTicketPath,
+			    path = _props4.entryOptions.fallbackTicket.path,
 			    isUserEligibleForChat = _props4.isUserEligibleForChat,
 			    isChatAvailable = _props4.isChatAvailable;
 
-			if (!fallbackTicketPath || isUserEligibleForChat && isChatAvailable) {
+			if (!path || isUserEligibleForChat && isChatAvailable) {
 				return new ChatFormComponent(this.props);
 			}
 			return new TicketFormComponent(this.props);
@@ -80348,6 +80355,9 @@ var makeRequest = function makeRequest(dispatch, action, timeout) {
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', action.path, true);
 	xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
+	for (var header in action.headers) {
+		xhr.setRequestHeader(header, action.headers[header]);
+	}
 
 	xhr.timeout = timeout;
 	xhr.ontimeout = function () {
