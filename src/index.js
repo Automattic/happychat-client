@@ -8,13 +8,13 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
-
 /**
  * Internal dependencies
  */
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
 import getUser from 'src/lib/wpcom/get-wpcom-user';
+import eventAPIFactory from 'src/events';
 // UI components
 import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
@@ -22,39 +22,14 @@ import { MessageForm } from 'src/ui/components/message-form';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
-import { sendEvent, sendUserInfo } from 'src/state/connection/actions';
 import { setAssetsLoaded } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
-import getChatStatus from 'src/state/selectors/get-chat-status';
-import getUserInfo from 'src/state/selectors/get-user-info';
-import isAvailable from 'src/state/selectors/is-available';
 
 const store = createStore(
 	reducer,
 	{},
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
-
-const subscribers = {
-	availability: [],
-	chatStatus: [],
-};
-
-let oldAvailability = false;
-let oldChatStatus = 'new';
-store.subscribe( () => {
-	const newAvailability = isAvailable( store.getState() );
-	if ( newAvailability !== oldAvailability ) {
-		oldAvailability = newAvailability;
-		subscribers.availability.forEach( subscriber => subscriber( newAvailability ) );
-	}
-
-	const newChatStatus = getChatStatus( store.getState() );
-	if ( newChatStatus !== oldChatStatus ) {
-		oldChatStatus = newChatStatus;
-		subscribers.chatStatus.forEach( subscriber => subscriber( newChatStatus ) );
-	}
-} );
 
 const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
@@ -243,17 +218,4 @@ export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOption
 		.catch( error => createIframe( renderError, { nodeId, error } ) );
 };
 
-export const subscribeTo = ( eventName, subscriber ) =>
-	subscribers.hasOwnProperty( eventName ) && subscribers[ eventName ].indexOf( subscriber ) === -1
-		? subscribers[ eventName ].push( subscriber )
-		: ''; // do nothing, the subscriber is already in the observers list
-
-export const unsubscribeFrom = ( eventName, subscriber ) =>
-	subscribers.hasOwnProperty( eventName ) && subscribers[ eventName ].indexOf( subscriber ) > -1
-		? subscribers[ eventName ].splice( subscribers[ eventName ].indexOf( subscriber ), 1 )
-		: ''; // do nothing, the subscriber is not in the observers list
-
-export const sendEventMsg = msg => store.dispatch( sendEvent( msg ) );
-
-export const sendUserInfoMsg = userInfo =>
-	store.dispatch( sendUserInfo( getUserInfo( store.getState() )( userInfo ) ) );
+export const eventAPI = eventAPIFactory( store );
