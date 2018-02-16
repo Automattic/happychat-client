@@ -3,7 +3,7 @@
 /**
  * Internal dependencies
  */
-import { initHappychat, subscribeTo, unsubscribeFrom, sendEventMsg, sendUserInfoMsg } from 'src';
+import { initHappychat, eventAPI } from 'src';
 
 window.Happychat = {
 	open: ( { nodeId, groups, accessToken, entry, entryOptions } ) =>
@@ -14,8 +14,8 @@ window.Happychat = {
 			entry,
 			entryOptions,
 		} ),
-	on: ( eventName, callback ) => subscribeTo( eventName, callback ),
-	off: ( eventName, callback ) => unsubscribeFrom( eventName, callback ),
-	sendEvent: msg => sendEventMsg( msg ),
-	sendUserInfo: userInfo => sendUserInfoMsg( userInfo ),
+	on: ( eventName, callback ) => eventAPI.subscribeTo( eventName, callback ),
+	off: ( eventName, callback ) => eventAPI.unsubscribeFrom( eventName, callback ),
+	sendEvent: msg => eventAPI.sendEventMsg( msg ),
+	sendUserInfo: userInfo => eventAPI.sendUserInfoMsg( userInfo ),
 };
