@@ -203,7 +203,7 @@ class TicketFormComponent {
 				if ( ! fallbackTicketPathToShow || ! fallbackTicketResponse ) {
 					hideLink = true;
 				}
-				const link = fallbackTicketPathToShow + fallbackTicketResponse;
+				const link = fallbackTicketPathToShow.replace( '%ticket-id%', fallbackTicketResponse );
 
 				form = (
 					<div className="message-form">
