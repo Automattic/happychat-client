@@ -68,9 +68,11 @@ class Happychat_Client {
 		// this feature will be unavailable.
 		$fallback_ticket_path = null;
 		$fallback_ticket_path = apply_filters( 'happychat_create_ticket_endpoint', $fallback_ticket_path );
-		$fallback_ticket_path = ( '/' === substr( $fallback_ticket_path, 0, 1 ) )
+		if ( ! $fallback_ticket_path ) {
+			$fallback_ticket_path = ( '/' === substr( $fallback_ticket_path, 0, 1 ) )
 			? $fallback_ticket_path
 			: '/' . $fallback_ticket_path;
+		}
 		return $fallback_ticket_path;
 	}
 
