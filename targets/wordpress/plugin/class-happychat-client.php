@@ -63,17 +63,23 @@ class Happychat_Client {
 		return $group;
 	}
 
-	private function get_fallback_ticket_path() {
-		// If the fallback ticket path passed to Happychat is null,
-		// this feature will be unavailable.
-		$fallback_ticket_path = null;
-		$fallback_ticket_path = apply_filters( 'happychat_create_ticket_endpoint', $fallback_ticket_path );
-		if ( ! $fallback_ticket_path ) {
-			$fallback_ticket_path = ( '/' === substr( $fallback_ticket_path, 0, 1 ) )
-			? $fallback_ticket_path
-			: '/' . $fallback_ticket_path;
+	private function get_fallback_ticket_path_create() {
+		// If the path is null,
+		// this feature will be unavailable in Happychat.
+		$fallback_ticket_path_create = apply_filters( 'happychat_create_ticket_endpoint', null );
+		if ( ! $fallback_ticket_path_create ) {
+			$fallback_ticket_path_create = ( '/' === substr( $fallback_ticket_path_create, 0, 1 ) )
+			? $fallback_ticket_path_create
+			: '/' . $fallback_ticket_path_create;
 		}
-		return $fallback_ticket_path;
+		return $fallback_ticket_path_create;
+	}
+
+	private function get_fallback_ticket_path_show() {
+		// If the path is null,
+		// Happychat won't show a ticket link upon success.
+		$fallback_ticket_path_show = apply_filters( 'happychat_show_ticket_url', null );
+		return $fallback_ticket_path_show;
 	}
 
 	private function enqueue_scripts() {
@@ -88,7 +94,8 @@ class Happychat_Client {
 				return;
 			}
 
-			$fallback_ticket_path = $this->get_fallback_ticket_path();
+			$fallback_ticket_path_create = $this->get_fallback_ticket_path_create();
+			$fallback_ticket_path_show = $this->get_fallback_ticket_path_show();
 			$group = $this->get_user_group();
 
 			// load happychat library
@@ -123,7 +130,8 @@ class Happychat_Client {
 						array( 'value' => 'broken', 'label' => 'Something is broken' ),
 					],
 					'fallbackTicket' => array(
-						'path' => $fallback_ticket_path,
+						'pathToCreate' => $fallback_ticket_path_create,
+						'pathToShow' => $fallback_ticket_path_show,
 						'headers' => array( 'X-WP-Nonce' => wp_create_nonce( 'wp_rest' ) ),
 					),
 				],

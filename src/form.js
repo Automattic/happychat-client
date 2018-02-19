@@ -36,10 +36,10 @@ import getChatStatus from 'src/state/selectors/get-chat-status';
 import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
 import getFallbackTicketHeaders from 'src/state/selectors/get-fallbackticket-headers';
-import getFallbackTicketPath from 'src/state/selectors/get-fallbackticket-path';
+import getFallbackTicketPathToCreate from 'src/state/selectors/get-fallbackticket-path-create';
+import getFallbackTicketPathToShow from 'src/state/selectors/get-fallbackticket-path-show';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
-import getFallbackTicketUrl from 'src/state/selectors/get-fallbackticket-url';
 import getUser from 'src/state/selectors/get-user';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
@@ -164,13 +164,13 @@ class TicketFormComponent {
 	}
 
 	canSubmitForm() {
-		return this.props.fallbackTicketPath;
+		return this.props.fallbackTicketPathToCreate;
 	}
 
 	submitForm( formState ) {
-		const { fallbackTicketPath, fallbackTicketHeaders } = this.props;
+		const { fallbackTicketPathToCreate, fallbackTicketHeaders } = this.props;
 		this.props.onRequestFallbackTicket( {
-			path: fallbackTicketPath,
+			path: fallbackTicketPathToCreate,
 			headers: fallbackTicketHeaders,
 			payload: formState,
 		} );
@@ -179,8 +179,8 @@ class TicketFormComponent {
 	render() {
 		const {
 			fallbackTicketResponse,
-			fallbackTicketUrl,
 			fallbackTicketStatus,
+			fallbackTicketPathToShow,
 			entryOptions: {
 				formTitle,
 				primaryOptions,
@@ -199,20 +199,29 @@ class TicketFormComponent {
 				form = <MessageForm message="Sorry, ticket could not be created - something went wrong." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
-				const link = fallbackTicketUrl + fallbackTicketResponse;
+				let hideLink = false;
+				if ( ! fallbackTicketPathToShow || ! fallbackTicketResponse ) {
+					hideLink = true;
+				}
+				const link = fallbackTicketPathToShow + fallbackTicketResponse;
+
 				form = (
 					<div className="message-form">
 						<CompactCard>
 							<p className="message-form__header-title">Contact Us</p>
 						</CompactCard>
 						<Card>
-							<FormLabel>
-								Thanks! Ticket{' '}
-								<a href={ link } target="_blank">
-									{ fallbackTicketResponse }
-								</a>{' '}
-								has been successfully created.
-							</FormLabel>
+							{ hideLink ? (
+								<FormLabel>Thanks! Ticket has been successfully created.</FormLabel>
+							) : (
+								<FormLabel>
+									Thanks! Ticket{' '}
+									<a href={ link } target="_blank">
+										{ fallbackTicketResponse }
+									</a>{' '}
+									has been successfully created.
+								</FormLabel>
+							) }
 						</Card>
 					</div>
 				);
@@ -245,8 +254,8 @@ class FormComponent {
 	}
 
 	getSupportVariation() {
-		const { fallbackTicketPath, isUserEligibleForChat, isChatAvailable } = this.props;
-		if ( ! fallbackTicketPath || ( isUserEligibleForChat && isChatAvailable ) ) {
+		const { fallbackTicketPathToCreate, isUserEligibleForChat, isChatAvailable } = this.props;
+		if ( ! fallbackTicketPathToCreate || ( isUserEligibleForChat && isChatAvailable ) ) {
 			return new ChatFormComponent( this.props );
 		}
 		return new TicketFormComponent( this.props );
@@ -332,10 +341,10 @@ const mapState = state => {
 		currentUserEmail: currentUser.email,
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
-		fallbackTicketPath: getFallbackTicketPath( state ),
+		fallbackTicketPathToCreate: getFallbackTicketPathToCreate( state ),
+		fallbackTicketPathToShow: getFallbackTicketPathToShow( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
-		fallbackTicketUrl: getFallbackTicketUrl( state ),
 		getAuth: getHappychatAuth( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),

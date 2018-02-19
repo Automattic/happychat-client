@@ -48,14 +48,6 @@ const response = ( state = null, action ) => {
 	return state;
 };
 
-const path = ( state = null, action ) => {
-	switch ( action.type ) {
-		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return action.options.path;
-	}
-	return state;
-};
-
 const headers = ( state = [], action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
@@ -64,12 +56,20 @@ const headers = ( state = [], action ) => {
 	return state;
 };
 
-const url = ( state = null, action ) => {
+const pathToCreate = ( state = null, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return action.options.url;
+			return action.options.pathToCreate;
 	}
 	return state;
 };
 
-export default combineReducers( { headers, path, response, status, url } );
+const pathToShow = ( state = null, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return action.options.pathToShow;
+	}
+	return state;
+};
+
+export default combineReducers( { headers, pathToCreate, pathToShow, response, status } );
