@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import CompactCard from 'src/ui/components/card/compact';
 import Card from 'src/ui/components/card';
 import FormTextarea from 'src/ui/components/form-textarea';
+import FormTextInput from 'src/ui/components/form-text-input';
 import FormLabel from 'src/ui/components/form-label';
 import FormButton from 'src/ui/components/form-button';
 import FormSelection from 'src/ui/components/form-selection';
@@ -19,14 +20,20 @@ import FormSelection from 'src/ui/components/form-selection';
 export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
-		this.state = { message: '', primaryOptionSelected: null, secondaryOptionSelected: null };
-		this.handleMsgChange = this.handleMsgChange.bind( this );
+		this.state = {
+			subject: '',
+			message: '',
+			primaryOptionSelected: null,
+			secondaryOptionSelected: null,
+		};
+		this.handleChange = this.handleChange.bind( this );
 		this.handleOptionChange = this.handleOptionChange.bind( this );
 		this.prepareSubmitForm = this.prepareSubmitForm.bind( this );
 	}
 
-	handleMsgChange( e ) {
-		this.setState( { message: e.target.value } );
+	handleChange( e ) {
+		const { name, value } = e.currentTarget;
+		this.setState( { [ name ]: value } );
 	}
 
 	handleOptionChange( optionName ) {
@@ -36,7 +43,11 @@ export class ContactForm extends React.Component {
 	}
 
 	prepareCanSubmitForm() {
-		return this.state.message !== '' && this.props.canSubmitForm();
+		let canSubmit = '' !== this.state.message;
+		if ( this.props.showSubject ) {
+			canSubmit = canSubmit && '' !== this.state.subject;
+		}
+		return canSubmit && this.props.canSubmitForm();
 	}
 
 	prepareSubmitForm() {
@@ -51,6 +62,7 @@ export class ContactForm extends React.Component {
 			secondaryOptions,
 			secondaryOptionsTitle,
 			submitFormText,
+			showSubject,
 		} = this.props;
 
 		return (
@@ -82,12 +94,25 @@ export class ContactForm extends React.Component {
 						''
 					) }
 
+					{ showSubject ? (
+						<div>
+							<FormLabel>{ 'Subject' }</FormLabel>
+							<FormTextInput
+								name="subject"
+								value={ this.state.subject }
+								onChange={ this.handleChange }
+							/>
+						</div>
+					) : (
+						''
+					) }
+
 					<FormLabel>What are you trying to do?</FormLabel>
 					<FormTextarea
 						placeholder="Please be descriptive"
 						name="message"
 						value={ this.state.message }
-						onChange={ this.handleMsgChange }
+						onChange={ this.handleChange }
 					/>
 
 					<FormButton
@@ -110,6 +135,7 @@ ContactForm.propTypes = {
 	primaryOptionsTitle: PropTypes.string,
 	secondaryOptions: PropTypes.array,
 	secondaryOptionsTitle: PropTypes.string,
+	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
 };
@@ -121,6 +147,7 @@ ContactForm.defaultProps = {
 	primaryOptionsTitle: 'How can we help?',
 	secondaryOptions: [],
 	secondaryOptionsTitle: 'Any more info you want to share?',
+	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',
 };

@@ -148,6 +148,7 @@ class ChatFormComponent {
 				primaryOptionsTitle={ primaryOptionsTitle }
 				secondaryOptions={ secondaryOptions }
 				secondaryOptionsTitle={ secondaryOptionsTitle }
+				showSubject={ false }
 				submitForm={ this.submitForm }
 				submitFormText={ 'Chat with us' }
 			/>
@@ -243,6 +244,7 @@ class TicketFormComponent {
 						primaryOptionsTitle={ primaryOptionsTitle }
 						secondaryOptions={ secondaryOptions }
 						secondaryOptionsTitle={ secondaryOptionsTitle }
+						showSubject={ true }
 						submitForm={ this.submitForm }
 						submitFormText={ 'Send a ticket' }
 					/>
