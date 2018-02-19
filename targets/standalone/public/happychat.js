@@ -52126,7 +52126,7 @@ var createIframe = function createIframe(renderMethod, props) {
 
 	// style iframe element
 	iframeElement.width = '100%';
-	iframeElement.height = '500em';
+	iframeElement.height = '560em';
 	iframeElement.frameBorder = 0;
 	iframeElement.scrolling = 'no';
 
