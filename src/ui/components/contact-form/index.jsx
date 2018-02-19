@@ -20,11 +20,11 @@ export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
 		this.state = { message: '' };
-		this.handleChange = this.handleChange.bind( this );
+		this.handleMsgChange = this.handleMsgChange.bind( this );
 		this.prepareSubmitForm = this.prepareSubmitForm.bind( this );
 	}
 
-	handleChange( e ) {
+	handleMsgChange( e ) {
 		this.setState( { message: e.target.value } );
 	}
 
@@ -75,7 +75,7 @@ export class ContactForm extends React.Component {
 						placeholder="Please be descriptive"
 						name="message"
 						value={ this.state.message }
-						onChange={ this.handleChange }
+						onChange={ this.handleMsgChange }
 					/>
 
 					<FormButton
