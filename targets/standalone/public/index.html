@@ -14,7 +14,18 @@
   <div id="support"></div>
   <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
   <script type="text/javascript">
-		Happychat.open( { nodeId: 'support' } );
+		Happychat.open( { nodeId: 'support', entryOptions: {
+			primaryOptions: [
+				{ 'value': 'before-buy', 'label': 'Before you buy' },
+				{ 'value': 'account', 'label': 'Help with my account' },
+				{ 'value': 'broken', 'label': 'Something is broken' },
+			],
+			secondaryOptions: [
+				{ 'value': 'config', 'label': 'Help configuring' },
+				{ 'value': 'order', 'label': 'Help with an order' },
+			],
+			fallbackTicket: { path: '/' }
+		} } );
 
 		// test events API
 		var reportChatStatus= function(chatStatus){

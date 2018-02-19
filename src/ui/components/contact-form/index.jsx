@@ -19,13 +19,20 @@ import FormSelection from 'src/ui/components/form-selection';
 export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
-		this.state = { message: '' };
-		this.handleChange = this.handleChange.bind( this );
+		this.state = { message: '', primaryOptionSelected: null, secondaryOptionSelected: null };
+		this.handleMsgChange = this.handleMsgChange.bind( this );
+		this.handleOptionChange = this.handleOptionChange.bind( this );
 		this.prepareSubmitForm = this.prepareSubmitForm.bind( this );
 	}
 
-	handleChange( e ) {
+	handleMsgChange( e ) {
 		this.setState( { message: e.target.value } );
+	}
+
+	handleOptionChange( optionName ) {
+		return value => {
+			this.setState( { [ optionName ]: value } );
+		};
 	}
 
 	prepareCanSubmitForm() {
@@ -33,8 +40,7 @@ export class ContactForm extends React.Component {
 	}
 
 	prepareSubmitForm() {
-		const { submitForm } = this.props;
-		submitForm( { message: this.state.message } );
+		this.props.submitForm( this.state );
 	}
 
 	render() {
@@ -56,7 +62,10 @@ export class ContactForm extends React.Component {
 					{ primaryOptions && primaryOptions.length > 0 ? (
 						<div>
 							<FormLabel>{ primaryOptionsTitle }</FormLabel>
-							<FormSelection options={ primaryOptions } />
+							<FormSelection
+								options={ primaryOptions }
+								onClick={ this.handleOptionChange( 'primaryOptionSelected' ) }
+							/>
 						</div>
 					) : (
 						''
@@ -64,7 +73,10 @@ export class ContactForm extends React.Component {
 					{ secondaryOptions && secondaryOptions.length > 0 ? (
 						<div>
 							<FormLabel>{ secondaryOptionsTitle }</FormLabel>
-							<FormSelection options={ secondaryOptions } />
+							<FormSelection
+								options={ secondaryOptions }
+								onClick={ this.handleOptionChange( 'secondaryOptionSelected' ) }
+							/>
 						</div>
 					) : (
 						''
@@ -75,7 +87,7 @@ export class ContactForm extends React.Component {
 						placeholder="Please be descriptive"
 						name="message"
 						value={ this.state.message }
-						onChange={ this.handleChange }
+						onChange={ this.handleMsgChange }
 					/>
 
 					<FormButton

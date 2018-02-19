@@ -19,6 +19,14 @@ class FormSelection extends React.Component {
 	constructor( props ) {
 		super( props );
 		this.state = { selection: this.props.options[ 0 ].value };
+		this.handleClick = this.handleClick.bind( this );
+	}
+
+	handleClick( value ) {
+		return () => {
+			this.setState( { selection: value } );
+			this.props.onClick( value );
+		};
 	}
 
 	render() {
@@ -34,9 +42,7 @@ class FormSelection extends React.Component {
 				selected: option.value === this.state.selection,
 				value: option.value,
 				title: option.label,
-				onClick: () => {
-					this.setState( { selection: option.value } );
-				},
+				onClick: this.handleClick( option.value ),
 			},
 		} ) );
 		const selectedItem = find( opts, 'props.selected' );
@@ -63,10 +69,12 @@ class FormSelection extends React.Component {
 
 FormSelection.propTypes = {
 	options: PropTypes.array.isRequired,
+	onClick: PropTypes.func,
 };
 
 FormSelection.defaultProps = {
 	options: [],
+	onClick: () => {},
 };
 
 export default FormSelection;
