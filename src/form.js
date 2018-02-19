@@ -203,8 +203,6 @@ class TicketFormComponent {
 				if ( ! fallbackTicketPathToShow || ! fallbackTicketResponse ) {
 					hideLink = true;
 				}
-				const link = fallbackTicketPathToShow.replace( '%ticket-id%', fallbackTicketResponse );
-
 				form = (
 					<div className="message-form">
 						<CompactCard>
@@ -216,7 +214,13 @@ class TicketFormComponent {
 							) : (
 								<FormLabel>
 									Thanks! Ticket{' '}
-									<a href={ link } target="_blank">
+									<a
+										href={ fallbackTicketPathToShow.replace(
+											'%ticket-id%',
+											fallbackTicketResponse
+										) }
+										target="_blank"
+									>
 										{ fallbackTicketResponse }
 									</a>{' '}
 									has been successfully created.
