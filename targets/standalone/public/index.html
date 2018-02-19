@@ -25,7 +25,10 @@
 				{ 'value': 'order', 'label': 'Help with an order' },
 			],
 			fallbackTicket: {
-				headers: [ {'X-Test-Header': 'test header'} ],
+				headers: {
+					'X-Test-Header': 'test header',
+					'X-Test-Header-2': 'test 2'
+				},
 				path: '/create-ticket'
 			}
 		} } );
