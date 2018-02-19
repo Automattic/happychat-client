@@ -24,7 +24,10 @@
 				{ 'value': 'config', 'label': 'Help configuring' },
 				{ 'value': 'order', 'label': 'Help with an order' },
 			],
-			fallbackTicket: { path: '/' }
+			fallbackTicket: {
+				headers: [ {'X-Test-Header': 'test header'} ],
+				path: '/'
+			}
 		} } );
 
 		// test events API
