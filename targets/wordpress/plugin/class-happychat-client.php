@@ -78,7 +78,7 @@ class Happychat_Client {
 	private function get_fallback_ticket_path_show() {
 		// If the path is null,
 		// Happychat won't show a ticket link upon success.
-		$fallback_ticket_path_show = apply_filters( 'happychat_show_ticket_url', null );
+		$fallback_ticket_path_show = apply_filters( 'happychat_show_ticket_path', null );
 		return $fallback_ticket_path_show;
 	}
 

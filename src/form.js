@@ -216,7 +216,7 @@ class TicketFormComponent {
 									Thanks! Ticket{' '}
 									<a
 										href={ fallbackTicketPathToShow.replace(
-											'%ticket-id%',
+											'<ticket-id>',
 											fallbackTicketResponse
 										) }
 										target="_blank"
