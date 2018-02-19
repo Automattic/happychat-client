@@ -13,6 +13,7 @@ import {
 	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
 	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE,
 	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT,
+	HAPPYCHAT_FALLBACK_TICKET_OPTIONS,
 } from '../action-types';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
@@ -47,4 +48,28 @@ const response = ( state = null, action ) => {
 	return state;
 };
 
-export default combineReducers( { status, response } );
+const headers = ( state = [], action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return action.options.headers || [];
+	}
+	return state;
+};
+
+const pathToCreate = ( state = null, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return action.options.pathToCreate;
+	}
+	return state;
+};
+
+const pathToShow = ( state = null, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return action.options.pathToShow;
+	}
+	return state;
+};
+
+export default combineReducers( { headers, pathToCreate, pathToShow, response, status } );
