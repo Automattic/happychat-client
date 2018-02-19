@@ -73754,6 +73754,8 @@ var _formSelection2 = _interopRequireDefault(_formSelection);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -73778,16 +73780,26 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (ContactForm.__proto__ || Object.getPrototypeOf(ContactForm)).call(this, props));
 
-		_this.state = { message: '' };
-		_this.handleChange = _this.handleChange.bind(_this);
+		_this.state = { message: '', primaryOptionSelected: null, secondaryOptionSelected: null };
+		_this.handleMsgChange = _this.handleMsgChange.bind(_this);
+		_this.handleOptionChange = _this.handleOptionChange.bind(_this);
 		_this.prepareSubmitForm = _this.prepareSubmitForm.bind(_this);
 		return _this;
 	}
 
 	_createClass(ContactForm, [{
-		key: 'handleChange',
-		value: function handleChange(e) {
+		key: 'handleMsgChange',
+		value: function handleMsgChange(e) {
 			this.setState({ message: e.target.value });
+		}
+	}, {
+		key: 'handleOptionChange',
+		value: function handleOptionChange(optionName) {
+			var _this2 = this;
+
+			return function (value) {
+				_this2.setState(_defineProperty({}, optionName, value));
+			};
 		}
 	}, {
 		key: 'prepareCanSubmitForm',
@@ -73797,9 +73809,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	}, {
 		key: 'prepareSubmitForm',
 		value: function prepareSubmitForm() {
-			var submitForm = this.props.submitForm;
-
-			submitForm({ message: this.state.message });
+			this.props.submitForm(this.state);
 		}
 	}, {
 		key: 'render',
@@ -73836,7 +73846,10 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 							null,
 							primaryOptionsTitle
 						),
-						_react2.default.createElement(_formSelection2.default, { options: primaryOptions })
+						_react2.default.createElement(_formSelection2.default, {
+							options: primaryOptions,
+							onClick: this.handleOptionChange('primaryOptionSelected')
+						})
 					) : '',
 					secondaryOptions && secondaryOptions.length > 0 ? _react2.default.createElement(
 						'div',
@@ -73846,7 +73859,10 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 							null,
 							secondaryOptionsTitle
 						),
-						_react2.default.createElement(_formSelection2.default, { options: secondaryOptions })
+						_react2.default.createElement(_formSelection2.default, {
+							options: secondaryOptions,
+							onClick: this.handleOptionChange('secondaryOptionSelected')
+						})
 					) : '',
 					_react2.default.createElement(
 						_formLabel2.default,
@@ -73857,7 +73873,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 						placeholder: 'Please be descriptive',
 						name: 'message',
 						value: this.state.message,
-						onChange: this.handleChange
+						onChange: this.handleMsgChange
 					}),
 					_react2.default.createElement(
 						_formButton2.default,
@@ -74216,13 +74232,24 @@ var FormSelection = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (FormSelection.__proto__ || Object.getPrototypeOf(FormSelection)).call(this, props));
 
 		_this.state = { selection: _this.props.options[0].value };
+		_this.handleClick = _this.handleClick.bind(_this);
 		return _this;
 	}
 
 	_createClass(FormSelection, [{
+		key: 'handleClick',
+		value: function handleClick(value) {
+			var _this2 = this;
+
+			return function () {
+				_this2.setState({ selection: value });
+				_this2.props.onClick(value);
+			};
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			var _this2 = this;
+			var _this3 = this;
 
 			var options = this.props.options;
 
@@ -74237,12 +74264,10 @@ var FormSelection = function (_React$Component) {
 					) : null,
 					props: {
 						key: option.value,
-						selected: option.value === _this2.state.selection,
+						selected: option.value === _this3.state.selection,
 						value: option.value,
 						title: option.label,
-						onClick: function onClick() {
-							_this2.setState({ selection: option.value });
-						}
+						onClick: _this3.handleClick(option.value)
 					}
 				};
 			});
@@ -74282,11 +74307,13 @@ var FormSelection = function (_React$Component) {
 }(_react2.default.Component);
 
 FormSelection.propTypes = {
-	options: _propTypes2.default.array.isRequired
+	options: _propTypes2.default.array.isRequired,
+	onClick: _propTypes2.default.func
 };
 
 FormSelection.defaultProps = {
-	options: []
+	options: [],
+	onClick: function onClick() {}
 };
 
 exports.default = FormSelection;
