@@ -64,4 +64,12 @@ const headers = ( state = [], action ) => {
 	return state;
 };
 
-export default combineReducers( { headers, path, response, status } );
+const url = ( state = null, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return action.options.url;
+	}
+	return state;
+};
+
+export default combineReducers( { headers, path, response, status, url } );

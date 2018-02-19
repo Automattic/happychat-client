@@ -39,6 +39,7 @@ import getFallbackTicketHeaders from 'src/state/selectors/get-fallbackticket-hea
 import getFallbackTicketPath from 'src/state/selectors/get-fallbackticket-path';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
+import getFallbackTicketUrl from 'src/state/selectors/get-fallbackticket-url';
 import getUser from 'src/state/selectors/get-user';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
@@ -330,11 +331,11 @@ const mapState = state => {
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
 		disabled: ! canUserSendMessages( state ),
+		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
+		fallbackTicketPath: getFallbackTicketPath( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
-		fallbackTicketUrl: config( 'fallback_ticket_url' ),
-		fallbackTicketPath: getFallbackTicketPath( state ),
-		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
+		fallbackTicketUrl: getFallbackTicketUrl( state ),
 		getAuth: getHappychatAuth( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
