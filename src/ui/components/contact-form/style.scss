@@ -9,6 +9,14 @@
 	.form-button {
 		margin-top: 11px;
 	}
+
+	.contact-form__item-list {
+		margin-bottom: 24px;
+
+		@include breakpoint( '>960px' ) {
+			margin-bottom: 32px;
+		}
+	}
 }
 
 .contact-form__header-title {

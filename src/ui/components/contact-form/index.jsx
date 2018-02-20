@@ -16,6 +16,7 @@ import FormTextInput from 'src/ui/components/form-text-input';
 import FormLabel from 'src/ui/components/form-label';
 import FormButton from 'src/ui/components/form-button';
 import FormSelection from 'src/ui/components/form-selection';
+import SelectDropdown from 'src/ui/components/select-dropdown';
 
 export class ContactForm extends React.Component {
 	constructor( props ) {
@@ -25,8 +26,10 @@ export class ContactForm extends React.Component {
 			message: '',
 			primaryOptionSelected: null,
 			secondaryOptionSelected: null,
+			itemSelected: null,
 		};
 		this.handleChange = this.handleChange.bind( this );
+		this.handleItemSelected = this.handleItemSelected.bind( this );
 		this.handleOptionChange = this.handleOptionChange.bind( this );
 		this.prepareSubmitForm = this.prepareSubmitForm.bind( this );
 	}
@@ -34,6 +37,10 @@ export class ContactForm extends React.Component {
 	handleChange( e ) {
 		const { name, value } = e.currentTarget;
 		this.setState( { [ name ]: value } );
+	}
+
+	handleItemSelected( option ) {
+		this.setState( { itemSelected: option.value } );
 	}
 
 	handleOptionChange( optionName ) {
@@ -61,6 +68,8 @@ export class ContactForm extends React.Component {
 			primaryOptionsTitle,
 			secondaryOptions,
 			secondaryOptionsTitle,
+			itemListTitle,
+			itemList,
 			submitFormText,
 			showSubject,
 		} = this.props;
@@ -89,6 +98,15 @@ export class ContactForm extends React.Component {
 								options={ secondaryOptions }
 								onClick={ this.handleOptionChange( 'secondaryOptionSelected' ) }
 							/>
+						</div>
+					) : (
+						''
+					) }
+
+					{ itemList && itemList.length > 0 ? (
+						<div className="contact-form__item-list">
+							<FormLabel>{ itemListTitle }</FormLabel>
+							<SelectDropdown options={ itemList } onSelect={ this.handleItemSelected } />
 						</div>
 					) : (
 						''
@@ -135,6 +153,8 @@ ContactForm.propTypes = {
 	primaryOptionsTitle: PropTypes.string,
 	secondaryOptions: PropTypes.array,
 	secondaryOptionsTitle: PropTypes.string,
+	itemListTitle: PropTypes.string,
+	itemList: PropTypes.array,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
@@ -147,6 +167,8 @@ ContactForm.defaultProps = {
 	primaryOptionsTitle: 'How can we help?',
 	secondaryOptions: [],
 	secondaryOptionsTitle: 'Any more info you want to share?',
+	itemListTitle: 'Which product do you need help with?',
+	itemList: [],
 	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',
