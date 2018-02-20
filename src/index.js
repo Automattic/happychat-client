@@ -45,12 +45,19 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
  */
 const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
-	const { nodeId } = props;
+	const { nodeId, entryOptions } = props;
 	const iframeElement = document.createElement( 'iframe' );
+
+	// Calculate height based on the number of components
+	// the iframe may need to render.
+	let iframeHeight = 380;
+	iframeHeight = iframeHeight + ( entryOptions.primaryOptions ? 110 : 0 );
+	iframeHeight = iframeHeight + ( entryOptions.secondaryOptions ? 110 : 0 );
+	iframeHeight = iframeHeight + ( entryOptions.itemList ? 70 : 0 );
 
 	// style iframe element
 	iframeElement.width = '100%';
-	iframeElement.height = '560em';
+	iframeElement.height = iframeHeight + 'em';
 	iframeElement.frameBorder = 0;
 	iframeElement.scrolling = 'no';
 
