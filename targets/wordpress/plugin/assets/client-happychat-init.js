@@ -10,8 +10,9 @@
 
 window.Happychat &&
 	Happychat.open( {
-		accessToken: happychatSettings.token,
 		nodeId: happychatSettings.nodeId,
+		accessToken: happychatSettings.accessToken,
 		groups: happychatSettings.groups,
+		entry: happychatSettings.entry,
 		entryOptions: happychatSettings.entryOptions,
 	} );

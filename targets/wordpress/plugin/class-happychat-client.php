@@ -7,7 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Happychat_Client {
 	private static $_instance = null;
 	const VERSION = '0.0.1-dev';
-	const NODE_ID = 'happychat-form';
 
 	/**
 	* Create instance of class
@@ -25,8 +24,17 @@ class Happychat_Client {
 	}
 
 	public function shortcode_to_happychat_form( $atts ) {
-		$this->enqueue_scripts();
-		return '<div id="' . Happychat_Client::NODE_ID . '"></div>';
+		$happychat_settings = $this->get_happychat_settings();
+
+		// The host should provide a valid WordPress.com token
+		// for the user, so we can make authenticated requests
+		// on its behalf.
+		if ( ! $happychat_settings[ 'accessToken' ] ) {
+			return '';
+		}
+
+		$this->enqueue_scripts( $happychat_settings );
+		return '<div id="' . $happychat_settings[ 'nodeId' ] . '"></div>';
 	}
 
 	private function is_valid_group( $group ) {
@@ -38,51 +46,59 @@ class Happychat_Client {
 		return false;
 	}
 
-	private function get_user_group() {
-		// By default, we'll take what is configured in the Happychat plugin,
-		// but we also want to provide an opportunity for the host to
-		// have different groups at runtime.
-		$group = get_option( 'happychat_user_group' );
-		$group = apply_filters( 'happychat_user_group', $group );
+	private function is_valid_entry( $entry ) {
+		// These are the accepted values for Happychat entries
+		// https://github.com/Automattic/happychat-client/blob/master/src/form.js#L62
+		if ( ( 'ENTRY_FORM' === $entry  ) || ( 'ENTRY_CHAT' === $entry ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	private function validate_group( $group ) {
 		if ( ! $group || ! $this->is_valid_group( $group ) ) {
-			$group = 'WP.com'; // default group
+			$group = 'WP.com';
 		}
 		return $group;
 	}
 
-	private function get_fallback_ticket_path_create() {
-		// If the path is null,
-		// this feature will be unavailable in Happychat.
-		$fallback_ticket_path_create = apply_filters( 'happychat_create_ticket_endpoint', null );
-		if ( ! $fallback_ticket_path_create ) {
-			$fallback_ticket_path_create = ( '/' === substr( $fallback_ticket_path_create, 0, 1 ) )
-			? $fallback_ticket_path_create
-			: '/' . $fallback_ticket_path_create;
+	private function validate_entry( $entry ) {
+		if ( ! $entry || ! $this->is_valid_entry( $group ) ) {
+			$entry = 'ENTRY_FORM';
 		}
-		return $fallback_ticket_path_create;
+		return $entry;
 	}
 
-	private function get_fallback_ticket_path_show() {
-		// If the path is null,
-		// Happychat won't show a ticket link upon success.
-		$fallback_ticket_path_show = apply_filters( 'happychat_show_ticket_path', null );
-		return $fallback_ticket_path_show;
+	private function validate_path( $path ) {
+		$new_path = null;
+		if ( $path ) {
+			$new_path = ( '/' === substr( $path, 0, 1 ) )
+			? $path
+			: '/' . $path;
+		}
+		return $new_path;
 	}
 
-	private function enqueue_scripts() {
-		// The host should provide a valid WordPress.com token
-		// for the user, so we can make authenticated requests
-		// on its behalf.
-		$token = null;
-		$token = apply_filters( 'happychat_wpcom_token', $token );
-		if ( ! $token ) {
-			return;
-		}
+	private function get_happychat_settings( ) {
+		$happychat_settings = [
+			'accessToken' => null,
+			'entry' => 'ENTRY_FORM',
+			'entryOptions' => [],
+			'groups' => [ get_option( 'happychat_user_group' ) ],
+			'nodeId' => 'happychat-form',
+		];
 
-		$fallback_ticket_path_create = $this->get_fallback_ticket_path_create();
-		$fallback_ticket_path_show = $this->get_fallback_ticket_path_show();
-		$group = $this->get_user_group();
+		$happychat_settings = apply_filters( 'happychat_settings', $happychat_settings );
 
+		$happychat_settings[ 'entry' ] = $this->validate_entry( $happychat_settings[ 'entry' ] );
+		$happychat_settings[ 'entryOptions' ][ 'fallbackTicket' ][ 'pathToCreate' ] = $this->validate_path( $happychat_settings[ 'entryOptions' ][ 'fallbackTicket' ][ 'pathToCreate' ] );
+		$happychat_settings[ 'entryOptions' ][ 'fallbackTicket' ][ 'pathToShow' ] = $this->validate_path( $happychat_settings[ 'entryOptions' ][ 'fallbackTicket' ][ 'pathToShow' ] );
+		$happychat_settings[ 'groups' ] = [ $this->validate_group( $happychat_settings[ 'groups' ][ 0 ] ) ];
+
+		return $happychat_settings;
+	}
+
+	private function enqueue_scripts( $happychat_settings ) {
 		// load happychat library
 		wp_register_script(
 			'happychat-api',
@@ -101,27 +117,6 @@ class Happychat_Client {
 			Happychat_Client::VERSION,
 			true
 		);
-
-		$happychat_settings = array(
-			'token'  => $token,
-			'nodeId' => Happychat_Client::NODE_ID,
-			'groups' => [ $group ],
-			'entryOptions' => [
-				'primaryOptions' => [
-					array( 'value' => 'before-buy', 'label' => 'Before you buy' ),
-					array( 'value' => 'account', 'label' => 'Help with my account' ),
-					array( 'value' => 'config', 'label' => 'Help configuring' ),
-					array( 'value' => 'order', 'label' => 'Help with an order' ),
-					array( 'value' => 'broken', 'label' => 'Something is broken' ),
-				],
-				'fallbackTicket' => array(
-					'pathToCreate' => $fallback_ticket_path_create,
-					'pathToShow' => $fallback_ticket_path_show,
-					'headers' => array( 'X-WP-Nonce' => wp_create_nonce( 'wp_rest' ) ),
-				),
-			],
-		);
-
 		wp_localize_script( 'happychat-init', 'happychatSettings', $happychat_settings );
 		wp_enqueue_script( 'happychat-init' );
 	}
