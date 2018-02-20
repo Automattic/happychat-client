@@ -45,6 +45,17 @@ The Happychat behavior may be configured through the filter `happychat_settings`
 		],
 	];
 
+`itemList`: array containing key/value pairs to show as a dropdown in the contact form. For example:
+
+	$happychat_settings = [
+		'entryOptions' => [
+			'itemList': [
+				[ 'value' => 'product-1', 'label' => 'Awesowe Product' ],
+				[ 'value' => 'product-2', 'label' => 'Beautiful Product' ],
+			],
+		],
+	];
+
 `fallbackTicket`: object to configure the fallback ticket feature.
 
 * `pathToCreate`: path to the create ticket endpoint where Happychat will make a XHR request with the form data, so the host can process it. It may return an operation ID that will be used by the `pathToShow` option to show a message to the user.
