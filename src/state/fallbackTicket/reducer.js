@@ -4,7 +4,7 @@
  * External dependencies
  */
 import { combineReducers } from 'redux';
-import { startsWith } from 'lodash';
+import { get, startsWith } from 'lodash';
 
 /**
  * Internal dependencies
@@ -48,26 +48,29 @@ const response = ( state = null, action ) => {
 	return state;
 };
 
-const headers = ( state = [], action ) => {
+const defaultHeaders = [];
+const headers = ( state = defaultHeaders, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return action.options.headers || [];
+			return get( action, 'options.headers', defaultHeaders );
 	}
 	return state;
 };
 
-const pathToCreate = ( state = null, action ) => {
+const defaultPathToCreate = null;
+const pathToCreate = ( state = defaultPathToCreate, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return action.options.pathToCreate;
+			return get( action, 'options.pathToCreate', defaultPathToCreate );
 	}
 	return state;
 };
 
-const pathToShow = ( state = null, action ) => {
+const defaultPathToShow = null;
+const pathToShow = ( state = defaultPathToShow, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return action.options.pathToShow;
+			return get( action, 'options.pathToShow', defaultPathToShow );
 	}
 	return state;
 };
