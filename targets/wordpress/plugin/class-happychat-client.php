@@ -49,7 +49,7 @@ class Happychat_Client {
 	private function is_valid_entry( $entry ) {
 		// These are the accepted values for Happychat entries
 		// https://github.com/Automattic/happychat-client/blob/master/src/form.js#L62
-		if ( ( 'ENTRY_FORM' === $entry  ) || ( 'ENTRY_CHAT' === $entry ) ) {
+		if ( ( 'form' === $entry  ) || ( 'chat' === $entry ) ) {
 			return true;
 		}
 		return false;
@@ -64,7 +64,7 @@ class Happychat_Client {
 
 	private function validate_entry( $entry ) {
 		if ( ! $entry || ! $this->is_valid_entry( $group ) ) {
-			$entry = 'ENTRY_FORM';
+			$entry = 'form';
 		}
 		return $entry;
 	}
