@@ -113,16 +113,16 @@ class Happychat_Client {
 					array( 'value' => 'config', 'label' => 'Help configuring' ),
 					array( 'value' => 'order', 'label' => 'Help with an order' ),
 					array( 'value' => 'broken', 'label' => 'Something is broken' ),
-					],
-					'fallbackTicket' => array(
-						'pathToCreate' => $fallback_ticket_path_create,
-						'pathToShow' => $fallback_ticket_path_show,
-						'headers' => array( 'X-WP-Nonce' => wp_create_nonce( 'wp_rest' ) ),
-					),
-					],
-				);
+				],
+				'fallbackTicket' => array(
+					'pathToCreate' => $fallback_ticket_path_create,
+					'pathToShow' => $fallback_ticket_path_show,
+					'headers' => array( 'X-WP-Nonce' => wp_create_nonce( 'wp_rest' ) ),
+				),
+			],
+		);
 
-				wp_localize_script( 'happychat-init', 'happychatSettings', $happychat_settings );
-				wp_enqueue_script( 'happychat-init' );
-			}
-		}
+		wp_localize_script( 'happychat-init', 'happychatSettings', $happychat_settings );
+		wp_enqueue_script( 'happychat-init' );
+	}
+}
