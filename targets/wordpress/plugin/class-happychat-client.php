@@ -40,7 +40,7 @@ class Happychat_Client {
 	private function is_valid_group( $group ) {
 		// These are the accepted values for Happychat groups/products
 		// https://github.com/Automattic/happychat/blob/staging/src/setup-system-defaults.js#L25-L35
-		if ( ( 'WP.com' === $group  ) || ( 'woo' === $group ) || ( 'jpop' === $group ) ) {
+		if ( ( 'WP.com' === $group ) || ( 'woo' === $group ) || ( 'jpop' === $group ) ) {
 			return true;
 		}
 		return false;
@@ -49,7 +49,7 @@ class Happychat_Client {
 	private function is_valid_entry( $entry ) {
 		// These are the accepted values for Happychat entries
 		// https://github.com/Automattic/happychat-client/blob/master/src/form.js#L62
-		if ( ( 'form' === $entry  ) || ( 'chat' === $entry ) ) {
+		if ( ( 'form' === $entry ) || ( 'chat' === $entry ) ) {
 			return true;
 		}
 		return false;
@@ -81,11 +81,11 @@ class Happychat_Client {
 
 	private function get_happychat_settings() {
 		$happychat_settings = [
-			'accessToken' => null,
-			'entry' => 'ENTRY_FORM',
+			'accessToken'  => null,
+			'entry'        => 'ENTRY_FORM',
 			'entryOptions' => [],
-			'groups' => [ get_option( 'happychat_user_group' ) ],
-			'nodeId' => 'happychat-form',
+			'groups'       => [ get_option( 'happychat_user_group' ) ],
+			'nodeId'       => 'happychat-form',
 		];
 
 		$happychat_settings = apply_filters( 'happychat_settings', $happychat_settings );
