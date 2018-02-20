@@ -29,12 +29,12 @@ class Happychat_Client {
 		// The host should provide a valid WordPress.com token
 		// for the user, so we can make authenticated requests
 		// on its behalf.
-		if ( ! $happychat_settings[ 'accessToken' ] ) {
+		if ( ! $happychat_settings['accessToken'] ) {
 			return '';
 		}
 
 		$this->enqueue_scripts( $happychat_settings );
-		return '<div id="' . $happychat_settings[ 'nodeId' ] . '"></div>';
+		return '<div id="' . $happychat_settings['nodeId'] . '"></div>';
 	}
 
 	private function is_valid_group( $group ) {
@@ -79,7 +79,7 @@ class Happychat_Client {
 		return $new_path;
 	}
 
-	private function get_happychat_settings( ) {
+	private function get_happychat_settings() {
 		$happychat_settings = [
 			'accessToken' => null,
 			'entry' => 'ENTRY_FORM',
@@ -90,10 +90,10 @@ class Happychat_Client {
 
 		$happychat_settings = apply_filters( 'happychat_settings', $happychat_settings );
 
-		$happychat_settings[ 'entry' ] = $this->validate_entry( $happychat_settings[ 'entry' ] );
-		$happychat_settings[ 'entryOptions' ][ 'fallbackTicket' ][ 'pathToCreate' ] = $this->validate_path( $happychat_settings[ 'entryOptions' ][ 'fallbackTicket' ][ 'pathToCreate' ] );
-		$happychat_settings[ 'entryOptions' ][ 'fallbackTicket' ][ 'pathToShow' ] = $this->validate_path( $happychat_settings[ 'entryOptions' ][ 'fallbackTicket' ][ 'pathToShow' ] );
-		$happychat_settings[ 'groups' ] = [ $this->validate_group( $happychat_settings[ 'groups' ][ 0 ] ) ];
+		$happychat_settings['entry'] = $this->validate_entry( $happychat_settings['entry'] );
+		$happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] = $this->validate_path( $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] );
+		$happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] = $this->validate_path( $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] );
+		$happychat_settings['groups'] = [ $this->validate_group( $happychat_settings['groups'][0] ) ];
 
 		return $happychat_settings;
 	}
