@@ -138,6 +138,8 @@ class ChatFormComponent {
 				primaryOptionsTitle,
 				secondaryOptions,
 				secondaryOptionsTitle,
+				itemList,
+				itemListTitle,
 			},
 		} = this.props;
 		return (
@@ -148,6 +150,8 @@ class ChatFormComponent {
 				primaryOptionsTitle={ primaryOptionsTitle }
 				secondaryOptions={ secondaryOptions }
 				secondaryOptionsTitle={ secondaryOptionsTitle }
+				itemList={ itemList }
+				itemListTitle={ itemListTitle }
 				showSubject={ false }
 				submitForm={ this.submitForm }
 				submitFormText={ 'Chat with us' }
@@ -188,6 +192,8 @@ class TicketFormComponent {
 				primaryOptionsTitle,
 				secondaryOptions,
 				secondaryOptionsTitle,
+				itemList,
+				itemListTitle,
 			},
 		} = this.props;
 
@@ -244,6 +250,8 @@ class TicketFormComponent {
 						primaryOptionsTitle={ primaryOptionsTitle }
 						secondaryOptions={ secondaryOptions }
 						secondaryOptionsTitle={ secondaryOptionsTitle }
+						itemList={ itemList }
+						itemListTitle={ itemListTitle }
 						showSubject={ true }
 						submitForm={ this.submitForm }
 						submitFormText={ 'Send a ticket' }
