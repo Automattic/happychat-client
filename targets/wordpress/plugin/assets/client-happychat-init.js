@@ -13,7 +13,7 @@ window.Happychat &&
 		nodeId: happychatSettings.nodeId,
 		accessToken: happychatSettings.accessToken,
 		groups: happychatSettings.groups,
-		canChat: happychatSettings.canChat,
+		canChat: 'false' === happychatSettings.canChat ? false : true,
 		entry: happychatSettings.entry,
 		entryOptions: happychatSettings.entryOptions,
 	} );
