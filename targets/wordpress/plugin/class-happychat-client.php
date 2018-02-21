@@ -85,6 +85,7 @@ class Happychat_Client {
 			'entry'        => 'ENTRY_FORM',
 			'entryOptions' => [],
 			'groups'       => [ get_option( 'happychat_user_group' ) ],
+			'canChat'      => true,
 			'nodeId'       => 'happychat-form',
 		];
 
