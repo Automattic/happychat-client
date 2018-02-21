@@ -154,6 +154,7 @@ const renderHappychat = (
 			language,
 			groups = [ HAPPYCHAT_GROUP_WPCOM ],
 			accessToken,
+			canChat = true,
 		},
 		entry = ENTRY_FORM,
 		entryOptions = {},
@@ -161,7 +162,7 @@ const renderHappychat = (
 ) => {
 	const { fallbackTicket } = entryOptions;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
-	store.dispatch( setEligibility( true ) );
+	store.dispatch( setEligibility( canChat ) );
 	store.dispatch( setGroups( groups ) );
 	store.dispatch( setLocale( language ) );
 	store.dispatch( setFallbackTicketOptions( fallbackTicket ) );
@@ -179,7 +180,7 @@ const renderError = ( targetNode, { error } ) =>
 	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
 
 /* eslint-disable camelcase */
-const getWPComUser = ( accessToken, groups ) =>
+const getWPComUser = ( accessToken, groups, canChat ) =>
 	getUser(
 		accessToken
 	).then( ( { ID, email, username, display_name, avatar_URL, language } ) => ( {
@@ -191,29 +192,31 @@ const getWPComUser = ( accessToken, groups ) =>
 		language,
 		accessToken,
 		groups,
+		canChat,
 	} ) );
 /* eslint-enable camelcase */
 
 /**
  * Renders a Happychat or Support form in the HTML Element provided by the nodeId.
  *
- * @param  {String} nodeId Mandatory. HTML Node id where Happychat will be rendered.
- * @param  {Array} groups Mandatory. Happychat groups this user belongs to.
- * @param  {String|Promise} accessToken Mandatory. A valid WP.com access token,
- *  					or a Promise that returns one.
- * @param  {String} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
- * 			  ENTRY_FORM is the default and will render the contact form.
- * 			  ENTRY_CHAT will render the chat form.
- * @param  {Object} entryOptions Optional. Contains options to configure the selected entry.
+ * @param {String} nodeId Mandatory. HTML Node id where Happychat will be rendered.
+ * @param {Array} groups Mandatory. Happychat groups this user belongs to.
+ * @param {String|Promise} accessToken Mandatory. A valid WP.com access token,
+ * 				       or a Promise that returns one.
+ * @param {String} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
+ * 			 ENTRY_FORM is the default and will render the contact form.
+ * 			 ENTRY_CHAT will render the chat form.
+ * @param {Object} entryOptions Optional. Contains options to configure the selected entry.
+ * @param {Boolean} canChat Optional. Whether the user can be offered chat. True by default.
  */
-export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOptions } ) => {
+export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOptions, canChat } ) => {
 	let getAccessToken = accessToken;
 	if ( 'string' === typeof accessToken ) {
 		getAccessToken = () => Promise.resolve( accessToken );
 	}
 
 	getAccessToken()
-		.then( token => getWPComUser( token, groups ) )
+		.then( token => getWPComUser( token, groups, canChat ) )
 		.then( user =>
 			createIframe(
 				renderHappychat,
