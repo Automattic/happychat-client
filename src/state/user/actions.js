@@ -5,6 +5,7 @@
  */
 import {
 	HAPPYCHAT_USER_CURRENT_SET,
+	HAPPYCHAT_USER_ELIGIBILITY_SET,
 	HAPPYCHAT_USER_GROUPS_SET,
 	HAPPYCHAT_USER_LOCALE_SET,
 } from 'src/state/action-types';
@@ -45,5 +46,18 @@ export function setLocale( locale ) {
 	return {
 		type: HAPPYCHAT_USER_LOCALE_SET,
 		locale,
+	};
+}
+
+/**
+ * Returns an action object that sets the user eligibility
+ *
+ * @param  { Boolean } isEligible Whether the user can be offered chat
+ * @return { Object } Action object
+ */
+export function setEligibility( isEligible ) {
+	return {
+		type: HAPPYCHAT_USER_ELIGIBILITY_SET,
+		isEligible,
 	};
 }
