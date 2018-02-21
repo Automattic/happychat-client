@@ -23,7 +23,7 @@ import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
 import { setAssetsLoaded } from 'src/state/ui/actions';
-import { setCurrentUser, setGroups, setLocale } from 'src/state/user/actions';
+import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 
 const store = createStore(
@@ -161,8 +161,9 @@ const renderHappychat = (
 ) => {
 	const { fallbackTicket } = entryOptions;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
-	store.dispatch( setLocale( language ) );
+	store.dispatch( setEligibility( true ) );
 	store.dispatch( setGroups( groups ) );
+	store.dispatch( setLocale( language ) );
 	store.dispatch( setFallbackTicketOptions( fallbackTicket ) );
 
 	ReactDOM.render(

@@ -41,6 +41,7 @@ import getFallbackTicketPathToShow from 'src/state/selectors/get-fallbackticket-
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
+import getUserEligibility from 'src/state/selectors/get-user-eligibility';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
 import isHCServerReachable from 'src/state/selectors/is-server-reachable';
@@ -349,7 +350,7 @@ const isCurrentUser = ( { source } ) => {
 const mapState = state => {
 	const currentUser = getUser( state );
 	return {
-		isUserEligibleForChat: true, // TODO implement logic
+		isUserEligibleForChat: getUserEligibility( state ),
 		chatStatus: getChatStatus( state ),
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
