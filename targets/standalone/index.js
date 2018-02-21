@@ -16,10 +16,11 @@ const accessToken = () =>
 	} );
 
 window.Happychat = {
-	open: ( { nodeId, groups, entry, entryOptions } ) =>
+	open: ( { nodeId, groups, canChat, entry, entryOptions } ) =>
 		initHappychat( {
 			nodeId,
 			groups,
+			canChat,
 			accessToken,
 			entry,
 			entryOptions,
