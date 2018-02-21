@@ -6,10 +6,11 @@
 import { initHappychat, eventAPI } from 'src';
 
 window.Happychat = {
-	open: ( { nodeId, groups, accessToken, entry, entryOptions } ) =>
+	open: ( { nodeId, groups, canChat, accessToken, entry, entryOptions } ) =>
 		initHappychat( {
 			nodeId,
 			groups,
+			canChat,
 			accessToken,
 			entry,
 			entryOptions,

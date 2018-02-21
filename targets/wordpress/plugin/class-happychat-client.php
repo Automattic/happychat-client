@@ -33,6 +33,11 @@ class Happychat_Client {
 			return '';
 		}
 
+		// If there is a canchat shortcode attribute, override the value.
+		if ( is_array( $atts ) && array_key_exists( 'canchat', $atts ) ) {
+			$happychat_settings['canChat'] = $atts['canchat'];
+		}
+
 		$this->enqueue_scripts( $happychat_settings );
 		return '<div id="' . $happychat_settings['nodeId'] . '"></div>';
 	}
@@ -85,6 +90,7 @@ class Happychat_Client {
 			'entry'        => 'ENTRY_FORM',
 			'entryOptions' => [],
 			'groups'       => [ get_option( 'happychat_user_group' ) ],
+			'canChat'      => 'true',
 			'nodeId'       => 'happychat-form',
 		];
 

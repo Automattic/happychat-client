@@ -17,6 +17,7 @@ The Happychat behavior may be configured through the filter `happychat_settings`
 | `entry` | string | `ENTRY_FORM` | What should be rendered as the entry point for Happychat. Valid values are `ENTRY_FORM` (renders the contact form) `ENTRY_CHAT` (renders the chat form). |
 | `entryOptions` | array | `[]` | Array containing the options to configure happychat entry points. See details below. |
 | `groups` | array | `[WP.com]` | What group the chat session should be routed to. Valid values are `WP.com`, `woo`, and `jpop`. |
+| `canChat` | bool | `true` | Where the user can be offered chat. |
 | `nodeId` | string | `happychat-form` | The id of the HTMLNode where Happychat will be rendered. |
 
 ### Entry options
