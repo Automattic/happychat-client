@@ -22,10 +22,13 @@ class FormSelection extends React.Component {
 		this.handleClick = this.handleClick.bind( this );
 	}
 
-	handleClick( value ) {
+	handleClick( option ) {
 		return () => {
-			this.setState( { selection: value } );
-			this.props.onClick( value );
+			this.setState( { selection: option.value } );
+			this.props.onClick( {
+				name: this.props.name,
+				option,
+			} );
 		};
 	}
 
@@ -42,7 +45,7 @@ class FormSelection extends React.Component {
 				selected: option.value === this.state.selection,
 				value: option.value,
 				title: option.label,
-				onClick: this.handleClick( option.value ),
+				onClick: this.handleClick( option ),
 			},
 		} ) );
 		const selectedItem = find( opts, 'props.selected' );
