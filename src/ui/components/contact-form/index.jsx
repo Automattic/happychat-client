@@ -26,7 +26,7 @@ export class ContactForm extends React.Component {
 			message: '',
 			primaryOption: null,
 			secondaryOption: null,
-			itemSelected: null,
+			item: null,
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -40,7 +40,7 @@ export class ContactForm extends React.Component {
 	}
 
 	handleItemSelected( option ) {
-		this.setState( { itemSelected: option.value } );
+		this.setState( { item: option.value } );
 		this.props.onEvent( option );
 	}
 
