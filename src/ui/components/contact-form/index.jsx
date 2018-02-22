@@ -24,9 +24,9 @@ export class ContactForm extends React.Component {
 		this.state = {
 			subject: '',
 			message: '',
-			primaryOptionSelected: null,
-			secondaryOptionSelected: null,
-			itemSelected: null,
+			primaryOption: null,
+			secondaryOption: null,
+			item: null,
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -40,13 +40,13 @@ export class ContactForm extends React.Component {
 	}
 
 	handleItemSelected( option ) {
-		this.setState( { itemSelected: option.value } );
+		this.setState( { item: option.value } );
+		this.props.onEvent( option );
 	}
 
-	handleOptionChange( optionName ) {
-		return value => {
-			this.setState( { [ optionName ]: value } );
-		};
+	handleOptionChange( e ) {
+		this.setState( { [ e.name ]: e.option.value } );
+		this.props.onEvent( e.option );
 	}
 
 	prepareCanSubmitForm() {
@@ -84,8 +84,9 @@ export class ContactForm extends React.Component {
 						<div>
 							<FormLabel>{ primaryOptionsTitle }</FormLabel>
 							<FormSelection
+								name="primaryOption"
 								options={ primaryOptions }
-								onClick={ this.handleOptionChange( 'primaryOptionSelected' ) }
+								onClick={ this.handleOptionChange }
 							/>
 						</div>
 					) : (
@@ -95,8 +96,9 @@ export class ContactForm extends React.Component {
 						<div>
 							<FormLabel>{ secondaryOptionsTitle }</FormLabel>
 							<FormSelection
+								name="secondaryOption"
 								options={ secondaryOptions }
-								onClick={ this.handleOptionChange( 'secondaryOptionSelected' ) }
+								onClick={ this.handleOptionChange }
 							/>
 						</div>
 					) : (
@@ -158,6 +160,7 @@ ContactForm.propTypes = {
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
+	onEvent: PropTypes.func,
 };
 
 ContactForm.defaultProps = {
@@ -172,4 +175,5 @@ ContactForm.defaultProps = {
 	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',
+	onEvent: () => {},
 };
