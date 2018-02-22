@@ -41,6 +41,7 @@ export class ContactForm extends React.Component {
 
 	handleItemSelected( option ) {
 		this.setState( { itemSelected: option.value } );
+		this.props.onEvent( option );
 	}
 
 	handleOptionChange( optionName ) {
@@ -158,6 +159,7 @@ ContactForm.propTypes = {
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
+	onEvent: PropTypes.func,
 };
 
 ContactForm.defaultProps = {
@@ -172,4 +174,5 @@ ContactForm.defaultProps = {
 	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',
+	onEvent: () => {},
 };

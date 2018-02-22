@@ -21,6 +21,7 @@ import {
 	sendTyping,
 } from 'src/state/connection/actions';
 import { blur, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
+import { setEligibility } from 'src/state/user/actions';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
 	HAPPYCHAT_FALLBACK_TICKET_SENDING,
@@ -118,6 +119,7 @@ class ChatFormComponent {
 		this.props = props;
 		this.canSubmitForm = this.canSubmitForm.bind( this );
 		this.submitForm = this.submitForm.bind( this );
+		this.onEvent = this.onEvent.bind( this );
 		this.render = this.render.bind( this );
 	}
 
@@ -129,6 +131,16 @@ class ChatFormComponent {
 	submitForm( formState ) {
 		this.props.onOpenChat();
 		this.props.onSendMessage( formState.message );
+	}
+
+	onEvent( option ) {
+		// We want to dispatch a new eligibility every time an option is clicked,
+		// unless the form has the canChat prop to false.
+		// Besides, we only want to dispatch false if the canChat option value is false,
+		// in any other case (undefined, etc) we want to dispatch true.
+		if ( false !== this.props.canChat ) {
+			this.props.onSetEligibility( false === option.canChat ? false : true );
+		}
 	}
 
 	render() {
@@ -156,6 +168,7 @@ class ChatFormComponent {
 				showSubject={ false }
 				submitForm={ this.submitForm }
 				submitFormText={ 'Chat with us' }
+				onEvent={ this.onEvent }
 			/>
 		);
 	}
@@ -166,6 +179,7 @@ class TicketFormComponent {
 		this.props = props;
 		this.canSubmitForm = this.canSubmitForm.bind( this );
 		this.submitForm = this.submitForm.bind( this );
+		this.onEvent = this.onEvent.bind( this );
 		this.render = this.render.bind( this );
 	}
 
@@ -180,6 +194,16 @@ class TicketFormComponent {
 			headers: fallbackTicketHeaders,
 			payload: formState,
 		} );
+	}
+
+	onEvent( option ) {
+		// We want to dispatch a new eligibility every time an option is clicked,
+		// unless the form has the canChat prop to false.
+		// Besides, we only want to dispatch false if the canChat option value is false,
+		// in any other case (undefined, etc) we want to dispatch true.
+		if ( false !== this.props.canChat ) {
+			this.props.onSetEligibility( false === option.canChat ? false : true );
+		}
 	}
 
 	render() {
@@ -256,6 +280,7 @@ class TicketFormComponent {
 						showSubject={ true }
 						submitForm={ this.submitForm }
 						submitFormText={ 'Send a ticket' }
+						onEvent={ this.onEvent }
 					/>
 				);
 		}
@@ -334,6 +359,7 @@ class Form extends React.Component {
 
 Form.propTypes = {
 	accessToken: PropTypes.string.isRequired,
+	canChat: PropTypes.bool,
 	entry: PropTypes.string,
 	entryOptions: PropTypes.object,
 };
@@ -383,6 +409,7 @@ const mapDispatch = {
 	onSendNotTyping: sendNotTyping,
 	onSendTyping: sendTyping,
 	onSetCurrentMessage: setCurrentMessage,
+	onSetEligibility: setEligibility,
 	setBlurred: blur,
 	setFocused: focus,
 };
