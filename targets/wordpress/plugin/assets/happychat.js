@@ -67515,13 +67515,11 @@ var ChatFormComponent = function () {
 		}
 	}, {
 		key: 'onEvent',
-		value: function onEvent(option) {
-			// We want to dispatch a new eligibility every time an option is clicked,
-			// unless the form has the canChat prop to false.
-			// Besides, we only want to dispatch false if the canChat option value is false,
-			// in any other case (undefined, etc) we want to dispatch true.
-			if (false !== this.props.canChat) {
-				this.props.onSetEligibility(false === option.canChat ? false : true);
+		value: function onEvent(formState) {
+			if (false === this.props.canChat || false === formState.primaryOption.canChat || false === formState.secondaryOption.canChat || false === formState.item.canChat) {
+				this.props.onSetEligibility(false);
+			} else {
+				this.props.onSetEligibility(true);
 			}
 		}
 	}, {
@@ -67587,13 +67585,11 @@ var TicketFormComponent = function () {
 		}
 	}, {
 		key: 'onEvent',
-		value: function onEvent(option) {
-			// We want to dispatch a new eligibility every time an option is clicked,
-			// unless the form has the canChat prop to false.
-			// Besides, we only want to dispatch false if the canChat option value is false,
-			// in any other case (undefined, etc) we want to dispatch true.
-			if (false !== this.props.canChat) {
-				this.props.onSetEligibility(false === option.canChat ? false : true);
+		value: function onEvent(formState) {
+			if (false === this.props.canChat || false === formState.primaryOption.canChat || false === formState.secondaryOption.canChat || false === formState.item.canChat) {
+				this.props.onSetEligibility(false);
+			} else {
+				this.props.onSetEligibility(true);
 			}
 		}
 	}, {
@@ -74520,9 +74516,9 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 		_this.state = {
 			subject: '',
 			message: '',
-			primaryOption: null,
-			secondaryOption: null,
-			item: null
+			primaryOption: {},
+			secondaryOption: {},
+			item: {}
 		};
 		_this.handleChange = _this.handleChange.bind(_this);
 		_this.handleItemSelected = _this.handleItemSelected.bind(_this);
@@ -74532,6 +74528,13 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	}
 
 	_createClass(ContactForm, [{
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(prevProps, prevState) {
+			if (prevState.primaryOption.canChat !== this.state.primaryOption.canChat || prevState.secondaryOption.canChat !== this.state.secondaryOption.canChat || prevState.item.canChat !== this.state.item.canChat) {
+				this.props.onEvent(this.state);
+			}
+		}
+	}, {
 		key: 'handleChange',
 		value: function handleChange(e) {
 			var _e$currentTarget = e.currentTarget,
@@ -74543,14 +74546,12 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	}, {
 		key: 'handleItemSelected',
 		value: function handleItemSelected(option) {
-			this.setState({ item: option.value });
-			this.props.onEvent(option);
+			this.setState({ item: option });
 		}
 	}, {
 		key: 'handleOptionChange',
 		value: function handleOptionChange(e) {
-			this.setState(_defineProperty({}, e.name, e.option.value));
-			this.props.onEvent(e.option);
+			this.setState(_defineProperty({}, e.name, e.option));
 		}
 	}, {
 		key: 'prepareCanSubmitForm',
