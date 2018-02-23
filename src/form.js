@@ -133,13 +133,16 @@ class ChatFormComponent {
 		this.props.onSendMessage( formState.message );
 	}
 
-	onEvent( option ) {
-		// We want to dispatch a new eligibility every time an option is clicked,
-		// unless the form has the canChat prop to false.
-		// Besides, we only want to dispatch false if the canChat option value is false,
-		// in any other case (undefined, etc) we want to dispatch true.
-		if ( false !== this.props.canChat ) {
-			this.props.onSetEligibility( false === option.canChat ? false : true );
+	onEvent( formState ) {
+		if (
+			false === this.props.canChat ||
+			false === formState.primaryOption.canChat ||
+			false === formState.secondaryOption.canChat ||
+			false === formState.item.canChat
+		) {
+			this.props.onSetEligibility( false );
+		} else {
+			this.props.onSetEligibility( true );
 		}
 	}
 
@@ -196,13 +199,16 @@ class TicketFormComponent {
 		} );
 	}
 
-	onEvent( option ) {
-		// We want to dispatch a new eligibility every time an option is clicked,
-		// unless the form has the canChat prop to false.
-		// Besides, we only want to dispatch false if the canChat option value is false,
-		// in any other case (undefined, etc) we want to dispatch true.
-		if ( false !== this.props.canChat ) {
-			this.props.onSetEligibility( false === option.canChat ? false : true );
+	onEvent( formState ) {
+		if (
+			false === this.props.canChat ||
+			false === formState.primaryOption.canChat ||
+			false === formState.secondaryOption.canChat ||
+			false === formState.item.canChat
+		) {
+			this.props.onSetEligibility( false );
+		} else {
+			this.props.onSetEligibility( true );
 		}
 	}
 
