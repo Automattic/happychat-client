@@ -24,14 +24,24 @@ export class ContactForm extends React.Component {
 		this.state = {
 			subject: '',
 			message: '',
-			primaryOption: null,
-			secondaryOption: null,
-			item: null,
+			primaryOption: {},
+			secondaryOption: {},
+			item: {},
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
 		this.handleOptionChange = this.handleOptionChange.bind( this );
 		this.prepareSubmitForm = this.prepareSubmitForm.bind( this );
+	}
+
+	componentDidUpdate( prevProps, prevState ) {
+		if (
+			prevState.primaryOption.canChat !== this.state.primaryOption.canChat ||
+			prevState.secondaryOption.canChat !== this.state.secondaryOption.canChat ||
+			prevState.item.canChat !== this.state.item.canChat
+		) {
+			this.props.onEvent( this.state );
+		}
 	}
 
 	handleChange( e ) {
@@ -40,13 +50,11 @@ export class ContactForm extends React.Component {
 	}
 
 	handleItemSelected( option ) {
-		this.setState( { item: option.value } );
-		this.props.onEvent( option );
+		this.setState( { item: option } );
 	}
 
 	handleOptionChange( e ) {
-		this.setState( { [ e.name ]: e.option.value } );
-		this.props.onEvent( e.option );
+		this.setState( { [ e.name ]: e.option } );
 	}
 
 	prepareCanSubmitForm() {
