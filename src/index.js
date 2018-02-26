@@ -141,6 +141,18 @@ const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 	renderMethod( targetNode, props );
 };
 
+const isAnyCanChatPropFalse = ( canChat, entryOptions ) =>
+	false === canChat ||
+	( Array.isArray( entryOptions.primaryOptions ) &&
+		entryOptions.primaryOptions.length > 0 &&
+		false === entryOptions.primaryOptions[ 0 ].canChat ) ||
+	( Array.isArray( entryOptions.secondaryOptions ) &&
+		entryOptions.secondaryOptions.length > 0 &&
+		false === entryOptions.secondaryOptions[ 0 ].canChat ) ||
+	( Array.isArray( entryOptions.itemList ) &&
+		entryOptions.itemList.length > 0 &&
+		false === entryOptions.itemList[ 0 ].canChat );
+
 /* eslint-disable camelcase */
 const renderHappychat = (
 	targetNode,
@@ -162,10 +174,13 @@ const renderHappychat = (
 ) => {
 	const { fallbackTicket } = entryOptions;
 	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
-	store.dispatch( setEligibility( canChat ) );
 	store.dispatch( setGroups( groups ) );
 	store.dispatch( setLocale( language ) );
 	store.dispatch( setFallbackTicketOptions( fallbackTicket ) );
+
+	isAnyCanChatPropFalse( canChat, entryOptions )
+		? store.dispatch( setEligibility( false ) )
+		: store.dispatch( setEligibility( true ) );
 
 	ReactDOM.render(
 		<Provider store={ store }>

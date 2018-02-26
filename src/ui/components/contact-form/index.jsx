@@ -18,15 +18,18 @@ import FormButton from 'src/ui/components/form-button';
 import FormSelection from 'src/ui/components/form-selection';
 import SelectDropdown from 'src/ui/components/select-dropdown';
 
+const getSelectedOption = options =>
+	Array.isArray( options ) && options.length > 0 ? options[ 0 ] : {};
+
 export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
 		this.state = {
 			subject: '',
 			message: '',
-			primaryOption: {},
-			secondaryOption: {},
-			item: {},
+			primaryOption: getSelectedOption( this.props.primaryOptions ),
+			secondaryOption: getSelectedOption( this.props.secondaryOptions ),
+			item: getSelectedOption( this.props.itemList ),
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );

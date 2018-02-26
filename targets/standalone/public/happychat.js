@@ -52757,6 +52757,10 @@ var createIframe = function createIframe(renderMethod, props) {
 	renderMethod(targetNode, props);
 };
 
+var isAnyCanChatPropFalse = function isAnyCanChatPropFalse(canChat, entryOptions) {
+	return false === canChat || Array.isArray(entryOptions.primaryOptions) && entryOptions.primaryOptions.length > 0 && false === entryOptions.primaryOptions[0].canChat || Array.isArray(entryOptions.secondaryOptions) && entryOptions.secondaryOptions.length > 0 && false === entryOptions.secondaryOptions[0].canChat || Array.isArray(entryOptions.itemList) && entryOptions.itemList.length > 0 && false === entryOptions.itemList[0].canChat;
+};
+
 /* eslint-disable camelcase */
 var renderHappychat = function renderHappychat(targetNode, _ref) {
 	var _ref$user = _ref.user,
@@ -52778,10 +52782,11 @@ var renderHappychat = function renderHappychat(targetNode, _ref) {
 	var fallbackTicket = entryOptions.fallbackTicket;
 
 	store.dispatch((0, _actions2.setCurrentUser)({ ID: ID, email: email, username: username, display_name: display_name, avatar_URL: avatar_URL }));
-	store.dispatch((0, _actions2.setEligibility)(canChat));
 	store.dispatch((0, _actions2.setGroups)(groups));
 	store.dispatch((0, _actions2.setLocale)(language));
 	store.dispatch((0, _actions3.setFallbackTicketOptions)(fallbackTicket));
+
+	isAnyCanChatPropFalse(canChat, entryOptions) ? store.dispatch((0, _actions2.setEligibility)(false)) : store.dispatch((0, _actions2.setEligibility)(true));
 
 	_reactDom2.default.render(_react2.default.createElement(
 		_reactRedux.Provider,
@@ -74544,6 +74549,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 
 
+var getSelectedOption = function getSelectedOption(options) {
+	return Array.isArray(options) && options.length > 0 ? options[0] : {};
+};
+
 var ContactForm = exports.ContactForm = function (_React$Component) {
 	_inherits(ContactForm, _React$Component);
 
@@ -74555,9 +74564,9 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 		_this.state = {
 			subject: '',
 			message: '',
-			primaryOption: {},
-			secondaryOption: {},
-			item: {}
+			primaryOption: getSelectedOption(_this.props.primaryOptions),
+			secondaryOption: getSelectedOption(_this.props.secondaryOptions),
+			item: getSelectedOption(_this.props.itemList)
 		};
 		_this.handleChange = _this.handleChange.bind(_this);
 		_this.handleItemSelected = _this.handleItemSelected.bind(_this);
