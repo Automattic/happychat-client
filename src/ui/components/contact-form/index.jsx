@@ -24,9 +24,9 @@ export class ContactForm extends React.Component {
 		this.state = {
 			subject: '',
 			message: '',
-			primaryOption: {},
-			secondaryOption: {},
-			item: {},
+			primaryOption: this.props.primaryOptions[ 0 ],
+			secondaryOption: this.props.secondaryOptions[ 0 ],
+			item: this.props.itemList[ 0 ],
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
