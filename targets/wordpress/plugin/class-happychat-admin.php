@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Happychat_Admin {
 	private static $_instance = null;
-	const VERSION = '0.0.1-dev';
+	const VERSION             = '0.0.1-dev';
 
 	/**
 	 * Create instance of class
@@ -20,13 +20,13 @@ class Happychat_Admin {
 	}
 
 	public function __construct( $file ) {
-		add_action( 'admin_init' , array( $this, 'register_settings' ) );
-		add_action( 'admin_menu' , array( $this, 'add_menu_item' ) );
-		add_filter( 'plugin_action_links_' . plugin_basename( $file ) , array( $this, 'add_settings_link' ) );
+		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_menu', array( $this, 'add_menu_item' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( $file ), array( $this, 'add_settings_link' ) );
 	}
 
 	public function add_menu_item() {
-		add_options_page( 'Settings' , 'Happychat' , 'edit_posts' , 'happychat' , array( $this, 'settings_page' ) );
+		add_options_page( 'Settings', 'Happychat', 'edit_posts', 'happychat', array( $this, 'settings_page' ) );
 	}
 
 	public function add_settings_link( $links ) {
@@ -36,9 +36,9 @@ class Happychat_Admin {
 	}
 
 	public function register_settings() {
-		add_settings_section( 'happychat_settings' , '' , null, 'happychat' );
-		add_settings_field( 'happychat_user_group' , 'User group:' , array( $this, 'happychat_user_group_html' )  , 'happychat' , 'happychat_settings' );
-		register_setting( 'happychat' , 'happychat_user_group' );
+		add_settings_section( 'happychat_settings', '', null, 'happychat' );
+		add_settings_field( 'happychat_user_group', 'User group:', array( $this, 'happychat_user_group_html' ), 'happychat', 'happychat_settings' );
+		register_setting( 'happychat', 'happychat_user_group' );
 	}
 
 	private function enqueue_scripts() {
@@ -46,7 +46,7 @@ class Happychat_Admin {
 			'fallback-ticket',
 			plugins_url( 'assets/admin-fallback-ticket.js', __FILE__ ),
 			array( 'jquery' ),
-			Happychat_Admin::VERSION,
+			self::VERSION,
 			true
 		);
 		wp_enqueue_script( 'fallback-ticket' );

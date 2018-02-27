@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Happychat_Client {
 	private static $_instance = null;
-	const VERSION = '0.0.1-dev';
+	const VERSION             = '0.0.1-dev';
 
 	/**
 	* Create instance of class
@@ -98,7 +98,7 @@ class Happychat_Client {
 
 		$happychat_settings['entry'] = $this->validate_entry( $happychat_settings['entry'] );
 		$happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] = $this->validate_path( $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] );
-		$happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] = $this->validate_path( $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] );
+		$happychat_settings['entryOptions']['fallbackTicket']['pathToShow']   = $this->validate_path( $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] );
 		$happychat_settings['groups'] = [ $this->validate_group( $happychat_settings['groups'][0] ) ];
 
 		return $happychat_settings;
@@ -110,7 +110,7 @@ class Happychat_Client {
 			'happychat-api',
 			plugins_url( 'assets/happychat.js', __FILE__ ),
 			array(),
-			Happychat_Client::VERSION,
+			self::VERSION,
 			true
 		);
 		wp_enqueue_script( 'happychat-api' );
@@ -120,7 +120,7 @@ class Happychat_Client {
 			'happychat-init',
 			plugins_url( 'assets/client-happychat-init.js', __FILE__ ),
 			array(),
-			Happychat_Client::VERSION,
+			self::VERSION,
 			true
 		);
 		wp_localize_script( 'happychat-init', 'happychatSettings', $happychat_settings );
