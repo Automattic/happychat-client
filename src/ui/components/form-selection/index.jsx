@@ -15,11 +15,32 @@ import ControlItem from 'src/ui/components/segmented-control/item';
 import SelectDropdown from 'src/ui/components/select-dropdown';
 import DropdownItem from 'src/ui/components/select-dropdown/item';
 
+const areOptionsDistinct = ( nextOpts, currentOpts ) => {
+	if ( nextOpts.length !== currentOpts.length ) {
+		return true;
+	}
+	for ( let i = 0; i < nextOpts.length; i++ ) {
+		if (
+			nextOpts[ i ].value !== currentOpts[ i ].value ||
+			nextOpts[ i ].label !== currentOpts[ i ].label
+		) {
+			return true;
+		}
+	}
+	return false;
+};
+
 class FormSelection extends React.Component {
 	constructor( props ) {
 		super( props );
 		this.state = { selection: this.props.options[ 0 ].value };
 		this.handleClick = this.handleClick.bind( this );
+	}
+
+	componentWillReceiveProps( nextProps ) {
+		if ( areOptionsDistinct( nextProps.options, this.props.options ) ) {
+			this.setState( { selection: nextProps.options[ 0 ].value } );
+		}
 	}
 
 	handleClick( option ) {
