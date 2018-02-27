@@ -22,7 +22,7 @@ const getSelectedOption = options =>
 	Array.isArray( options ) && options.length > 0 ? options[ 0 ] : {};
 
 const getSecondary = ( primarySelected, secondaryOptions ) =>
-	Array.isArray( primarySelected ) && Array.isArray( primarySelected.secondaryOptions )
+	Array.isArray( primarySelected.secondaryOptions )
 		? getSelectedOption( primarySelected.secondaryOptions )
 		: getSelectedOption( secondaryOptions );
 
@@ -65,7 +65,14 @@ export class ContactForm extends React.Component {
 	}
 
 	handleOptionChange( e ) {
-		this.setState( { [ e.name ]: e.option } );
+		if ( 'primaryOption' === e.name ) {
+			this.setState( {
+				primaryOption: e.option,
+				secondaryOption: getSecondary( e.option, this.props.secondaryOptions ),
+			} );
+		} else {
+			this.setState( { [ e.name ]: e.option } );
+		}
 	}
 
 	prepareCanSubmitForm() {
@@ -98,12 +105,23 @@ export class ContactForm extends React.Component {
 
 	maybeSecondaryOptions() {
 		const { secondaryOptions, secondaryOptionsTitle } = this.props;
-		return secondaryOptions && secondaryOptions.length > 0 ? (
+		const primaryOption = this.state.primaryOption;
+		let options = [];
+		let title = secondaryOptionsTitle;
+		if ( Array.isArray( primaryOption.secondaryOptions ) ) {
+			options = primaryOption.secondaryOptions;
+			title = primaryOption.secondaryOptionsTitle
+				? primaryOption.secondaryOptionsTitle
+				: secondaryOptionsTitle;
+		} else if ( Array.isArray( secondaryOptions ) ) {
+			options = secondaryOptions;
+		}
+		return options.length > 0 ? (
 			<div>
-				<FormLabel>{ secondaryOptionsTitle }</FormLabel>
+				<FormLabel>{ title }</FormLabel>
 				<FormSelection
 					name="secondaryOption"
-					options={ secondaryOptions }
+					options={ options }
 					onClick={ this.handleOptionChange }
 				/>
 			</div>
