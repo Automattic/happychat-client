@@ -5517,7 +5517,7 @@ module.exports = isArray;
 
 var _prodInvariant = __webpack_require__(33);
 
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -5952,362 +5952,6 @@ module.exports = { debugTool: debugTool };
 
 /***/ }),
 /* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * 
- */
-
-
-
-/**
- * Keeps track of the current owner.
- *
- * The current owner is the component who should own any components that are
- * currently being constructed.
- */
-var ReactCurrentOwner = {
-  /**
-   * @internal
-   * @type {ReactComponent}
-   */
-  current: null
-};
-
-module.exports = ReactCurrentOwner;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
-
-
-var _prodInvariant = __webpack_require__(4),
-    _assign = __webpack_require__(7);
-
-var CallbackQueue = __webpack_require__(120);
-var PooledClass = __webpack_require__(29);
-var ReactFeatureFlags = __webpack_require__(121);
-var ReactReconciler = __webpack_require__(34);
-var Transaction = __webpack_require__(50);
-
-var invariant = __webpack_require__(1);
-
-var dirtyComponents = [];
-var updateBatchNumber = 0;
-var asapCallbackQueue = CallbackQueue.getPooled();
-var asapEnqueued = false;
-
-var batchingStrategy = null;
-
-function ensureInjected() {
-  !(ReactUpdates.ReactReconcileTransaction && batchingStrategy) ?  true ? invariant(false, 'ReactUpdates: must inject a reconcile transaction class and batching strategy') : _prodInvariant('123') : void 0;
-}
-
-var NESTED_UPDATES = {
-  initialize: function () {
-    this.dirtyComponentsLength = dirtyComponents.length;
-  },
-  close: function () {
-    if (this.dirtyComponentsLength !== dirtyComponents.length) {
-      // Additional updates were enqueued by componentDidUpdate handlers or
-      // similar; before our own UPDATE_QUEUEING wrapper closes, we want to run
-      // these new updates so that if A's componentDidUpdate calls setState on
-      // B, B will update before the callback A's updater provided when calling
-      // setState.
-      dirtyComponents.splice(0, this.dirtyComponentsLength);
-      flushBatchedUpdates();
-    } else {
-      dirtyComponents.length = 0;
-    }
-  }
-};
-
-var UPDATE_QUEUEING = {
-  initialize: function () {
-    this.callbackQueue.reset();
-  },
-  close: function () {
-    this.callbackQueue.notifyAll();
-  }
-};
-
-var TRANSACTION_WRAPPERS = [NESTED_UPDATES, UPDATE_QUEUEING];
-
-function ReactUpdatesFlushTransaction() {
-  this.reinitializeTransaction();
-  this.dirtyComponentsLength = null;
-  this.callbackQueue = CallbackQueue.getPooled();
-  this.reconcileTransaction = ReactUpdates.ReactReconcileTransaction.getPooled(
-  /* useCreateElement */true);
-}
-
-_assign(ReactUpdatesFlushTransaction.prototype, Transaction, {
-  getTransactionWrappers: function () {
-    return TRANSACTION_WRAPPERS;
-  },
-
-  destructor: function () {
-    this.dirtyComponentsLength = null;
-    CallbackQueue.release(this.callbackQueue);
-    this.callbackQueue = null;
-    ReactUpdates.ReactReconcileTransaction.release(this.reconcileTransaction);
-    this.reconcileTransaction = null;
-  },
-
-  perform: function (method, scope, a) {
-    // Essentially calls `this.reconcileTransaction.perform(method, scope, a)`
-    // with this transaction's wrappers around it.
-    return Transaction.perform.call(this, this.reconcileTransaction.perform, this.reconcileTransaction, method, scope, a);
-  }
-});
-
-PooledClass.addPoolingTo(ReactUpdatesFlushTransaction);
-
-function batchedUpdates(callback, a, b, c, d, e) {
-  ensureInjected();
-  return batchingStrategy.batchedUpdates(callback, a, b, c, d, e);
-}
-
-/**
- * Array comparator for ReactComponents by mount ordering.
- *
- * @param {ReactComponent} c1 first component you're comparing
- * @param {ReactComponent} c2 second component you're comparing
- * @return {number} Return value usable by Array.prototype.sort().
- */
-function mountOrderComparator(c1, c2) {
-  return c1._mountOrder - c2._mountOrder;
-}
-
-function runBatchedUpdates(transaction) {
-  var len = transaction.dirtyComponentsLength;
-  !(len === dirtyComponents.length) ?  true ? invariant(false, 'Expected flush transaction\'s stored dirty-components length (%s) to match dirty-components array length (%s).', len, dirtyComponents.length) : _prodInvariant('124', len, dirtyComponents.length) : void 0;
-
-  // Since reconciling a component higher in the owner hierarchy usually (not
-  // always -- see shouldComponentUpdate()) will reconcile children, reconcile
-  // them before their children by sorting the array.
-  dirtyComponents.sort(mountOrderComparator);
-
-  // Any updates enqueued while reconciling must be performed after this entire
-  // batch. Otherwise, if dirtyComponents is [A, B] where A has children B and
-  // C, B could update twice in a single batch if C's render enqueues an update
-  // to B (since B would have already updated, we should skip it, and the only
-  // way we can know to do so is by checking the batch counter).
-  updateBatchNumber++;
-
-  for (var i = 0; i < len; i++) {
-    // If a component is unmounted before pending changes apply, it will still
-    // be here, but we assume that it has cleared its _pendingCallbacks and
-    // that performUpdateIfNecessary is a noop.
-    var component = dirtyComponents[i];
-
-    // If performUpdateIfNecessary happens to enqueue any new updates, we
-    // shouldn't execute the callbacks until the next render happens, so
-    // stash the callbacks first
-    var callbacks = component._pendingCallbacks;
-    component._pendingCallbacks = null;
-
-    var markerName;
-    if (ReactFeatureFlags.logTopLevelRenders) {
-      var namedComponent = component;
-      // Duck type TopLevelWrapper. This is probably always true.
-      if (component._currentElement.type.isReactTopLevelWrapper) {
-        namedComponent = component._renderedComponent;
-      }
-      markerName = 'React update: ' + namedComponent.getName();
-      console.time(markerName);
-    }
-
-    ReactReconciler.performUpdateIfNecessary(component, transaction.reconcileTransaction, updateBatchNumber);
-
-    if (markerName) {
-      console.timeEnd(markerName);
-    }
-
-    if (callbacks) {
-      for (var j = 0; j < callbacks.length; j++) {
-        transaction.callbackQueue.enqueue(callbacks[j], component.getPublicInstance());
-      }
-    }
-  }
-}
-
-var flushBatchedUpdates = function () {
-  // ReactUpdatesFlushTransaction's wrappers will clear the dirtyComponents
-  // array and perform any updates enqueued by mount-ready handlers (i.e.,
-  // componentDidUpdate) but we need to check here too in order to catch
-  // updates enqueued by setState callbacks and asap calls.
-  while (dirtyComponents.length || asapEnqueued) {
-    if (dirtyComponents.length) {
-      var transaction = ReactUpdatesFlushTransaction.getPooled();
-      transaction.perform(runBatchedUpdates, null, transaction);
-      ReactUpdatesFlushTransaction.release(transaction);
-    }
-
-    if (asapEnqueued) {
-      asapEnqueued = false;
-      var queue = asapCallbackQueue;
-      asapCallbackQueue = CallbackQueue.getPooled();
-      queue.notifyAll();
-      CallbackQueue.release(queue);
-    }
-  }
-};
-
-/**
- * Mark a component as needing a rerender, adding an optional callback to a
- * list of functions which will be executed once the rerender occurs.
- */
-function enqueueUpdate(component) {
-  ensureInjected();
-
-  // Various parts of our code (such as ReactCompositeComponent's
-  // _renderValidatedComponent) assume that calls to render aren't nested;
-  // verify that that's the case. (This is called by each top-level update
-  // function, like setState, forceUpdate, etc.; creation and
-  // destruction of top-level components is guarded in ReactMount.)
-
-  if (!batchingStrategy.isBatchingUpdates) {
-    batchingStrategy.batchedUpdates(enqueueUpdate, component);
-    return;
-  }
-
-  dirtyComponents.push(component);
-  if (component._updateBatchNumber == null) {
-    component._updateBatchNumber = updateBatchNumber + 1;
-  }
-}
-
-/**
- * Enqueue a callback to be run at the end of the current batching cycle. Throws
- * if no updates are currently being performed.
- */
-function asap(callback, context) {
-  invariant(batchingStrategy.isBatchingUpdates, "ReactUpdates.asap: Can't enqueue an asap callback in a context where" + 'updates are not being batched.');
-  asapCallbackQueue.enqueue(callback, context);
-  asapEnqueued = true;
-}
-
-var ReactUpdatesInjection = {
-  injectReconcileTransaction: function (ReconcileTransaction) {
-    !ReconcileTransaction ?  true ? invariant(false, 'ReactUpdates: must provide a reconcile transaction class') : _prodInvariant('126') : void 0;
-    ReactUpdates.ReactReconcileTransaction = ReconcileTransaction;
-  },
-
-  injectBatchingStrategy: function (_batchingStrategy) {
-    !_batchingStrategy ?  true ? invariant(false, 'ReactUpdates: must provide a batching strategy') : _prodInvariant('127') : void 0;
-    !(typeof _batchingStrategy.batchedUpdates === 'function') ?  true ? invariant(false, 'ReactUpdates: must provide a batchedUpdates() function') : _prodInvariant('128') : void 0;
-    !(typeof _batchingStrategy.isBatchingUpdates === 'boolean') ?  true ? invariant(false, 'ReactUpdates: must provide an isBatchingUpdates boolean attribute') : _prodInvariant('129') : void 0;
-    batchingStrategy = _batchingStrategy;
-  }
-};
-
-var ReactUpdates = {
-  /**
-   * React references `ReactReconcileTransaction` using this property in order
-   * to allow dependency injection.
-   *
-   * @internal
-   */
-  ReactReconcileTransaction: null,
-
-  batchedUpdates: batchedUpdates,
-  enqueueUpdate: enqueueUpdate,
-  flushBatchedUpdates: flushBatchedUpdates,
-  injection: ReactUpdatesInjection,
-  asap: asap
-};
-
-module.exports = ReactUpdates;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/** @format */
-
-/**
- * Any new action type should be added to the set of exports below, with the
- * value mirroring its exported name.
- *
- * Please keep this list alphabetized!
- *
- */
-
-var HAPPYCHAT_ASSETS_LOADED = exports.HAPPYCHAT_ASSETS_LOADED = 'HAPPYCHAT_ASSETS_LOADED';
-var HAPPYCHAT_BLUR = exports.HAPPYCHAT_BLUR = 'HAPPYCHAT_BLUR';
-var HAPPYCHAT_FALLBACK_TICKET_OPTIONS = exports.HAPPYCHAT_FALLBACK_TICKET_OPTIONS = 'HAPPYCHAT_FALLBACK_TICKET_OPTIONS';
-var HAPPYCHAT_FOCUS = exports.HAPPYCHAT_FOCUS = 'HAPPYCHAT_FOCUS';
-var HAPPYCHAT_IO_INIT = exports.HAPPYCHAT_IO_INIT = 'HAPPYCHAT_IO_INIT';
-var HAPPYCHAT_IO_RECEIVE_ACCEPT = exports.HAPPYCHAT_IO_RECEIVE_ACCEPT = 'HAPPYCHAT_IO_RECEIVE_ACCEPT';
-var HAPPYCHAT_IO_RECEIVE_CONNECT = exports.HAPPYCHAT_IO_RECEIVE_CONNECT = 'HAPPYCHAT_IO_RECEIVE_CONNECT';
-var HAPPYCHAT_IO_RECEIVE_DISCONNECT = exports.HAPPYCHAT_IO_RECEIVE_DISCONNECT = 'HAPPYCHAT_IO_RECEIVE_DISCONNECT';
-var HAPPYCHAT_IO_RECEIVE_ERROR = exports.HAPPYCHAT_IO_RECEIVE_ERROR = 'HAPPYCHAT_IO_RECEIVE_ERROR';
-var HAPPYCHAT_IO_RECEIVE_INIT = exports.HAPPYCHAT_IO_RECEIVE_INIT = 'HAPPYCHAT_IO_RECEIVE_INIT';
-var HAPPYCHAT_IO_RECEIVE_MESSAGE = exports.HAPPYCHAT_IO_RECEIVE_MESSAGE = 'HAPPYCHAT_IO_RECEIVE_MESSAGE';
-var HAPPYCHAT_IO_RECEIVE_RECONNECTING = exports.HAPPYCHAT_IO_RECEIVE_RECONNECTING = 'HAPPYCHAT_IO_RECEIVE_RECONNECTING';
-var HAPPYCHAT_IO_RECEIVE_STATUS = exports.HAPPYCHAT_IO_RECEIVE_STATUS = 'HAPPYCHAT_IO_RECEIVE_STATUS';
-var HAPPYCHAT_IO_RECEIVE_TOKEN = exports.HAPPYCHAT_IO_RECEIVE_TOKEN = 'HAPPYCHAT_IO_RECEIVE_TOKEN';
-var HAPPYCHAT_IO_RECEIVE_UNAUTHORIZED = exports.HAPPYCHAT_IO_RECEIVE_UNAUTHORIZED = 'HAPPYCHAT_IO_RECEIVE_UNAUTHORIZED';
-var HAPPYCHAT_IO_REQUEST_TRANSCRIPT = exports.HAPPYCHAT_IO_REQUEST_TRANSCRIPT = 'HAPPYCHAT_IO_REQUEST_TRANSCRIPT';
-var HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET = exports.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET = 'HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET';
-var HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE = exports.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE = 'HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE';
-var HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT = exports.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT = 'HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT';
-var HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE = exports.HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE = 'HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE';
-var HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT = exports.HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT = 'HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT';
-var HAPPYCHAT_IO_SEND_MESSAGE_EVENT = exports.HAPPYCHAT_IO_SEND_MESSAGE_EVENT = 'HAPPYCHAT_IO_SEND_MESSAGE_EVENT';
-var HAPPYCHAT_IO_SEND_MESSAGE_LOG = exports.HAPPYCHAT_IO_SEND_MESSAGE_LOG = 'HAPPYCHAT_IO_SEND_MESSAGE_LOG';
-var HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE = exports.HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE = 'HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE';
-var HAPPYCHAT_IO_SEND_MESSAGE_USERINFO = exports.HAPPYCHAT_IO_SEND_MESSAGE_USERINFO = 'HAPPYCHAT_IO_SEND_MESSAGE_USERINFO';
-var HAPPYCHAT_IO_SEND_PREFERENCES = exports.HAPPYCHAT_IO_SEND_PREFERENCES = 'HAPPYCHAT_IO_SEND_PREFERENCES';
-var HAPPYCHAT_IO_SEND_TYPING = exports.HAPPYCHAT_IO_SEND_TYPING = 'HAPPYCHAT_IO_SEND_TYPING';
-var HAPPYCHAT_MINIMIZING = exports.HAPPYCHAT_MINIMIZING = 'HAPPYCHAT_MINIMIZING';
-var HAPPYCHAT_OPEN = exports.HAPPYCHAT_OPEN = 'HAPPYCHAT_OPEN';
-var HAPPYCHAT_SET_CURRENT_MESSAGE = exports.HAPPYCHAT_SET_CURRENT_MESSAGE = 'HAPPYCHAT_SET_CURRENT_MESSAGE';
-var HAPPYCHAT_USER_CURRENT_SET = exports.HAPPYCHAT_USER_CURRENT_SET = 'HAPPYCHAT_USER_CURRENT_SET';
-var HAPPYCHAT_USER_ELIGIBILITY_SET = exports.HAPPYCHAT_USER_ELIGIBILITY_SET = 'HAPPYCHAT_USER_ELIGIBILITY_SET';
-var HAPPYCHAT_USER_GROUPS_SET = exports.HAPPYCHAT_USER_GROUPS_SET = 'HAPPYCHAT_USER_GROUPS_SET';
-var HAPPYCHAT_USER_LOCALE_SET = exports.HAPPYCHAT_USER_LOCALE_SET = 'HAPPYCHAT_USER_LOCALE_SET';
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var freeGlobal = __webpack_require__(162);
-
-/** Detect free variable `self`. */
-var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-/** Used as a reference to the global object. */
-var root = freeGlobal || freeSelf || Function('return this')();
-
-module.exports = root;
-
-
-/***/ }),
-/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -23048,6 +22692,362 @@ module.exports = root;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), __webpack_require__(30)(module)))
 
 /***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * 
+ */
+
+
+
+/**
+ * Keeps track of the current owner.
+ *
+ * The current owner is the component who should own any components that are
+ * currently being constructed.
+ */
+var ReactCurrentOwner = {
+  /**
+   * @internal
+   * @type {ReactComponent}
+   */
+  current: null
+};
+
+module.exports = ReactCurrentOwner;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ */
+
+
+
+var _prodInvariant = __webpack_require__(4),
+    _assign = __webpack_require__(7);
+
+var CallbackQueue = __webpack_require__(120);
+var PooledClass = __webpack_require__(29);
+var ReactFeatureFlags = __webpack_require__(121);
+var ReactReconciler = __webpack_require__(34);
+var Transaction = __webpack_require__(50);
+
+var invariant = __webpack_require__(1);
+
+var dirtyComponents = [];
+var updateBatchNumber = 0;
+var asapCallbackQueue = CallbackQueue.getPooled();
+var asapEnqueued = false;
+
+var batchingStrategy = null;
+
+function ensureInjected() {
+  !(ReactUpdates.ReactReconcileTransaction && batchingStrategy) ?  true ? invariant(false, 'ReactUpdates: must inject a reconcile transaction class and batching strategy') : _prodInvariant('123') : void 0;
+}
+
+var NESTED_UPDATES = {
+  initialize: function () {
+    this.dirtyComponentsLength = dirtyComponents.length;
+  },
+  close: function () {
+    if (this.dirtyComponentsLength !== dirtyComponents.length) {
+      // Additional updates were enqueued by componentDidUpdate handlers or
+      // similar; before our own UPDATE_QUEUEING wrapper closes, we want to run
+      // these new updates so that if A's componentDidUpdate calls setState on
+      // B, B will update before the callback A's updater provided when calling
+      // setState.
+      dirtyComponents.splice(0, this.dirtyComponentsLength);
+      flushBatchedUpdates();
+    } else {
+      dirtyComponents.length = 0;
+    }
+  }
+};
+
+var UPDATE_QUEUEING = {
+  initialize: function () {
+    this.callbackQueue.reset();
+  },
+  close: function () {
+    this.callbackQueue.notifyAll();
+  }
+};
+
+var TRANSACTION_WRAPPERS = [NESTED_UPDATES, UPDATE_QUEUEING];
+
+function ReactUpdatesFlushTransaction() {
+  this.reinitializeTransaction();
+  this.dirtyComponentsLength = null;
+  this.callbackQueue = CallbackQueue.getPooled();
+  this.reconcileTransaction = ReactUpdates.ReactReconcileTransaction.getPooled(
+  /* useCreateElement */true);
+}
+
+_assign(ReactUpdatesFlushTransaction.prototype, Transaction, {
+  getTransactionWrappers: function () {
+    return TRANSACTION_WRAPPERS;
+  },
+
+  destructor: function () {
+    this.dirtyComponentsLength = null;
+    CallbackQueue.release(this.callbackQueue);
+    this.callbackQueue = null;
+    ReactUpdates.ReactReconcileTransaction.release(this.reconcileTransaction);
+    this.reconcileTransaction = null;
+  },
+
+  perform: function (method, scope, a) {
+    // Essentially calls `this.reconcileTransaction.perform(method, scope, a)`
+    // with this transaction's wrappers around it.
+    return Transaction.perform.call(this, this.reconcileTransaction.perform, this.reconcileTransaction, method, scope, a);
+  }
+});
+
+PooledClass.addPoolingTo(ReactUpdatesFlushTransaction);
+
+function batchedUpdates(callback, a, b, c, d, e) {
+  ensureInjected();
+  return batchingStrategy.batchedUpdates(callback, a, b, c, d, e);
+}
+
+/**
+ * Array comparator for ReactComponents by mount ordering.
+ *
+ * @param {ReactComponent} c1 first component you're comparing
+ * @param {ReactComponent} c2 second component you're comparing
+ * @return {number} Return value usable by Array.prototype.sort().
+ */
+function mountOrderComparator(c1, c2) {
+  return c1._mountOrder - c2._mountOrder;
+}
+
+function runBatchedUpdates(transaction) {
+  var len = transaction.dirtyComponentsLength;
+  !(len === dirtyComponents.length) ?  true ? invariant(false, 'Expected flush transaction\'s stored dirty-components length (%s) to match dirty-components array length (%s).', len, dirtyComponents.length) : _prodInvariant('124', len, dirtyComponents.length) : void 0;
+
+  // Since reconciling a component higher in the owner hierarchy usually (not
+  // always -- see shouldComponentUpdate()) will reconcile children, reconcile
+  // them before their children by sorting the array.
+  dirtyComponents.sort(mountOrderComparator);
+
+  // Any updates enqueued while reconciling must be performed after this entire
+  // batch. Otherwise, if dirtyComponents is [A, B] where A has children B and
+  // C, B could update twice in a single batch if C's render enqueues an update
+  // to B (since B would have already updated, we should skip it, and the only
+  // way we can know to do so is by checking the batch counter).
+  updateBatchNumber++;
+
+  for (var i = 0; i < len; i++) {
+    // If a component is unmounted before pending changes apply, it will still
+    // be here, but we assume that it has cleared its _pendingCallbacks and
+    // that performUpdateIfNecessary is a noop.
+    var component = dirtyComponents[i];
+
+    // If performUpdateIfNecessary happens to enqueue any new updates, we
+    // shouldn't execute the callbacks until the next render happens, so
+    // stash the callbacks first
+    var callbacks = component._pendingCallbacks;
+    component._pendingCallbacks = null;
+
+    var markerName;
+    if (ReactFeatureFlags.logTopLevelRenders) {
+      var namedComponent = component;
+      // Duck type TopLevelWrapper. This is probably always true.
+      if (component._currentElement.type.isReactTopLevelWrapper) {
+        namedComponent = component._renderedComponent;
+      }
+      markerName = 'React update: ' + namedComponent.getName();
+      console.time(markerName);
+    }
+
+    ReactReconciler.performUpdateIfNecessary(component, transaction.reconcileTransaction, updateBatchNumber);
+
+    if (markerName) {
+      console.timeEnd(markerName);
+    }
+
+    if (callbacks) {
+      for (var j = 0; j < callbacks.length; j++) {
+        transaction.callbackQueue.enqueue(callbacks[j], component.getPublicInstance());
+      }
+    }
+  }
+}
+
+var flushBatchedUpdates = function () {
+  // ReactUpdatesFlushTransaction's wrappers will clear the dirtyComponents
+  // array and perform any updates enqueued by mount-ready handlers (i.e.,
+  // componentDidUpdate) but we need to check here too in order to catch
+  // updates enqueued by setState callbacks and asap calls.
+  while (dirtyComponents.length || asapEnqueued) {
+    if (dirtyComponents.length) {
+      var transaction = ReactUpdatesFlushTransaction.getPooled();
+      transaction.perform(runBatchedUpdates, null, transaction);
+      ReactUpdatesFlushTransaction.release(transaction);
+    }
+
+    if (asapEnqueued) {
+      asapEnqueued = false;
+      var queue = asapCallbackQueue;
+      asapCallbackQueue = CallbackQueue.getPooled();
+      queue.notifyAll();
+      CallbackQueue.release(queue);
+    }
+  }
+};
+
+/**
+ * Mark a component as needing a rerender, adding an optional callback to a
+ * list of functions which will be executed once the rerender occurs.
+ */
+function enqueueUpdate(component) {
+  ensureInjected();
+
+  // Various parts of our code (such as ReactCompositeComponent's
+  // _renderValidatedComponent) assume that calls to render aren't nested;
+  // verify that that's the case. (This is called by each top-level update
+  // function, like setState, forceUpdate, etc.; creation and
+  // destruction of top-level components is guarded in ReactMount.)
+
+  if (!batchingStrategy.isBatchingUpdates) {
+    batchingStrategy.batchedUpdates(enqueueUpdate, component);
+    return;
+  }
+
+  dirtyComponents.push(component);
+  if (component._updateBatchNumber == null) {
+    component._updateBatchNumber = updateBatchNumber + 1;
+  }
+}
+
+/**
+ * Enqueue a callback to be run at the end of the current batching cycle. Throws
+ * if no updates are currently being performed.
+ */
+function asap(callback, context) {
+  invariant(batchingStrategy.isBatchingUpdates, "ReactUpdates.asap: Can't enqueue an asap callback in a context where" + 'updates are not being batched.');
+  asapCallbackQueue.enqueue(callback, context);
+  asapEnqueued = true;
+}
+
+var ReactUpdatesInjection = {
+  injectReconcileTransaction: function (ReconcileTransaction) {
+    !ReconcileTransaction ?  true ? invariant(false, 'ReactUpdates: must provide a reconcile transaction class') : _prodInvariant('126') : void 0;
+    ReactUpdates.ReactReconcileTransaction = ReconcileTransaction;
+  },
+
+  injectBatchingStrategy: function (_batchingStrategy) {
+    !_batchingStrategy ?  true ? invariant(false, 'ReactUpdates: must provide a batching strategy') : _prodInvariant('127') : void 0;
+    !(typeof _batchingStrategy.batchedUpdates === 'function') ?  true ? invariant(false, 'ReactUpdates: must provide a batchedUpdates() function') : _prodInvariant('128') : void 0;
+    !(typeof _batchingStrategy.isBatchingUpdates === 'boolean') ?  true ? invariant(false, 'ReactUpdates: must provide an isBatchingUpdates boolean attribute') : _prodInvariant('129') : void 0;
+    batchingStrategy = _batchingStrategy;
+  }
+};
+
+var ReactUpdates = {
+  /**
+   * React references `ReactReconcileTransaction` using this property in order
+   * to allow dependency injection.
+   *
+   * @internal
+   */
+  ReactReconcileTransaction: null,
+
+  batchedUpdates: batchedUpdates,
+  enqueueUpdate: enqueueUpdate,
+  flushBatchedUpdates: flushBatchedUpdates,
+  injection: ReactUpdatesInjection,
+  asap: asap
+};
+
+module.exports = ReactUpdates;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/** @format */
+
+/**
+ * Any new action type should be added to the set of exports below, with the
+ * value mirroring its exported name.
+ *
+ * Please keep this list alphabetized!
+ *
+ */
+
+var HAPPYCHAT_ASSETS_LOADED = exports.HAPPYCHAT_ASSETS_LOADED = 'HAPPYCHAT_ASSETS_LOADED';
+var HAPPYCHAT_BLUR = exports.HAPPYCHAT_BLUR = 'HAPPYCHAT_BLUR';
+var HAPPYCHAT_FALLBACK_TICKET_OPTIONS = exports.HAPPYCHAT_FALLBACK_TICKET_OPTIONS = 'HAPPYCHAT_FALLBACK_TICKET_OPTIONS';
+var HAPPYCHAT_FOCUS = exports.HAPPYCHAT_FOCUS = 'HAPPYCHAT_FOCUS';
+var HAPPYCHAT_IO_INIT = exports.HAPPYCHAT_IO_INIT = 'HAPPYCHAT_IO_INIT';
+var HAPPYCHAT_IO_RECEIVE_ACCEPT = exports.HAPPYCHAT_IO_RECEIVE_ACCEPT = 'HAPPYCHAT_IO_RECEIVE_ACCEPT';
+var HAPPYCHAT_IO_RECEIVE_CONNECT = exports.HAPPYCHAT_IO_RECEIVE_CONNECT = 'HAPPYCHAT_IO_RECEIVE_CONNECT';
+var HAPPYCHAT_IO_RECEIVE_DISCONNECT = exports.HAPPYCHAT_IO_RECEIVE_DISCONNECT = 'HAPPYCHAT_IO_RECEIVE_DISCONNECT';
+var HAPPYCHAT_IO_RECEIVE_ERROR = exports.HAPPYCHAT_IO_RECEIVE_ERROR = 'HAPPYCHAT_IO_RECEIVE_ERROR';
+var HAPPYCHAT_IO_RECEIVE_INIT = exports.HAPPYCHAT_IO_RECEIVE_INIT = 'HAPPYCHAT_IO_RECEIVE_INIT';
+var HAPPYCHAT_IO_RECEIVE_MESSAGE = exports.HAPPYCHAT_IO_RECEIVE_MESSAGE = 'HAPPYCHAT_IO_RECEIVE_MESSAGE';
+var HAPPYCHAT_IO_RECEIVE_RECONNECTING = exports.HAPPYCHAT_IO_RECEIVE_RECONNECTING = 'HAPPYCHAT_IO_RECEIVE_RECONNECTING';
+var HAPPYCHAT_IO_RECEIVE_STATUS = exports.HAPPYCHAT_IO_RECEIVE_STATUS = 'HAPPYCHAT_IO_RECEIVE_STATUS';
+var HAPPYCHAT_IO_RECEIVE_TOKEN = exports.HAPPYCHAT_IO_RECEIVE_TOKEN = 'HAPPYCHAT_IO_RECEIVE_TOKEN';
+var HAPPYCHAT_IO_RECEIVE_UNAUTHORIZED = exports.HAPPYCHAT_IO_RECEIVE_UNAUTHORIZED = 'HAPPYCHAT_IO_RECEIVE_UNAUTHORIZED';
+var HAPPYCHAT_IO_REQUEST_TRANSCRIPT = exports.HAPPYCHAT_IO_REQUEST_TRANSCRIPT = 'HAPPYCHAT_IO_REQUEST_TRANSCRIPT';
+var HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET = exports.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET = 'HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET';
+var HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE = exports.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE = 'HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE';
+var HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT = exports.HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT = 'HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT';
+var HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE = exports.HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE = 'HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE';
+var HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT = exports.HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT = 'HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT';
+var HAPPYCHAT_IO_SEND_MESSAGE_EVENT = exports.HAPPYCHAT_IO_SEND_MESSAGE_EVENT = 'HAPPYCHAT_IO_SEND_MESSAGE_EVENT';
+var HAPPYCHAT_IO_SEND_MESSAGE_LOG = exports.HAPPYCHAT_IO_SEND_MESSAGE_LOG = 'HAPPYCHAT_IO_SEND_MESSAGE_LOG';
+var HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE = exports.HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE = 'HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE';
+var HAPPYCHAT_IO_SEND_MESSAGE_USERINFO = exports.HAPPYCHAT_IO_SEND_MESSAGE_USERINFO = 'HAPPYCHAT_IO_SEND_MESSAGE_USERINFO';
+var HAPPYCHAT_IO_SEND_PREFERENCES = exports.HAPPYCHAT_IO_SEND_PREFERENCES = 'HAPPYCHAT_IO_SEND_PREFERENCES';
+var HAPPYCHAT_IO_SEND_TYPING = exports.HAPPYCHAT_IO_SEND_TYPING = 'HAPPYCHAT_IO_SEND_TYPING';
+var HAPPYCHAT_MINIMIZING = exports.HAPPYCHAT_MINIMIZING = 'HAPPYCHAT_MINIMIZING';
+var HAPPYCHAT_OPEN = exports.HAPPYCHAT_OPEN = 'HAPPYCHAT_OPEN';
+var HAPPYCHAT_SET_CURRENT_MESSAGE = exports.HAPPYCHAT_SET_CURRENT_MESSAGE = 'HAPPYCHAT_SET_CURRENT_MESSAGE';
+var HAPPYCHAT_USER_CURRENT_SET = exports.HAPPYCHAT_USER_CURRENT_SET = 'HAPPYCHAT_USER_CURRENT_SET';
+var HAPPYCHAT_USER_ELIGIBILITY_SET = exports.HAPPYCHAT_USER_ELIGIBILITY_SET = 'HAPPYCHAT_USER_ELIGIBILITY_SET';
+var HAPPYCHAT_USER_GROUPS_SET = exports.HAPPYCHAT_USER_GROUPS_SET = 'HAPPYCHAT_USER_GROUPS_SET';
+var HAPPYCHAT_USER_LOCALE_SET = exports.HAPPYCHAT_USER_LOCALE_SET = 'HAPPYCHAT_USER_LOCALE_SET';
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var freeGlobal = __webpack_require__(162);
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+module.exports = root;
+
+
+/***/ }),
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23662,7 +23662,7 @@ module.exports = isObject;
 
 var _assign = __webpack_require__(7);
 
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 
 var warning = __webpack_require__(2);
 var canDefineProperty = __webpack_require__(46);
@@ -27457,7 +27457,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _uuid = __webpack_require__(481);
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 var _constants = __webpack_require__(13);
 
@@ -28100,7 +28100,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
 var _classnames = __webpack_require__(11);
 
@@ -29405,10 +29405,10 @@ module.exports = KeyEscapeUtils;
 
 var _prodInvariant = __webpack_require__(4);
 
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 var ReactInstanceMap = __webpack_require__(43);
 var ReactInstrumentation = __webpack_require__(17);
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -30195,7 +30195,7 @@ module.exports = MapCache;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(36),
-    root = __webpack_require__(21);
+    root = __webpack_require__(22);
 
 /* Built-in method references that are verified to be native. */
 var Map = getNative(root, 'Map');
@@ -30207,7 +30207,7 @@ module.exports = Map;
 /* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(21);
+var root = __webpack_require__(22);
 
 /** Built-in value references. */
 var Symbol = root.Symbol;
@@ -30613,7 +30613,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31654,7 +31654,7 @@ module.exports = getIteratorFn;
 
 
 
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 var ReactComponentTreeHook = __webpack_require__(15);
 var ReactElement = __webpack_require__(28);
 
@@ -34362,7 +34362,7 @@ var _assign = __webpack_require__(7);
 
 var LinkedValueUtils = __webpack_require__(76);
 var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 
 var warning = __webpack_require__(2);
 
@@ -34842,7 +34842,7 @@ module.exports = ReactHostComponent;
 
 var _prodInvariant = __webpack_require__(4);
 
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 var REACT_ELEMENT_TYPE = __webpack_require__(387);
 
 var getIteratorFn = __webpack_require__(388);
@@ -35273,7 +35273,7 @@ var DOMLazyTree = __webpack_require__(35);
 var DOMProperty = __webpack_require__(26);
 var React = __webpack_require__(32);
 var ReactBrowserEventEmitter = __webpack_require__(54);
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 var ReactDOMComponentTree = __webpack_require__(8);
 var ReactDOMContainerInfo = __webpack_require__(417);
 var ReactDOMFeatureFlags = __webpack_require__(418);
@@ -35283,7 +35283,7 @@ var ReactInstrumentation = __webpack_require__(17);
 var ReactMarkupChecksum = __webpack_require__(419);
 var ReactReconciler = __webpack_require__(34);
 var ReactUpdateQueue = __webpack_require__(81);
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 
 var emptyObject = __webpack_require__(47);
 var instantiateReactComponent = __webpack_require__(131);
@@ -36914,7 +36914,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setAssetsLoaded = exports.setCurrentMessage = exports.focus = exports.blur = exports.closeChat = exports.minimizedChat = exports.minimizeChat = exports.openChat = undefined;
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 var setChatOpen = function setChatOpen(isOpen) {
   return { type: _actionTypes.HAPPYCHAT_OPEN, isOpen: isOpen };
@@ -37010,7 +37010,7 @@ exports.setGroups = setGroups;
 exports.setLocale = setLocale;
 exports.setEligibility = setEligibility;
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 /**
  * Returns an action object that sets the current user
@@ -38632,7 +38632,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
 var _classnames = __webpack_require__(11);
 
@@ -39118,7 +39118,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
 var _localize = __webpack_require__(183);
 
@@ -52502,6 +52502,8 @@ var _redux = __webpack_require__(24);
 
 var _reduxDevtoolsExtension = __webpack_require__(452);
 
+var _lodash = __webpack_require__(18);
+
 var _touchDetect = __webpack_require__(453);
 
 var _getWpcomUser = __webpack_require__(454);
@@ -52534,20 +52536,21 @@ var _actions3 = __webpack_require__(656);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/** @format */
-
-/**
- * External dependencies
- */
 var store = (0, _redux.createStore)(_reducer2.default, {}, (0, _redux.compose)((0, _redux.applyMiddleware)((0, _middleware.socketMiddleware)()), (0, _reduxDevtoolsExtension.devToolsEnhancer)()));
 // state: general, actions, selectors
 
 // UI components
 
+
 /**
  * Internal dependencies
  */
 // utils
+/** @format */
+
+/**
+ * External dependencies
+ */
 
 
 var dispatchAssetsFinishedDownloading = function dispatchAssetsFinishedDownloading() {
@@ -52571,11 +52574,21 @@ var createIframe = function createIframe(renderMethod, props) {
 
 	var iframeElement = document.createElement('iframe');
 
+	var primaryHasAnySecondary = function primaryHasAnySecondary(options) {
+		return Array.isArray(options) && (0, _lodash.find)(options, function (opt) {
+			return opt.secondaryOptions;
+		});
+	};
+
+	var isThereAnySecondaryOptions = function isThereAnySecondaryOptions(options) {
+		return options && (options.secondaryOptions || primaryHasAnySecondary(entryOptions.primaryOptions));
+	};
+
 	// Calculate height based on the number of components
 	// the iframe may need to render.
 	var iframeHeight = 380;
 	iframeHeight = iframeHeight + (entryOptions && entryOptions.primaryOptions ? 110 : 0);
-	iframeHeight = iframeHeight + (entryOptions && entryOptions.secondaryOptions ? 110 : 0);
+	iframeHeight = iframeHeight + (isThereAnySecondaryOptions(entryOptions) ? 110 : 0);
 	iframeHeight = iframeHeight + (entryOptions && entryOptions.itemList ? 70 : 0);
 
 	// style iframe element
@@ -53079,7 +53092,7 @@ module.exports = PooledClass;
 
 var _prodInvariant = __webpack_require__(33);
 
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 var REACT_ELEMENT_TYPE = __webpack_require__(109);
 
 var getIteratorFn = __webpack_require__(110);
@@ -53809,7 +53822,7 @@ var ReactDOMComponentTree = __webpack_require__(8);
 var ReactDefaultInjection = __webpack_require__(343);
 var ReactMount = __webpack_require__(139);
 var ReactReconciler = __webpack_require__(34);
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 var ReactVersion = __webpack_require__(421);
 
 var findDOMNode = __webpack_require__(422);
@@ -54651,7 +54664,7 @@ var EventPluginHub = __webpack_require__(41);
 var EventPropagators = __webpack_require__(40);
 var ExecutionEnvironment = __webpack_require__(10);
 var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 var SyntheticEvent = __webpack_require__(23);
 
 var inputValueTracking = __webpack_require__(122);
@@ -58162,7 +58175,7 @@ var _prodInvariant = __webpack_require__(4),
 var DOMPropertyOperations = __webpack_require__(128);
 var LinkedValueUtils = __webpack_require__(76);
 var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -58576,7 +58589,7 @@ var _prodInvariant = __webpack_require__(4),
 
 var LinkedValueUtils = __webpack_require__(76);
 var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
@@ -58740,7 +58753,7 @@ var ReactComponentEnvironment = __webpack_require__(77);
 var ReactInstanceMap = __webpack_require__(43);
 var ReactInstrumentation = __webpack_require__(17);
 
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 var ReactReconciler = __webpack_require__(34);
 var ReactChildReconciler = __webpack_require__(382);
 
@@ -59345,7 +59358,7 @@ var _prodInvariant = __webpack_require__(4),
 
 var React = __webpack_require__(32);
 var ReactComponentEnvironment = __webpack_require__(77);
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 var ReactErrorUtils = __webpack_require__(69);
 var ReactInstanceMap = __webpack_require__(43);
 var ReactInstrumentation = __webpack_require__(17);
@@ -61137,7 +61150,7 @@ module.exports = ReactDOMTextComponent;
 
 var _assign = __webpack_require__(7);
 
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 var Transaction = __webpack_require__(50);
 
 var emptyFunction = __webpack_require__(16);
@@ -61212,7 +61225,7 @@ var EventListener = __webpack_require__(136);
 var ExecutionEnvironment = __webpack_require__(10);
 var PooledClass = __webpack_require__(29);
 var ReactDOMComponentTree = __webpack_require__(8);
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 
 var getEventTarget = __webpack_require__(70);
 var getUnboundedScrollPosition = __webpack_require__(397);
@@ -61413,7 +61426,7 @@ var ReactComponentEnvironment = __webpack_require__(77);
 var ReactEmptyComponent = __webpack_require__(133);
 var ReactBrowserEventEmitter = __webpack_require__(54);
 var ReactHostComponent = __webpack_require__(134);
-var ReactUpdates = __webpack_require__(19);
+var ReactUpdates = __webpack_require__(20);
 
 var ReactInjection = {
   Component: ReactComponentEnvironment.injection,
@@ -63424,7 +63437,7 @@ module.exports = '15.6.2';
 
 var _prodInvariant = __webpack_require__(4);
 
-var ReactCurrentOwner = __webpack_require__(18);
+var ReactCurrentOwner = __webpack_require__(19);
 var ReactDOMComponentTree = __webpack_require__(8);
 var ReactInstanceMap = __webpack_require__(43);
 
@@ -68511,7 +68524,7 @@ module.exports = isMasked;
 /* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(21);
+var root = __webpack_require__(22);
 
 /** Used to detect overreaching core-js shims. */
 var coreJsData = root['__core-js_shared__'];
@@ -69902,7 +69915,7 @@ module.exports = equalByTag;
 /* 532 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(21);
+var root = __webpack_require__(22);
 
 /** Built-in value references. */
 var Uint8Array = root.Uint8Array;
@@ -70059,7 +70072,7 @@ module.exports = equalObjects;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(36),
-    root = __webpack_require__(21);
+    root = __webpack_require__(22);
 
 /* Built-in method references that are verified to be native. */
 var DataView = getNative(root, 'DataView');
@@ -70072,7 +70085,7 @@ module.exports = DataView;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(36),
-    root = __webpack_require__(21);
+    root = __webpack_require__(22);
 
 /* Built-in method references that are verified to be native. */
 var Promise = getNative(root, 'Promise');
@@ -70085,7 +70098,7 @@ module.exports = Promise;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(36),
-    root = __webpack_require__(21);
+    root = __webpack_require__(22);
 
 /* Built-in method references that are verified to be native. */
 var Set = getNative(root, 'Set');
@@ -70098,7 +70111,7 @@ module.exports = Set;
 /***/ (function(module, exports, __webpack_require__) {
 
 var getNative = __webpack_require__(36),
-    root = __webpack_require__(21);
+    root = __webpack_require__(22);
 
 /* Built-in method references that are verified to be native. */
 var WeakMap = getNative(root, 'WeakMap');
@@ -72102,7 +72115,7 @@ var Composer = exports.Composer = (0, _createReactClass2.default)({
 /* 576 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(21),
+/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(22),
     stubFalse = __webpack_require__(577);
 
 /** Detect free variable `exports`. */
@@ -72440,7 +72453,7 @@ module.exports = debounce;
 /* 580 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var root = __webpack_require__(21);
+var root = __webpack_require__(22);
 
 /**
  * Gets the timestamp of the number of milliseconds that have elapsed since
@@ -74514,6 +74527,10 @@ var getSelectedOption = function getSelectedOption(options) {
 	return Array.isArray(options) && options.length > 0 ? options[0] : {};
 };
 
+var getSecondary = function getSecondary(primarySelected, secondaryOptions) {
+	return Array.isArray(primarySelected.secondaryOptions) ? getSelectedOption(primarySelected.secondaryOptions) : getSelectedOption(secondaryOptions);
+};
+
 var ContactForm = exports.ContactForm = function (_React$Component) {
 	_inherits(ContactForm, _React$Component);
 
@@ -74522,12 +74539,15 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (ContactForm.__proto__ || Object.getPrototypeOf(ContactForm)).call(this, props));
 
+		var primaryOption = getSelectedOption(_this.props.primaryOptions);
+		var secondaryOption = getSecondary(primaryOption, _this.props.secondaryOptions);
+		var item = getSelectedOption(_this.props.itemList);
 		_this.state = {
 			subject: '',
 			message: '',
-			primaryOption: getSelectedOption(_this.props.primaryOptions),
-			secondaryOption: getSelectedOption(_this.props.secondaryOptions),
-			item: getSelectedOption(_this.props.itemList)
+			primaryOption: primaryOption,
+			secondaryOption: secondaryOption,
+			item: item
 		};
 		_this.handleChange = _this.handleChange.bind(_this);
 		_this.handleItemSelected = _this.handleItemSelected.bind(_this);
@@ -74560,7 +74580,14 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	}, {
 		key: 'handleOptionChange',
 		value: function handleOptionChange(e) {
-			this.setState(_defineProperty({}, e.name, e.option));
+			if ('primaryOption' === e.name) {
+				this.setState({
+					primaryOption: e.option,
+					secondaryOption: getSecondary(e.option, this.props.secondaryOptions)
+				});
+			} else {
+				this.setState(_defineProperty({}, e.name, e.option));
+			}
 		}
 	}, {
 		key: 'prepareCanSubmitForm',
@@ -74577,18 +74604,98 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 			this.props.submitForm(this.state);
 		}
 	}, {
+		key: 'maybePrimaryOptions',
+		value: function maybePrimaryOptions() {
+			var _props = this.props,
+			    primaryOptions = _props.primaryOptions,
+			    primaryOptionsTitle = _props.primaryOptionsTitle;
+
+			return primaryOptions && primaryOptions.length > 0 ? _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_formLabel2.default,
+					null,
+					primaryOptionsTitle
+				),
+				_react2.default.createElement(_formSelection2.default, {
+					name: 'primaryOption',
+					options: primaryOptions,
+					onClick: this.handleOptionChange
+				})
+			) : '';
+		}
+	}, {
+		key: 'maybeSecondaryOptions',
+		value: function maybeSecondaryOptions() {
+			var _props2 = this.props,
+			    secondaryOptions = _props2.secondaryOptions,
+			    secondaryOptionsTitle = _props2.secondaryOptionsTitle;
+
+			var primaryOption = this.state.primaryOption;
+			var options = [];
+			var title = secondaryOptionsTitle;
+			if (Array.isArray(primaryOption.secondaryOptions)) {
+				options = primaryOption.secondaryOptions;
+				title = primaryOption.secondaryOptionsTitle ? primaryOption.secondaryOptionsTitle : secondaryOptionsTitle;
+			} else if (Array.isArray(secondaryOptions)) {
+				options = secondaryOptions;
+			}
+			return options.length > 0 ? _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_formLabel2.default,
+					null,
+					title
+				),
+				_react2.default.createElement(_formSelection2.default, {
+					name: 'secondaryOption',
+					options: options,
+					onClick: this.handleOptionChange
+				})
+			) : '';
+		}
+	}, {
+		key: 'maybeItemList',
+		value: function maybeItemList() {
+			var _props3 = this.props,
+			    itemListTitle = _props3.itemListTitle,
+			    itemList = _props3.itemList;
+
+			return itemList && itemList.length > 0 ? _react2.default.createElement(
+				'div',
+				{ className: 'contact-form__item-list' },
+				_react2.default.createElement(
+					_formLabel2.default,
+					null,
+					itemListTitle
+				),
+				_react2.default.createElement(_selectDropdown2.default, { options: itemList, onSelect: this.handleItemSelected })
+			) : '';
+		}
+	}, {
+		key: 'maybeSubject',
+		value: function maybeSubject() {
+			var showSubject = this.props.showSubject;
+
+			return showSubject ? _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					_formLabel2.default,
+					null,
+					'Subject'
+				),
+				_react2.default.createElement(_formTextInput2.default, { name: 'subject', value: this.state.subject, onChange: this.handleChange })
+			) : '';
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			var _props = this.props,
-			    formTitle = _props.formTitle,
-			    primaryOptions = _props.primaryOptions,
-			    primaryOptionsTitle = _props.primaryOptionsTitle,
-			    secondaryOptions = _props.secondaryOptions,
-			    secondaryOptionsTitle = _props.secondaryOptionsTitle,
-			    itemListTitle = _props.itemListTitle,
-			    itemList = _props.itemList,
-			    submitFormText = _props.submitFormText,
-			    showSubject = _props.showSubject;
+			var _props4 = this.props,
+			    formTitle = _props4.formTitle,
+			    submitFormText = _props4.submitFormText;
 
 
 			return _react2.default.createElement(
@@ -74606,58 +74713,10 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 				_react2.default.createElement(
 					_card2.default,
 					null,
-					primaryOptions && primaryOptions.length > 0 ? _react2.default.createElement(
-						'div',
-						null,
-						_react2.default.createElement(
-							_formLabel2.default,
-							null,
-							primaryOptionsTitle
-						),
-						_react2.default.createElement(_formSelection2.default, {
-							name: 'primaryOption',
-							options: primaryOptions,
-							onClick: this.handleOptionChange
-						})
-					) : '',
-					secondaryOptions && secondaryOptions.length > 0 ? _react2.default.createElement(
-						'div',
-						null,
-						_react2.default.createElement(
-							_formLabel2.default,
-							null,
-							secondaryOptionsTitle
-						),
-						_react2.default.createElement(_formSelection2.default, {
-							name: 'secondaryOption',
-							options: secondaryOptions,
-							onClick: this.handleOptionChange
-						})
-					) : '',
-					itemList && itemList.length > 0 ? _react2.default.createElement(
-						'div',
-						{ className: 'contact-form__item-list' },
-						_react2.default.createElement(
-							_formLabel2.default,
-							null,
-							itemListTitle
-						),
-						_react2.default.createElement(_selectDropdown2.default, { options: itemList, onSelect: this.handleItemSelected })
-					) : '',
-					showSubject ? _react2.default.createElement(
-						'div',
-						null,
-						_react2.default.createElement(
-							_formLabel2.default,
-							null,
-							'Subject'
-						),
-						_react2.default.createElement(_formTextInput2.default, {
-							name: 'subject',
-							value: this.state.subject,
-							onChange: this.handleChange
-						})
-					) : '',
+					this.maybePrimaryOptions(),
+					this.maybeSecondaryOptions(),
+					this.maybeItemList(),
+					this.maybeSubject(),
 					_react2.default.createElement(
 						_formLabel2.default,
 						null,
@@ -74795,7 +74854,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -74885,7 +74944,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
 var _react = __webpack_require__(3);
 
@@ -74989,7 +75048,7 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -75087,7 +75146,7 @@ var _propTypes = __webpack_require__(6);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
 var _segmentedControl = __webpack_require__(604);
 
@@ -75123,6 +75182,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 
 
+var areOptionsDistinct = function areOptionsDistinct(nextOpts, currentOpts) {
+	if (nextOpts.length !== currentOpts.length) {
+		return true;
+	}
+	for (var i = 0; i < nextOpts.length; i++) {
+		if (nextOpts[i].value !== currentOpts[i].value || nextOpts[i].label !== currentOpts[i].label) {
+			return true;
+		}
+	}
+	return false;
+};
+
 var FormSelection = function (_React$Component) {
 	_inherits(FormSelection, _React$Component);
 
@@ -75137,6 +75208,13 @@ var FormSelection = function (_React$Component) {
 	}
 
 	_createClass(FormSelection, [{
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			if (areOptionsDistinct(nextProps.options, this.props.options)) {
+				this.setState({ selection: nextProps.options[0].value });
+			}
+		}
+	}, {
 		key: 'handleClick',
 		value: function handleClick(option) {
 			var _this2 = this;
@@ -75234,7 +75312,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
 var _propTypes = __webpack_require__(6);
 
@@ -76193,7 +76271,7 @@ var _sortBy = __webpack_require__(620);
 
 var _sortBy2 = _interopRequireDefault(_sortBy);
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 var _constants = __webpack_require__(13);
 
@@ -76805,7 +76883,7 @@ exports.isAvailable = exports.status = exports.error = undefined;
 
 var _redux = __webpack_require__(24);
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 var _constants = __webpack_require__(13);
 
@@ -76902,9 +76980,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(24);
 
-var _lodash = __webpack_require__(22);
+var _lodash = __webpack_require__(18);
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 var _constants = __webpack_require__(13);
 
@@ -76998,7 +77076,7 @@ exports.isReady = exports.isMinimizing = exports.isOpen = exports.lostFocusAt = 
 
 var _redux = __webpack_require__(24);
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 /**
  * Tracks the current message the user has typed into the happychat client
@@ -77118,7 +77196,7 @@ exports.geoLocation = exports.currentUser = undefined;
 
 var _redux = __webpack_require__(24);
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 /**
  * Tracks the current user info
@@ -77242,7 +77320,7 @@ var _noop = __webpack_require__(630);
 
 var _noop2 = _interopRequireDefault(_noop);
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 var _actions = __webpack_require__(55);
 
@@ -81320,7 +81398,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setFallbackTicketOptions = undefined;
 
-var _actionTypes = __webpack_require__(20);
+var _actionTypes = __webpack_require__(21);
 
 /**
  * Returns an action object for configuring the fallbackTicket feature.
