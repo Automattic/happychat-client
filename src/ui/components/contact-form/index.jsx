@@ -72,18 +72,64 @@ export class ContactForm extends React.Component {
 		this.props.submitForm( this.state );
 	}
 
+	maybePrimaryOptions() {
+		const { primaryOptions, primaryOptionsTitle } = this.props;
+		return primaryOptions && primaryOptions.length > 0 ? (
+			<div>
+				<FormLabel>{ primaryOptionsTitle }</FormLabel>
+				<FormSelection
+					name="primaryOption"
+					options={ primaryOptions }
+					onClick={ this.handleOptionChange }
+				/>
+			</div>
+		) : (
+			''
+		);
+	}
+
+	maybeSecondaryOptions() {
+		const { secondaryOptions, secondaryOptionsTitle } = this.props;
+		return secondaryOptions && secondaryOptions.length > 0 ? (
+			<div>
+				<FormLabel>{ secondaryOptionsTitle }</FormLabel>
+				<FormSelection
+					name="secondaryOption"
+					options={ secondaryOptions }
+					onClick={ this.handleOptionChange }
+				/>
+			</div>
+		) : (
+			''
+		);
+	}
+
+	maybeItemList() {
+		const { itemListTitle, itemList } = this.props;
+		return itemList && itemList.length > 0 ? (
+			<div className="contact-form__item-list">
+				<FormLabel>{ itemListTitle }</FormLabel>
+				<SelectDropdown options={ itemList } onSelect={ this.handleItemSelected } />
+			</div>
+		) : (
+			''
+		);
+	}
+
+	maybeSubject() {
+		const { showSubject } = this.props;
+		return showSubject ? (
+			<div>
+				<FormLabel>{ 'Subject' }</FormLabel>
+				<FormTextInput name="subject" value={ this.state.subject } onChange={ this.handleChange } />
+			</div>
+		) : (
+			''
+		);
+	}
+
 	render() {
-		const {
-			formTitle,
-			primaryOptions,
-			primaryOptionsTitle,
-			secondaryOptions,
-			secondaryOptionsTitle,
-			itemListTitle,
-			itemList,
-			submitFormText,
-			showSubject,
-		} = this.props;
+		const { formTitle, submitFormText } = this.props;
 
 		return (
 			<div className="contact-form">
@@ -91,52 +137,13 @@ export class ContactForm extends React.Component {
 					<p className="contact-form__header-title">{ formTitle }</p>
 				</CompactCard>
 				<Card>
-					{ primaryOptions && primaryOptions.length > 0 ? (
-						<div>
-							<FormLabel>{ primaryOptionsTitle }</FormLabel>
-							<FormSelection
-								name="primaryOption"
-								options={ primaryOptions }
-								onClick={ this.handleOptionChange }
-							/>
-						</div>
-					) : (
-						''
-					) }
-					{ secondaryOptions && secondaryOptions.length > 0 ? (
-						<div>
-							<FormLabel>{ secondaryOptionsTitle }</FormLabel>
-							<FormSelection
-								name="secondaryOption"
-								options={ secondaryOptions }
-								onClick={ this.handleOptionChange }
-							/>
-						</div>
-					) : (
-						''
-					) }
+					{ this.maybePrimaryOptions() }
 
-					{ itemList && itemList.length > 0 ? (
-						<div className="contact-form__item-list">
-							<FormLabel>{ itemListTitle }</FormLabel>
-							<SelectDropdown options={ itemList } onSelect={ this.handleItemSelected } />
-						</div>
-					) : (
-						''
-					) }
+					{ this.maybeSecondaryOptions() }
 
-					{ showSubject ? (
-						<div>
-							<FormLabel>{ 'Subject' }</FormLabel>
-							<FormTextInput
-								name="subject"
-								value={ this.state.subject }
-								onChange={ this.handleChange }
-							/>
-						</div>
-					) : (
-						''
-					) }
+					{ this.maybeItemList() }
+
+					{ this.maybeSubject() }
 
 					<FormLabel>What are you trying to do?</FormLabel>
 					<FormTextarea
