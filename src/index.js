@@ -8,6 +8,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
+import { find } from 'lodash';
+
 /**
  * Internal dependencies
  */
@@ -48,11 +50,18 @@ const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 	const { nodeId, entryOptions } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
+	const primaryHasAnySecondary = options =>
+		Array.isArray( options ) && find( options, opt => opt.secondaryOptions );
+
+	const isThereAnySecondaryOptions = options =>
+		options &&
+		( options.secondaryOptions || primaryHasAnySecondary( entryOptions.primaryOptions ) );
+
 	// Calculate height based on the number of components
 	// the iframe may need to render.
 	let iframeHeight = 380;
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.secondaryOptions ? 110 : 0 );
+	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
 
 	// style iframe element

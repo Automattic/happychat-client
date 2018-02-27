@@ -18,17 +18,16 @@
 			nodeId: 'support',
 			entryOptions: {
 				primaryOptions: [
-					{ 'value': 'before-buy', 'label': 'Before you buy', canChat: false },
-					{ 'value': 'account', 'label': 'Help with my account' },
-					{ 'value': 'broken', 'label': 'Something is broken' },
+					{ 'value': 'before-buy', 'label': 'Before you buy', secondaryOptions: [
+						{ 'value': 'themes', 'label': 'Themes', canChat: false },
+						{ 'value': 'extensions', 'label': 'Extensions' },
+					] },
+					{ 'value': 'account', 'label': 'Help with my account', secondaryOptions: [] },
+					{ 'value': 'broken', 'label': 'Something is broken', canChat: false },
 				],
 				secondaryOptions: [
 					{ 'value': 'config', 'label': 'Help configuring', canChat: false },
 					{ 'value': 'order', 'label': 'Help with an order' },
-				],
-				itemList: [
-					{ value: 'published', label: 'Published', canChat: false },
-					{ value: 'scheduled', label: 'Scheduled' },
 				],
 				fallbackTicket: {
 					headers: {
