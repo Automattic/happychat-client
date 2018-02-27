@@ -21,15 +21,23 @@ import SelectDropdown from 'src/ui/components/select-dropdown';
 const getSelectedOption = options =>
 	Array.isArray( options ) && options.length > 0 ? options[ 0 ] : {};
 
+const getSecondary = ( primarySelected, secondaryOptions ) =>
+	Array.isArray( primarySelected ) && Array.isArray( primarySelected.secondaryOptions )
+		? getSelectedOption( primarySelected.secondaryOptions )
+		: getSelectedOption( secondaryOptions );
+
 export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
+		const primaryOption = getSelectedOption( this.props.primaryOptions );
+		const secondaryOption = getSecondary( primaryOption, this.props.secondaryOptions );
+		const item = getSelectedOption( this.props.itemList );
 		this.state = {
 			subject: '',
 			message: '',
-			primaryOption: getSelectedOption( this.props.primaryOptions ),
-			secondaryOption: getSelectedOption( this.props.secondaryOptions ),
-			item: getSelectedOption( this.props.itemList ),
+			primaryOption,
+			secondaryOption,
+			item,
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
