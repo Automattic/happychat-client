@@ -5,7 +5,7 @@
  */
 
 import classNames from 'classnames';
-import { omit } from 'lodash';
+import omit from 'lodash/omit';
 import React, { Children } from 'react';
 
 /**

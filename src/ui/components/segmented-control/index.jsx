@@ -4,7 +4,8 @@
  * External dependencies
  */
 
-import { filter, map } from 'lodash';
+import filter from 'lodash/filter';
+import map from 'lodash/map';
 import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
 import React from 'react';
@@ -192,10 +193,10 @@ class SegmentedControl extends React.Component {
 	};
 
 	/**
-	 * Allows for keyboard navigation
-	 * @param  {String} direction - `next` or `previous`
-	 * @return {Number|Boolean} - returns false if the newIndex is out of bounds
-	 */
+         * Allows for keyboard navigation
+         * @param  {String} direction - `next` or `previous`
+         * @return {Number|Boolean} - returns false if the newIndex is out of bounds
+         */
 	focusSibling = direction => {
 		var increment, items, newIndex;
 

@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { find } from 'lodash';
+import find from 'lodash/find';
 
 /**
  * Internal dependencies
@@ -39,7 +39,9 @@ class FormSelection extends React.Component {
 
 	componentWillReceiveProps( nextProps ) {
 		if ( areOptionsDistinct( nextProps.options, this.props.options ) ) {
-			this.setState( { selection: nextProps.options[ 0 ].value } );
+			this.setState( {
+				selection: nextProps.options[ 0 ].value,
+			} );
 		}
 	}
 
