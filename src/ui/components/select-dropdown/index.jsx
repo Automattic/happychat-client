@@ -3,11 +3,14 @@
 /**
  * External dependencies
  */
-
 import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { filter, find, findIndex, map, result } from 'lodash';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
+import map from 'lodash/map';
+import result from 'lodash/result';
 import classNames from 'classnames';
 import Gridicon from 'gridicons';
 

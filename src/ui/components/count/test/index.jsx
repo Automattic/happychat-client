@@ -4,7 +4,7 @@
  * External dependencies
  */
 import { shallow } from 'enzyme';
-import { identity } from 'lodash';
+import identity from 'lodash/identity';
 import React from 'react';
 
 /**

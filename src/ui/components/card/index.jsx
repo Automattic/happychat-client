@@ -4,7 +4,8 @@
  * External dependencies
  */
 import React, { Component } from 'react';
-import { assign, omit } from 'lodash';
+import assign from 'lodash/assign';
+import omit from 'lodash/omit';
 import classnames from 'classnames';
 import Gridicon from 'gridicons';
 import PropTypes from 'prop-types';

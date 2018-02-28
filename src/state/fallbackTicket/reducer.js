@@ -4,7 +4,8 @@
  * External dependencies
  */
 import { combineReducers } from 'redux';
-import { get, startsWith } from 'lodash';
+import get from 'lodash/get';
+import startsWith from 'lodash/startsWith';
 
 /**
  * Internal dependencies
@@ -75,4 +76,10 @@ const pathToShow = ( state = defaultPathToShow, action ) => {
 	return state;
 };
 
-export default combineReducers( { headers, pathToCreate, pathToShow, response, status } );
+export default combineReducers( {
+	headers,
+	pathToCreate,
+	pathToShow,
+	response,
+	status,
+} );

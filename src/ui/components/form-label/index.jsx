@@ -7,7 +7,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { isObject, omit } from 'lodash';
+import isObject from 'lodash/isObject';
+import omit from 'lodash/omit';
 
 const renderRequiredBadge = translate => (
 	<small className="form-label__required">{ translate( 'Required' ) }</small>

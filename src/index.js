@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
-import { find } from 'lodash';
+import find from 'lodash/find';
 
 /**
  * Internal dependencies
@@ -182,7 +182,15 @@ const renderHappychat = (
 	}
 ) => {
 	const { fallbackTicket } = entryOptions;
-	store.dispatch( setCurrentUser( { ID, email, username, display_name, avatar_URL } ) );
+	store.dispatch(
+		setCurrentUser( {
+			ID,
+			email,
+			username,
+			display_name,
+			avatar_URL,
+		} )
+	);
 	store.dispatch( setGroups( groups ) );
 	store.dispatch( setLocale( language ) );
 	store.dispatch( setFallbackTicketOptions( fallbackTicket ) );
