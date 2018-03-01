@@ -20487,12 +20487,12 @@ var dispatchAssetsFinishedDownloading = function dispatchAssetsFinishedDownloadi
  * We want this iframe to be non-blocking respect of the main window onload event,
  * but also we want to notify happychat when all assets are done downloading.
  *
- * @param  {Function} renderMethod A method that will render the Happychat widget.
  * @param  {Object} props Properties used by the renderMethod.
  * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
+ * @returns {HTMLNode} Target node where Happychat can hook into.
  */
-var createIframe = function createIframe(renderMethod, props) {
-	var assetsLoadedHook = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};
+var createIframe = function createIframe(props) {
+	var assetsLoadedHook = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
 	var nodeId = props.nodeId,
 	    entryOptions = props.entryOptions;
 
@@ -20573,9 +20573,12 @@ var createIframe = function createIframe(renderMethod, props) {
 	// React advises to use an element -not the body itself- as the target render,
 	// that's why we create this wrapperElement inside the iframe.
 	var targetNode = document.createElement('div');
+	var spinnerLine = document.createElement('hr');
+	spinnerLine.className = 'spinner-line';
+	targetNode.appendChild(spinnerLine);
 	iframeElement.contentDocument.body.appendChild(targetNode);
 
-	renderMethod(targetNode, props);
+	return targetNode;
 };
 
 var isAnyCanChatPropFalse = function isAnyCanChatPropFalse(canChat, entryOptions) {
@@ -20680,17 +20683,17 @@ var initHappychat = exports.initHappychat = function initHappychat(_ref4) {
 		};
 	}
 
+	var targetNode = createIframe({ nodeId: nodeId, entryOptions: entryOptions }, dispatchAssetsFinishedDownloading);
 	getAccessToken().then(function (token) {
 		return getWPComUser(token, groups, canChat);
 	}).then(function (user) {
-		return createIframe(renderHappychat, {
-			nodeId: nodeId,
+		return renderHappychat(targetNode, {
 			user: user,
 			entry: entry,
 			entryOptions: entryOptions
-		}, dispatchAssetsFinishedDownloading);
+		});
 	}).catch(function (error) {
-		return createIframe(renderError, { nodeId: nodeId, error: error });
+		return renderError(targetNode, { error: error });
 	});
 };
 
