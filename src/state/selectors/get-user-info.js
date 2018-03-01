@@ -1,11 +1,6 @@
 /** @format */
 
 /**
- * External dependencies
- */
-import moment from 'moment';
-
-/**
  * Internal dependencies
  */
 import getGeoLocation from 'src/state/selectors/get-user-geolocation';
@@ -20,7 +15,14 @@ export default state => ( {
 		howYouFeel,
 		siteId: site.ID,
 		siteUrl: site.URL,
-		localDateTime: moment().format( 'h:mm a, MMMM Do YYYY' ),
+		localDateTime: new Intl.DateTimeFormat( 'en-us', {
+			hour12: true,
+			hour: '2-digit',
+			minute: '2-digit',
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric',
+		} ).format( new Date() ),
 	};
 
 	// add screen size
