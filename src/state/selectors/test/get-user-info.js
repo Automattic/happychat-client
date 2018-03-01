@@ -1,11 +1,6 @@
 /** @format */
 
 /**
- * External dependencies
- */
-import moment from 'moment';
-
-/**
  * Internal dependencies
  */
 import getUserInfo from '../get-user-info';
@@ -49,7 +44,14 @@ describe( 'HAPPYCHAT_IO_SEND_MESSAGE_USERINFO action', () => {
 			howYouFeel: 'howYouFeel',
 			siteId: 'siteId',
 			siteUrl: 'siteUrl',
-			localDateTime: moment().format( 'h:mm a, MMMM Do YYYY' ),
+			localDateTime: new Intl.DateTimeFormat( 'en-us', {
+				hour12: true,
+				hour: '2-digit',
+				minute: '2-digit',
+				day: 'numeric',
+				month: 'long',
+				year: 'numeric',
+			} ).format( new Date() ),
 			screenSize: {
 				width: 'screenWidth',
 				height: 'screenHeight',
