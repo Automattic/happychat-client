@@ -145,6 +145,9 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	// React advises to use an element -not the body itself- as the target render,
 	// that's why we create this wrapperElement inside the iframe.
 	const targetNode = document.createElement( 'div' );
+	const spinnerLine = document.createElement( 'hr' );
+	spinnerLine.className = 'spinner-line';
+	targetNode.appendChild( spinnerLine );
 	iframeElement.contentDocument.body.appendChild( targetNode );
 
 	return targetNode;
