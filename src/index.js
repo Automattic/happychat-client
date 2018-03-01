@@ -42,11 +42,11 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  * We want this iframe to be non-blocking respect of the main window onload event,
  * but also we want to notify happychat when all assets are done downloading.
  *
- * @param  {Function} renderMethod A method that will render the Happychat widget.
  * @param  {Object} props Properties used by the renderMethod.
  * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
+ * @returns {HTMLNode} Target node where Happychat can hook into.
  */
-const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
+const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	const { nodeId, entryOptions } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
@@ -147,7 +147,7 @@ const createIframe = ( renderMethod, props, assetsLoadedHook = () => {} ) => {
 	const targetNode = document.createElement( 'div' );
 	iframeElement.contentDocument.body.appendChild( targetNode );
 
-	renderMethod( targetNode, props );
+	return targetNode;
 };
 
 const isAnyCanChatPropFalse = ( canChat, entryOptions ) =>
@@ -247,21 +247,17 @@ export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOption
 		getAccessToken = () => Promise.resolve( accessToken );
 	}
 
+	const targetNode = createIframe( { nodeId, entryOptions }, dispatchAssetsFinishedDownloading );
 	getAccessToken()
 		.then( token => getWPComUser( token, groups, canChat ) )
 		.then( user =>
-			createIframe(
-				renderHappychat,
-				{
-					nodeId,
-					user,
-					entry,
-					entryOptions,
-				},
-				dispatchAssetsFinishedDownloading
-			)
+			renderHappychat( targetNode, {
+				user,
+				entry,
+				entryOptions,
+			} )
 		)
-		.catch( error => createIframe( renderError, { nodeId, error } ) );
+		.catch( error => renderError( targetNode, { error } ) );
 };
 
 export const eventAPI = eventAPIFactory( store );
