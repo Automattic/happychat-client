@@ -5,7 +5,7 @@ exports[`Card should be linkable 1`] = `
   className="card is-card-link"
   href="/test"
 >
-  <t
+  <Gridicon
     className="card__link-indicator"
     icon="chevron-right"
     size={24}
