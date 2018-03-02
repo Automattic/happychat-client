@@ -12,8 +12,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import GridiconExternal from 'src/ui/components/gridicons/gridicon-external';
-import GridiconChevronRight from 'src/ui/components/gridicons/gridicon-chevron-right';
+import Gridicon from 'src/ui/components/gridicons/gridicon';
 
 class Card extends Component {
 	static propTypes = {
@@ -52,9 +51,9 @@ class Card extends Component {
 		let linkIndicator;
 		if ( href ) {
 			if ( target ) {
-				linkIndicator = <GridiconExternal className="card__link-indicator" />;
+				linkIndicator = <Gridicon className="card__link-indicator" icon={ 'external' } />;
 			} else {
-				linkIndicator = <GridiconChevronRight className="card__link-indicator" />;
+				linkIndicator = <Gridicon className="card__link-indicator" icon={ 'chevron-right' } />;
 			}
 		} else {
 			omitProps.push( 'href', 'target' );
