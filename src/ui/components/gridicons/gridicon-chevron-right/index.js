@@ -4,11 +4,15 @@
  * External dependencies
  */
 import React from 'react';
-import Gridicons from 'gridicons';
+
+/**
+ * Internal dependencies
+ */
+import Gridicon from 'src/ui/components/gridicons/gridicon';
 
 export default class GridiconChevronRight extends React.PureComponent {
 	render() {
 		const { className } = this.props;
-		return <Gridicons className={ className } icon={ 'chevron-right' } />;
+		return <Gridicon className={ className } icon={ 'chevron-right' } />;
 	}
 }
