@@ -7,8 +7,13 @@ import React, { Component } from 'react';
 import assign from 'lodash/assign';
 import omit from 'lodash/omit';
 import classnames from 'classnames';
-import Gridicon from 'gridicons';
 import PropTypes from 'prop-types';
+
+/**
+ * Internal dependencies
+ */
+import GridiconExternal from 'src/ui/components/gridicons/gridicon-external';
+import GridiconChevronRight from 'src/ui/components/gridicons/gridicon-chevron-right';
 
 class Card extends Component {
 	static propTypes = {
@@ -46,9 +51,11 @@ class Card extends Component {
 
 		let linkIndicator;
 		if ( href ) {
-			linkIndicator = (
-				<Gridicon className="card__link-indicator" icon={ target ? 'external' : 'chevron-right' } />
-			);
+			if ( target ) {
+				linkIndicator = <GridiconExternal className="card__link-indicator" />;
+			} else {
+				linkIndicator = <GridiconChevronRight className="card__link-indicator" />;
+			}
 		} else {
 			omitProps.push( 'href', 'target' );
 		}
