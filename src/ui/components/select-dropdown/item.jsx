@@ -7,7 +7,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
@@ -53,7 +52,7 @@ class SelectDropdownItem extends Component {
 					data-e2e-title={ this.props.e2eTitle }
 				>
 					<span className="select-dropdown__item-text">
-						{ this.props.icon && this.props.icon.type === Gridicon ? this.props.icon : null }
+						{ this.props.icon ? this.props.icon : null }
 						{ this.props.children }
 					</span>
 					{ 'number' === typeof this.props.count && (

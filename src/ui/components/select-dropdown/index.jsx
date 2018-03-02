@@ -12,7 +12,6 @@ import findIndex from 'lodash/findIndex';
 import map from 'lodash/map';
 import result from 'lodash/result';
 import classNames from 'classnames';
-import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
@@ -253,7 +252,7 @@ class SelectDropdown extends Component {
 						className="select-dropdown__header"
 					>
 						<span className="select-dropdown__header-text">
-							{ selectedIcon && selectedIcon.type === Gridicon ? selectedIcon : null }
+							{ selectedIcon ? selectedIcon : null }
 							{ selectedText }
 						</span>
 						{ 'number' === typeof this.props.selectedCount && (
