@@ -4,13 +4,13 @@
  * External dependencies
  */
 import { shallow } from 'enzyme';
-import Gridicon from 'gridicons';
 import React from 'react';
 
 /**
  * Internal dependencies
  */
 import Button from '../';
+import Gridicon from 'src/ui/components/gridicons/gridicon';
 
 describe( 'Button', () => {
 	describe( 'renders', () => {

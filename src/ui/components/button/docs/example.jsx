@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
@@ -14,6 +13,7 @@ import Button from 'components/button';
 import Card from 'components/card';
 import config from 'config';
 import DocsExample from 'devdocs/docs-example';
+import Gridicon from 'src/ui/components/gridicons/gridicon';
 
 class Buttons extends React.PureComponent {
 	static displayName = 'Buttons';

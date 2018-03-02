@@ -5,11 +5,11 @@
  */
 
 import React from 'react';
-import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
  */
+import Gridicon from 'src/ui/components/gridicons/gridicon';
 import SelectDropdown from 'components/select-dropdown';
 import DropdownItem from 'components/select-dropdown/item';
 import DropdownLabel from 'components/select-dropdown/label';
