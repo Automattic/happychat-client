@@ -14,6 +14,6 @@ Size | Raw/Parsed | GZIP |
 `engine.io-client`| 22K | 6K
 
 
-We can't avoid using `react-dom`. Taking into account that the combined size of the SVG icons we use from Gridicons is 919 bytes, it seemed reasonable to inline it and save 85K, the next bigger win we could have.
+We can't avoid using `react-dom`. Taking into account that the combined size of the SVG icons we use from Gridicons is 713 bytes, it seemed reasonable to inline it and save 85K, the next bigger win we could have.
 
 Note that inlining the Gridicons library is sub-optimal and not future-proof. The next step to improve this is te make the Gridicons library to export its icons separately, so we can import them individually making the bundle size dependent on the icons you actually use.
