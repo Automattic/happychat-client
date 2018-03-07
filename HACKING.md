@@ -1,6 +1,18 @@
 # Hacking
 
-## Code structure
+Topics discussed:
+
+* OAuth ID
+* Repository layout
+* The library renders within an iframe
+
+## OAuth ID
+
+The standalone target uses the `oauth_client_id` at [targets/standalone/config/index.js](./targets/standalone/config/index.js) to authenticate requests to WordPress.com.
+
+The WordPress target doesn't need one because it's a plugin that runs within a WordPress site. It's the site responsibility to register a [WordPress.com OAuth application](http://developer.wordpress.com/apps/) so it's whitelisted to make requests to the WordPress.com REST API ([OAuth docs](https://developer.wordpress.com/docs/oauth2/)).
+
+## Repository layout
 
 - `docs`: docs about the project.
 - `src`: the source code for the Happychat library.
@@ -13,7 +25,7 @@
 	- `standalone`: bare HTML page with Happychat embedded.
 	- `wordpress`: WordPress plugin that exposes `happychat` as a shortcode.
 
-The library entry point lives at `src/index.js` and uses `src/form.js` and `src/form.scss`. This is where the UI components are connected to state. The idea is that code that lives in `src/state` and `src/ui` doesn't know anything about each other, which forces us to create better APIs that make them reusable in other scenarios.
+The library entry point lives at `src/index.js` and uses `src/form.js` and `src/form.scss`. This is where the UI components are connected to state. Code that lives in `src/state` and `src/ui` doesn't know anything about each other, which forces us to create better APIs that make them reusable in other scenarios.
 
 ## The library renders within an iframe
 
