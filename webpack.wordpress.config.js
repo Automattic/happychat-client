@@ -5,7 +5,7 @@ const webpack = require( 'webpack' );
 module.exports = {
 	entry: './index.js',
 	output: {
-		filename: './targets/wordpress/plugin/assets/happychat.js',
+		filename: './targets/wordpress/assets/happychat.js',
 	},
 	module: {
 		rules: [

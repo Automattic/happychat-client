@@ -44,4 +44,4 @@ This build uses `webpack.wordpress.config.js` which doesn't include some product
 Should you want a production build, execute
 
 	npm run targets:dist:js
-	cp targets/dist/happychat.js targets/wordpress/plugin/assets/happychat.js
+	cp targets/dist/happychat.js targets/wordpress/assets/happychat.js
