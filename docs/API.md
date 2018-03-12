@@ -64,11 +64,10 @@ Every option can also have an optional `canChat` property (will be true if none 
 
 Settings:
 
-	var settings = {
+	Happychat.open( {
 		accessToken: <WordPress.com user access token>,
 		nodeId: <HTML Node ID>,
-	};
-	Happychat.open( settings );
+	} );
 
 will render this form:
 
@@ -78,7 +77,7 @@ will render this form:
 
 Settings:
 
-	var settings = {
+	Happychat.open( {
 		nodeId: <HTML Node Id>,
 		accessToken: <WordPress.com user access token>,
 		entryOptions: {
@@ -101,8 +100,7 @@ Settings:
 				{ 'value': 'p3', 'label': 'Jetpack' },
 				{ 'value': 'p4', 'label': 'WooCommerce' },
 			],
-	};
-	Happychat.open( settings );
+	} );
 
 ![](./img/contact-form-configured.png)
 
@@ -112,7 +110,7 @@ Using the form in the previous example, we can configure when to offer chat by u
 
 For example, for these settings:
 
-	var settings = {
+	Happychat.open( {
 		nodeId: <HTML Node Id>,
 		accessToken: <WordPress.com user access token>,
 		entryOptions: {
@@ -135,7 +133,43 @@ For example, for these settings:
 				{ 'value': 'p3', 'label': 'Jetpack' },
 				{ 'value': 'p4', 'label': 'WooCommerce' },
 			],
-	};
-	Happychat.open( settings );
+	} );
 
 If any of `Help with my account` (primary menu), `Plugins` (secondary menu) or `2011 theme` (itemList menu) is selected no chat will be offered - no matter whether there is actual chat availability in the system.
+
+#### Fallback ticket when there is no chat
+
+In some cases, we'd want to offer a fallback option when chat is not available. Use the `fallbackTicket` prop for this. When chat is not available, the form will show an additional "Subject" field and the submit button will change to "Send a ticket".
+
+	Happychat.open( {
+		nodeId: <HTML Node Id>,
+		accessToken: <WordPress.com user access token>,
+		entryOptions: {
+			formTitle: 'Contact form example',
+			primaryOptionsTitle: 'Primary options title',
+			primaryOptions: [
+				{ 'value': 'purchase', 'label': 'Something I have purchased' },
+				{ 'value': 'account', 'label': 'Help with my account', 'canChat': false },
+				{ 'value': 'broken', 'label': 'Something is broken' },
+			],
+			secondaryOptionsTitle: 'Secondary options title',
+			secondaryOptions: [
+				{ 'value': 'themes', 'label': 'Themes' },
+				{ 'value': 'plugins', 'label': 'Plugins', canChat: false },
+			],
+			itemListTitle: 'Item list title',
+			itemList: [
+				{ 'value': 'p1', 'label': '2010 theme' },
+				{ 'value': 'p2', 'label': '2011 theme', 'canChat': false },
+				{ 'value': 'p3', 'label': 'Jetpack' },
+				{ 'value': 'p4', 'label': 'WooCommerce' },
+			],
+			fallbackTicket: {
+				'pathToCreate': '/create-ticket',
+				'headers': {
+					'X-My-Custom-Header': 'any value'
+				}
+			}
+		} );
+
+![](./img/contact-form-fallback-ticket.png)
