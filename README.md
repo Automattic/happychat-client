@@ -36,7 +36,7 @@ Execute:
 
 and visit `localhost:9000`. The first time, you'll be redirected to the WordPress.com token approval screen. By default, it will connect to Happychat staging server, so make sure there is an available operator there.
 
-[HACKING.md](./HACKING.md) contains some info that may be useful to navigate the codebase.
+[HACKING.md](./docs/HACKING.md) contains some info that may be useful to navigate the codebase.
 
 ## Demo
 
