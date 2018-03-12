@@ -165,10 +165,7 @@ In some cases, we'd want to offer a fallback option when chat is not available. 
 				{ 'value': 'p4', 'label': 'WooCommerce' },
 			],
 			fallbackTicket: {
-				'pathToCreate': '/create-ticket',
-				'headers': {
-					'X-My-Custom-Header': 'any value'
-				}
+				'pathToCreate': '/create-ticket'
 			}
 		} );
 
