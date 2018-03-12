@@ -16,3 +16,15 @@ with the following top-level properties:
 | `groups` | array | Optional | `[WP.com]` | What group the chat session should be routed to. Valid values are `WP.com`, `woo`, and `jpop`. |
 | `canChat` | bool | Optional | `true` | Whether the user can be offered chat or not. |
 | `nodeId` | string | Mandatory | `null` | The id of the HTMLNode where Happychat will be rendered. |
+
+### The entry prop
+
+The Happychat library provides two main interfaces: a contact form, and a chat form. By default, it'll show the contact form and it will render the chat form on clicking the form submit button. The contact form main behavior can be changed through the `entryOptions` prop.
+
+Contact form:
+
+![](./img/contact-form-chat.png)
+
+Chat form:
+
+![](./img/chat-form.png)
