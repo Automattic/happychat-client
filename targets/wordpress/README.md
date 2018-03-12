@@ -1,19 +1,12 @@
-# WordPress plugin
+# Happychat as a WordPress plugin
 
-The `targets/wordpress/plugin` directory is a complete WordPress plugin that you can copy to your WordPress installation and enjoy Happychatting!
+This WordPress plugin provides a `happychat` shortcode that will render the Happychat component in any page or post it is included. It may be configured through the `happychat_settings` filter.
 
-Upon changes on the JavaScript library at `src/` you'll need to re-build it for WordPress. By executing
+It will make authenticated requests to WordPress.com on the user behalf to start a chat session. See [WordPress.com OAuth2](https://developer.wordpress.com/docs/oauth2/) for the details. In essence, what this means is that:
 
-	npm run targets:wordpress
+* the host should be allowed to make authenticated requests to WordPress.com, for which a WordPress.com app needs to be registered with the host as valid JS origin.
+* the plugin needs a WordPress.com user token, which needs to be provided through the `happychat_settings` filter.
 
-the `targets/wordpress/plugin/assets/happychat.js` file will be updated with the latest changes.
+## Happychat Settings
 
-### Development VS Production builds
-
-Note that `npm run targets:wordpress` creates a build meant for development (no uglify, no react compression, connection to the staging Happychat server, etc).
-
-Should you want a production build, execute
-
-	npm run dist:js
-
-Then copy the file `targets/dist/happychat.js` to `targets/wordpress/plugin/assets/happychat.js`.
+The Happychat behavior may be configured through the filter `happychat_settings` that returns a settings object to configure Happychat. See [happychat-client API](https://github.com/Automattic/happychat-client/blob/master/docs/API.md) for complete info.
