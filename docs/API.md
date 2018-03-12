@@ -58,34 +58,84 @@ Every option can also have an optional `canChat` property (will be true if none 
 * `pathToShow`: upon a successful response from the `pathToCreate` endpoint, Happychat can show a link to the ticket created if one is configured. This admits a `<ticket-id>` expression that will be filled with the response provided by the `pathToCreate` endpoint.
 * `headers`: additional request headers to be sent along the `pathToCreate` request. This allows for hooking WordPress nonces into the request, for example.
 
-### Example
+### Examples
 
-For example, this settings object:
+#### Default
 
-	const settings = {
+Settings:
+
+	var settings = {
 		accessToken: <WordPress.com user access token>,
 		nodeId: <HTML Node ID>,
-		entryOptions: {
-			formTitle: 'Happychat example',
-			primaryOptionsTitle: 'Primary options',
-			primaryOptions: [
-				{ 'value': 'before-buy', 'label': 'Before you buy' },
-				{ 'value': 'account', 'label': 'Help with my account' },
-				{ 'value': 'broken', 'label': 'Something is broken' },
-			],
-			secondaryOptionsTitle: 'Secondary options',
-			secondaryOptions: [
-				{ 'value': 'themes', 'label': 'Themes' },
-				{ 'value': 'extensions', 'label': 'Extensions' },
-			],
-			itemListTitle: 'Item list',
-			itemList: [
-				{ 'value': 'p1', 'label': '2010 default theme' },
-				{ 'value': 'p2', 'label': '2011 default theme' },
-			],
-		}
 	};
+	Happychat.open( settings );
 
 will render this form:
 
-![](./img/contact-form-config.png)
+![](./img/contact-form-default.png)
+
+#### With titles and primary, secondary and itemList menus
+
+Settings:
+
+	var settings = {
+		nodeId: <HTML Node Id>,
+		accessToken: <WordPress.com user access token>,
+		entryOptions: {
+			formTitle: 'Contact form example',
+			primaryOptionsTitle: 'Primary options title',
+			primaryOptions: [
+				{ 'value': 'purchase', 'label': 'Something I have purchased' },
+				{ 'value': 'account', 'label': 'Help with my account' },
+				{ 'value': 'broken', 'label': 'Something is broken' },
+			],
+			secondaryOptionsTitle: 'Secondary options title',
+			secondaryOptions: [
+				{ 'value': 'themes', 'label': 'Themes' },
+				{ 'value': 'plugins', 'label': 'Plugins' },
+			],
+			itemListTitle: 'Item list title',
+			itemList: [
+				{ 'value': 'p1', 'label': '2010 theme' },
+				{ 'value': 'p2', 'label': '2011 theme' },
+				{ 'value': 'p3', 'label': 'Jetpack' },
+				{ 'value': 'p4', 'label': 'WooCommerce' },
+			],
+	};
+	Happychat.open( settings );
+
+![](./img/contact-form-configured.png)
+
+#### Configure when to offer chat
+
+Using the form in the previous example, we can configure when to offer chat by using the `canChat` property per option - note that if the `canChat` global property is set to false, we'll never offer chat for that user.
+
+For example, for these settings:
+
+	var settings = {
+		nodeId: <HTML Node Id>,
+		accessToken: <WordPress.com user access token>,
+		entryOptions: {
+			formTitle: 'Contact form example',
+			primaryOptionsTitle: 'Primary options title',
+			primaryOptions: [
+				{ 'value': 'purchase', 'label': 'Something I have purchased' },
+				{ 'value': 'account', 'label': 'Help with my account', 'canChat': false },
+				{ 'value': 'broken', 'label': 'Something is broken' },
+			],
+			secondaryOptionsTitle: 'Secondary options title',
+			secondaryOptions: [
+				{ 'value': 'themes', 'label': 'Themes' },
+				{ 'value': 'plugins', 'label': 'Plugins', canChat: false },
+			],
+			itemListTitle: 'Item list title',
+			itemList: [
+				{ 'value': 'p1', 'label': '2010 theme' },
+				{ 'value': 'p2', 'label': '2011 theme', 'canChat': false },
+				{ 'value': 'p3', 'label': 'Jetpack' },
+				{ 'value': 'p4', 'label': 'WooCommerce' },
+			],
+	};
+	Happychat.open( settings );
+
+If any of `Help with my account` (primary menu), `Plugins` (secondary menu) or `2011 theme` (itemList menu) is selected no chat will be offered - no matter whether there is actual chat availability in the system.
