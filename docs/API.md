@@ -44,6 +44,14 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 | `itemList` | array | `[]` | Contains the options to be shown in the item list menu. They'll be rendered as a dropdown. If not provided, this section won't be shown. |
 | `fallbackTicket` | object | `{}` | Configures a default route that Happychat will use to offer ticket support as a fallback when chat is not available. |
 
+**options for primary, secondary and item menu**
+
+Every option is an object that needs to have the `value` and `label` props. Values within a menu need to be unique; the labels will be shown in the UI.
+
+Every option can also have an optional `canChat` property (will be true if none is passed). If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected. For example:
+
+		{ 'value': 'themes', 'label': 'Themes', `canChat`: false }
+
 **fallbackTicket config options**
 
 * `pathToCreate`: path to the create ticket endpoint where Happychat will make a XHR request with the form data, so the host can process it. It may return an operation ID that will be used by the `pathToShow` option to show a message to the user.
