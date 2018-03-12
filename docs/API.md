@@ -50,13 +50,13 @@ Every option is an object that needs to have the `value` and `label` props. Valu
 
 Every option can also have an optional `canChat` property (will be true if none is passed). If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected. For example:
 
-		{ 'value': 'themes', 'label': 'Themes', `canChat`: false }
+		{ 'value': 'themes', 'label': 'Themes', 'canChat': false }
 
 **fallbackTicket config options**
 
 * `pathToCreate`: path to the create ticket endpoint where Happychat will make a XHR request with the form data, so the host can process it. It may return an operation ID that will be used by the `pathToShow` option to show a message to the user.
-* `headers`: request headers to be sent along the `pathToCreate` request. This allows for hooking nonces into the request, for example.
 * `pathToShow`: upon a successful response from the `pathToCreate` endpoint, Happychat can show a link to the ticket created if one is configured. This admits a `<ticket-id>` expression that will be filled with the response provided by the `pathToCreate` endpoint.
+* `headers`: additional request headers to be sent along the `pathToCreate` request. This allows for hooking WordPress nonces into the request, for example.
 
 ### Example
 
