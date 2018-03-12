@@ -32,7 +32,7 @@ See [targets/README.md](./targets/README.md) for more info.
 Execute:
 
     npm install
-    npm run start
+    npm start
 
 and visit `localhost:9000`. The first time, you'll be redirected to the WordPress.com token approval screen. By default, it will connect to Happychat staging server, so make sure there is an available operator there.
 
