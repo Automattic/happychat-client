@@ -158,14 +158,11 @@ const groupMessages = messages => {
 	return grouped.groups.concat( [ grouped.group ] );
 };
 
-const welcomeMessage = ( { currentUserEmail, translate } ) => (
+const renderWelcomeMessage = ( { currentUserEmail, currentUserGroup, translate } ) => (
 	<div className="happychat__welcome">
 		<p>
 			{ translate(
-				"Welcome to WordPress.com support chat! We'll send a transcript to %s at the end of the chat.",
-				{
-					args: currentUserEmail,
-				}
+				`Welcome to ${ currentUserGroup } support chat! We'll send a transcript to ${ currentUserEmail } at the end of the chat.`
 			) }
 		</p>
 	</div>
@@ -199,7 +196,7 @@ const renderTimeline = ( {
 	</div>
 );
 
-const chatTimeline = when( timelineHasContent, renderTimeline, welcomeMessage );
+const chatTimeline = when( timelineHasContent, renderTimeline, renderWelcomeMessage );
 
 export const Timeline = createReactClass( {
 	displayName: 'Timeline',
@@ -207,6 +204,7 @@ export const Timeline = createReactClass( {
 
 	propTypes: {
 		currentUserEmail: PropTypes.string,
+		currentUserGroup: PropTypes.string,
 		isCurrentUser: PropTypes.func,
 		isExternalUrl: PropTypes.func,
 		onScrollContainer: PropTypes.func,
