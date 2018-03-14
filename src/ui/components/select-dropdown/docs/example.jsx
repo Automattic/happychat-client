@@ -4,7 +4,7 @@
  * External dependencies
  */
 import React from 'react';
-import GridiconAlignImageLet from 'gridicons/dist/align-image-left';
+import GridiconAlignImageLeft from 'gridicons/dist/align-image-left';
 
 /**
  * Internal dependencies
@@ -35,7 +35,7 @@ class SelectDropdownExample extends React.PureComponent {
 			childSelected: 'Published',
 			selectedCount: 10,
 			compactButtons: false,
-			selectedIcon: <GridiconAlignImageLet size={ 18 } />,
+			selectedIcon: <GridiconAlignImageLeft size={ 18 } />,
 		};
 
 		this.state = initialState;
