@@ -4,11 +4,7 @@
  * External dependencies
  */
 import React from 'react';
-
-/**
- * Internal dependencies
- */
-import Gridicon from 'src/ui/components/gridicons/gridicon';
+import GridiconCross from 'gridicons/dist/cross';
 
 /*
  * React component for rendering title bar
@@ -18,7 +14,7 @@ export const Title = ( { onCloseChat, translate } ) => (
 		<div className="happychat__active-toolbar">
 			<h4>{ translate( 'Support Chat' ) }</h4>
 			<div onClick={ onCloseChat }>
-				<Gridicon icon={ 'cross' } />
+				<GridiconCross />
 			</div>
 		</div>
 	</div>

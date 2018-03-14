@@ -5,12 +5,12 @@
  */
 import { shallow } from 'enzyme';
 import React from 'react';
+import Gridicon from 'gridicons';
 
 /**
  * Internal dependencies
  */
 import Button from '../';
-import Gridicon from 'src/ui/components/gridicons/gridicon';
 
 describe( 'Button', () => {
 	describe( 'renders', () => {
