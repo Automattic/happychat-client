@@ -3,13 +3,12 @@
 /**
  * External dependencies
  */
-
 import React from 'react';
+import GridiconAlignImageLeft from 'gridicons/dist/align-image-left';
 
 /**
  * Internal dependencies
  */
-import Gridicon from 'src/ui/components/gridicons/gridicon';
 import SelectDropdown from 'components/select-dropdown';
 import DropdownItem from 'components/select-dropdown/item';
 import DropdownLabel from 'components/select-dropdown/label';
@@ -36,7 +35,7 @@ class SelectDropdownExample extends React.PureComponent {
 			childSelected: 'Published',
 			selectedCount: 10,
 			compactButtons: false,
-			selectedIcon: <Gridicon icon="align-image-left" size={ 18 } />,
+			selectedIcon: <GridiconAlignImageLeft size={ 18 } />,
 		};
 
 		this.state = initialState;
