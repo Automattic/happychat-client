@@ -42,6 +42,7 @@ export class HappychatForm extends Component {
 			chatStatus,
 			connectionStatus,
 			currentUserEmail,
+			currentUserGroup,
 			disabled,
 			isCurrentUser,
 			isExternalUrl,
@@ -60,6 +61,7 @@ export class HappychatForm extends Component {
 			<div className="happychat__page" aria-live="polite" aria-relevant="additions">
 				<Timeline
 					currentUserEmail={ currentUserEmail }
+					currentUserGroup={ currentUserGroup }
 					isCurrentUser={ isCurrentUser }
 					isExternalUrl={ isExternalUrl }
 					timeline={ timeline }
@@ -90,6 +92,7 @@ HappychatForm.propTypes = {
 	chatStatus: PropTypes.string,
 	connectionStatus: PropTypes.string,
 	currentUserEmail: PropTypes.string,
+	currentUserGroup: PropTypes.string,
 	disabled: PropTypes.bool,
 	isCurrentUser: PropTypes.func,
 	isExternalUrl: PropTypes.func,

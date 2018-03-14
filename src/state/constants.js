@@ -24,6 +24,12 @@ export const HAPPYCHAT_GROUP_JPOP = 'jpop';
 export const HAPPYCHAT_GROUP_WOO = 'woo';
 export const HAPPYCHAT_GROUP_JPPHP = 'jpphp';
 export const HAPPYCHAT_GROUP_WPCOM = 'WP.com';
+export const GROUPS_EXPANDED = {
+	[ HAPPYCHAT_GROUP_JPOP ]: 'Jetpack',
+	[ HAPPYCHAT_GROUP_WOO ]: 'WooCommerce',
+	[ HAPPYCHAT_GROUP_JPPHP ]: 'jpphp',
+	[ HAPPYCHAT_GROUP_WPCOM ]: 'WordPress.com',
+};
 
 // Message types
 export const HAPPYCHAT_MESSAGE_TYPES = {
