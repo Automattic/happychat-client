@@ -34,7 +34,7 @@ Chat form:
 The `entryOptions` property allows for configuring the text and behavior or Happychat entry point.
 
 | Key | Value | Default | Description |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | `formTitle` | string | `Contact form` | Title of form. |
 | `primaryOptionsTitle` | string | `How can we help` | Title of primary options menu. |
 | `primaryOptions` | array | `[]` | Contains the options to be shown in the primary menu. They'll be rendered either as a segmented control or a dropdown depending on the window width. If not provided, this section won't be shown. |
