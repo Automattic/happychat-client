@@ -108,8 +108,8 @@ export class ContactForm extends React.Component {
 		const primaryOption = this.state.primaryOption;
 
 		const allOptions = Array.isArray( secondaryOptions ) ? secondaryOptions : [];
-		const options = allOptions.filter(
-			option => option.primary && option.primary.some( value => primaryOption.value === value )
+		const options = allOptions.filter( option => ! option.primary ||
+			( Array.isArray( option.primary ) && option.primary.some( value => primaryOption.value === value ) )
 		);
 		return options.length > 0 ? (
 			<div>
