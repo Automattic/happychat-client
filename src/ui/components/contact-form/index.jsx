@@ -129,10 +129,11 @@ export class ContactForm extends React.Component {
 
 	maybeItemList() {
 		const { itemListTitle, itemList } = this.props;
-		return Array.isArray( itemList ) && itemList.length > 0 ? (
+		const options = filterByPrimaryKey( itemList, this.state.primaryOption.value );
+		return options.length > 0 ? (
 			<div className="contact-form__item-list">
 				<FormLabel>{ itemListTitle }</FormLabel>
-				<SelectDropdown options={ itemList } onSelect={ this.handleItemSelected } />
+				<SelectDropdown options={ options } onSelect={ this.handleItemSelected } />
 			</div>
 		) : (
 			''
