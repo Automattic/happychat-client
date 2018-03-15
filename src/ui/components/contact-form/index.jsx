@@ -26,6 +26,13 @@ const getSecondary = ( primarySelected, secondaryOptions ) =>
 		? getSelectedOption( primarySelected.secondaryOptions )
 		: getSelectedOption( secondaryOptions );
 
+const filterByPrimaryKey = ( options, targetValue ) => {
+	const allOptions = Array.isArray( options ) ? options : [];
+	return allOptions.filter( option => ! option.primary ||
+		( Array.isArray( option.primary ) && option.primary.some( value => targetValue === value ) )
+	);
+};
+
 export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
@@ -105,12 +112,7 @@ export class ContactForm extends React.Component {
 
 	maybeSecondaryOptions() {
 		const { secondaryOptions, secondaryOptionsTitle } = this.props;
-		const primaryOption = this.state.primaryOption;
-
-		const allOptions = Array.isArray( secondaryOptions ) ? secondaryOptions : [];
-		const options = allOptions.filter( option => ! option.primary ||
-			( Array.isArray( option.primary ) && option.primary.some( value => primaryOption.value === value ) )
-		);
+		const options = filterByPrimaryKey( secondaryOptions, this.state.primaryOption.value );
 		return options.length > 0 ? (
 			<div>
 				<FormLabel>{ secondaryOptionsTitle }</FormLabel>
@@ -127,7 +129,7 @@ export class ContactForm extends React.Component {
 
 	maybeItemList() {
 		const { itemListTitle, itemList } = this.props;
-		return itemList && itemList.length > 0 ? (
+		return Array.isArray( itemList ) && itemList.length > 0 ? (
 			<div className="contact-form__item-list">
 				<FormLabel>{ itemListTitle }</FormLabel>
 				<SelectDropdown options={ itemList } onSelect={ this.handleItemSelected } />
