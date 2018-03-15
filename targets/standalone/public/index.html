@@ -26,14 +26,14 @@
 					{ 'value': 'howdy', 'label': 'Howdy', },
 					{ 'value': 'config', 'label': 'Help configuring', canChat: false, primary: [ 'account' ], },
 					{ 'value': 'order', 'label': 'Help with an order', primary: [ 'account' ], },
-					{ 'value': 'themes', 'label': 'Themes', canChat: false, primary: [ 'before-buy' ], },
-					{ 'value': 'plugins', 'label': 'Plugins', primary: [ 'before-buy' ], },
+					{ 'value': 'themes', 'label': 'Themes', canChat: false, primary: [ 'before-buy', 'broken' ], },
+					{ 'value': 'plugins', 'label': 'Plugins', primary: [ 'before-buy', 'broken' ], },
 				],
 				itemList: [
-					{ value: '2010', label: '2010 theme', primary: [ 'before-buy' ] },
-					{ value: '2011', label: '2011 theme', primary: [ 'before-buy' ] },
-					{ value: 'jp', label: 'Jetpack', primary: [ 'account' ] },
-					{ value: 'wc', label: 'WooCommerce', primary: [ 'account' ] },
+					{ value: '2010', label: '2010 theme', primary: [ 'before-buy' ], secondary: [ 'themes' ] },
+					{ value: '2011', label: '2011 theme', primary: [ 'before-buy' ], secondary: [ 'themes' ] },
+					{ value: 'jp', label: 'Jetpack', secondary: [ 'plugins' ] },
+					{ value: 'wc', label: 'WooCommerce', secondary: [ 'plugins' ] },
 				],
 				fallbackTicket: {
 					headers: {

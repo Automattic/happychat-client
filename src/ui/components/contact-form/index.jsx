@@ -33,6 +33,13 @@ const filterByPrimaryKey = ( options, targetValue ) => {
 	);
 };
 
+const filterBySecondaryKey = ( options, targetValue ) => {
+	const allOptions = Array.isArray( options ) ? options : [];
+	return allOptions.filter( option => ! option.secondary ||
+		( Array.isArray( option.secondary ) && option.secondary.some( value => targetValue === value ) )
+	);
+};
+
 export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
@@ -129,7 +136,10 @@ export class ContactForm extends React.Component {
 
 	maybeItemList() {
 		const { itemListTitle, itemList } = this.props;
-		const options = filterByPrimaryKey( itemList, this.state.primaryOption.value );
+		const options = filterBySecondaryKey(
+			filterByPrimaryKey( itemList, this.state.primaryOption.value ),
+			this.state.secondaryOption.value
+		);
 		return options.length > 0 ? (
 			<div className="contact-form__item-list">
 				<FormLabel>{ itemListTitle }</FormLabel>
