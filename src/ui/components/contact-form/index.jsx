@@ -106,19 +106,14 @@ export class ContactForm extends React.Component {
 	maybeSecondaryOptions() {
 		const { secondaryOptions, secondaryOptionsTitle } = this.props;
 		const primaryOption = this.state.primaryOption;
-		let options = [];
-		let title = secondaryOptionsTitle;
-		if ( Array.isArray( primaryOption.secondaryOptions ) ) {
-			options = primaryOption.secondaryOptions;
-			title = primaryOption.secondaryOptionsTitle
-				? primaryOption.secondaryOptionsTitle
-				: secondaryOptionsTitle;
-		} else if ( Array.isArray( secondaryOptions ) ) {
-			options = secondaryOptions;
-		}
+
+		const allOptions = Array.isArray( secondaryOptions ) ? secondaryOptions : [];
+		const options = allOptions.filter(
+			option => option.primary && option.primary.some( value => primaryOption.value === value )
+		);
 		return options.length > 0 ? (
 			<div>
-				<FormLabel>{ title }</FormLabel>
+				<FormLabel>{ secondaryOptionsTitle }</FormLabel>
 				<FormSelection
 					name="secondaryOption"
 					options={ options }
