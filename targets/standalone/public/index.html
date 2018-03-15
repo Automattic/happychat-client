@@ -18,16 +18,21 @@
 			nodeId: 'support',
 			entryOptions: {
 				primaryOptions: [
-					{ 'value': 'before-buy', 'label': 'Before you buy', secondaryOptions: [
-						{ 'value': 'themes', 'label': 'Themes', canChat: false },
-						{ 'value': 'extensions', 'label': 'Extensions' },
-					] },
-					{ 'value': 'account', 'label': 'Help with my account', secondaryOptions: [] },
+					{ 'value': 'before-buy', 'label': 'Before you buy', },
+					{ 'value': 'account', 'label': 'Help with my account', },
 					{ 'value': 'broken', 'label': 'Something is broken', canChat: false },
 				],
 				secondaryOptions: [
-					{ 'value': 'config', 'label': 'Help configuring', canChat: false },
-					{ 'value': 'order', 'label': 'Help with an order' },
+					{ 'value': 'config', 'label': 'Help configuring', canChat: false, primary: [ 'account' ], },
+					{ 'value': 'order', 'label': 'Help with an order', primary: [ 'account' ], },
+					{ 'value': 'themes', 'label': 'Themes', canChat: false, primary: [ 'before-buy' ], },
+					{ 'value': 'plugins', 'label': 'Plugins', primary: [ 'before-buy' ], },
+				],
+				itemList: [
+					{ value: '2010', label: '2010 theme', },
+					{ value: '2011', label: '2011 theme', },
+					{ value: 'jp', label: 'Jetpack', },
+					{ value: 'wc', label: 'WooCommerce', },
 				],
 				fallbackTicket: {
 					headers: {
