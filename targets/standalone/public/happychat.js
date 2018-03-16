@@ -37445,7 +37445,7 @@ var ChatFormComponent = function () {
 	}, {
 		key: 'onEvent',
 		value: function onEvent(formState) {
-			if (false === this.props.canChat || false === formState.primaryOption.canChat || false === formState.secondaryOption.canChat || false === formState.item.canChat) {
+			if (false === this.props.canChat || false === formState.primarySelected.canChat || false === formState.secondarySelected.canChat || false === formState.itemSelected.canChat) {
 				this.props.onSetEligibility(false);
 			} else {
 				this.props.onSetEligibility(true);
@@ -37515,7 +37515,7 @@ var TicketFormComponent = function () {
 	}, {
 		key: 'onEvent',
 		value: function onEvent(formState) {
-			if (false === this.props.canChat || false === formState.primaryOption.canChat || false === formState.secondaryOption.canChat || false === formState.item.canChat) {
+			if (false === this.props.canChat || false === formState.primarySelected.canChat || false === formState.secondarySelected.canChat || false === formState.itemSelected.canChat) {
 				this.props.onSetEligibility(false);
 			} else {
 				this.props.onSetEligibility(true);
@@ -42212,8 +42212,13 @@ var getSelectedOption = function getSelectedOption(options) {
 	return Array.isArray(options) && options.length > 0 ? options[0] : {};
 };
 
-var getSecondary = function getSecondary(primarySelected, secondaryOptions) {
-	return Array.isArray(primarySelected.secondaryOptions) ? getSelectedOption(primarySelected.secondaryOptions) : getSelectedOption(secondaryOptions);
+var filterByTargetValue = function filterByTargetValue(options, targetValue, filterKey) {
+	var allOptions = Array.isArray(options) ? options : [];
+	return allOptions.filter(function (option) {
+		return !option[filterKey] || Array.isArray(option[filterKey]) && option[filterKey].some(function (value) {
+			return targetValue === value;
+		});
+	});
 };
 
 var ContactForm = exports.ContactForm = function (_React$Component) {
@@ -42224,15 +42229,31 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (ContactForm.__proto__ || Object.getPrototypeOf(ContactForm)).call(this, props));
 
-		var primaryOption = getSelectedOption(_this.props.primaryOptions);
-		var secondaryOption = getSecondary(primaryOption, _this.props.secondaryOptions);
-		var item = getSelectedOption(_this.props.itemList);
+		var _this$props = _this.props,
+		    primaryOptions = _this$props.primaryOptions,
+		    primaryOptionsTitle = _this$props.primaryOptionsTitle,
+		    secondaryOptions = _this$props.secondaryOptions,
+		    secondaryOptionsTitle = _this$props.secondaryOptionsTitle,
+		    itemList = _this$props.itemList,
+		    itemListTitle = _this$props.itemListTitle;
+
+		var primarySelected = getSelectedOption(primaryOptions);
+		var newSecondaryOptions = filterByTargetValue(secondaryOptions, primarySelected.value, 'primary');
+		var newSecondarySelected = getSelectedOption(newSecondaryOptions);
+		var newItemList = filterByTargetValue(filterByTargetValue(itemList, primarySelected.value, 'primary'), newSecondarySelected.value, 'secondary');
+		var newItemSelected = getSelectedOption(newItemList);
 		_this.state = {
 			subject: '',
 			message: '',
-			primaryOption: primaryOption,
-			secondaryOption: secondaryOption,
-			item: item
+			primaryOptionsTitle: primaryOptionsTitle,
+			primaryOptions: primaryOptions,
+			primarySelected: primarySelected,
+			secondaryOptionsTitle: secondaryOptionsTitle,
+			secondaryOptions: newSecondaryOptions,
+			secondarySelected: newSecondarySelected,
+			itemListTitle: itemListTitle,
+			itemList: newItemList,
+			itemSelected: newItemSelected
 		};
 		_this.handleChange = _this.handleChange.bind(_this);
 		_this.handleItemSelected = _this.handleItemSelected.bind(_this);
@@ -42244,8 +42265,21 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	_createClass(ContactForm, [{
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate(prevProps, prevState) {
-			if (prevState.primaryOption.canChat !== this.state.primaryOption.canChat || prevState.secondaryOption.canChat !== this.state.secondaryOption.canChat || prevState.item.canChat !== this.state.item.canChat) {
-				this.props.onEvent(this.state);
+			if (prevState.primarySelected.canChat !== this.state.primarySelected.canChat || prevState.secondarySelected.canChat !== this.state.secondarySelected.canChat || prevState.itemSelected.canChat !== this.state.itemSelected.canChat) {
+				var _state = this.state,
+				    primarySelected = _state.primarySelected,
+				    secondarySelected = _state.secondarySelected,
+				    itemSelected = _state.itemSelected,
+				    subject = _state.subject,
+				    message = _state.message;
+
+				this.props.onEvent({
+					primarySelected: primarySelected,
+					secondarySelected: secondarySelected,
+					itemSelected: itemSelected,
+					subject: subject,
+					message: message
+				});
 			}
 		}
 	}, {
@@ -42260,18 +42294,40 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	}, {
 		key: 'handleItemSelected',
 		value: function handleItemSelected(option) {
-			this.setState({ item: option });
+			this.setState({ itemSelected: option });
 		}
 	}, {
 		key: 'handleOptionChange',
 		value: function handleOptionChange(e) {
-			if ('primaryOption' === e.name) {
+			if (e.name === 'primarySelected') {
+				var _props = this.props,
+				    secondaryOptions = _props.secondaryOptions,
+				    itemList = _props.itemList;
+
+				var newPrimarySelected = e.option;
+				var newSecondaryOptions = filterByTargetValue(secondaryOptions, newPrimarySelected.value, 'primary');
+				var newSecondarySelected = getSelectedOption(newSecondaryOptions);
+				var newItemList = filterByTargetValue(filterByTargetValue(itemList, newPrimarySelected.value, 'primary'), newSecondarySelected.value, 'secondary');
+				var newItemSelected = getSelectedOption(newItemList);
 				this.setState({
-					primaryOption: e.option,
-					secondaryOption: getSecondary(e.option, this.props.secondaryOptions)
+					primarySelected: newPrimarySelected,
+					secondaryOptions: newSecondaryOptions,
+					secondarySelected: newSecondarySelected,
+					itemList: newItemList,
+					itemSelected: newItemSelected
 				});
-			} else {
-				this.setState(_defineProperty({}, e.name, e.option));
+			} else if (e.name === 'secondarySelected') {
+				var _itemList = this.props.itemList;
+				var primarySelected = this.state.primarySelected;
+
+				var _newSecondarySelected = e.option;
+				var _newItemList = filterByTargetValue(filterByTargetValue(_itemList, primarySelected.value, 'primary'), _newSecondarySelected.value, 'secondary');
+				var _newItemSelected = getSelectedOption(_newItemList);
+				this.setState({
+					secondarySelected: _newSecondarySelected,
+					itemList: _newItemList,
+					itemSelected: _newItemSelected
+				});
 			}
 		}
 	}, {
@@ -42291,11 +42347,11 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	}, {
 		key: 'maybePrimaryOptions',
 		value: function maybePrimaryOptions() {
-			var _props = this.props,
-			    primaryOptions = _props.primaryOptions,
-			    primaryOptionsTitle = _props.primaryOptionsTitle;
+			var _state2 = this.state,
+			    primaryOptions = _state2.primaryOptions,
+			    primaryOptionsTitle = _state2.primaryOptionsTitle;
 
-			return primaryOptions && primaryOptions.length > 0 ? _react2.default.createElement(
+			return Array.isArray(primaryOptions) && primaryOptions.length > 0 ? _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
@@ -42304,7 +42360,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 					primaryOptionsTitle
 				),
 				_react2.default.createElement(_formSelection2.default, {
-					name: 'primaryOption',
+					name: 'primarySelected',
 					options: primaryOptions,
 					onClick: this.handleOptionChange
 				})
@@ -42313,30 +42369,23 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	}, {
 		key: 'maybeSecondaryOptions',
 		value: function maybeSecondaryOptions() {
-			var _props2 = this.props,
-			    secondaryOptions = _props2.secondaryOptions,
-			    secondaryOptionsTitle = _props2.secondaryOptionsTitle;
+			var _state3 = this.state,
+			    secondaryOptions = _state3.secondaryOptions,
+			    secondaryOptionsTitle = _state3.secondaryOptionsTitle,
+			    secondarySelected = _state3.secondarySelected;
 
-			var primaryOption = this.state.primaryOption;
-			var options = [];
-			var title = secondaryOptionsTitle;
-			if (Array.isArray(primaryOption.secondaryOptions)) {
-				options = primaryOption.secondaryOptions;
-				title = primaryOption.secondaryOptionsTitle ? primaryOption.secondaryOptionsTitle : secondaryOptionsTitle;
-			} else if (Array.isArray(secondaryOptions)) {
-				options = secondaryOptions;
-			}
-			return options.length > 0 ? _react2.default.createElement(
+			return Array.isArray(secondaryOptions) && secondaryOptions.length > 0 ? _react2.default.createElement(
 				'div',
 				null,
 				_react2.default.createElement(
 					_formLabel2.default,
 					null,
-					title
+					secondaryOptionsTitle
 				),
 				_react2.default.createElement(_formSelection2.default, {
-					name: 'secondaryOption',
-					options: options,
+					name: 'secondarySelected',
+					optionSelected: secondarySelected.value,
+					options: secondaryOptions,
 					onClick: this.handleOptionChange
 				})
 			) : '';
@@ -42344,11 +42393,12 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	}, {
 		key: 'maybeItemList',
 		value: function maybeItemList() {
-			var _props3 = this.props,
-			    itemListTitle = _props3.itemListTitle,
-			    itemList = _props3.itemList;
+			var _state4 = this.state,
+			    itemList = _state4.itemList,
+			    itemListTitle = _state4.itemListTitle,
+			    itemSelected = _state4.itemSelected;
 
-			return itemList && itemList.length > 0 ? _react2.default.createElement(
+			return Array.isArray(itemList) && itemList.length > 0 ? _react2.default.createElement(
 				'div',
 				{ className: 'contact-form__item-list' },
 				_react2.default.createElement(
@@ -42356,7 +42406,7 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 					null,
 					itemListTitle
 				),
-				_react2.default.createElement(_selectDropdown2.default, { options: itemList, onSelect: this.handleItemSelected })
+				_react2.default.createElement(_selectDropdown2.default, { initialSelected: itemSelected.value, options: itemList, onSelect: this.handleItemSelected })
 			) : '';
 		}
 	}, {
@@ -42378,9 +42428,9 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var _props4 = this.props,
-			    formTitle = _props4.formTitle,
-			    submitFormText = _props4.submitFormText;
+			var _props2 = this.props,
+			    formTitle = _props2.formTitle,
+			    submitFormText = _props2.submitFormText;
 
 
 			return _react2.default.createElement(
@@ -43465,7 +43515,11 @@ var FormSelection = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (FormSelection.__proto__ || Object.getPrototypeOf(FormSelection)).call(this, props));
 
-		_this.state = { selection: _this.props.options[0].value };
+		var _this$props = _this.props,
+		    optionSelected = _this$props.optionSelected,
+		    options = _this$props.options;
+
+		_this.state = { selection: optionSelected || options[0].value };
 		_this.handleClick = _this.handleClick.bind(_this);
 		return _this;
 	}
@@ -43473,9 +43527,13 @@ var FormSelection = function (_React$Component) {
 	_createClass(FormSelection, [{
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			if (areOptionsDistinct(nextProps.options, this.props.options)) {
+			var _props = this.props,
+			    options = _props.options,
+			    optionSelected = _props.optionSelected;
+
+			if (optionSelected !== nextProps.optionSelected || areOptionsDistinct(nextProps.options, options)) {
 				this.setState({
-					selection: nextProps.options[0].value
+					selection: nextProps.optionSelected || nextProps.options[0].value
 				});
 			}
 		}
@@ -43554,11 +43612,13 @@ var FormSelection = function (_React$Component) {
 
 FormSelection.propTypes = {
 	options: _propTypes2.default.array.isRequired,
+	optionSelected: _propTypes2.default.string,
 	onClick: _propTypes2.default.func
 };
 
 FormSelection.defaultProps = {
 	options: [],
+	optionSelected: null,
 	onClick: function onClick() {}
 };
 

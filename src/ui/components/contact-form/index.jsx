@@ -21,23 +21,49 @@ import SelectDropdown from 'src/ui/components/select-dropdown';
 const getSelectedOption = options =>
 	Array.isArray( options ) && options.length > 0 ? options[ 0 ] : {};
 
-const getSecondary = ( primarySelected, secondaryOptions ) =>
-	Array.isArray( primarySelected.secondaryOptions )
-		? getSelectedOption( primarySelected.secondaryOptions )
-		: getSelectedOption( secondaryOptions );
+const filterByTargetValue = ( options, targetValue, filterKey ) => {
+	const allOptions = Array.isArray( options ) ? options : [];
+	return allOptions.filter( option => ! option[ filterKey ] ||
+		( Array.isArray( option[ filterKey ] ) && option[ filterKey ].some( value => targetValue === value ) )
+	);
+};
 
 export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
-		const primaryOption = getSelectedOption( this.props.primaryOptions );
-		const secondaryOption = getSecondary( primaryOption, this.props.secondaryOptions );
-		const item = getSelectedOption( this.props.itemList );
+		const {
+			primaryOptions,
+			primaryOptionsTitle,
+			secondaryOptions,
+			secondaryOptionsTitle,
+			itemList,
+			itemListTitle,
+		} = this.props;
+		const primarySelected = getSelectedOption( primaryOptions );
+		const newSecondaryOptions = filterByTargetValue(
+			secondaryOptions,
+			primarySelected.value,
+			'primary'
+		);
+		const newSecondarySelected = getSelectedOption( newSecondaryOptions );
+		const newItemList = filterByTargetValue(
+			filterByTargetValue( itemList, primarySelected.value, 'primary' ),
+			newSecondarySelected.value,
+			'secondary'
+		);
+		const newItemSelected = getSelectedOption( newItemList );
 		this.state = {
 			subject: '',
 			message: '',
-			primaryOption,
-			secondaryOption,
-			item,
+			primaryOptionsTitle,
+			primaryOptions,
+			primarySelected,
+			secondaryOptionsTitle,
+			secondaryOptions: newSecondaryOptions,
+			secondarySelected: newSecondarySelected,
+			itemListTitle,
+			itemList: newItemList,
+			itemSelected: newItemSelected,
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -47,11 +73,24 @@ export class ContactForm extends React.Component {
 
 	componentDidUpdate( prevProps, prevState ) {
 		if (
-			prevState.primaryOption.canChat !== this.state.primaryOption.canChat ||
-			prevState.secondaryOption.canChat !== this.state.secondaryOption.canChat ||
-			prevState.item.canChat !== this.state.item.canChat
+			prevState.primarySelected.canChat !== this.state.primarySelected.canChat ||
+			prevState.secondarySelected.canChat !== this.state.secondarySelected.canChat ||
+			prevState.itemSelected.canChat !== this.state.itemSelected.canChat
 		) {
-			this.props.onEvent( this.state );
+			const {
+				primarySelected,
+				secondarySelected,
+				itemSelected,
+				subject,
+				message,
+			} = this.state;
+			this.props.onEvent( {
+				primarySelected,
+				secondarySelected,
+				itemSelected,
+				subject,
+				message,
+			} );
 		}
 	}
 
@@ -61,17 +100,47 @@ export class ContactForm extends React.Component {
 	}
 
 	handleItemSelected( option ) {
-		this.setState( { item: option } );
+		this.setState( { itemSelected: option } );
 	}
 
 	handleOptionChange( e ) {
-		if ( 'primaryOption' === e.name ) {
+		if ( e.name === 'primarySelected' ) {
+			const { secondaryOptions, itemList } = this.props;
+			const newPrimarySelected = e.option;
+			const newSecondaryOptions = filterByTargetValue(
+				secondaryOptions,
+				newPrimarySelected.value,
+				'primary'
+			);
+			const newSecondarySelected = getSelectedOption( newSecondaryOptions );
+			const newItemList = filterByTargetValue(
+				filterByTargetValue( itemList, newPrimarySelected.value, 'primary' ),
+				newSecondarySelected.value,
+				'secondary'
+			);
+			const newItemSelected = getSelectedOption( newItemList );
 			this.setState( {
-				primaryOption: e.option,
-				secondaryOption: getSecondary( e.option, this.props.secondaryOptions ),
+				primarySelected: newPrimarySelected,
+				secondaryOptions: newSecondaryOptions,
+				secondarySelected: newSecondarySelected,
+				itemList: newItemList,
+				itemSelected: newItemSelected,
 			} );
-		} else {
-			this.setState( { [ e.name ]: e.option } );
+		} else if ( e.name === 'secondarySelected' ) {
+			const { itemList } = this.props;
+			const { primarySelected } = this.state;
+			const newSecondarySelected = e.option;
+			const newItemList = filterByTargetValue(
+				filterByTargetValue( itemList, primarySelected.value, 'primary' ),
+				newSecondarySelected.value,
+				'secondary'
+			);
+			const newItemSelected = getSelectedOption( newItemList );
+			this.setState( {
+				secondarySelected: newSecondarySelected,
+				itemList: newItemList,
+				itemSelected: newItemSelected,
+			} );
 		}
 	}
 
@@ -88,12 +157,12 @@ export class ContactForm extends React.Component {
 	}
 
 	maybePrimaryOptions() {
-		const { primaryOptions, primaryOptionsTitle } = this.props;
-		return primaryOptions && primaryOptions.length > 0 ? (
+		const { primaryOptions, primaryOptionsTitle } = this.state;
+		return Array.isArray( primaryOptions ) && primaryOptions.length > 0 ? (
 			<div>
 				<FormLabel>{ primaryOptionsTitle }</FormLabel>
 				<FormSelection
-					name="primaryOption"
+					name="primarySelected"
 					options={ primaryOptions }
 					onClick={ this.handleOptionChange }
 				/>
@@ -104,24 +173,14 @@ export class ContactForm extends React.Component {
 	}
 
 	maybeSecondaryOptions() {
-		const { secondaryOptions, secondaryOptionsTitle } = this.props;
-		const primaryOption = this.state.primaryOption;
-		let options = [];
-		let title = secondaryOptionsTitle;
-		if ( Array.isArray( primaryOption.secondaryOptions ) ) {
-			options = primaryOption.secondaryOptions;
-			title = primaryOption.secondaryOptionsTitle
-				? primaryOption.secondaryOptionsTitle
-				: secondaryOptionsTitle;
-		} else if ( Array.isArray( secondaryOptions ) ) {
-			options = secondaryOptions;
-		}
-		return options.length > 0 ? (
+		const { secondaryOptions, secondaryOptionsTitle, secondarySelected } = this.state;
+		return Array.isArray( secondaryOptions ) && secondaryOptions.length > 0 ? (
 			<div>
-				<FormLabel>{ title }</FormLabel>
+				<FormLabel>{ secondaryOptionsTitle }</FormLabel>
 				<FormSelection
-					name="secondaryOption"
-					options={ options }
+					name="secondarySelected"
+					optionSelected={ secondarySelected.value }
+					options={ secondaryOptions }
 					onClick={ this.handleOptionChange }
 				/>
 			</div>
@@ -131,11 +190,11 @@ export class ContactForm extends React.Component {
 	}
 
 	maybeItemList() {
-		const { itemListTitle, itemList } = this.props;
-		return itemList && itemList.length > 0 ? (
+		const { itemList, itemListTitle, itemSelected } = this.state;
+		return Array.isArray( itemList ) && itemList.length > 0 ? (
 			<div className="contact-form__item-list">
 				<FormLabel>{ itemListTitle }</FormLabel>
-				<SelectDropdown options={ itemList } onSelect={ this.handleItemSelected } />
+				<SelectDropdown initialSelected={ itemSelected.value } options={ itemList } onSelect={ this.handleItemSelected } />
 			</div>
 		) : (
 			''
