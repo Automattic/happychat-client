@@ -89,13 +89,13 @@
 	.segmented-control__item {
 		&.is-selected {
 			.segmented-control__link {
-				border-color: $blue-medium;
-				background-color: $blue-medium;
+				border-color: var(--selected);
+				background-color: var(--selected);
 				color: $white;
 			}
 
 			+ .segmented-control__item .segmented-control__link {
-				border-left-color: $blue-medium;
+				border-left-color: var(--selected);
 			}
 		}
 	}

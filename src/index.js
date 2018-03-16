@@ -124,6 +124,11 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	const styleHC = document.createElement( 'link' );
 	const styleHCPromise = new Promise( resolve => {
 		styleHC.onload = () => resolve();
+		// Change colors to Jetpack theme, for example.
+		// Another approach will be to have separate color stylesheet
+		// and only request the particular stylesheet the user needs.
+		// The base stylesheet will use the default color schema (WordPress.com, for ex)
+		iframeElement.contentDocument.body.style.setProperty( '--selected', '#8cc258' );
 	} );
 	Promise.all( [ styleNoticonPromise, styleHCPromise ] ).then( () => assetsLoadedHook() );
 
