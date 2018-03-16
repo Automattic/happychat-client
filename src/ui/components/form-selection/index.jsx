@@ -21,9 +21,9 @@ const areOptionsDistinct = ( nextOpts, currentOpts ) => {
 	}
 	for ( let i = 0; i < nextOpts.length; i++ ) {
 		if (
-			nextOpts[ i ].value !== currentOpts[ i ].value ||
-			nextOpts[ i ].label !== currentOpts[ i ].label
-		) {
+                       nextOpts[ i ].value !== currentOpts[ i ].value ||
+                       nextOpts[ i ].label !== currentOpts[ i ].label
+               ) {
 			return true;
 		}
 	}
@@ -33,14 +33,17 @@ const areOptionsDistinct = ( nextOpts, currentOpts ) => {
 class FormSelection extends React.Component {
 	constructor( props ) {
 		super( props );
-		this.state = { selection: this.props.options[ 0 ].value };
+		const { optionSelected, options } = this.props;
+		this.state = { selection: optionSelected || options[ 0 ].value };
 		this.handleClick = this.handleClick.bind( this );
 	}
 
 	componentWillReceiveProps( nextProps ) {
-		if ( areOptionsDistinct( nextProps.options, this.props.options ) ) {
+		const { options, optionSelected } = this.props;
+		if ( optionSelected !== nextProps.optionSelected ||
+			areOptionsDistinct( nextProps.options, options ) ) {
 			this.setState( {
-				selection: nextProps.options[ 0 ].value,
+				selection: nextProps.optionSelected || nextProps.options[ 0 ].value,
 			} );
 		}
 	}
@@ -95,11 +98,13 @@ class FormSelection extends React.Component {
 
 FormSelection.propTypes = {
 	options: PropTypes.array.isRequired,
+	optionSelected: PropTypes.string,
 	onClick: PropTypes.func,
 };
 
 FormSelection.defaultProps = {
 	options: [],
+	optionSelected: null,
 	onClick: () => {},
 };
 

@@ -173,12 +173,13 @@ export class ContactForm extends React.Component {
 	}
 
 	maybeSecondaryOptions() {
-		const { secondaryOptions, secondaryOptionsTitle } = this.state;
+		const { secondaryOptions, secondaryOptionsTitle, secondarySelected } = this.state;
 		return Array.isArray( secondaryOptions ) && secondaryOptions.length > 0 ? (
 			<div>
 				<FormLabel>{ secondaryOptionsTitle }</FormLabel>
 				<FormSelection
 					name="secondarySelected"
+					optionSelected={ secondarySelected.value }
 					options={ secondaryOptions }
 					onClick={ this.handleOptionChange }
 				/>
