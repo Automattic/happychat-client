@@ -44,13 +44,41 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 | `itemList` | array | `[]` | Contains the options to be shown in the item list menu. They'll be rendered as a dropdown. If not provided, this section won't be shown. |
 | `fallbackTicket` | object | `{}` | Configures a default route that Happychat will use to offer ticket support as a fallback when chat is not available. |
 
-**options for primary, secondary and item menu**
+**primaryOptions**
 
 Every option is an object that needs to have the `value` and `label` props. Values within a menu need to be unique; the labels will be shown in the UI.
 
-Every option can also have an optional `canChat` property (will be true if none is passed). If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected. For example:
+Every option can also have an optional `canChat` property (will be true if none is passed). If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected.
+
+For example:
 
 		{ 'value': 'themes', 'label': 'Themes', 'canChat': false }
+
+when this option is selected chat won't be offered.
+
+**secondaryOptions**
+
+In addition to the `value`, `label`, and `canChat` properties, the options in this section can define a `primary` option.
+
+`primary` is an array that contains values of the options present in the `primaryOptions` section. When the selected primary option is any of the items from this array, the secondary option will be rendered - otherwise it won't be shown. If the option doesn't have a primary property, it'll be always rendered.
+
+For example:
+
+	{ value: 'themes', label: 'Themes', primary: [ 'before-buy', 'my-account' ] }
+
+this option will only be shown when the value of the selected primary option is 'before-buy' or 'my-account'.
+
+**itemList**
+
+In addition to the `value`, `label`, `canChat` and `primary` properties, the options in this section can define a `secondary` option.
+
+The `secondary` property works the same way that the `primary` one but taking into account the selected secondary option instead.
+
+For example:
+
+	{ value: 'themes', label: 'Themes', primary: [ 'before-buy' ], secondary: [ 'themes' ] }
+
+this option will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`.
 
 **fallbackTicket config options**
 
@@ -99,6 +127,39 @@ Settings:
 				{ 'value': 'p2', 'label': '2011 theme' },
 				{ 'value': 'p3', 'label': 'Jetpack' },
 				{ 'value': 'p4', 'label': 'WooCommerce' },
+			],
+	} );
+
+![](./img/contact-form-configured.png)
+
+#### With conditional secondaryOptions and itemList
+
+Settings:
+
+	Happychat.open( {
+		nodeId: <HTML Node Id>,
+		accessToken: <WordPress.com user access token>,
+		entryOptions: {
+			formTitle: 'Contact form example',
+			primaryOptionsTitle: 'Primary options title',
+			primaryOptions: [
+				{ 'value': 'purchase', 'label': 'Something I have purchased' },
+				{ 'value': 'account', 'label': 'Help with my account' },
+				{ 'value': 'broken', 'label': 'Something is broken' },
+			],
+			secondaryOptionsTitle: 'Secondary options title',
+			secondaryOptions: [
+				{ 'value': 'themes', 'label': 'Themes', primary: [ 'purchase', 'broken' ] },
+				{ 'value': 'plugins', 'label': 'Plugins', primary: [ 'purchase', 'broken' ] },
+				{ 'value': 'password', 'label': 'Change password' },
+				{ 'value': 'delete', 'label': 'Delete account' },
+			],
+			itemListTitle: 'Item list title',
+			itemList: [
+				{ 'value': 'p1', 'label': '2010 theme', secondary: [ 'themes' ] },
+				{ 'value': 'p2', 'label': '2011 theme', secondary: [ 'themes' ] },
+				{ 'value': 'p3', 'label': 'Jetpack', secondary: [ 'plugins' ] },
+				{ 'value': 'p4', 'label': 'WooCommerce', secondary: [ 'plugins' ] },
 			],
 	} );
 
