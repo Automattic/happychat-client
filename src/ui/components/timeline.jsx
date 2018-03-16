@@ -17,7 +17,7 @@ import isEmpty from 'lodash/isEmpty';
 import { first, when, forEach } from './functional';
 import autoscroll from './autoscroll';
 import Emojify from './emojify';
-import scrollbleed from './scrollbleed';
+import scrollbleed from 'src/ui/components/scrollbleed';
 import { addSchemeIfMissing, setUrlScheme } from './url';
 
 import debugFactory from 'debug';
