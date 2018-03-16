@@ -139,9 +139,9 @@ class ChatFormComponent {
 	onEvent( formState ) {
 		if (
 			false === this.props.canChat ||
-			false === formState.primaryOption.canChat ||
-			false === formState.secondaryOption.canChat ||
-			false === formState.item.canChat
+			false === formState.primarySelected.canChat ||
+			false === formState.secondarySelected.canChat ||
+			false === formState.itemSelected.canChat
 		) {
 			this.props.onSetEligibility( false );
 		} else {
@@ -205,9 +205,9 @@ class TicketFormComponent {
 	onEvent( formState ) {
 		if (
 			false === this.props.canChat ||
-			false === formState.primaryOption.canChat ||
-			false === formState.secondaryOption.canChat ||
-			false === formState.item.canChat
+			false === formState.primarySelected.canChat ||
+			false === formState.secondarySelected.canChat ||
+			false === formState.itemSelected.canChat
 		) {
 			this.props.onSetEligibility( false );
 		} else {
