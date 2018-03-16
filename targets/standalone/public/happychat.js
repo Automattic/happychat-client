@@ -16877,6 +16877,8 @@ exports.default = (0, _createConfig2.default)(configFile);
 "use strict";
 
 
+/** @format */
+
 /**
  * Returns configuration value for given key
  *
@@ -16908,13 +16910,14 @@ var config = function config(data) {
     }
 
     if (true) {
-      throw new ReferenceError('Could not find config value for key \'' + key + '\'\n' + 'Please make sure that if you need it then it has a default value assigned in \'config/_shared.json\'');
+      throw new ReferenceError('Could not find config value for key \'' + key + '\'\n' + "Please make sure that if you need it then it has a default value assigned in 'config/_shared.json'");
     }
 
     // display console error only in a browser
     // (not in tests, for example)
     if ('undefined' !== typeof window) {
-      console.error( //eslint-disable-line no-console
+      console.error(
+      //eslint-disable-line no-console
       '%cCore Error: ' + '%cCould not find config value for key %c${ key }%c. ' + 'Please make sure that if you need it then it has a default value assigned in ' + '%cconfig/_shared.json' + '%c.', 'color: red; font-size: 120%', // error prefix
       'color: black;', // message
       'color: blue;', // key name
@@ -17598,7 +17601,7 @@ Object.defineProperty(exports, "__esModule", {
  * /*
  * A mixin that prevents scrolling events triggered by the mousewheel from moving scrollable containers
  * not directly under the mouse.
- * 
+ *
  * By default when scrolling a scrollable HTML element, once the boundary is reached the scrolling events
  * will continue up the DOM tree and ultimately end up scrolling the page.
  *
@@ -41285,10 +41288,10 @@ Object.defineProperty(exports, "__esModule", {
  * Mixin that will scroll to the bottom of a scrollable container whenever it's rendered.
  * When the scrollable element is scrolled manually by the user autoscroll is disabled until the
  * user scrolls back to the bottom of the content.
- * 
+ *
  * To use declare the mixin and then call the `setupAutoscroll( node )` method on your component
  * where `node` is an html element with scrolling enabled.
- * 
+ *
  * After every update the content will be scrolled to the bottom of the content.
  *
  * @format
@@ -42406,7 +42409,11 @@ var ContactForm = exports.ContactForm = function (_React$Component) {
 					null,
 					itemListTitle
 				),
-				_react2.default.createElement(_selectDropdown2.default, { initialSelected: itemSelected.value, options: itemList, onSelect: this.handleItemSelected })
+				_react2.default.createElement(_selectDropdown2.default, {
+					initialSelected: itemSelected.value,
+					options: itemList,
+					onSelect: this.handleItemSelected
+				})
 			) : '';
 		}
 	}, {
@@ -43887,10 +43894,10 @@ var SegmentedControl = function (_React$Component) {
 		}
 
 		/**
-          * Allows for keyboard navigation
-          * @param  {String} direction - `next` or `previous`
-          * @return {Number|Boolean} - returns false if the newIndex is out of bounds
-          */
+   * Allows for keyboard navigation
+   * @param  {String} direction - `next` or `previous`
+   * @return {Number|Boolean} - returns false if the newIndex is out of bounds
+   */
 
 	}]);
 
@@ -49348,52 +49355,52 @@ Backoff.prototype.setJitter = function(jitter){
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 /** @format */
 
 /**
-*
-* Given a Redux action and a timeout, dispatch a request.
-*
-* The request can have three states, and will dispatch an action accordingly:
-*
-* - request was succesful: would dispatch the action.callback with true as argument
-* - request was unsucessful: would dispatch the action.callback with false as argument
-* - request timeout: would dispatch action.callbackTimeout
-*
-* @param  { Function } dispatch Redux dispatch function
-* @param  { Object } action A Redux action with props
-*                  	{
-*                  		path: URL path used to send the request,
-*                  		payload: contents to be sent,
-*                  		callback: a Redux action creator,
-*                  		callbackTimeout: a Redux action creator,
-*                  	}
-* @param  { Number } timeout How long (in milliseconds) has the server to respond
-* @return { Promise } Fulfilled (returns the response)
-*                     or rejected (returns an error message)
-*/
+ *
+ * Given a Redux action and a timeout, dispatch a request.
+ *
+ * The request can have three states, and will dispatch an action accordingly:
+ *
+ * - request was succesful: would dispatch the action.callback with true as argument
+ * - request was unsucessful: would dispatch the action.callback with false as argument
+ * - request timeout: would dispatch action.callbackTimeout
+ *
+ * @param  { Function } dispatch Redux dispatch function
+ * @param  { Object } action A Redux action with props
+ *                  	{
+ *                  		path: URL path used to send the request,
+ *                  		payload: contents to be sent,
+ *                  		callback: a Redux action creator,
+ *                  		callbackTimeout: a Redux action creator,
+ *                  	}
+ * @param  { Number } timeout How long (in milliseconds) has the server to respond
+ * @return { Promise } Fulfilled (returns the response)
+ *                     or rejected (returns an error message)
+ */
 var makeRequest = function makeRequest(dispatch, action, timeout) {
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', action.path, true);
-	xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
-	for (var header in action.headers) {
-		xhr.setRequestHeader(header, action.headers[header]);
-	}
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', action.path, true);
+  xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
+  for (var header in action.headers) {
+    xhr.setRequestHeader(header, action.headers[header]);
+  }
 
-	xhr.timeout = timeout;
-	xhr.ontimeout = function () {
-		return dispatch(action.callbackTimeout());
-	};
+  xhr.timeout = timeout;
+  xhr.ontimeout = function () {
+    return dispatch(action.callbackTimeout());
+  };
 
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState === XMLHttpRequest.DONE) {
-			dispatch(action.callback({ status: xhr.status, responseText: xhr.responseText }));
-		}
-	};
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      dispatch(action.callback({ status: xhr.status, responseText: xhr.responseText }));
+    }
+  };
 
-	xhr.send(JSON.stringify(action.payload));
+  xhr.send(JSON.stringify(action.payload));
 };
 
 exports.default = makeRequest;
