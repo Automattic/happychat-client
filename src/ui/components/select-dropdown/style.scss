@@ -1,6 +1,10 @@
+/** @format */
+
 /**
  * Select Dropdown
+ *
  */
+
 $header-height: 43;
 $option-height: 40;
 $side-margin: 16;
@@ -25,12 +29,15 @@ $compact-header-height: 35;
 	max-width: 100%;
 
 	.select-dropdown.is-open & {
-		z-index: z-index( 'root', '.select-dropdown.is-open .select-dropdown__container' );
+		z-index: z-index('root', '.select-dropdown.is-open .select-dropdown__container');
 	}
 
 	.accessible-focus &:focus,
 	.accessible-focus .select-dropdown.is-open & {
-		z-index: z-index( 'root', '.accessible-focus .select-dropdown.is-open .select-dropdown__container' );
+		z-index: z-index(
+			'root',
+			'.accessible-focus .select-dropdown.is-open .select-dropdown__container'
+		);
 		.select-dropdown__header {
 			border-color: $blue-wordpress;
 		}
@@ -57,7 +64,7 @@ $compact-header-height: 35;
 	box-sizing: border-box;
 
 	border-style: solid;
-	border-color: lighten( $gray, 20% );
+	border-color: lighten($gray, 20%);
 	border-width: 1px 1px 2px;
 	border-radius: 4px;
 	background-color: $white;
@@ -75,11 +82,11 @@ $compact-header-height: 35;
 		display: block;
 		width: 20px;
 		line-height: #{ $header-height - 1 }px;
-		color: rgba( $gray, 0.5 );
+		color: rgba($gray, 0.5);
 
 		position: absolute;
-			right: 14px;
-			top: 0px;
+		right: 14px;
+		top: 0px;
 
 		.is-compact & {
 			right: 5px;
@@ -100,7 +107,7 @@ $compact-header-height: 35;
 		.count {
 			border-width: 0;
 			right: 25px;
-			top: #{ ( $compact-header-height - 18 ) / 2 }px;
+			top: #{ ($compact-header-height - 18) / 2 }px;
 		}
 	}
 
@@ -121,11 +128,11 @@ $compact-header-height: 35;
 	.count {
 		position: absolute;
 		right: 40px;
-		top: #{ ( $header-height - 18 - 2 ) / 2 }px;
+		top: #{ ($header-height - 18 - 2) / 2 }px;
 	}
 
 	.gridicon {
-		margin-right: #{ ( $side-margin / 2 ) }px;
+		margin-right: #{ ($side-margin / 2) }px;
 		vertical-align: text-bottom;
 
 		.is-compact & {
@@ -148,7 +155,7 @@ $compact-header-height: 35;
 	list-style: none;
 	margin: 0;
 	background-color: $white;
-	border: 1px solid lighten( $gray, 20% );
+	border: 1px solid lighten($gray, 20%);
 	border-top: 0;
 	// $blue-wordpress for outer (with focus shadow), $gray for border with header
 	border-radius: 0 0 4px 4px;
@@ -158,7 +165,7 @@ $compact-header-height: 35;
 
 	.accessible-focus & {
 		border: solid 1px $blue-wordpress;
-		border-top-color: lighten( $gray, 20% );
+		border-top-color: lighten($gray, 20%);
 	}
 
 	.select-dropdown.is-open & {
@@ -192,7 +199,7 @@ $compact-header-height: 35;
 
 	// hack to set text width in bold weight
 	&::before {
-		content: attr( data-bold-text );
+		content: attr(data-bold-text);
 		font-weight: 700;
 		white-space: nowrap;
 		opacity: 0;
@@ -216,7 +223,7 @@ $compact-header-height: 35;
 		background-color: $white;
 		color: $gray;
 		cursor: default;
-		opacity: .5;
+		opacity: 0.5;
 	}
 
 	.notouch & {
@@ -231,21 +238,21 @@ $compact-header-height: 35;
 	}
 
 	.gridicon {
-		margin-right: #{ ( $side-margin / 2 ) }px;
+		margin-right: #{ ($side-margin / 2) }px;
 		vertical-align: text-bottom;
 	}
 }
 
 .select-dropdown__item-count {
 	&::before {
-		content: attr( data-text );
+		content: attr(data-text);
 		opacity: 0;
 	}
 
 	.count {
 		position: absolute;
-			top: #{ ( $option-height - 18 ) / 2 }px;
-			right: #{ $side-margin }px;
+		top: #{ ($option-height - 18) / 2 }px;
+		right: #{ $side-margin }px;
 	}
 }
 
@@ -257,19 +264,19 @@ $compact-header-height: 35;
 	display: inline-block;
 	max-width: 100%;
 	position: absolute;
-		left: #{ $side-margin }px;
-		right: #{ $side-margin }px;
+	left: #{ $side-margin }px;
+	right: #{ $side-margin }px;
 }
 
 .select-dropdown__separator {
-	border-top: 1px solid lighten( $gray, 20% );
+	border-top: 1px solid lighten($gray, 20%);
 	display: block;
 	margin: 8px 0;
 }
 
 .select-dropdown__label {
 	display: block;
-	color: lighten( $gray, 10% );
+	color: lighten($gray, 10%);
 	line-height: 20px;
 
 	label {
