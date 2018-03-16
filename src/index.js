@@ -216,19 +216,19 @@ const renderError = ( targetNode, { error } ) =>
 
 /* eslint-disable camelcase */
 const getWPComUser = ( accessToken, groups, canChat ) =>
-	getUser(
-		accessToken
-	).then( ( { ID, email, username, display_name, avatar_URL, language } ) => ( {
-		ID,
-		email,
-		username,
-		display_name,
-		avatar_URL,
-		language,
-		accessToken,
-		groups,
-		canChat,
-	} ) );
+	getUser( accessToken ).then(
+		( { ID, email, username, display_name, avatar_URL, language } ) => ( {
+			ID,
+			email,
+			username,
+			display_name,
+			avatar_URL,
+			language,
+			accessToken,
+			groups,
+			canChat,
+		} )
+	);
 /* eslint-enable camelcase */
 
 /**
