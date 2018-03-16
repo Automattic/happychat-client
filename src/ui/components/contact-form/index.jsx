@@ -39,18 +39,31 @@ export class ContactForm extends React.Component {
 			itemList,
 			itemListTitle,
 		} = this.props;
+		const primarySelected = getSelectedOption( primaryOptions );
+		const newSecondaryOptions = filterByTargetValue(
+			secondaryOptions,
+			primarySelected.value,
+			'primary'
+		);
+		const newSecondarySelected = getSelectedOption( newSecondaryOptions );
+		const newItemList = filterByTargetValue(
+			filterByTargetValue( itemList, primarySelected.value, 'primary' ),
+			newSecondarySelected.value,
+			'secondary'
+		);
+		const newItemSelected = getSelectedOption( newItemList );
 		this.state = {
 			subject: '',
 			message: '',
-			primaryOptions,
 			primaryOptionsTitle,
-			primarySelected: getSelectedOption( primaryOptions ),
-			secondaryOptions,
+			primaryOptions,
+			primarySelected,
 			secondaryOptionsTitle,
-			secondarySelected: getSelectedOption( secondaryOptions ),
-			itemList,
+			secondaryOptions: newSecondaryOptions,
+			secondarySelected: newSecondarySelected,
 			itemListTitle,
-			itemSelected: getSelectedOption( itemList ),
+			itemList: newItemList,
+			itemSelected: newItemSelected,
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
