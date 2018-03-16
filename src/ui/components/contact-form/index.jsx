@@ -21,11 +21,6 @@ import SelectDropdown from 'src/ui/components/select-dropdown';
 const getSelectedOption = options =>
 	Array.isArray( options ) && options.length > 0 ? options[ 0 ] : {};
 
-const getSecondary = ( primarySelected, secondaryOptions ) =>
-	Array.isArray( primarySelected.secondaryOptions )
-		? getSelectedOption( primarySelected.secondaryOptions )
-		: getSelectedOption( secondaryOptions );
-
 const filterByPrimaryKey = ( options, targetValue ) => {
 	const allOptions = Array.isArray( options ) ? options : [];
 	return allOptions.filter( option => ! option.primary ||
@@ -44,7 +39,7 @@ export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
 		const primaryOption = getSelectedOption( this.props.primaryOptions );
-		const secondaryOption = getSecondary( primaryOption, this.props.secondaryOptions );
+		const secondaryOption = getSelectedOption( this.props.secondaryOptions );
 		const item = getSelectedOption( this.props.itemList );
 		this.state = {
 			subject: '',
@@ -79,14 +74,7 @@ export class ContactForm extends React.Component {
 	}
 
 	handleOptionChange( e ) {
-		if ( 'primaryOption' === e.name ) {
-			this.setState( {
-				primaryOption: e.option,
-				secondaryOption: getSecondary( e.option, this.props.secondaryOptions ),
-			} );
-		} else {
-			this.setState( { [ e.name ]: e.option } );
-		}
+		this.setState( { [ e.name ]: e.option } );
 	}
 
 	prepareCanSubmitForm() {
