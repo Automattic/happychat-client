@@ -48,7 +48,7 @@ class Card extends Component {
 		let linkIndicator;
 		if ( href ) {
 			if ( target ) {
-				linkIndicator = <GridiconExternal className="card__link-indicator"  />;
+				linkIndicator = <GridiconExternal className="card__link-indicator" />;
 			} else {
 				linkIndicator = <GridiconChevronRight className="card__link-indicator" />;
 			}

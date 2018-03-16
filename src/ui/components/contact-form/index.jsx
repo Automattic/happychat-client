@@ -23,8 +23,11 @@ const getSelectedOption = options =>
 
 const filterByTargetValue = ( options, targetValue, filterKey ) => {
 	const allOptions = Array.isArray( options ) ? options : [];
-	return allOptions.filter( option => ! option[ filterKey ] ||
-		( Array.isArray( option[ filterKey ] ) && option[ filterKey ].some( value => targetValue === value ) )
+	return allOptions.filter(
+		option =>
+			! option[ filterKey ] ||
+			( Array.isArray( option[ filterKey ] ) &&
+				option[ filterKey ].some( value => targetValue === value ) )
 	);
 };
 
@@ -77,13 +80,7 @@ export class ContactForm extends React.Component {
 			prevState.secondarySelected.canChat !== this.state.secondarySelected.canChat ||
 			prevState.itemSelected.canChat !== this.state.itemSelected.canChat
 		) {
-			const {
-				primarySelected,
-				secondarySelected,
-				itemSelected,
-				subject,
-				message,
-			} = this.state;
+			const { primarySelected, secondarySelected, itemSelected, subject, message } = this.state;
 			this.props.onEvent( {
 				primarySelected,
 				secondarySelected,
@@ -194,7 +191,11 @@ export class ContactForm extends React.Component {
 		return Array.isArray( itemList ) && itemList.length > 0 ? (
 			<div className="contact-form__item-list">
 				<FormLabel>{ itemListTitle }</FormLabel>
-				<SelectDropdown initialSelected={ itemSelected.value } options={ itemList } onSelect={ this.handleItemSelected } />
+				<SelectDropdown
+					initialSelected={ itemSelected.value }
+					options={ itemList }
+					onSelect={ this.handleItemSelected }
+				/>
 			</div>
 		) : (
 			''
