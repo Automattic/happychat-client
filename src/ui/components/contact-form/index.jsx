@@ -21,17 +21,10 @@ import SelectDropdown from 'src/ui/components/select-dropdown';
 const getSelectedOption = options =>
 	Array.isArray( options ) && options.length > 0 ? options[ 0 ] : {};
 
-const filterByPrimaryKey = ( options, targetValue ) => {
+const filterByTargetValue = ( options, targetValue, filterKey ) => {
 	const allOptions = Array.isArray( options ) ? options : [];
-	return allOptions.filter( option => ! option.primary ||
-		( Array.isArray( option.primary ) && option.primary.some( value => targetValue === value ) )
-	);
-};
-
-const filterBySecondaryKey = ( options, targetValue ) => {
-	const allOptions = Array.isArray( options ) ? options : [];
-	return allOptions.filter( option => ! option.secondary ||
-		( Array.isArray( option.secondary ) && option.secondary.some( value => targetValue === value ) )
+	return allOptions.filter( option => ! option[ filterKey ] ||
+		( Array.isArray( option[ filterKey ] ) && option[ filterKey ].some( value => targetValue === value ) )
 	);
 };
 
@@ -107,7 +100,11 @@ export class ContactForm extends React.Component {
 
 	maybeSecondaryOptions() {
 		const { secondaryOptions, secondaryOptionsTitle } = this.props;
-		const options = filterByPrimaryKey( secondaryOptions, this.state.primaryOption.value );
+		const options = filterByTargetValue(
+			secondaryOptions,
+			this.state.primaryOption.value,
+			'primary'
+		);
 		return options.length > 0 ? (
 			<div>
 				<FormLabel>{ secondaryOptionsTitle }</FormLabel>
@@ -124,9 +121,10 @@ export class ContactForm extends React.Component {
 
 	maybeItemList() {
 		const { itemListTitle, itemList } = this.props;
-		const options = filterBySecondaryKey(
-			filterByPrimaryKey( itemList, this.state.primaryOption.value ),
-			this.state.secondaryOption.value
+		const options = filterByTargetValue(
+			filterByTargetValue( itemList, this.state.primaryOption.value, 'primary' ),
+			this.state.secondaryOption.value,
+			'secondary'
 		);
 		return options.length > 0 ? (
 			<div className="contact-form__item-list">
