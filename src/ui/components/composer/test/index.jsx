@@ -10,7 +10,7 @@ import noop from 'lodash/noop';
 /**
  * Internal dependencies
  */
-import { Composer } from '../composer';
+import { Composer } from '../index';
 
 describe( '<Composer />', () => {
 	describe( 'onChange event ', () => {

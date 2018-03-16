@@ -3,7 +3,7 @@
 /**
  * Internal dependencies
  */
-import { HappychatConnection } from '../connection';
+import { HappychatConnection } from '../index';
 
 describe( 'Connection', () => {
 	let component;
