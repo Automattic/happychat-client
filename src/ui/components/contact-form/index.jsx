@@ -31,15 +31,26 @@ const filterByTargetValue = ( options, targetValue, filterKey ) => {
 export class ContactForm extends React.Component {
 	constructor( props ) {
 		super( props );
-		const primarySelected = getSelectedOption( this.props.primaryOptions );
-		const secondarySelected = getSelectedOption( this.props.secondaryOptions );
-		const itemSelected = getSelectedOption( this.props.itemList );
+		const {
+			primaryOptions,
+			primaryOptionsTitle,
+			secondaryOptions,
+			secondaryOptionsTitle,
+			itemList,
+			itemListTitle,
+		} = this.props;
 		this.state = {
 			subject: '',
 			message: '',
-			primarySelected,
-			secondarySelected,
-			itemSelected,
+			primaryOptions,
+			primaryOptionsTitle,
+			primarySelected: getSelectedOption( primaryOptions ),
+			secondaryOptions,
+			secondaryOptionsTitle,
+			secondarySelected: getSelectedOption( secondaryOptions ),
+			itemList,
+			itemListTitle,
+			itemSelected: getSelectedOption( itemList ),
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -53,7 +64,20 @@ export class ContactForm extends React.Component {
 			prevState.secondarySelected.canChat !== this.state.secondarySelected.canChat ||
 			prevState.itemSelected.canChat !== this.state.itemSelected.canChat
 		) {
-			this.props.onEvent( this.state );
+			const {
+				primarySelected,
+				secondarySelected,
+				itemSelected,
+				subject,
+				message,
+			} = this.state;
+			this.props.onEvent( {
+				primarySelected,
+				secondarySelected,
+				itemSelected,
+				subject,
+				message,
+			} );
 		}
 	}
 
@@ -83,8 +107,8 @@ export class ContactForm extends React.Component {
 	}
 
 	maybePrimaryOptions() {
-		const { primaryOptions, primaryOptionsTitle } = this.props;
-		return primaryOptions && primaryOptions.length > 0 ? (
+		const { primaryOptions, primaryOptionsTitle } = this.state;
+		return Array.isArray( primaryOptions ) && primaryOptions.length > 0 ? (
 			<div>
 				<FormLabel>{ primaryOptionsTitle }</FormLabel>
 				<FormSelection
@@ -99,10 +123,10 @@ export class ContactForm extends React.Component {
 	}
 
 	maybeSecondaryOptions() {
-		const { secondaryOptions, secondaryOptionsTitle } = this.props;
+		const { primarySelected, secondaryOptions, secondaryOptionsTitle } = this.state;
 		const options = filterByTargetValue(
 			secondaryOptions,
-			this.state.primarySelected.value,
+			primarySelected.value,
 			'primary'
 		);
 		return options.length > 0 ? (
@@ -120,10 +144,10 @@ export class ContactForm extends React.Component {
 	}
 
 	maybeItemList() {
-		const { itemListTitle, itemList } = this.props;
+		const { primarySelected, secondarySelected, itemListTitle, itemList } = this.state;
 		const options = filterByTargetValue(
-			filterByTargetValue( itemList, this.state.primarySelected.value, 'primary' ),
-			this.state.secondarySelected.value,
+			filterByTargetValue( itemList, primarySelected.value, 'primary' ),
+			secondarySelected.value,
 			'secondary'
 		);
 		return options.length > 0 ? (
