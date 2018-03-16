@@ -124,13 +124,14 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	const styleHC = document.createElement( 'link' );
 	const styleHCPromise = new Promise( resolve => {
 		styleHC.onload = () => resolve();
-		// Change colors to Jetpack theme, for example.
-		// Another approach will be to have separate color stylesheet
-		// and only request the particular stylesheet the user needs.
-		// The base stylesheet will use the default color schema (WordPress.com, for ex)
-		iframeElement.contentDocument.body.style.setProperty( '--selected', '#8cc258' );
 	} );
-	Promise.all( [ styleNoticonPromise, styleHCPromise ] ).then( () => assetsLoadedHook() );
+	const styleHCTheme = document.createElement( 'link' );
+	const styleHCThemePromise = new Promise( resolve => {
+		styleHCTheme.onload = () => resolve();
+	} );
+	Promise.all( [ styleNoticonPromise, styleHCPromise, styleHCThemePromise ] ).then( () =>
+		assetsLoadedHook()
+	);
 
 	// config noticon styles: append it to the iframe's head will trigger the network request
 	styleNoticon.setAttribute( 'rel', 'stylesheet' );
@@ -138,11 +139,17 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	styleNoticon.setAttribute( 'href', 'https://s1.wp.com/i/noticons/noticons.css' );
 	iframeElement.contentDocument.head.appendChild( styleNoticon );
 
-	// config noticon styles: append it to the iframe's head will trigger the network request
+	// config happychat styles: append it to the iframe's head will trigger the network request
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
 	styleHC.setAttribute( 'href', '/happychat.css' );
 	iframeElement.contentDocument.head.appendChild( styleHC );
+
+	// config theme: append it to the iframe's head will trigger the network request
+	styleHCTheme.setAttribute( 'rel', 'stylesheet' );
+	styleHCTheme.setAttribute( 'type', 'text/css' );
+	styleHCTheme.setAttribute( 'href', '/jetpack.css' );
+	iframeElement.contentDocument.head.appendChild( styleHCTheme );
 
 	// some CSS styles depend on these top-level classes being present
 	iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
