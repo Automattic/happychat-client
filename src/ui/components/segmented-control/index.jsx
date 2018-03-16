@@ -193,10 +193,10 @@ class SegmentedControl extends React.Component {
 	};
 
 	/**
-         * Allows for keyboard navigation
-         * @param  {String} direction - `next` or `previous`
-         * @return {Number|Boolean} - returns false if the newIndex is out of bounds
-         */
+	 * Allows for keyboard navigation
+	 * @param  {String} direction - `next` or `previous`
+	 * @return {Number|Boolean} - returns false if the newIndex is out of bounds
+	 */
 	focusSibling = direction => {
 		var increment, items, newIndex;
 

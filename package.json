@@ -50,7 +50,7 @@
     "npm-run-all": "4.0.2",
     "postcss-cli": "2.5.1",
     "postcss-custom-properties": "6.2.0",
-    "prettier": "github:automattic/calypso-prettier#717e62ee",
+    "prettier": "github:automattic/calypso-prettier#503d7779",
     "react-test-renderer": "15.6.2",
     "webpack": "3.10.0",
     "webpack-bundle-analyzer": "2.9.1",

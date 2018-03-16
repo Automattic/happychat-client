@@ -237,9 +237,7 @@ class TicketFormComponent {
 				form = <MessageForm message="Sending ticket..." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
-				form = (
-					<MessageForm message="Sorry, ticket could not be created - something went wrong." />
-				);
+				form = <MessageForm message="Sorry, ticket could not be created - something went wrong." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
 				let hideLink = false;
@@ -249,16 +247,11 @@ class TicketFormComponent {
 				form = (
 					<div className="message-form">
 						<CompactCard>
-							<p className="message-form__header-title">
-								Contact Us
-							</p>
+							<p className="message-form__header-title">Contact Us</p>
 						</CompactCard>
 						<Card>
-							{hideLink ? (
-								<FormLabel>
-									Thanks! Ticket has been
-									successfully created.
-								</FormLabel>
+							{ hideLink ? (
+								<FormLabel>Thanks! Ticket has been successfully created.</FormLabel>
 							) : (
 								<FormLabel>
 									Thanks! Ticket{' '}
@@ -269,22 +262,17 @@ class TicketFormComponent {
 										) }
 										target="_blank"
 									>
-										{
-											fallbackTicketResponse
-										}
+										{ fallbackTicketResponse }
 									</a>{' '}
-									has been successfully
-									created.
+									has been successfully created.
 								</FormLabel>
-							)}
+							) }
 						</Card>
 					</div>
 				);
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
-				form = (
-					<MessageForm message="Sorry, ticket could not be created - API timed out." />
-				);
+				form = <MessageForm message="Sorry, ticket could not be created - API timed out." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_NEW:
 			default:
@@ -315,11 +303,7 @@ class FormComponent {
 	}
 
 	getSupportVariation() {
-		const {
-			fallbackTicketPathToCreate,
-			isUserEligibleForChat,
-			isChatAvailable,
-		} = this.props;
+		const { fallbackTicketPathToCreate, isUserEligibleForChat, isChatAvailable } = this.props;
 		if ( ! fallbackTicketPathToCreate || ( isUserEligibleForChat && isChatAvailable ) ) {
 			return new ChatFormComponent( this.props );
 		}
@@ -376,7 +360,7 @@ class Form extends React.Component {
 					onInitConnection={ onInitConnection }
 				/>
 
-				{this.getSupportComponent().render()}
+				{ this.getSupportComponent().render() }
 			</div>
 		);
 	}

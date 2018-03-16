@@ -21,9 +21,9 @@ const areOptionsDistinct = ( nextOpts, currentOpts ) => {
 	}
 	for ( let i = 0; i < nextOpts.length; i++ ) {
 		if (
-                       nextOpts[ i ].value !== currentOpts[ i ].value ||
-                       nextOpts[ i ].label !== currentOpts[ i ].label
-               ) {
+			nextOpts[ i ].value !== currentOpts[ i ].value ||
+			nextOpts[ i ].label !== currentOpts[ i ].label
+		) {
 			return true;
 		}
 	}
@@ -40,8 +40,10 @@ class FormSelection extends React.Component {
 
 	componentWillReceiveProps( nextProps ) {
 		const { options, optionSelected } = this.props;
-		if ( optionSelected !== nextProps.optionSelected ||
-			areOptionsDistinct( nextProps.options, options ) ) {
+		if (
+			optionSelected !== nextProps.optionSelected ||
+			areOptionsDistinct( nextProps.options, options )
+		) {
 			this.setState( {
 				selection: nextProps.optionSelected || nextProps.options[ 0 ].value,
 			} );
