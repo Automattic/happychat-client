@@ -5,7 +5,8 @@ const webpack = require( 'webpack' );
 module.exports = {
 	entry: './targets/standalone/index.js',
 	output: {
-		filename: './targets/standalone/public/happychat.js',
+		filename: 'happychat.js',
+		path: path.resolve( __dirname, 'targets/standalone' ),
 	},
 	module: {
 		rules: [
@@ -16,6 +17,7 @@ module.exports = {
 			},
 		],
 	},
+	devtool: 'source-map',
 	plugins: [
 		new webpack.DefinePlugin( {
 			'process.env.NODE_ENV': JSON.stringify( 'development' ),
@@ -26,9 +28,8 @@ module.exports = {
 		modules: [ path.resolve( __dirname ), path.resolve( __dirname, 'node_modules' ) ],
 	},
 	devServer: {
-		contentBase: './targets/standalone/public',
-		compress: true,
+		contentBase: path.resolve( __dirname, 'targets/standalone' ),
+		publicPath: '/',
 		port: 9000,
-		hot: true,
 	},
 };

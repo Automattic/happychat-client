@@ -11,10 +11,11 @@
   </style>
 </head>
 <body>
-  <div id="support"></div>
-  <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
-  <script type="text/javascript">
+	<div id="support"></div>
+	<script type="text/javascript" src="happychat.js" charset="utf-8"></script>
+	<script type="text/javascript">
 		Happychat.open( {
+			accessToken: accessTokenPromise,
 			nodeId: 'support',
 			entryOptions: {
 				primaryOptions: [
@@ -59,6 +60,6 @@
 			Happychat.of('availability', reportAvailability);
 			Happychat.of('chatStatus', reportChatStatus);
 		}
-</script>
+	</script>
 </body>
 </html>

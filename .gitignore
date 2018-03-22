@@ -1,6 +1,7 @@
+# Generic
 node_modules/
+*.map
+
+# Project
 tokens
-targets/standalone/public/tokens
-targets/standalone/public/happychat.css
-targets/wordpress/assets/happychat.css
 stats.json
