@@ -9705,15 +9705,15 @@ var _classnames = __webpack_require__(11);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _index = __webpack_require__(67);
+var _card = __webpack_require__(67);
 
-var _index2 = _interopRequireDefault(_index);
+var _card2 = _interopRequireDefault(_card);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function CompactCard(props) {
 	return _react2.default.createElement(
-		_index2.default,
+		_card2.default,
 		_extends({}, props, { className: (0, _classnames2.default)(props.className, 'is-compact') }),
 		props.children
 	);
@@ -16974,7 +16974,7 @@ var configFile = void 0; /** @format */
 if (true) {
   configFile = __webpack_require__(456);
 } else {
-  configFile = require('./production.json');
+  configFile = require('src/config/production.json');
 }
 
 exports.default = (0, _createConfig2.default)(configFile);
@@ -20718,9 +20718,6 @@ var createIframe = function createIframe(props) {
 	styleHC.setAttribute('rel', 'stylesheet');
 	styleHC.setAttribute('type', 'text/css');
 	styleHC.setAttribute('href', 'https://widgets.wp.com/happychat/happychat.css');
-	if (true) {
-		styleHC.setAttribute('href', 'happychat.css');
-	}
 	iframeElement.contentDocument.head.appendChild(styleHC);
 
 	// some CSS styles depend on these top-level classes being present
@@ -38185,7 +38182,7 @@ module.exports = function (data) {
 /* 456 */
 /***/ (function(module, exports) {
 
-module.exports = {"happychat_url":"http://localhost:3232/customer","twemoji_cdn_url":"https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/","features":{"happychat":true}}
+module.exports = {"happychat_url":"https://happychat-io-staging.go-vip.co/customer","twemoji_cdn_url":"https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/","features":{"happychat":true}}
 
 /***/ }),
 /* 457 */

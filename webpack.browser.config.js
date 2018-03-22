@@ -3,7 +3,7 @@ const path = require( 'path' );
 const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
-const config = {
+module.exports = {
 	entry: './targets/browser/index.js',
 	output: {
 		filename: './targets/browser/happychat.js',
@@ -29,5 +29,3 @@ const config = {
 		modules: [ path.resolve( __dirname ), path.resolve( __dirname, 'node_modules' ) ],
 	},
 };
-
-module.exports = config;
