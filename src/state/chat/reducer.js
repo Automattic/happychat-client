@@ -1,5 +1,4 @@
 /** @format */
-
 /**
  * External dependencies
  */
@@ -22,6 +21,14 @@ import {
 	HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE,
 } from '../action-types';
 import { HAPPYCHAT_CHAT_STATUS_DEFAULT } from '../constants';
+
+// We compare incoming timestamps against a known future Unix time in seconds date
+// to determine if the timestamp is in seconds or milliseconds resolution. If the former,
+// we "upgrade" it by multiplying by 1000.
+//
+// This will all be removed once the server-side is fully converted.
+const UNIX_TIMESTAMP_2023_IN_SECONDS = 1700000000;
+export const maybeUpscaleTimePrecision = ( time ) => ( time < UNIX_TIMESTAMP_2023_IN_SECONDS ? time * 1000 : time );
 
 /**
  * Tracks the last time happychat sent or received a message
@@ -84,7 +91,7 @@ const timelineEvent = ( state = {}, action ) => {
 					message: message.text,
 					name: message.user.name,
 					image: message.user.avatarURL,
-					timestamp: message.timestamp,
+					timestamp: maybeUpscaleTimePrecision( message.timestamp ),
 					user_id: message.user.id,
 					type: get( message, 'type', 'message' ),
 					links: get( message, 'meta.links' ),
@@ -138,7 +145,7 @@ export const timeline = ( state = [], action ) => {
 							message: message.text,
 							name: message.user.name,
 							image: message.user.picture,
-							timestamp: message.timestamp,
+							timestamp: maybeUpscaleTimePrecision( message.timestamp ),
 							user_id: message.user.id,
 							type: get( message, 'type', 'message' ),
 							links: get( message, 'meta.links' ),
