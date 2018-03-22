@@ -9,9 +9,9 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import FormLabel from 'src/ui/components/form-label';
-import CompactCard from 'src/ui/components/card/compact';
-import Card from 'src/ui/components/card';
+import FormLabel from '../form-label';
+import CompactCard from '../card/compact';
+import Card from '../card';
 
 export class MessageForm extends React.Component {
 	render() {

@@ -9,14 +9,14 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import CompactCard from 'src/ui/components/card/compact';
-import Card from 'src/ui/components/card';
-import FormTextarea from 'src/ui/components/form-textarea';
-import FormTextInput from 'src/ui/components/form-text-input';
-import FormLabel from 'src/ui/components/form-label';
-import FormButton from 'src/ui/components/form-button';
-import FormSelection from 'src/ui/components/form-selection';
-import SelectDropdown from 'src/ui/components/select-dropdown';
+import CompactCard from '../card/compact';
+import Card from '../card';
+import FormTextarea from '../form-textarea';
+import FormTextInput from '../form-text-input';
+import FormLabel from '../form-label';
+import FormButton from '../form-button';
+import FormSelection from '../form-selection';
+import SelectDropdown from '../select-dropdown';
 
 const getSelectedOption = options =>
 	Array.isArray( options ) && options.length > 0 ? options[ 0 ] : {};

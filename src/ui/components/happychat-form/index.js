@@ -9,9 +9,9 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { Composer } from 'src/ui/components/composer';
-import { Notices } from 'src/ui/components/notices';
-import { Timeline } from 'src/ui/components/timeline';
+import { Composer } from '../composer';
+import { Notices } from '../notices';
+import { Timeline } from '../timeline';
 
 /**
  * React component for rendering a happychat client

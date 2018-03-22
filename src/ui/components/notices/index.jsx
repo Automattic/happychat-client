@@ -20,7 +20,7 @@ import {
 	HAPPYCHAT_CONNECTION_STATUS_RECONNECTING,
 	HAPPYCHAT_CONNECTION_STATUS_UNAUTHORIZED,
 	HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED,
-} from 'src/state/constants';
+} from '../../../state/constants';
 
 /*
  * Renders any notices about the chat session to the user

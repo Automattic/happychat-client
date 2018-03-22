@@ -14,7 +14,7 @@ import throttle from 'lodash/throttle';
 /**
  * Internal dependencies
  */
-import scrollbleed from 'src/ui/components/scrollbleed';
+import scrollbleed from '../scrollbleed';
 
 const sendThrottledTyping = throttle(
 	( onSendTyping, msg ) => {

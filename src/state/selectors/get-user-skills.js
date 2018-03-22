@@ -3,9 +3,9 @@
 /**
  * Internal dependencies
  */
-import { HAPPYCHAT_SKILL_PRODUCT, HAPPYCHAT_SKILL_LANGUAGE } from 'src/state/constants';
-import getGroups from 'src/state/selectors/get-user-groups';
-import getLocale from 'src/state/selectors/get-user-locale';
+import { HAPPYCHAT_SKILL_PRODUCT, HAPPYCHAT_SKILL_LANGUAGE } from '../constants';
+import getGroups from './get-user-groups';
+import getLocale from './get-user-locale';
 
 /**
  * Returns an object of happychat skills array ( product - before known as groups and language )

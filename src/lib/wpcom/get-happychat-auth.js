@@ -9,11 +9,11 @@ import debugFactory from 'debug';
 /**
  * Internal dependencies
  */
-import config from 'src/config';
-import getUser from 'src/state/selectors/get-user';
-import getUserLocale from 'src/state/selectors/get-user-locale';
-import getUserGroups from 'src/state/selectors/get-user-groups';
-import getUserSkills from 'src/state/selectors/get-user-skills';
+import config from '../../config';
+import getUser from '../../state/selectors/get-user';
+import getUserLocale from '../../state/selectors/get-user-locale';
+import getUserGroups from '../../state/selectors/get-user-groups';
+import getUserSkills from '../../state/selectors/get-user-skills';
 
 const debug = debugFactory( 'happychat-client:wpcom:get-happychat-auth' );
 

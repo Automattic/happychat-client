@@ -3,7 +3,7 @@
 /**
  * Internal dependencies
  */
-import { HAPPYCHAT_FALLBACK_TICKET_OPTIONS } from 'src/state/action-types';
+import { HAPPYCHAT_FALLBACK_TICKET_OPTIONS } from '../action-types';
 
 /**
  * Returns an action object for configuring the fallbackTicket feature.

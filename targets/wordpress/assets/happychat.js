@@ -2910,14 +2910,16 @@ module.exports = PooledClass;
 
 /***/ }),
 /* 29 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 
 /**
  * Expose `Emitter`.
  */
 
-module.exports = Emitter;
+if (true) {
+  module.exports = Emitter;
+}
 
 /**
  * Initialize a new `Emitter`.
@@ -10656,8 +10658,10 @@ function error(data){
 /* 127 */
 /***/ (function(module, exports) {
 
+var toString = {}.toString;
+
 module.exports = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
+  return toString.call(arr) == '[object Array]';
 };
 
 
@@ -36106,6 +36110,7 @@ module.exports = {
   "428": "Precondition Required",
   "429": "Too Many Requests",
   "431": "Request Header Fields Too Large",
+  "451": "Unavailable For Legal Reasons",
   "500": "Internal Server Error",
   "501": "Not Implemented",
   "502": "Bad Gateway",

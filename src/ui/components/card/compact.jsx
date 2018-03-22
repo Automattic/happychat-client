@@ -8,7 +8,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
-import Card from 'src/ui/components/card';
+import Card from './index';
 
 export default function CompactCard( props ) {
 	return (

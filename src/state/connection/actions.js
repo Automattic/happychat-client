@@ -32,8 +32,8 @@ import {
 	HAPPYCHAT_IO_SEND_MESSAGE_USERINFO,
 	HAPPYCHAT_IO_SEND_PREFERENCES,
 	HAPPYCHAT_IO_SEND_TYPING,
-} from 'src/state/action-types';
-import { HAPPYCHAT_MESSAGE_TYPES } from 'src/state/constants';
+} from '../action-types';
+import { HAPPYCHAT_MESSAGE_TYPES } from '../constants';
 
 /**
  * Returns an action object indicating that the connection is being stablished.

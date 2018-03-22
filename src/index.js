@@ -14,19 +14,19 @@ import find from 'lodash/find';
  * Internal dependencies
  */
 // utils
-import { hasTouch } from 'src/lib/touch-detect';
-import getUser from 'src/lib/wpcom/get-wpcom-user';
+import { hasTouch } from './lib/touch-detect';
+import getUser from './lib/wpcom/get-wpcom-user';
 // UI components
-import Happychat, { ENTRY_FORM } from 'src/form';
-import { MessageForm } from 'src/ui/components/message-form';
+import Happychat, { ENTRY_FORM } from './form';
+import { MessageForm } from './ui/components/message-form';
 // state: general, actions, selectors
-import eventAPIFactory from 'src/state/event-api';
-import reducer from 'src/state/reducer';
-import { socketMiddleware } from 'src/state/middleware';
-import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
-import { setAssetsLoaded } from 'src/state/ui/actions';
-import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
-import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
+import eventAPIFactory from './state/event-api';
+import reducer from './state/reducer';
+import { socketMiddleware } from './state/middleware';
+import { HAPPYCHAT_GROUP_WPCOM } from './state/constants';
+import { setAssetsLoaded } from './state/ui/actions';
+import { setCurrentUser, setGroups, setLocale, setEligibility } from './state/user/actions';
+import { setFallbackTicketOptions } from './state/fallbackTicket/actions';
 
 const store = createStore(
 	reducer,
