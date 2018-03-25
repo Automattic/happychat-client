@@ -8,7 +8,7 @@ import get from 'lodash/get';
 /**
  * Internal dependencies
  */
-import { HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT } from 'src/state/constants';
+import { HAPPYCHAT_CONNECTION_ERROR_PING_TIMEOUT } from '../constants';
 
 /**
  * Returns true if Happychat server is reachable

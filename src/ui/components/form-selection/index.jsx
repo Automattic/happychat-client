@@ -10,10 +10,10 @@ import find from 'lodash/find';
 /**
  * Internal dependencies
  */
-import SegmentedControl from 'src/ui/components/segmented-control';
-import ControlItem from 'src/ui/components/segmented-control/item';
-import SelectDropdown from 'src/ui/components/select-dropdown';
-import DropdownItem from 'src/ui/components/select-dropdown/item';
+import SegmentedControl from '../segmented-control';
+import ControlItem from '../segmented-control/item';
+import SelectDropdown from '../select-dropdown';
+import DropdownItem from '../select-dropdown/item';
 
 const areOptionsDistinct = ( nextOpts, currentOpts ) => {
 	if ( nextOpts.length !== currentOpts.length ) {

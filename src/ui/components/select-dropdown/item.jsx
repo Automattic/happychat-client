@@ -11,7 +11,7 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import Count from 'src/ui/components/count';
+import Count from '../count';
 
 class SelectDropdownItem extends Component {
 	static propTypes = {

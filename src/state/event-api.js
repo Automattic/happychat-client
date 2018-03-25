@@ -3,10 +3,10 @@
 /**
  * Internal dependencies
  */
-import { sendEvent, sendUserInfo } from 'src/state/connection/actions';
-import getChatStatus from 'src/state/selectors/get-chat-status';
-import getUserInfo from 'src/state/selectors/get-user-info';
-import isAvailable from 'src/state/selectors/is-available';
+import { sendEvent, sendUserInfo } from './connection/actions';
+import getChatStatus from './selectors/get-chat-status';
+import getUserInfo from './selectors/get-user-info';
+import isAvailable from './selectors/is-available';
 
 const eventAPI = store => {
 	const subscribers = {

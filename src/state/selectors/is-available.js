@@ -8,7 +8,7 @@ import get from 'lodash/get';
 /**
  * Internal dependencies
  */
-import isConnectionConnected from 'src/state/selectors/is-connection-connected';
+import isConnectionConnected from './is-connection-connected';
 
 /**
  * Returns true if Happychat client is connected and server is available to take new chats

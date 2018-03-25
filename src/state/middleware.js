@@ -20,12 +20,12 @@ import {
 	HAPPYCHAT_IO_SEND_MESSAGE_USERINFO,
 	HAPPYCHAT_IO_SEND_PREFERENCES,
 	HAPPYCHAT_IO_SEND_TYPING,
-} from 'src/state/action-types';
-import { sendEvent } from 'src/state/connection/actions';
-import buildConnection from 'src/state/socketio';
-import makeRequest from 'src/state/xhr';
-import isConnectionConnected from 'src/state/selectors/is-connection-connected';
-import isChatAssigned from 'src/state/selectors/is-chat-assigned';
+} from './action-types';
+import { sendEvent } from './connection/actions';
+import buildConnection from './socketio';
+import makeRequest from './xhr';
+import isConnectionConnected from './selectors/is-connection-connected';
+import isChatAssigned from './selectors/is-chat-assigned';
 
 const eventMessage = {
 	HAPPYCHAT_BLUR: 'Stopped looking at Happychat',

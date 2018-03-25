@@ -8,7 +8,7 @@ import {
 	HAPPYCHAT_USER_ELIGIBILITY_SET,
 	HAPPYCHAT_USER_GROUPS_SET,
 	HAPPYCHAT_USER_LOCALE_SET,
-} from 'src/state/action-types';
+} from '../action-types';
 
 /**
  * Returns an action object that sets the current user

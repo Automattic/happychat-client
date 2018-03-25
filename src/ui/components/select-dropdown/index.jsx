@@ -16,7 +16,7 @@ import classNames from 'classnames';
 /**
  * Internal dependencies
  */
-import Count from 'src/ui/components/count';
+import Count from '../count';
 import DropdownItem from './item';
 import DropdownSeparator from './separator';
 import DropdownLabel from './label';

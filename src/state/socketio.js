@@ -22,7 +22,7 @@ import {
 	receiveToken,
 	receiveUnauthorized,
 	requestTranscript,
-} from 'src/state/connection/actions';
+} from './connection/actions';
 
 const debug = debugFactory( 'happychat-client:socketio' );
 

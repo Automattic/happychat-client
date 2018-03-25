@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 /**
  * Internal dependencies
  */
-import config from 'src/config';
+import config from './config';
 
 // actions
 import {
@@ -19,48 +19,48 @@ import {
 	sendMessage,
 	sendNotTyping,
 	sendTyping,
-} from 'src/state/connection/actions';
-import { blur, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
-import { setEligibility } from 'src/state/user/actions';
+} from './state/connection/actions';
+import { blur, focus, openChat, setCurrentMessage } from './state/ui/actions';
+import { setEligibility } from './state/user/actions';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
 	HAPPYCHAT_FALLBACK_TICKET_SENDING,
 	HAPPYCHAT_FALLBACK_TICKET_SUCCESS,
 	HAPPYCHAT_FALLBACK_TICKET_FAILURE,
 	HAPPYCHAT_FALLBACK_TICKET_TIMEOUT,
-} from 'src/state/constants';
+} from './state/constants';
 
 // selectors
-import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
-import canUserSendMessages from 'src/state/selectors/can-user-send-messages';
-import getChatStatus from 'src/state/selectors/get-chat-status';
-import getChatTimeline from 'src/state/selectors/get-chat-timeline';
-import getConnectionStatus from 'src/state/selectors/get-connection-status';
-import getFallbackTicketHeaders from 'src/state/selectors/get-fallbackticket-headers';
-import getFallbackTicketPathToCreate from 'src/state/selectors/get-fallbackticket-path-create';
-import getFallbackTicketPathToShow from 'src/state/selectors/get-fallbackticket-path-show';
-import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
-import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
-import getUser from 'src/state/selectors/get-user';
-import getUserGroupExpanded from 'src/state/selectors/get-user-group-expanded';
-import getUserEligibility from 'src/state/selectors/get-user-eligibility';
-import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
-import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
-import isHCServerReachable from 'src/state/selectors/is-server-reachable';
-import isChatFormOpen from 'src/state/selectors/is-chatform-open';
-import isAvailable from 'src/state/selectors/is-available';
-import isUIReady from 'src/state/selectors/is-ui-ready';
+import getHappychatAuth from './lib/wpcom/get-happychat-auth';
+import canUserSendMessages from './state/selectors/can-user-send-messages';
+import getChatStatus from './state/selectors/get-chat-status';
+import getChatTimeline from './state/selectors/get-chat-timeline';
+import getConnectionStatus from './state/selectors/get-connection-status';
+import getFallbackTicketHeaders from './state/selectors/get-fallbackticket-headers';
+import getFallbackTicketPathToCreate from './state/selectors/get-fallbackticket-path-create';
+import getFallbackTicketPathToShow from './state/selectors/get-fallbackticket-path-show';
+import getFallbackTicketResponse from './state/selectors/get-fallbackticket-response';
+import getFallbackTicketStatus from './state/selectors/get-fallbackticket-status';
+import getUser from './state/selectors/get-user';
+import getUserGroupExpanded from './state/selectors/get-user-group-expanded';
+import getUserEligibility from './state/selectors/get-user-eligibility';
+import getUICurrentMessage from './state/selectors/get-ui-currentmessage';
+import isHCConnectionUninitialized from './state/selectors/is-connection-uninitialized';
+import isHCServerReachable from './state/selectors/is-server-reachable';
+import isChatFormOpen from './state/selectors/is-chatform-open';
+import isAvailable from './state/selectors/is-available';
+import isUIReady from './state/selectors/is-ui-ready';
 
 // UI components
-import { mockLocalize } from 'src/ui/components/localize'; // TODO implement localize
-import { HappychatConnection } from 'src/ui/components/connection';
-import { HappychatForm } from 'src/ui/components/happychat-form';
-import { ContactForm } from 'src/ui/components/contact-form';
-import { MessageForm } from 'src/ui/components/message-form';
-import Card from 'src/ui/components/card';
-import CompactCard from 'src/ui/components/card/compact';
-import FormLabel from 'src/ui/components/form-label';
-import SpinnerLine from 'src/ui/components/spinner-line';
+import { mockLocalize } from './ui/components/localize'; // TODO implement localize
+import { HappychatConnection } from './ui/components/connection';
+import { HappychatForm } from './ui/components/happychat-form';
+import { ContactForm } from './ui/components/contact-form';
+import { MessageForm } from './ui/components/message-form';
+import Card from './ui/components/card';
+import CompactCard from './ui/components/card/compact';
+import FormLabel from './ui/components/form-label';
+import SpinnerLine from './ui/components/spinner-line';
 
 const ENTRY_FORM = 'form';
 const ENTRY_CHAT = 'chat';

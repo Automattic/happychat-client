@@ -3,8 +3,8 @@
 /**
  * Internal dependencies
  */
-import { HAPPYCHAT_CONNECTION_STATUS_CONNECTED } from 'src/state/constants';
-import getConnectionStatus from 'src/state/selectors/get-connection-status';
+import { HAPPYCHAT_CONNECTION_STATUS_CONNECTED } from '../constants';
+import getConnectionStatus from './get-connection-status';
 
 /**
  * Returns true if connection status is connected

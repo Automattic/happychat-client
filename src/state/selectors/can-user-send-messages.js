@@ -14,9 +14,9 @@ import {
 	HAPPYCHAT_CHAT_STATUS_DEFAULT,
 	HAPPYCHAT_CHAT_STATUS_MISSED,
 	HAPPYCHAT_CHAT_STATUS_PENDING,
-} from 'src/state/constants';
-import getChatStatus from 'src/state/selectors/get-chat-status';
-import isConnectionConnected from 'src/state/selectors/is-connection-connected';
+} from '../constants';
+import getChatStatus from './get-chat-status';
+import isConnectionConnected from './is-connection-connected';
 
 /**
  * Returns true if the user should be able to send messages to operators based on

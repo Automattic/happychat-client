@@ -3,7 +3,7 @@
 /**
  * Internal dependencies
  */
-import getGeoLocation from 'src/state/selectors/get-user-geolocation';
+import getGeoLocation from './get-user-geolocation';
 
 export default state => ( {
 	site,

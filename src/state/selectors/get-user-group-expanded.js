@@ -10,7 +10,7 @@ const debug = debugFactory( 'happychat-client:group-expanded' );
 /**
  * Internal dependencies
  */
-import { HAPPYCHAT_GROUP_WPCOM, GROUPS_EXPANDED } from 'src/state/constants';
+import { HAPPYCHAT_GROUP_WPCOM, GROUPS_EXPANDED } from '../constants';
 
 const getGroup = state => get( state, 'user.groups', [ HAPPYCHAT_GROUP_WPCOM ] )[ 0 ];
 const logGroup = state => {
