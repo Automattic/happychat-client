@@ -1,10 +1,11 @@
 /** @format */
 const path = require( 'path' );
 const webpack = require( 'webpack' );
+const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
 const env = process.env.NODE_ENV;
 
-config = {
+const config = {
 	entry: './targets/browser/index.js',
 	output: {
 		filename: 'happychat.js',
