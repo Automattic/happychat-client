@@ -136,6 +136,8 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	// config noticon styles: append it to the iframe's head will trigger the network request
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
+
+	// while developing load local css
 	if ( process.env.NODE_ENV === 'development' ) {
 		styleHC.setAttribute( 'href', 'happychat.css' );
 	} else {
