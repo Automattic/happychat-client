@@ -3,30 +3,17 @@
 /**
  * Internal dependencies
  */
-import { initHappychat, eventAPI } from 'src';
-import config from 'targets/standalone/config';
+import api from 'src/api';
 
-const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
+const wpcomOAuth = require( 'wpcom-oauth-cors' )( '54006' );
 
-const accessToken = () =>
-	new Promise( ( resolve, reject ) => {
+// expose the access token
+window.accessTokenPromise = () =>
+	new Promise( ( resolve ) => {
 		wpcomOAuth.get( () => {
 			resolve( wpcomOAuth.token().access_token );
 		} );
 	} );
 
-window.Happychat = {
-	open: ( { nodeId, groups, canChat, entry, entryOptions } ) =>
-		initHappychat( {
-			nodeId,
-			groups,
-			canChat,
-			accessToken,
-			entry,
-			entryOptions,
-		} ),
-	on: ( eventName, callback ) => eventAPI.subscribeTo( eventName, callback ),
-	off: ( eventName, callback ) => eventAPI.unsubscribeFrom( eventName, callback ),
-	sendEvent: msg => eventAPI.sendEventMsg( msg ),
-	sendUserInfo: userInfo => eventAPI.sendUserInfoMsg( userInfo ),
-};
+// expose the happychat api
+window.Happychat = api;

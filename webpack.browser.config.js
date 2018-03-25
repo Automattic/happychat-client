@@ -9,7 +9,7 @@ const config = {
 	entry: './targets/browser/index.js',
 	output: {
 		filename: 'happychat.js',
-		path: path.resolve( __dirname, 'targets/wordpress/assets' ),
+		path: path.resolve( __dirname, 'targets/browser' ),
 	},
 	module: {
 		rules: [
@@ -35,6 +35,8 @@ switch ( env ) {
 	case 'development':
 		config.devtool = 'source-map';
 		config.devServer = {
+			contentBase: path.resolve( __dirname, 'targets/browser' ),
+			publicPath: '/',
 			port: 9001,
 		};
 		break;
