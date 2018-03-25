@@ -6,3 +6,4 @@
 import api from 'src/api';
 
 window.Happychat = api;
+

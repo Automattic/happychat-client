@@ -1,4 +1,4 @@
-# Hacking
+# Contributing
 
 Topics discussed:
 
@@ -8,7 +8,7 @@ Topics discussed:
 
 ## OAuth ID
 
-The standalone target uses the `oauth_client_id` at [targets/standalone/config/index.js](./targets/standalone/config/index.js) to authenticate requests to WordPress.com.
+The standalone target uses the `oauth_client_id` at [targets/standalone/index.js](./targets/standalone/index.js) to authenticate requests to WordPress.com.
 
 The WordPress target doesn't need one because it's a plugin that runs within a WordPress site. It's the site responsibility to register a [WordPress.com OAuth application](http://developer.wordpress.com/apps/) so it's whitelisted to make requests to the WordPress.com REST API ([OAuth docs](https://developer.wordpress.com/docs/oauth2/)).
 
@@ -21,7 +21,7 @@ The WordPress target doesn't need one because it's a plugin that runs within a W
 	- `state`: Redux state tree.
 	- `ui`: React components - these are unconnected to state.
 - `targets`: apps that use the Happychat library
-	- `dist`: the production-ready JS and CSS assets.
+	- `browser`: the production-ready JS and CSS assets.
 	- `standalone`: bare HTML page with Happychat embedded.
 	- `wordpress`: WordPress plugin that exposes `happychat` as a shortcode.
 

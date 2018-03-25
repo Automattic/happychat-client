@@ -1,8 +1,11 @@
 /** @format */
 const path = require( 'path' );
 const webpack = require( 'webpack' );
+const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
-module.exports = {
+const env = process.env.NODE_ENV;
+
+const config = {
 	entry: './targets/standalone/index.js',
 	output: {
 		filename: 'happychat.js',
@@ -17,19 +20,31 @@ module.exports = {
 			},
 		],
 	},
-	devtool: 'source-map',
 	plugins: [
 		new webpack.DefinePlugin( {
-			'process.env.NODE_ENV': JSON.stringify( 'development' ),
+			'process.env.NODE_ENV': JSON.stringify( env ),
 		} ),
 	],
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
 		modules: [ path.resolve( __dirname ), path.resolve( __dirname, 'node_modules' ) ],
 	},
-	devServer: {
-		contentBase: path.resolve( __dirname, 'targets/standalone' ),
-		publicPath: '/',
-		port: 9000,
-	},
 };
+
+switch ( env ) {
+	case 'development':
+		config.devtool = 'source-map';
+		config.devServer = {
+			contentBase: path.resolve( __dirname, 'targets/standalone' ),
+			publicPath: '/',
+			port: 9000,
+		};
+		break;
+
+	case 'production':
+		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
+		config.plugins.push( new UglifyJsPlugin() );
+		break;
+}
+
+module.exports = config;

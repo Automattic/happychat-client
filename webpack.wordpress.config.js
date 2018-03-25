@@ -1,11 +1,15 @@
 /** @format */
 const path = require( 'path' );
 const webpack = require( 'webpack' );
+const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
-module.exports = {
+const env = process.env.NODE_ENV;
+
+const config = {
 	entry: './targets/browser/index.js',
 	output: {
-		filename: './targets/wordpress/assets/happychat.js',
+		filename: 'happychat.js',
+		path: path.resolve( __dirname, 'targets/wordpress/assets' ),
 	},
 	module: {
 		rules: [
@@ -18,7 +22,7 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.DefinePlugin( {
-			'process.env.NODE_ENV': JSON.stringify( 'development' ),
+			'process.env.NODE_ENV': JSON.stringify( env ),
 		} ),
 	],
 	resolve: {
@@ -26,3 +30,19 @@ module.exports = {
 		modules: [ path.resolve( __dirname ), path.resolve( __dirname, 'node_modules' ) ],
 	},
 };
+
+switch ( env ) {
+	case 'development':
+		config.devtool = 'source-map';
+		config.devServer = {
+			port: 9001,
+		};
+		break;
+
+	case 'production':
+		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
+		config.plugins.push( new UglifyJsPlugin() );
+		break;
+}
+
+module.exports = config;
