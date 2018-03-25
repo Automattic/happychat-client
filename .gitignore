@@ -6,3 +6,7 @@ node_modules/
 tokens
 stats.json
 *.local.json
+
+# Targets dists
+targets/**/happychat.css
+targets/**/happychat.js
