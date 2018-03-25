@@ -6,5 +6,7 @@
 		"transform-object-rest-spread",
 		"transform-react-display-name",
 		"transform-react-jsx",
-	],
+		"transform-export-extensions",
+		[ "module-resolver", { "root": ["./"] } ]
+	]
 }

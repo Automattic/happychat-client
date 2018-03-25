@@ -10,3 +10,4 @@ stats.json
 # Targets dists
 targets/**/happychat.css
 targets/**/happychat.js
+targets/npm/*
