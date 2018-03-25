@@ -34,6 +34,9 @@ const config = {
 switch ( env ) {
 	case 'development':
 		config.devtool = 'source-map';
+		config.devServer = {
+			port: 9001,
+		};
 		break;
 
 	case 'production':
