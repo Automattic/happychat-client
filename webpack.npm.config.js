@@ -1,15 +1,19 @@
 /** @format */
+/**
+ * This webpack configuration is only used when developing for the npm target in order to serve
+ * this local css file instead of using the one deployed. The javascript npm dist will be generated
+ * by `babel-cli`.
+ */
 const path = require( 'path' );
 const webpack = require( 'webpack' );
-const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
 const env = process.env.NODE_ENV;
 
 const config = {
-	entry: './targets/browser/index.js',
+	entry: './targets/npm/api.js',
 	output: {
 		filename: 'happychat.js',
-		path: path.resolve( __dirname, 'targets/wordpress/assets' ),
+		path: path.resolve( __dirname, 'targets/npm' ),
 	},
 	module: {
 		rules: [
@@ -35,13 +39,10 @@ switch ( env ) {
 	case 'development':
 		config.devtool = 'source-map';
 		config.devServer = {
+			contentBase: path.resolve( __dirname, 'targets/npm' ),
+			publicPath: '/',
 			port: 9000,
 		};
-		break;
-
-	case 'production':
-		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
-		config.plugins.push( new UglifyJsPlugin() );
 		break;
 }
 
