@@ -19,7 +19,9 @@ module.exports = {
 		],
 	},
 	plugins: [
-		new LodashModuleReplacementPlugin(),
+		new LodashModuleReplacementPlugin( {
+			paths: true,
+		} ),
 		new webpack.DefinePlugin( {
 			'process.env.NODE_ENV': JSON.stringify( 'production' ),
 		} ),
