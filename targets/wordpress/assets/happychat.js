@@ -17517,15 +17517,16 @@ module.exports = isEmpty;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+/** @format */
+
 /**
- * /*
- * A mixin that prevents scrolling events triggered by the mousewheel from moving scrollable containers
- * not directly under the mouse.
+ * A mixin that prevents scrolling events triggered by the mousewheel
+ * from moving scrollable containers not directly under the mouse.
  *
- * By default when scrolling a scrollable HTML element, once the boundary is reached the scrolling events
- * will continue up the DOM tree and ultimately end up scrolling the page.
+ * By default, when scrolling a scrollable HTML element,
+ * once the boundary is reached the scrolling events will continue up the DOM tree
+ * and ultimately end up scrolling the page.
  *
- * @format
  */
 
 exports.default = {
@@ -40507,19 +40508,19 @@ var _isEmpty = __webpack_require__(195);
 
 var _isEmpty2 = _interopRequireDefault(_isEmpty);
 
-var _functional = __webpack_require__(477);
-
-var _autoscroll = __webpack_require__(480);
-
-var _autoscroll2 = _interopRequireDefault(_autoscroll);
-
-var _emojify = __webpack_require__(481);
+var _emojify = __webpack_require__(477);
 
 var _emojify2 = _interopRequireDefault(_emojify);
 
 var _scrollbleed = __webpack_require__(196);
 
 var _scrollbleed2 = _interopRequireDefault(_scrollbleed);
+
+var _functional = __webpack_require__(479);
+
+var _autoscroll = __webpack_require__(482);
+
+var _autoscroll2 = _interopRequireDefault(_autoscroll);
 
 var _url = __webpack_require__(483);
 
@@ -40921,412 +40922,6 @@ module.exports = apply;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.call = exports.compose = exports.map = exports.forEach = exports.all = exports.any = exports.first = exports.when = exports.propEquals = exports.prop = exports.propExists = undefined;
-
-var _find = __webpack_require__(44);
-
-var _find2 = _interopRequireDefault(_find);
-
-var _forEach = __webpack_require__(478);
-
-var _forEach2 = _interopRequireDefault(_forEach);
-
-var _get = __webpack_require__(4);
-
-var _get2 = _interopRequireDefault(_get);
-
-var _map = __webpack_require__(49);
-
-var _map2 = _interopRequireDefault(_map);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/*
- * Returns a function that checks for props that have a truthy `propkey` (uses lodash/object/get
- * to check for key). Example:
- *
- * const nameExists = propExists( 'name' )
- * nameExists( { name: 'Gabrielle' } ) // => Gabrielle
- * nameExists( { name: true } ) // true
- * nameExists( {} ) // null
- * nameExists() // null
- */
-/** @format */
-
-/**
- * External dependencies
- */
-var propExists = exports.propExists = function propExists(propKey) {
-  return function (props) {
-    return (0, _get2.default)(props, propKey);
-  };
-};
-var prop = exports.prop = propExists;
-
-/*
- * Returns a function that returns true if `propKey` of props is equal to `propValue` (uses ===).
- *
- * const userNameIsSam = propEquals( 'user.name', 'Sam' )
- * const userNameIsSam( { user: { name: 'Sam' } } ) // => true
- * const userNameIsSam( { user: { name: 'Frodo' } } ) // => false
- * const userNameIsSam() // => false
- */
-var propEquals = exports.propEquals = function propEquals(propKey, propValue) {
-  return function (props) {
-    return (0, _get2.default)(props, propKey) === propValue;
-  };
-};
-
-/*
- * Returns a function that calls condition and checks for truthiness and calls `ifTrue`, other wise calls
- * `ifFalse` which defaults to a function that returns `null`. Example:
- *
- * const logRealNumbers = when(
- *		( msg ) => /^[\d]+$/.test( msg ),
- *		console.log.bind( console, 'is a real number' ),
- *		console.log.bind( console, 'is not a real number' )
- * )
- *
- * logRealNumbers( 5.1 ) // => 5.1 'is not a real number'
- * logReslNumbers( 5 ) // => 5 'is a real number'
- */
-var when = exports.when = function when(condition, ifTrue) {
-  var ifFalse = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {
-    return null;
-  };
-  return function () {
-    return condition.apply(undefined, arguments) ? ifTrue.apply(undefined, arguments) : ifFalse.apply(undefined, arguments);
-  };
-};
-
-/*
- * Returns the result of the first function to return a truthy value
- */
-
-var first = exports.first = function first() {
-  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
-    fns[_key] = arguments[_key];
-  }
-
-  return function () {
-    var i = void 0,
-        result = void 0;
-    for (i = 0; i < fns.length; i++) {
-      result = fns[i].apply(fns, arguments);
-      if (result) {
-        return result;
-      }
-    }
-  };
-};
-
-/*
- * Returns a function that returns true if any of the provided `fns` return a truthy value. Example:
- *
- * const oddOrLessThan10 = any(
- *		( n ) => n % 2 === 1,
- *		( n ) => n < 10
- * )
- *
- * oddOrLessThan10( 15 ) // => true
- * oddOrLessThan10( 8 ) // => true
- * oddOrLessThan10( 12 ) // => false
- */
-var any = exports.any = function any() {
-  for (var _len2 = arguments.length, fns = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-    fns[_key2] = arguments[_key2];
-  }
-
-  return function () {
-    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-      args[_key3] = arguments[_key3];
-    }
-
-    return (0, _find2.default)(fns, function (fn) {
-      return fn.apply(undefined, args);
-    });
-  };
-};
-
-/*
- * Returns a function that returns true when all provided functions return a truthy value. Example:
- *
- * const lessThan10AndGreaterThan4AndEven = all(
- *		( n ) => n < 10,
- *		( n ) => n > 4,
- *		( n ) => n % 2 === 0
- * )
- * lessThan10AndGreaterThan2AndEven( 7 ) // => false
- * lessThan10AndGreaterThan2AndEven( 8 ) // => true
- * lessThan10AndGreaterThan2AndEven( 2 ) // => false
- */
-var all = exports.all = function all() {
-  for (var _len4 = arguments.length, fns = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-    fns[_key4] = arguments[_key4];
-  }
-
-  return function () {
-    for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-      args[_key5] = arguments[_key5];
-    }
-
-    return !(0, _find2.default)(fns, function (fn) {
-      return !fn.apply(undefined, args);
-    });
-  };
-};
-
-// Returns a function that calls each of fns
-var forEach = exports.forEach = function forEach() {
-  for (var _len6 = arguments.length, fns = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
-    fns[_key6] = arguments[_key6];
-  }
-
-  return function () {
-    for (var _len7 = arguments.length, args = Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
-      args[_key7] = arguments[_key7];
-    }
-
-    return (0, _forEach2.default)(fns, function (fn) {
-      return fn.apply(undefined, args);
-    });
-  };
-};
-
-/*
- * Returns a function that iterates through each function and calls it and returns each value. Example:
- *
- *	const log = console.log.bind( console )
- *	const maths = each(
- *		( n ) => n * 2
- *		( n ) => n + 2
- *	)
- *
- *  maths( 3 )
- *  // => [ 6, 5 ]
- */
-var map = exports.map = function map() {
-  for (var _len8 = arguments.length, fns = Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {
-    fns[_key8] = arguments[_key8];
-  }
-
-  return function () {
-    for (var _len9 = arguments.length, args = Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
-      args[_key9] = arguments[_key9];
-    }
-
-    return (0, _map2.default)(fns, function (fn) {
-      return fn.apply(undefined, args);
-    });
-  };
-};
-
-var compose = exports.compose = function compose() {
-  for (var _len10 = arguments.length, fns = Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {
-    fns[_key10] = arguments[_key10];
-  }
-
-  return function () {
-    var head = fns[0],
-        rest = fns.slice(1);
-
-    return rest.reduce(function (result, fn) {
-      return fn(result);
-    }, head.apply(undefined, arguments));
-  };
-};
-
-/*
- * Returns a function that calls the provided method with the given args as arguments on
- * the first argument given to the returned function.
- *
- * Example:
- *
- *	document.querySelector( 'a' ).addEventListener( 'click', call( 'preventDefault', true ) );
- *
- * Is functionaly equivalent to:
- *
- *	document.querySelector( 'a' ).addEventListener( 'click', ( e ) => e.preventDefault( true ) );
- */
-var call = exports.call = function call(method) {
-  for (var _len11 = arguments.length, args = Array(_len11 > 1 ? _len11 - 1 : 0), _key11 = 1; _key11 < _len11; _key11++) {
-    args[_key11 - 1] = arguments[_key11];
-  }
-
-  return function (obj) {
-    return obj[method].apply(obj, args);
-  };
-};
-
-/***/ }),
-/* 478 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayEach = __webpack_require__(479),
-    baseEach = __webpack_require__(105),
-    baseIteratee = __webpack_require__(33),
-    isArray = __webpack_require__(11);
-
-/**
- * Iterates over elements of `collection` and invokes `iteratee` for each element.
- * The iteratee is invoked with three arguments: (value, index|key, collection).
- * Iteratee functions may exit iteration early by explicitly returning `false`.
- *
- * **Note:** As with other "Collections" methods, objects with a "length"
- * property are iterated like arrays. To avoid this behavior use `_.forIn`
- * or `_.forOwn` for object iteration.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @alias each
- * @category Collection
- * @param {Array|Object} collection The collection to iterate over.
- * @param {Function} [iteratee=_.identity] The function invoked per iteration.
- * @returns {Array|Object} Returns `collection`.
- * @see _.forEachRight
- * @example
- *
- * _([1, 2]).forEach(function(value) {
- *   console.log(value);
- * });
- * // => Logs `1` then `2`.
- *
- * _.forEach({ 'a': 1, 'b': 2 }, function(value, key) {
- *   console.log(key);
- * });
- * // => Logs 'a' then 'b' (iteration order is not guaranteed).
- */
-function forEach(collection, iteratee) {
-  var func = isArray(collection) ? arrayEach : baseEach;
-  return func(collection, baseIteratee(iteratee, 3));
-}
-
-module.exports = forEach;
-
-
-/***/ }),
-/* 479 */
-/***/ (function(module, exports) {
-
-/**
- * A specialized version of `_.forEach` for arrays without support for
- * iteratee shorthands.
- *
- * @private
- * @param {Array} [array] The array to iterate over.
- * @param {Function} iteratee The function invoked per iteration.
- * @returns {Array} Returns `array`.
- */
-function arrayEach(array, iteratee) {
-  var index = -1,
-      length = array ? array.length : 0;
-
-  while (++index < length) {
-    if (iteratee(array[index], index, array) === false) {
-      break;
-    }
-  }
-  return array;
-}
-
-module.exports = arrayEach;
-
-
-/***/ }),
-/* 480 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-/**
- * Mixin that will scroll to the bottom of a scrollable container whenever it's rendered.
- * When the scrollable element is scrolled manually by the user autoscroll is disabled until the
- * user scrolls back to the bottom of the content.
- *
- * To use declare the mixin and then call the `setupAutoscroll( node )` method on your component
- * where `node` is an html element with scrolling enabled.
- *
- * After every update the content will be scrolled to the bottom of the content.
- *
- * @format
- */
-
-exports.default = {
-	componentWillMount: function componentWillMount() {
-		this._autoscroll_enabled = true;
-		window.addEventListener('resize', this.scrollToBottom);
-	},
-	componentDidMount: function componentDidMount() {
-		this.scrollToBottom();
-	},
-	componentWillUnmount: function componentWillUnmount() {
-		window.removeEventListener('resize', this.scrollToBottom);
-		this._autoscroll_stop_listening();
-	},
-	componentDidUpdate: function componentDidUpdate() {
-		this.scrollToBottom();
-	},
-	setupAutoscroll: function setupAutoscroll(node) {
-		this._autoscroll_stop_listening();
-		this._autoscroll_node = node;
-
-		if (!this._autoscroll_node) {
-			return;
-		}
-
-		this._autoscroll_node.addEventListener('scroll', this._autoscroll_detectScroll);
-	},
-	_autoscroll_stop_listening: function _autoscroll_stop_listening() {
-		if (!this._autoscroll_node) {
-			return;
-		}
-		this._autoscroll_node.removeEventListener('scroll', this._autoscroll_detectScroll);
-	},
-	scrollToBottom: function scrollToBottom() {
-		if (!this._autoscroll_enabled) {
-			return;
-		}
-		if (!this._autoscroll_node) {
-			return;
-		}
-		var _autoscroll_node = this._autoscroll_node,
-		    scrollHeight = _autoscroll_node.scrollHeight,
-		    offsetHeight = _autoscroll_node.offsetHeight;
-
-		this._autoscroll_node.scrollTop = Math.max(0, scrollHeight - offsetHeight);
-	},
-	_autoscroll_detectScroll: function _autoscroll_detectScroll() {
-		if (!this._autoscroll_node) {
-			return;
-		}
-
-		var _autoscroll_node2 = this._autoscroll_node,
-		    scrollTop = _autoscroll_node2.scrollTop,
-		    offsetHeight = _autoscroll_node2.offsetHeight,
-		    scrollHeight = _autoscroll_node2.scrollHeight;
-
-		var enable = scrollTop + offsetHeight >= scrollHeight;
-		if (this._autoscroll_enabled !== enable) {
-			this._autoscroll_enabled = enable;
-		}
-	}
-};
-
-/***/ }),
-/* 481 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
@@ -41346,7 +40941,7 @@ var _classnames = __webpack_require__(10);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _twemoji = __webpack_require__(482);
+var _twemoji = __webpack_require__(478);
 
 var _twemoji2 = _interopRequireDefault(_twemoji);
 
@@ -41449,7 +41044,7 @@ Emojify.defaultProps = {
 exports.default = Emojify;
 
 /***/ }),
-/* 482 */
+/* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var location = global.location || {};
@@ -42025,6 +41620,412 @@ if (!location.protocol) {
 }
 module.exports = twemoji;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+
+/***/ }),
+/* 479 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.call = exports.compose = exports.map = exports.forEach = exports.all = exports.any = exports.first = exports.when = exports.propEquals = exports.prop = exports.propExists = undefined;
+
+var _find = __webpack_require__(44);
+
+var _find2 = _interopRequireDefault(_find);
+
+var _forEach = __webpack_require__(480);
+
+var _forEach2 = _interopRequireDefault(_forEach);
+
+var _get = __webpack_require__(4);
+
+var _get2 = _interopRequireDefault(_get);
+
+var _map = __webpack_require__(49);
+
+var _map2 = _interopRequireDefault(_map);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/*
+ * Returns a function that checks for props that have a truthy `propkey` (uses lodash/object/get
+ * to check for key). Example:
+ *
+ * const nameExists = propExists( 'name' )
+ * nameExists( { name: 'Gabrielle' } ) // => Gabrielle
+ * nameExists( { name: true } ) // true
+ * nameExists( {} ) // null
+ * nameExists() // null
+ */
+/** @format */
+
+/**
+ * External dependencies
+ */
+var propExists = exports.propExists = function propExists(propKey) {
+  return function (props) {
+    return (0, _get2.default)(props, propKey);
+  };
+};
+var prop = exports.prop = propExists;
+
+/*
+ * Returns a function that returns true if `propKey` of props is equal to `propValue` (uses ===).
+ *
+ * const userNameIsSam = propEquals( 'user.name', 'Sam' )
+ * const userNameIsSam( { user: { name: 'Sam' } } ) // => true
+ * const userNameIsSam( { user: { name: 'Frodo' } } ) // => false
+ * const userNameIsSam() // => false
+ */
+var propEquals = exports.propEquals = function propEquals(propKey, propValue) {
+  return function (props) {
+    return (0, _get2.default)(props, propKey) === propValue;
+  };
+};
+
+/*
+ * Returns a function that calls condition and checks for truthiness and calls `ifTrue`, other wise calls
+ * `ifFalse` which defaults to a function that returns `null`. Example:
+ *
+ * const logRealNumbers = when(
+ *		( msg ) => /^[\d]+$/.test( msg ),
+ *		console.log.bind( console, 'is a real number' ),
+ *		console.log.bind( console, 'is not a real number' )
+ * )
+ *
+ * logRealNumbers( 5.1 ) // => 5.1 'is not a real number'
+ * logReslNumbers( 5 ) // => 5 'is a real number'
+ */
+var when = exports.when = function when(condition, ifTrue) {
+  var ifFalse = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {
+    return null;
+  };
+  return function () {
+    return condition.apply(undefined, arguments) ? ifTrue.apply(undefined, arguments) : ifFalse.apply(undefined, arguments);
+  };
+};
+
+/*
+ * Returns the result of the first function to return a truthy value
+ */
+
+var first = exports.first = function first() {
+  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
+    fns[_key] = arguments[_key];
+  }
+
+  return function () {
+    var i = void 0,
+        result = void 0;
+    for (i = 0; i < fns.length; i++) {
+      result = fns[i].apply(fns, arguments);
+      if (result) {
+        return result;
+      }
+    }
+  };
+};
+
+/*
+ * Returns a function that returns true if any of the provided `fns` return a truthy value. Example:
+ *
+ * const oddOrLessThan10 = any(
+ *		( n ) => n % 2 === 1,
+ *		( n ) => n < 10
+ * )
+ *
+ * oddOrLessThan10( 15 ) // => true
+ * oddOrLessThan10( 8 ) // => true
+ * oddOrLessThan10( 12 ) // => false
+ */
+var any = exports.any = function any() {
+  for (var _len2 = arguments.length, fns = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+    fns[_key2] = arguments[_key2];
+  }
+
+  return function () {
+    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
+    }
+
+    return (0, _find2.default)(fns, function (fn) {
+      return fn.apply(undefined, args);
+    });
+  };
+};
+
+/*
+ * Returns a function that returns true when all provided functions return a truthy value. Example:
+ *
+ * const lessThan10AndGreaterThan4AndEven = all(
+ *		( n ) => n < 10,
+ *		( n ) => n > 4,
+ *		( n ) => n % 2 === 0
+ * )
+ * lessThan10AndGreaterThan2AndEven( 7 ) // => false
+ * lessThan10AndGreaterThan2AndEven( 8 ) // => true
+ * lessThan10AndGreaterThan2AndEven( 2 ) // => false
+ */
+var all = exports.all = function all() {
+  for (var _len4 = arguments.length, fns = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+    fns[_key4] = arguments[_key4];
+  }
+
+  return function () {
+    for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+      args[_key5] = arguments[_key5];
+    }
+
+    return !(0, _find2.default)(fns, function (fn) {
+      return !fn.apply(undefined, args);
+    });
+  };
+};
+
+// Returns a function that calls each of fns
+var forEach = exports.forEach = function forEach() {
+  for (var _len6 = arguments.length, fns = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+    fns[_key6] = arguments[_key6];
+  }
+
+  return function () {
+    for (var _len7 = arguments.length, args = Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+      args[_key7] = arguments[_key7];
+    }
+
+    return (0, _forEach2.default)(fns, function (fn) {
+      return fn.apply(undefined, args);
+    });
+  };
+};
+
+/*
+ * Returns a function that iterates through each function and calls it and returns each value. Example:
+ *
+ *	const log = console.log.bind( console )
+ *	const maths = each(
+ *		( n ) => n * 2
+ *		( n ) => n + 2
+ *	)
+ *
+ *  maths( 3 )
+ *  // => [ 6, 5 ]
+ */
+var map = exports.map = function map() {
+  for (var _len8 = arguments.length, fns = Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {
+    fns[_key8] = arguments[_key8];
+  }
+
+  return function () {
+    for (var _len9 = arguments.length, args = Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
+      args[_key9] = arguments[_key9];
+    }
+
+    return (0, _map2.default)(fns, function (fn) {
+      return fn.apply(undefined, args);
+    });
+  };
+};
+
+var compose = exports.compose = function compose() {
+  for (var _len10 = arguments.length, fns = Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {
+    fns[_key10] = arguments[_key10];
+  }
+
+  return function () {
+    var head = fns[0],
+        rest = fns.slice(1);
+
+    return rest.reduce(function (result, fn) {
+      return fn(result);
+    }, head.apply(undefined, arguments));
+  };
+};
+
+/*
+ * Returns a function that calls the provided method with the given args as arguments on
+ * the first argument given to the returned function.
+ *
+ * Example:
+ *
+ *	document.querySelector( 'a' ).addEventListener( 'click', call( 'preventDefault', true ) );
+ *
+ * Is functionaly equivalent to:
+ *
+ *	document.querySelector( 'a' ).addEventListener( 'click', ( e ) => e.preventDefault( true ) );
+ */
+var call = exports.call = function call(method) {
+  for (var _len11 = arguments.length, args = Array(_len11 > 1 ? _len11 - 1 : 0), _key11 = 1; _key11 < _len11; _key11++) {
+    args[_key11 - 1] = arguments[_key11];
+  }
+
+  return function (obj) {
+    return obj[method].apply(obj, args);
+  };
+};
+
+/***/ }),
+/* 480 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayEach = __webpack_require__(481),
+    baseEach = __webpack_require__(105),
+    baseIteratee = __webpack_require__(33),
+    isArray = __webpack_require__(11);
+
+/**
+ * Iterates over elements of `collection` and invokes `iteratee` for each element.
+ * The iteratee is invoked with three arguments: (value, index|key, collection).
+ * Iteratee functions may exit iteration early by explicitly returning `false`.
+ *
+ * **Note:** As with other "Collections" methods, objects with a "length"
+ * property are iterated like arrays. To avoid this behavior use `_.forIn`
+ * or `_.forOwn` for object iteration.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @alias each
+ * @category Collection
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+ * @returns {Array|Object} Returns `collection`.
+ * @see _.forEachRight
+ * @example
+ *
+ * _([1, 2]).forEach(function(value) {
+ *   console.log(value);
+ * });
+ * // => Logs `1` then `2`.
+ *
+ * _.forEach({ 'a': 1, 'b': 2 }, function(value, key) {
+ *   console.log(key);
+ * });
+ * // => Logs 'a' then 'b' (iteration order is not guaranteed).
+ */
+function forEach(collection, iteratee) {
+  var func = isArray(collection) ? arrayEach : baseEach;
+  return func(collection, baseIteratee(iteratee, 3));
+}
+
+module.exports = forEach;
+
+
+/***/ }),
+/* 481 */
+/***/ (function(module, exports) {
+
+/**
+ * A specialized version of `_.forEach` for arrays without support for
+ * iteratee shorthands.
+ *
+ * @private
+ * @param {Array} [array] The array to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {Array} Returns `array`.
+ */
+function arrayEach(array, iteratee) {
+  var index = -1,
+      length = array ? array.length : 0;
+
+  while (++index < length) {
+    if (iteratee(array[index], index, array) === false) {
+      break;
+    }
+  }
+  return array;
+}
+
+module.exports = arrayEach;
+
+
+/***/ }),
+/* 482 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+/**
+ * Mixin that will scroll to the bottom of a scrollable container whenever it's rendered.
+ * When the scrollable element is scrolled manually by the user autoscroll is disabled until the
+ * user scrolls back to the bottom of the content.
+ *
+ * To use declare the mixin and then call the `setupAutoscroll( node )` method on your component
+ * where `node` is an html element with scrolling enabled.
+ *
+ * After every update the content will be scrolled to the bottom of the content.
+ *
+ * @format
+ */
+
+exports.default = {
+	componentWillMount: function componentWillMount() {
+		this._autoscroll_enabled = true;
+		window.addEventListener('resize', this.scrollToBottom);
+	},
+	componentDidMount: function componentDidMount() {
+		this.scrollToBottom();
+	},
+	componentWillUnmount: function componentWillUnmount() {
+		window.removeEventListener('resize', this.scrollToBottom);
+		this._autoscroll_stop_listening();
+	},
+	componentDidUpdate: function componentDidUpdate() {
+		this.scrollToBottom();
+	},
+	setupAutoscroll: function setupAutoscroll(node) {
+		this._autoscroll_stop_listening();
+		this._autoscroll_node = node;
+
+		if (!this._autoscroll_node) {
+			return;
+		}
+
+		this._autoscroll_node.addEventListener('scroll', this._autoscroll_detectScroll);
+	},
+	_autoscroll_stop_listening: function _autoscroll_stop_listening() {
+		if (!this._autoscroll_node) {
+			return;
+		}
+		this._autoscroll_node.removeEventListener('scroll', this._autoscroll_detectScroll);
+	},
+	scrollToBottom: function scrollToBottom() {
+		if (!this._autoscroll_enabled) {
+			return;
+		}
+		if (!this._autoscroll_node) {
+			return;
+		}
+		var _autoscroll_node = this._autoscroll_node,
+		    scrollHeight = _autoscroll_node.scrollHeight,
+		    offsetHeight = _autoscroll_node.offsetHeight;
+
+		this._autoscroll_node.scrollTop = Math.max(0, scrollHeight - offsetHeight);
+	},
+	_autoscroll_detectScroll: function _autoscroll_detectScroll() {
+		if (!this._autoscroll_node) {
+			return;
+		}
+
+		var _autoscroll_node2 = this._autoscroll_node,
+		    scrollTop = _autoscroll_node2.scrollTop,
+		    offsetHeight = _autoscroll_node2.offsetHeight,
+		    scrollHeight = _autoscroll_node2.scrollHeight;
+
+		var enable = scrollTop + offsetHeight >= scrollHeight;
+		if (this._autoscroll_enabled !== enable) {
+			this._autoscroll_enabled = enable;
+		}
+	}
+};
 
 /***/ }),
 /* 483 */
