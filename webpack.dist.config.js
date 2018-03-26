@@ -2,6 +2,7 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
+const LodashModuleReplacementPlugin = require( 'lodash-webpack-plugin' );
 
 module.exports = {
 	entry: './index.js',
@@ -18,6 +19,7 @@ module.exports = {
 		],
 	},
 	plugins: [
+		new LodashModuleReplacementPlugin(),
 		new webpack.DefinePlugin( {
 			'process.env.NODE_ENV': JSON.stringify( 'production' ),
 		} ),
