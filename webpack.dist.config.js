@@ -21,6 +21,7 @@ module.exports = {
 	plugins: [
 		new LodashModuleReplacementPlugin( {
 			paths: true,
+			shorthands: true,
 		} ),
 		new webpack.DefinePlugin( {
 			'process.env.NODE_ENV': JSON.stringify( 'production' ),
