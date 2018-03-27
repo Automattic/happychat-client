@@ -18,5 +18,5 @@ import createSelector from 'src/lib/create-selector';
  */
 export default createSelector(
 	state => state.chat.timeline,
-	state => map( state.chat.timeline, 'id' )
+	state => map( state.chat.timeline, ( { id } ) => id )
 );
