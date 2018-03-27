@@ -31,6 +31,7 @@ class SelectDropdown extends Component {
 		selectedIcon: PropTypes.element,
 		selectedCount: PropTypes.number,
 		initialSelected: PropTypes.string,
+		isSearchable: PropTypes.bool,
 		className: PropTypes.string,
 		style: PropTypes.object,
 		onSelect: PropTypes.func,
@@ -52,6 +53,7 @@ class SelectDropdown extends Component {
 		onSelect: () => {},
 		onToggle: () => {},
 		style: {},
+		isSearchable: true,
 	};
 
 	static instances = 0;
@@ -268,7 +270,7 @@ class SelectDropdown extends Component {
 						aria-labelledby={ 'select-dropdown-' + this.state.instanceId }
 						aria-expanded={ this.state.isOpen }
 					>
-						<Search />
+						{ this.props.isSearchable && this.state.isOpen && <Search /> }
 						{ this.dropdownOptions() }
 					</ul>
 				</div>
