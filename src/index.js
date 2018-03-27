@@ -27,6 +27,7 @@ import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
 import { setAssetsLoaded } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
+import config from 'src/config';
 
 const store = createStore(
 	reducer,
@@ -136,13 +137,7 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	// config noticon styles: append it to the iframe's head will trigger the network request
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-
-	// while developing load local css
-	if ( process.env.NODE_ENV === 'development' ) {
-		styleHC.setAttribute( 'href', 'happychat.css' );
-	} else {
-		styleHC.setAttribute( 'href', 'https://widgets.wp.com/happychat/happychat.css' );
-	}
+	styleHC.setAttribute( 'href', config( 'css_url' ) );
 	iframeElement.contentDocument.head.appendChild( styleHC );
 
 	// some CSS styles depend on these top-level classes being present
