@@ -1,64 +1,65 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Happychat Embedded</title>
-  <style>
-  body {
-    margin-left: 12%;
-    margin-right: 12%;
-  }
-  </style>
-</head>
-<body>
-  <div id="support"></div>
-  <script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
-  <script type="text/javascript">
-		Happychat.open( {
-			nodeId: 'support',
-			entryOptions: {
-				primaryOptions: [
-					{ 'value': 'before-buy', 'label': 'Before you buy', },
-					{ 'value': 'account', 'label': 'Help with my account', },
-					{ 'value': 'broken', 'label': 'Something is broken', canChat: false },
-				],
-				secondaryOptions: [
-					{ 'value': 'config', 'label': 'Help configuring', canChat: false, primary: [ 'account' ], },
-					{ 'value': 'order', 'label': 'Help with an order', primary: [ 'account' ], },
-					{ 'value': 'themes', 'label': 'Themes', canChat: false, primary: [ 'before-buy', 'broken' ], },
-					{ 'value': 'plugins', 'label': 'Plugins', primary: [ 'before-buy', 'broken' ], },
-				],
-				itemList: [
-					{ value: '2010', label: '2010 theme', primary: [ 'before-buy' ], secondary: [ 'themes' ] },
-					{ value: '2011', label: '2011 theme', primary: [ 'before-buy' ], secondary: [ 'themes' ] },
-					{ value: 'jp', label: 'Jetpack', secondary: [ 'plugins' ] },
-					{ value: 'wc', label: 'WooCommerce', secondary: [ 'plugins' ] },
-				],
-				fallbackTicket: {
-					headers: {
-						'X-Test-Header': 'test header',
-						'X-Test-Header-2': 'test 2'
-					},
-					pathToCreate: '/create-ticket',
-					pathToShow: '/show-ticket/<ticket-id>',
-				}
+	<head>
+		<meta charset="utf-8">
+		<title>Happychat Embedded</title>
+		<style>
+			body {
+				margin-left: 12%;
+				margin-right: 12%;
 			}
-		} );
+		</style>
+	</head>
+	<body>
+		<div id="support"></div>
+		<script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
+		<script type="text/javascript">
+			Happychat.open( {
+				accessToken: window.accessTokenPromise,
+				nodeId: 'support',
+				entryOptions: {
+					primaryOptions: [
+						{ 'value': 'before-buy', 'label': 'Before you buy', },
+						{ 'value': 'account', 'label': 'Help with my account', },
+						{ 'value': 'broken', 'label': 'Something is broken', canChat: false },
+					],
+					secondaryOptions: [
+						{ 'value': 'config', 'label': 'Help configuring', canChat: false, primary: [ 'account' ], },
+						{ 'value': 'order', 'label': 'Help with an order', primary: [ 'account' ], },
+						{ 'value': 'themes', 'label': 'Themes', canChat: false, primary: [ 'before-buy', 'broken' ], },
+						{ 'value': 'plugins', 'label': 'Plugins', primary: [ 'before-buy', 'broken' ], },
+					],
+					itemList: [
+						{ value: '2010', label: '2010 theme', primary: [ 'before-buy' ], secondary: [ 'themes' ] },
+						{ value: '2011', label: '2011 theme', primary: [ 'before-buy' ], secondary: [ 'themes' ] },
+						{ value: 'jp', label: 'Jetpack', secondary: [ 'plugins' ] },
+						{ value: 'wc', label: 'WooCommerce', secondary: [ 'plugins' ] },
+					],
+					fallbackTicket: {
+						headers: {
+							'X-Test-Header': 'test header',
+							'X-Test-Header-2': 'test 2'
+						},
+						pathToCreate: '/create-ticket',
+						pathToShow: '/show-ticket/<ticket-id>',
+					}
+				}
+			} );
 
-		// test events API
-		var reportChatStatus= function(chatStatus){
-			console.log('chatStatus is ', chatStatus);
-		}
-		Happychat.on('chatStatus', reportChatStatus);
-		var reportAvailability = function(availability){
-			console.log('availibility is ', availability);
-		}
-		Happychat.on('availability', reportAvailability);
-		window.unload = function() {
-			console.log('unload');
-			Happychat.of('availability', reportAvailability);
-			Happychat.of('chatStatus', reportChatStatus);
-		}
-</script>
-</body>
+			// test events API
+			var reportChatStatus= function(chatStatus){
+				console.log('chatStatus is ', chatStatus);
+			}
+			Happychat.on('chatStatus', reportChatStatus);
+			var reportAvailability = function(availability){
+				console.log('availibility is ', availability);
+			}
+			Happychat.on('availability', reportAvailability);
+			window.unload = function() {
+				console.log('unload');
+				Happychat.of('availability', reportAvailability);
+				Happychat.of('chatStatus', reportChatStatus);
+			}
+		</script>
+	</body>
 </html>

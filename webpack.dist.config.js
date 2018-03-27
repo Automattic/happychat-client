@@ -5,7 +5,7 @@ const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 const LodashModuleReplacementPlugin = require( 'lodash-webpack-plugin' );
 
 module.exports = {
-	entry: './index.js',
+	entry: './dist/index.js',
 	output: {
 		filename: './targets/dist/happychat.js',
 	},
