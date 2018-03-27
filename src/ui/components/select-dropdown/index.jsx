@@ -20,6 +20,7 @@ import Count from 'src/ui/components/count';
 import DropdownItem from './item';
 import DropdownSeparator from './separator';
 import DropdownLabel from './label';
+import Search from './search';
 
 /**
  * SelectDropdown
@@ -267,6 +268,7 @@ class SelectDropdown extends Component {
 						aria-labelledby={ 'select-dropdown-' + this.state.instanceId }
 						aria-expanded={ this.state.isOpen }
 					>
+						<Search />
 						{ this.dropdownOptions() }
 					</ul>
 				</div>
