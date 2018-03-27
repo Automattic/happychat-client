@@ -2,46 +2,60 @@
 
 This folder contains target apps that embed the Happychat library and we actively maintain. Every target has a companion webpack build config and a npm command.
 
-## targets/browser
+## Developing
 
-Contains the production-ready JavaScript and CSS assets.
+There is a command for developing on each target `npm run dev:<target>`. While developing the `NODE_ENV` is set to `development` within the webpack config, the config values are taken from `src/config/development.json`.
 
-To build this target, execute:
+**When developing local css will be loaded but for now there is no watch mechanism. Stop and start the 
+command to rebuild local css. Or just run `npm run dev:<target>:css` in another terminal.**
 
-	npm run targets:browser
 
-It'll build the JS library using the `webpack.browser.config.js`. By defining `NODE_ENV` to `production` within the webpack config, we leverage some optimizations of our dependencies (slimmer React build, for example) and also take the config values from `src/config/production.json` (which, for example, teach the library to connect to Happychat production server).
+## Production builds
+
+`npm run build` - will create production builds for all the targets, you can build a target independenly
+by running `npm run build:<target>`. 
+
+For all production builds `NODE_ENV` is set to `production` within the webpack config, we leverage some optimizations of our dependencies (slimmer React build, for example) and also take the config values from `src/config/production.json` (which, for example, teach the library to connect to Happychat production server).
 
 It'll build the CSS asset using the `postcss.config.json`. Note that the CSS is automatically requested once the Happychat component is initialized. You never need to embed this manually in your page. It's served from the WordPress.com CDN at https://widgets.wp.com/happychat/happychat.css so any time it's updated it needs to be uploaded there for changes to take effect.
 
+
+## targets/browser
+
+Contains the production-ready JavaScript and CSS assets. It'll build the JS library using the `webpack.browser.config.js`. 
+
+To develop this target (`http://localhost:9000`), execute:
+
+	npm run dev:browser
+
+To build this target for production, execute:
+
+	npm run build:browser
+
+
 ## targets/standalone
 
-Contains a standalone example of Happychat embedded in a bare HTML webpage.
+Contains a standalone example of Happychat embedded in a bare HTML webpage. It'll build the JS library using the `webpack.standalone.config.js`. 
 
-To build this target, execute:
+To develop this target (`http://localhost:9000`), execute:
 
-	npm run targets:standalone
+	npm run dev:standalone 
+	// or
+	npm start
 
-This build uses `webpack.standalone.config.js` which doesn't include some production optimization (uglify, etc) so it's readable for development. By defining the `NODE_ENV` to `development` within the webpack config, the config values are taken from `src/config/development.json` (which, for example, teach the library to connect to Happychat production server).
+To build this target for production, execute:
 
-It also defines a server for development:
+	npm run build:standalone
 
-    npm install
-    npm run start
-
-And visit `localhost:9000`.
 
 ## targets/wordpress
 
-Contains a WordPress plugin that exposes a `[happychat]` shortcode, it leverages the library to provide a Happychat experience in any WordPress.
+Contains a WordPress plugin that exposes a `[happychat]` shortcode, it leverages the library to provide a Happychat experience in any WordPress. Because it leverages the browser's `window` object this target will use the same entry point as browser (`targets/browser/index.js`). It'll build the JS library using the `webpack.wordpress.config.js`. 
 
-To build this target instead, execute:
+To develop this target (`http://localhost:9000`), execute:
 
-	npm run targets:wordpress
+	npm run dev:wordpress
 
-This build uses `webpack.wordpress.config.js` which doesn't include some production optimization (uglify, etc) so it's readable for development. By defining the `NODE_ENV` to `development` within the webpack config, the config values are taken from `src/config/development.json` (which, for example, teach the library to connect to Happychat production server).
+To build this target for production, execute:
 
-Should you want a production build, execute
-
-	npm run targets:browser:js
-	cp targets/browser/happychat.js targets/wordpress/assets/happychat.js
+	npm run build:wordpress

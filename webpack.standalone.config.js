@@ -1,12 +1,16 @@
 /** @format */
 const path = require( 'path' );
 const webpack = require( 'webpack' );
+const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 const LodashModuleReplacementPlugin = require( 'lodash-webpack-plugin' );
 
-module.exports = {
+const env = process.env.NODE_ENV;
+
+const config = {
 	entry: './targets/standalone/index.js',
 	output: {
-		filename: './targets/standalone/public/happychat.js',
+		filename: 'happychat.js',
+		path: path.resolve( __dirname, 'targets/standalone' ),
 	},
 	module: {
 		rules: [
@@ -18,22 +22,34 @@ module.exports = {
 		],
 	},
 	plugins: [
-		new LodashModuleReplacementPlugin( {
-			paths: true,
-			shorthands: true,
-		} ),
 		new webpack.DefinePlugin( {
-			'process.env.NODE_ENV': JSON.stringify( 'development' ),
+			'process.env.NODE_ENV': JSON.stringify( env ),
 		} ),
 	],
 	resolve: {
 		extensions: [ '.js', '.jsx' ],
 		modules: [ path.resolve( __dirname ), path.resolve( __dirname, 'node_modules' ) ],
 	},
-	devServer: {
-		contentBase: './targets/standalone/public',
-		compress: true,
-		port: 9000,
-		hot: true,
-	},
 };
+
+switch ( env ) {
+	case 'development':
+		config.devtool = 'source-map';
+		config.devServer = {
+			contentBase: path.resolve( __dirname, 'targets/standalone' ),
+			publicPath: '/',
+			port: 9000,
+		};
+		break;
+
+	case 'production':
+		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
+		config.plugins.push( new UglifyJsPlugin() );
+		config.plugins.push( new LodashModuleReplacementPlugin( {
+			paths: true,
+			shorthands: true,
+		} ) );
+		break;
+}
+
+module.exports = config;
