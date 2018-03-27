@@ -206,7 +206,7 @@ class SelectDropdown extends Component {
 				);
 			}
 
-			if ( ! searchValue || ( item.label && item.label.indexOf( searchValue ) > -1 ) ) {
+			if ( ! searchValue || ( item.label && item.label.match( new RegExp( searchValue, 'i' ) ) ) ) {
 				const dropdownItem = (
 					<DropdownItem
 						key={ 'dropdown-item-' + this.state.instanceId + '-' + item.value }
