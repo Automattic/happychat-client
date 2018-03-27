@@ -19,6 +19,7 @@ module.exports = {
 	},
 	plugins: [
 		new LodashModuleReplacementPlugin( {
+			collections: true,
 			paths: true,
 			shorthands: true,
 		} ),
