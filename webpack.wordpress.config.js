@@ -4,7 +4,7 @@ const webpack = require( 'webpack' );
 const LodashModuleReplacementPlugin = require( 'lodash-webpack-plugin' );
 
 module.exports = {
-	entry: './targets/dist/index.js',
+	entry: './targets/browser/index.js',
 	output: {
 		filename: './targets/wordpress/assets/happychat.js',
 	},

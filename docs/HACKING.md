@@ -21,7 +21,7 @@ The WordPress target doesn't need one because it's a plugin that runs within a W
 	- `state`: Redux state tree.
 	- `ui`: React components - these are unconnected to state.
 - `targets`: apps that use the Happychat library
-	- `dist`: the production-ready JS and CSS assets.
+	- `browser`: the production-ready JS and CSS assets.
 	- `standalone`: bare HTML page with Happychat embedded.
 	- `wordpress`: WordPress plugin that exposes `happychat` as a shortcode.
 
