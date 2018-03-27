@@ -7,7 +7,8 @@ import { initHappychat, eventAPI } from './index';
 
 const api = {
 	/**
-	 * Initialize/Open happychat client
+	 * Initialize/Open happychat client. This method accepts an {Object} parameter with the 
+	 * following properties.
 	 *
 	 * @param {String} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Array} groups Mandatory. Happychat groups this user belongs to.
