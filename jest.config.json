@@ -3,8 +3,8 @@
 		"<rootDir>"
 	],
 	"rootDir": ".",
-	"roots": [ "<rootDir>/src/", "<rootDir>/targets/" ],
+	"roots": [ "<rootDir>/src/" ],
   "testEnvironment": "node",
-	"testMatch": [ "<rootDir>/src/**/test/*.js?(x)", "<rootDir>/targets/**/test/*.js?(x)" ],
+	"testMatch": [ "<rootDir>/src/**/test/*.js?(x)" ],
   "setupTestFrameworkScriptFile": "<rootDir>/setup-jest.js"
 }

@@ -21,8 +21,9 @@ Note that:
 ### Targets
 
 Three integration targets are implemented in this repository:
-- Browser: Happychat embeddedable library that exposes the Happychat API through browser's `window`.
-- Standalone: Happychat embedded in a bare HTML page.
+- browser: Happychat embeddedable library that exposes the Happychat API through browser's `window`.
+- npm: Happychat embeddedable npm package that exposes the api.
+- standalone: Happychat embedded in a bare HTML page.
 - WordPress: Happychat exposed as a shortcode in a WordPress environment.
 
 See [targets/README.md](./targets/README.md) for more info.
