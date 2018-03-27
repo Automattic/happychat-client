@@ -37,7 +37,7 @@ To build this target for production, execute:
 
 Contains a standalone example of Happychat embedded in a bare HTML webpage. It'll build the JS library using the `webpack.standalone.config.js`. 
 
-To develop this target (`http://localhost:9001`), execute:
+To develop this target (`http://localhost:9000`), execute:
 
 	npm run dev:standalone 
 	// or
@@ -52,10 +52,25 @@ To build this target for production, execute:
 
 Contains a WordPress plugin that exposes a `[happychat]` shortcode, it leverages the library to provide a Happychat experience in any WordPress. Because it leverages the browser's `window` object this target will use the same entry point as browser (`targets/browser/index.js`). It'll build the JS library using the `webpack.wordpress.config.js`. 
 
-To develop this target (`http://localhost:9002`), execute:
+To develop this target (`http://localhost:9000`), execute:
 
 	npm run dev:wordpress
 
 To build this target for production, execute:
 
 	npm run build:wordpress
+
+
+## targets/npm
+
+Contains a npm package that exposes the api. It is transpiled using babel and while developing starts a webpack dev server
+that will serve the css file. It'll build the JS library using the `webpack.npm.config.js`. 
+**When the package will be published we need to build the files prior to packaging. Right now built files are gitignored.**
+
+To develop this target (`http://localhost:9000`), execute:
+
+	npm run dev:npm
+
+To build this target for production, execute:
+
+	npm run build:npm

@@ -37,7 +37,7 @@ switch ( env ) {
 		config.devServer = {
 			contentBase: path.resolve( __dirname, 'targets/browser' ),
 			publicPath: '/',
-			port: 9001,
+			port: 9000,
 		};
 		break;
 
