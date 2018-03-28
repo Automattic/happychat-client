@@ -142,13 +142,13 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	// config happychat styles: append it to the iframe's head will trigger the network request
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute( 'href', '/happychat.css' );
+	styleHC.setAttribute( 'href', './happychat.css' );
 	iframeElement.contentDocument.head.appendChild( styleHC );
 
 	// config theme: append it to the iframe's head will trigger the network request
 	styleHCTheme.setAttribute( 'rel', 'stylesheet' );
 	styleHCTheme.setAttribute( 'type', 'text/css' );
-	styleHCTheme.setAttribute( 'href', '/jetpack.css' );
+	styleHCTheme.setAttribute( 'href', './woo.css' );
 	iframeElement.contentDocument.head.appendChild( styleHCTheme );
 
 	// some CSS styles depend on these top-level classes being present
