@@ -43,7 +43,7 @@
 	align-self: flex-start;
 	flex: 0 0 auto;
 	border-radius: 8px;
-	background: $blue-medium;
+	background: var(--selected);
 	color: $white;
 	padding: 4px 8px;
 	margin: 8px 12px 0 0;
@@ -55,7 +55,7 @@
 	}
 
 	&:hover {
-		background: lighten($blue-medium, 10%);
+		background: var(--selected-lighten-10);
 	}
 
 	&:disabled {

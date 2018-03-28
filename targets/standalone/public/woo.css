@@ -2,4 +2,8 @@
 
 :root {
 	--selected: #96588a;
+	--selected-darken-5: darken(#96588a, 5%);
+	--selected-darken-8: darken(#96588a, 8%);
+	--selected-lighten-5: lighten(#96588a, 5%);
+	--selected-lighten-10: lighten(#96588a, 10%);
 }

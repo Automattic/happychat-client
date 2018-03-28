@@ -70,7 +70,7 @@
 
 	.is-user-message & {
 		color: $white;
-		background: $blue-medium;
+		background: var(--selected);
 		border-radius: 8px 8px 0 8px;
 
 		&:after {
@@ -80,7 +80,7 @@
 			// draw a triangle
 			width: 0;
 			height: 0;
-			border-bottom: 8px solid $blue-medium;
+			border-bottom: 8px solid var(--selected);
 			border-left: none;
 			border-right: 8px solid transparent;
 		}
@@ -98,7 +98,7 @@
 	margin-left: 0;
 
 	a {
-		color: $blue-medium;
+		color: var(--selected);
 		text-decoration: underline;
 	}
 

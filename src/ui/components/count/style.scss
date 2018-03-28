@@ -13,7 +13,7 @@
 
 	&.is-primary {
 		color: $white;
-		border-color: $blue-medium;
-		background-color: $blue-medium;
+		border-color: var(--selected);
+		background-color: var(--selected);
 	}
 }

@@ -19,7 +19,7 @@
 	}
 
 	> div:hover {
-		background: lighten($blue-medium, 5%);
+		background: var(--selected-lighten-5);
 	}
 
 	svg {
