@@ -36,7 +36,9 @@ Currently implemented strategies are:
 
 ### Existing strategies
 `wpcom-oauth` - inside the package this type is represented by the `AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN` constant and it is implemented by [WPcomOAuth](./src/lib/auth/strategies/oauth.js)
+
 `wpcom-oauth-by-token` - inside the package this type is represented by the `AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN` constant and it is implemented by [WPcomOAuth](./src/lib/auth/strategies/oauth.js)
+
 `wpcom-proxy-iframe` - inside the package this type is represented by the `AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN` constant and it is implemented by [WPcomProxyIframe](./src/lib/auth/strategies/proxy-iframe.js)
 
 ### Add a new strategy
