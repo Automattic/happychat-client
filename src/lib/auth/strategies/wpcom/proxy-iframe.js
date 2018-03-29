@@ -25,7 +25,7 @@ const debug = debugFactory( 'happychat-client:auth:wpcom:proxy' );
  *  - 'wpcom-proxy-iframe'   proxy iframe wpcom authentication using passed wpcom object
  * @extends WPcomStrategy
  */
-export default class WPcomOAuth extends WPcomStrategy {
+export default class WPcomProxyIframe extends WPcomStrategy {
 	/**
 	 * Pass the authentication type to the parent and save the auth options and access token.
 	 * @param {Object} authentication information about the authentication type and its options

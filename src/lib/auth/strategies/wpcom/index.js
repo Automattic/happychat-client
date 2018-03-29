@@ -53,6 +53,8 @@ export class WPcomStrategy extends BaseStrategy {
 	 * Authorize and start chat session by signing a JWT and returns jwt, userId, skills and
 	 * geolocation.
 	 *
+	 * TODO: This should be extracted so that starting a happychat session isnot dependend on WPCOM
+	 *
 	 * @param {Object} state Redux state object
 	 * @returns {function} that will get needed data from state and start a chat
 	 */
