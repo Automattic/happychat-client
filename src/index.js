@@ -15,7 +15,6 @@ import find from 'lodash/find';
  */
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
-import getUser from 'src/lib/wpcom/get-wpcom-user';
 // UI components
 import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
@@ -35,7 +34,7 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
-const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
+export const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
 /**
  * Creates an iframe in the node provided by the nodeId prop.
@@ -47,7 +46,7 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
-const createIframe = ( props, assetsLoadedHook = () => {} ) => {
+export const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	const { nodeId, entryOptions } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
@@ -167,20 +166,19 @@ const isAnyCanChatPropFalse = ( canChat, entryOptions ) =>
 		false === entryOptions.itemList[ 0 ].canChat );
 
 /* eslint-disable camelcase */
-const renderHappychat = (
+export const renderHappychat = (
 	targetNode,
 	{
-		user: {
+		userObject: {
 			ID,
 			email,
 			username,
 			display_name,
 			avatar_URL,
 			language,
-			groups = [ HAPPYCHAT_GROUP_WPCOM ],
-			accessToken,
-			canChat = true,
 		},
+		groups = [ HAPPYCHAT_GROUP_WPCOM ],
+		canChat = true,
 		entry = ENTRY_FORM,
 		entryOptions = {},
 	}
@@ -205,63 +203,14 @@ const renderHappychat = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat accessToken={ accessToken } entry={ entry } entryOptions={ entryOptions } />
+			<Happychat entry={ entry } entryOptions={ entryOptions } />
 		</Provider>,
 		targetNode
 	);
 };
 /* eslint-enable camelcase */
 
-const renderError = ( targetNode, { error } ) =>
+export const renderError = ( targetNode, { error } ) =>
 	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
-
-/* eslint-disable camelcase */
-const getWPComUser = ( accessToken, groups, canChat ) =>
-	getUser( accessToken ).then(
-		( { ID, email, username, display_name, avatar_URL, language } ) => ( {
-			ID,
-			email,
-			username,
-			display_name,
-			avatar_URL,
-			language,
-			accessToken,
-			groups,
-			canChat,
-		} )
-	);
-/* eslint-enable camelcase */
-
-/**
- * Renders a Happychat or Support form in the HTML Element provided by the nodeId.
- *
- * @param {String} nodeId Mandatory. HTML Node id where Happychat will be rendered.
- * @param {Array} groups Mandatory. Happychat groups this user belongs to.
- * @param {String|Promise} accessToken Mandatory. A valid WP.com access token,
- * 				       or a Promise that returns one.
- * @param {String} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
- * 			 ENTRY_FORM is the default and will render the contact form.
- * 			 ENTRY_CHAT will render the chat form.
- * @param {Object} entryOptions Optional. Contains options to configure the selected entry.
- * @param {Boolean} canChat Optional. Whether the user can be offered chat. True by default.
- */
-export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOptions, canChat } ) => {
-	let getAccessToken = accessToken;
-	if ( 'string' === typeof accessToken ) {
-		getAccessToken = () => Promise.resolve( accessToken );
-	}
-
-	const targetNode = createIframe( { nodeId, entryOptions }, dispatchAssetsFinishedDownloading );
-	getAccessToken()
-		.then( token => getWPComUser( token, groups, canChat ) )
-		.then( user =>
-			renderHappychat( targetNode, {
-				user,
-				entry,
-				entryOptions,
-			} )
-		)
-		.catch( error => renderError( targetNode, { error } ) );
-};
 
 export const eventAPI = eventAPIFactory( store );
