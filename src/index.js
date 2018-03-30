@@ -59,7 +59,7 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 
 	// Calculate height based on the number of components
 	// the iframe may need to render.
-	let iframeHeight = 380;
+	let iframeHeight = 480;
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
 	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
