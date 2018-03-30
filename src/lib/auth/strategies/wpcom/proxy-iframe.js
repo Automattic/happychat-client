@@ -54,6 +54,10 @@ export default class WPcomProxyIframe extends WPcomStrategy {
 		 */
 		return ( args ) => {
 			return new Promise( ( resolve, reject ) => {
+				if ( ! this.options.proxy.hasOwnProperty( 'request' ) ) {
+					return reject( 'Method "proxy.request" is required.' );
+				}
+
 				this.options.proxy.request( args, ( error, response ) => {
 					if ( error ) {
 						debug( `Request ${ args.method }:${ args.path } failed with : ${ error }` );
