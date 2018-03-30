@@ -10,12 +10,13 @@ import debugFactory from 'debug';
  * Internal dependencies
  */
 import { WPcomStrategy } from './index';
+import config from 'src/config';
 
 /**
  * Module variables
  */
 const debug = debugFactory( 'happychat-client:auth:wpcom:oauth' );
-const oAuth = require( 'wpcom-oauth-cors' )( '54006' );
+const oAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 
 /**
  * WPCOM oAuth strategy, it can be used as with the regular oAuth flow or bypass that by passing it
@@ -145,7 +146,7 @@ export default class WPcomOAuth extends WPcomStrategy {
 			debug( 'Get token, customer is not authenticated' );
 			oAuth.get( ( auth ) => {
 				if ( ! auth || ! auth.access_token ) {
-					reject( `Authentication ${ this.type } error: token is missing` );
+					return reject( `Authentication ${ this.type } error: token is missing` );
 				}
 
 				// overwrite the request method to an authenticated promisified xhr request

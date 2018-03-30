@@ -20,7 +20,6 @@ import WPcomProxyIframe from './strategies/wpcom/proxy-iframe';
  * Module variables
  */
 let strategy;
-let auth;
 const debug = debugFactory( 'happychat-client:auth' );
 
 /**
@@ -37,15 +36,16 @@ const debug = debugFactory( 'happychat-client:auth' );
  *  - 'wpcom-oauth-by-token' regular wpcom oAuth based on given token using `wpcom-xhr-request`
  *  - 'wpcom-proxy-iframe'   proxy iframe wpcom authentication using Calypso's wpcom object
  *
- * @param {Object} authentication information about the authentication type and its options
- * @param {string} authentication.type authentication type (one of the implemented strategies)
- * @param {Object} authentication.options set of options sent to auth implementations
- * @param {string} authentication.options.token oauth accessToken used by `wpcom-oauth-by-token`
- * @param {Object} authentication.options.proxy wpcom proxy object used by `wpcom-proxy-iframe`
+ * @param {Object} auth information about the authentication type and its options
+ * @param {string} auth.type authentication type (one of the implemented strategies)
+ * @param {Object} auth.options set of options sent to auth implementations
+ * @param {string} auth.options.token oauth accessToken used by `wpcom-oauth-by-token`
+ * @param {Object} auth.options.proxy wpcom proxy object used by `wpcom-proxy-iframe`
+ *
+ * @throws {Error} if a strategy method used is not implemented.
  */
-const init = ( authentication ) => {
-	debug( 'Authentication library was initialized', authentication );
-	auth = authentication;
+const init = ( auth ) => {
+	debug( 'Authentication library was initialized', auth );
 
 	switch ( auth.type ) {
 		case AUTH_TYPE_WPCOM_OAUTH:

@@ -1,6 +1,5 @@
 ## Authentication Library
-Initialize authentication library (authenticator). Based on the authentication type a strategy
-will be prepared.
+Initialize authentication library (authenticator). A strategy will be prepared based on the authentication type.
 
 **The library is promised based, all exposed methods return promises.**
 
@@ -15,7 +14,7 @@ Currently implemented strategies are:
  - `wpcom-proxy-iframe` - proxy iframe wpcom authentication using Calypso's wpcom object
 
  ## API
- `init( settings )` - Initialize authentication library (authenticator). Based on the authentication type a strategy will be selected.
+ `init( settings )` - Initialize authentication library (authenticator). A strategy will be prepared based on the authentication type
 
  #### Available settings
 
@@ -26,7 +25,7 @@ Currently implemented strategies are:
 | `options.token` | string | Required by `wpcom-oauth-by-token` | - | - | oauth accessToken
 | `options.proxy` | object | Required by `wpcom-proxy-iframe` | - | - | wpcom auth proxy object
 
-`authorizeChat( state )` - Authorize and start chat session by signing a JWT and returns jwt, userId, skills and geolocation prepared.
+`authorizeChat( state )` - Authorizes and starts a chat session by signing a JWT. Will return signed jwt, userId, skills and geolocation.
 
 `getUser()` - Get current user details via WPcom api endpoint (/me), resolves if there is no selected strategy.
 
