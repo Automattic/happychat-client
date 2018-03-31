@@ -4,6 +4,6 @@
 	padding: 12px;
 	border-top: 1px solid var(--neutral-lighten-20);
 	color: $white;
-	background-color: lighten($gray-dark, 20%);
+	background-color: var(--neutral-dark-lighten-20);
 	margin: 0;
 }
