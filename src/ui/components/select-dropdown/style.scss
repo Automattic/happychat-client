@@ -48,7 +48,7 @@ $compact-header-height: 35;
 	}
 
 	.accessible-focus &:focus {
-		border-color: #00aadc;
+		border-color: var(--selected);
 		outline: 0;
 	}
 
