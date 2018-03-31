@@ -43,7 +43,7 @@
 
 	&:disabled {
 		background: $gray-light;
-		border-color: lighten($gray, 30%);
+		border-color: var(--neutral-lighten-30);
 		color: lighten($gray, 10%);
 		opacity: 1;
 		-webkit-text-fill-color: lighten($gray, 10%);
@@ -198,7 +198,7 @@ input[type='radio'] {
 	}
 
 	&:disabled:checked:before {
-		background: lighten($gray, 30%);
+		background: var(--neutral-lighten-30);
 	}
 }
 

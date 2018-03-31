@@ -7,7 +7,7 @@
 	padding: 16px;
 	box-sizing: border-box;
 	background: $white;
-	box-shadow: 0 0 0 1px var(--neutral-lighten-20-opacity-5), 0 1px 2px lighten($gray, 30%);
+	box-shadow: 0 0 0 1px var(--neutral-lighten-20-opacity-5), 0 1px 2px var(--neutral-lighten-30);
 
 	@include clear-fix;
 
