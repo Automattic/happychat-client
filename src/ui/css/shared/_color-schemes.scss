@@ -4,7 +4,7 @@
 	--button-is-borderless-color: $gray-text-min;
 	--count-border-color: $gray;
 	--count-color: $gray-text-min;
-	--selected: var($blue-medium);
+	--selected: $blue-medium;
 	--selected-darken-5: darken($blue-medium, 5%);
 	--selected-darken-8: darken($blue-medium, 8%);
 	--selected-lighten-5: lighten($blue-medium, 5%);
