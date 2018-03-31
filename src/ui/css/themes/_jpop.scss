@@ -1,5 +1,8 @@
 /** @format */
 
+@import '../shared/colors';
+@import '../shared/functions/tint-and-shade';
+
 :root {
 	--selected: $green-jetpack;
 	--selected-darken-5: darken($green-jetpack, 5%);

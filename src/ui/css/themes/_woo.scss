@@ -1,5 +1,8 @@
 /** @format */
 
+@import '../shared/colors';
+@import '../shared/functions/tint-and-shade';
+
 :root {
 	--selected: $purple-woo;
 	--selected-darken-5: darken($purple-woo, 5%);
