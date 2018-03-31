@@ -1,7 +1,7 @@
 /** @format */
 
 ::selection {
-	background: rgba($blue-light, 0.7);
+	background: var(--active-opacity-7);
 	color: $gray-dark;
 }
 

@@ -6,4 +6,7 @@
 	--selected-darken-8: darken(#96588a, 8%);
 	--selected-lighten-5: lighten(#96588a, 5%);
 	--selected-lighten-10: lighten(#96588a, 10%);
+	--active: #96588a;
+	--active-opacity-7: rgba(150, 88, 138, 0.7);
+	--active-lighten-10: lighten(#96588a, 10%);
 }

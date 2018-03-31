@@ -112,7 +112,7 @@
 		margin-right: 0;
 
 		a {
-			color: lighten($blue-light, 10%);
+			color: var(--active-lighten-10);
 		}
 	}
 }

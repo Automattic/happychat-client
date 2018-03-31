@@ -20684,7 +20684,13 @@ var createIframe = function createIframe(props) {
 			return resolve();
 		};
 	});
-	Promise.all([styleNoticonPromise, styleHCPromise]).then(function () {
+	var styleHCTheme = document.createElement('link');
+	var styleHCThemePromise = new Promise(function (resolve) {
+		styleHCTheme.onload = function () {
+			return resolve();
+		};
+	});
+	Promise.all([styleNoticonPromise, styleHCPromise, styleHCThemePromise]).then(function () {
 		return assetsLoadedHook();
 	});
 
@@ -20694,11 +20700,17 @@ var createIframe = function createIframe(props) {
 	styleNoticon.setAttribute('href', 'https://s1.wp.com/i/noticons/noticons.css');
 	iframeElement.contentDocument.head.appendChild(styleNoticon);
 
-	// config noticon styles: append it to the iframe's head will trigger the network request
+	// config happychat styles: append it to the iframe's head will trigger the network request
 	styleHC.setAttribute('rel', 'stylesheet');
 	styleHC.setAttribute('type', 'text/css');
-	styleHC.setAttribute('href', 'https://widgets.wp.com/happychat/happychat.css');
+	styleHC.setAttribute('href', './happychat.css');
 	iframeElement.contentDocument.head.appendChild(styleHC);
+
+	// config theme: append it to the iframe's head will trigger the network request
+	styleHCTheme.setAttribute('rel', 'stylesheet');
+	styleHCTheme.setAttribute('type', 'text/css');
+	styleHCTheme.setAttribute('href', './woo.css');
+	iframeElement.contentDocument.head.appendChild(styleHCTheme);
 
 	// some CSS styles depend on these top-level classes being present
 	iframeElement.contentDocument.body.classList.add((0, _touchDetect.hasTouch)() ? 'touch' : 'notouch');
