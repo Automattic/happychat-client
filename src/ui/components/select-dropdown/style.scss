@@ -82,7 +82,7 @@ $compact-header-height: 35;
 		display: block;
 		width: 20px;
 		line-height: #{ $header-height - 1 }px;
-		color: rgba($gray, 0.5);
+		color: var(--neutral-opacity-5);
 
 		position: absolute;
 		right: 14px;
