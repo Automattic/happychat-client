@@ -42,7 +42,7 @@
 	}
 
 	&:disabled {
-		background: $gray-light;
+		background: var(--neutral-light);
 		border-color: var(--neutral-lighten-30);
 		color: var(--neutral-lighten-10);
 		opacity: 1;

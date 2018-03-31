@@ -21,7 +21,7 @@
 
 // override colors and fonts
 .happychat__page {
-	background-color: $gray-light;
+	background-color: var(--neutral-light);
 	font-family: $sans;
 	font-size: 14px;
 	border: 1px solid var(--neutral-lighten-25);
