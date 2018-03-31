@@ -20627,6 +20627,7 @@ var dispatchAssetsFinishedDownloading = function dispatchAssetsFinishedDownloadi
 var createIframe = function createIframe(props) {
 	var assetsLoadedHook = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
 	var nodeId = props.nodeId,
+	    groups = props.groups,
 	    entryOptions = props.entryOptions;
 
 	var iframeElement = document.createElement('iframe');
@@ -20670,46 +20671,53 @@ var createIframe = function createIframe(props) {
 	styleLoading.appendChild(document.createTextNode('\n\t\t\t@-webkit-keyframes spinner-line__animation {\n\t\t\t  0% {\n\t\t\t    background-position: 0 0;\n\t\t\t  }\n\t\t\t  100% {\n\t\t\t    background-position: 600px 0;\n\t\t\t  }\n\t\t\t}\n\t\t\t@keyframes spinner-line__animation {\n\t\t\t  0% {\n\t\t\t    background-position: 0 0;\n\t\t\t  }\n\t\t\t  100% {\n\t\t\t    background-position: 600px 0;\n\t\t\t  }\n\t\t\t}\n\n\t\t\thr.spinner-line {\n\t\t\t  border: none;\n\t\t\t  height: 3px;\n\t\t\t  margin: 24px 0;\n\t\t\t  background-image: linear-gradient(to right, #a8bece 0%, #c8d7e1 50%, #a8bece 100%);\n\t\t\t  background-size: 300px 100%;\n\t\t\t  -webkit-animation: spinner-line__animation 1.2s infinite linear;\n\t\t\t          animation: spinner-line__animation 1.2s infinite linear;\n\t\t\t}\n\t\t'));
 	iframeElement.contentDocument.head.appendChild(styleLoading);
 
-	// Then, we inject two stylesheets: the noticon custom font and Happychat.
-	// We want to tell Happychat when they are downloaded, and we do so by Promise.all()
+	// Then, we inject the stylesheets: the noticon custom font, Happychat, and the theme if any.
+	// We want to tell Happychat when they are downloaded, and we do so by means of the onload method
+	// of the stylesheets, which will resolve the Promise.all()
 	var styleNoticon = document.createElement('link');
+	styleNoticon.setAttribute('rel', 'stylesheet');
+	styleNoticon.setAttribute('type', 'text/css');
+	styleNoticon.setAttribute('href', 'https://s1.wp.com/i/noticons/noticons.css');
 	var styleNoticonPromise = new Promise(function (resolve) {
-		styleNoticon.onload = function () {
+		return styleNoticon.onload = function () {
 			return resolve();
 		};
 	});
+
 	var styleHC = document.createElement('link');
+	styleHC.setAttribute('rel', 'stylesheet');
+	styleHC.setAttribute('type', 'text/css');
+	styleHC.setAttribute('href', './happychat.css');
 	var styleHCPromise = new Promise(function (resolve) {
-		styleHC.onload = function () {
+		return styleHC.onload = function () {
 			return resolve();
 		};
 	});
+
 	var styleHCTheme = document.createElement('link');
-	var styleHCThemePromise = new Promise(function (resolve) {
-		styleHCTheme.onload = function () {
-			return resolve();
-		};
-	});
+	styleHCTheme.setAttribute('rel', 'stylesheet');
+	styleHCTheme.setAttribute('type', 'text/css');
+	var styleHCThemePromise = Promise.resolve();
+	if (groups && groups.length > 0) {
+		var groupName = groups[0];
+		console.log('groupName is ', groupName);
+		if (groupName === 'woo' || groupName === 'jpop') {
+			styleHCTheme.setAttribute('href', './' + groupName + '.css');
+			styleHCThemePromise = new Promise(function (resolve) {
+				return styleHCTheme.onload = function () {
+					return resolve();
+				};
+			});
+		}
+	}
+
 	Promise.all([styleNoticonPromise, styleHCPromise, styleHCThemePromise]).then(function () {
 		return assetsLoadedHook();
 	});
 
-	// config noticon styles: append it to the iframe's head will trigger the network request
-	styleNoticon.setAttribute('rel', 'stylesheet');
-	styleNoticon.setAttribute('type', 'text/css');
-	styleNoticon.setAttribute('href', 'https://s1.wp.com/i/noticons/noticons.css');
+	// appending the stylesheets to the iframe will trigger the network request
 	iframeElement.contentDocument.head.appendChild(styleNoticon);
-
-	// config happychat styles: append it to the iframe's head will trigger the network request
-	styleHC.setAttribute('rel', 'stylesheet');
-	styleHC.setAttribute('type', 'text/css');
-	styleHC.setAttribute('href', './happychat.css');
 	iframeElement.contentDocument.head.appendChild(styleHC);
-
-	// config theme: append it to the iframe's head will trigger the network request
-	styleHCTheme.setAttribute('rel', 'stylesheet');
-	styleHCTheme.setAttribute('type', 'text/css');
-	styleHCTheme.setAttribute('href', './woo.css');
 	iframeElement.contentDocument.head.appendChild(styleHCTheme);
 
 	// some CSS styles depend on these top-level classes being present
@@ -20828,7 +20836,7 @@ var initHappychat = exports.initHappychat = function initHappychat(_ref4) {
 		};
 	}
 
-	var targetNode = createIframe({ nodeId: nodeId, entryOptions: entryOptions }, dispatchAssetsFinishedDownloading);
+	var targetNode = createIframe({ nodeId: nodeId, groups: groups, entryOptions: entryOptions }, dispatchAssetsFinishedDownloading);
 	getAccessToken().then(function (token) {
 		return getWPComUser(token, groups, canChat);
 	}).then(function (user) {
