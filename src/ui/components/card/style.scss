@@ -75,6 +75,6 @@ a.card:focus {
 	outline: 0;
 
 	.card__link-indicator {
-		color: var(--link-highlight);
+		color: var(--selected-tint-20);
 	}
 }

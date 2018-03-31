@@ -9,8 +9,8 @@
 	--selected-darken-8: darken($purple-woo, 8%);
 	--selected-lighten-5: lighten($purple-woo, 5%);
 	--selected-lighten-10: lighten($purple-woo, 10%);
+	--selected-tint-20: tint($purple-woo, 20%);
 	--active: $purple-woo;
 	--active-opacity-7: rgba($purple-woo, 0.7);
 	--focused: $purple-woo;
-	--link-highlight: tint($purple-woo, 20%);
 }
