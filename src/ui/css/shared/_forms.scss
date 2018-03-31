@@ -24,7 +24,7 @@
 	box-sizing: border-box;
 
 	&::placeholder {
-		color: $gray;
+		color: var(--neutral);
 	}
 
 	&:hover {

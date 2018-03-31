@@ -157,7 +157,7 @@ $compact-header-height: 35;
 	background-color: $white;
 	border: 1px solid var(--neutral-lighten-20);
 	border-top: 0;
-	// var(--focused) for outer (with focus shadow), $gray for border with header
+	// var(--focused) for outer (with focus shadow), var(--neutral) for border with header
 	border-radius: 0 0 4px 4px;
 	height: 0;
 	overflow: hidden;
@@ -221,7 +221,7 @@ $compact-header-height: 35;
 
 	&.is-disabled {
 		background-color: $white;
-		color: $gray;
+		color: var(--neutral);
 		cursor: default;
 		opacity: 0.5;
 	}

@@ -14,7 +14,7 @@
 		background-clip: padding-box;
 
 		&:hover {
-			background-color: $gray;
+			background-color: var(--neutral);
 		}
 	}
 }
