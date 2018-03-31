@@ -20,7 +20,7 @@ button {
 	border-color: var(--neutral-lighten-20);
 	border-style: solid;
 	border-width: 1px 1px 2px;
-	color: $gray-dark;
+	color: var(--neutral-dark);
 	cursor: pointer;
 	display: inline-block;
 	margin: 0;
@@ -40,13 +40,13 @@ button {
 
 	&:hover {
 		border-color: var(--neutral-lighten-10);
-		color: $gray-dark;
+		color: var(--neutral-dark);
 	}
 	&:active {
 		border-width: 2px 1px 1px;
 	}
 	&:visited {
-		color: $gray-dark;
+		color: var(--neutral-dark);
 	}
 	&[disabled],
 	&:disabled,
@@ -122,7 +122,7 @@ button {
 
 	&:hover,
 	&:focus {
-		border-color: $gray-dark;
+		border-color: var(--neutral-dark);
 		color: $white;
 	}
 	&.is-compact {
@@ -193,7 +193,7 @@ button {
 
 	&:hover,
 	&:focus {
-		color: $gray-dark;
+		color: var(--neutral-dark);
 	}
 
 	.gridicon {

@@ -15,7 +15,7 @@
 	margin: 0;
 	padding: 7px 14px;
 	width: 100%;
-	color: $gray-dark;
+	color: var(--neutral-dark);
 	font-size: 16px;
 	line-height: 1.5;
 	border: 1px solid var(--neutral-lighten-20);
@@ -240,7 +240,7 @@ select {
 	border-style: solid;
 	border-radius: 4px;
 	border-width: 1px 1px 2px;
-	color: $gray-dark;
+	color: var(--neutral-dark);
 	cursor: pointer;
 	display: inline-block;
 	margin: 0;
@@ -307,13 +307,13 @@ select {
 	// IE: Remove default background and color styles on focus
 	&::-ms-value {
 		background: none;
-		color: $gray-dark;
+		color: var(--neutral-dark);
 	}
 
 	// Firefox: Remove the focus outline, see http://stackoverflow.com/questions/3773430/remove-outline-from-select-box-in-ff/18853002#18853002
 	&:-moz-focusring {
 		color: transparent;
-		text-shadow: 0 0 0 $gray-dark;
+		text-shadow: 0 0 0 var(--neutral-dark);
 	}
 }
 
