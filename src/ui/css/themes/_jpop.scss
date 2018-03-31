@@ -9,4 +9,8 @@
 	--selected-darken-8: darken($green-jetpack, 8%);
 	--selected-lighten-5: lighten($green-jetpack, 5%);
 	--selected-lighten-10: lighten($green-jetpack, 10%);
+	--selected-tint-20: tint($green-jetpack, 20%);
+	--active: $green-jetpack;
+	--active-opacity-7: rgba($green-jetpack, 0.7);
+	--focused: $green-jetpack;
 }
