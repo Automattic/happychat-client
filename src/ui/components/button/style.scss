@@ -293,7 +293,7 @@ input[type='submit']::-moz-focus-inner {
 	&:hover,
 	&:focus,
 	&:active {
-		color: $link-highlight;
+		color: var(--link-highlight);
 		box-shadow: none;
 	}
 }
