@@ -1,31 +1,22 @@
 /** @format */
 
-// Primary Accent (Blues)
+// WordPress Color Palette
+// See wordpress.com/design-handbook/colors/ for more info.
+
+// WordPress Primary Accent (Blues)
 $blue-wordpress: #0087be;
 $blue-light: #78dcfa;
 $blue-medium: #00aadc;
 $blue-dark: #005082;
 
-// Jetpack Green
-$green-jetpack: #00be28;
+// WordPress Secondary Accent (Oranges)
+$orange-jazzy: #f0821e;
+$orange-fire: #d54e21;
 
-// Woo
-$purple-woo: #96588a;
-$green-woo: #71b02f;
-$grey-dark-woo: #3c3c3c;
-$grey-light-woo: #f7f7f7;
-$grey-woo: #e6e6e6;
-
-// Grays
+// WordPress Background (Grays)
 $gray: #87a6bc;
 $gray-light: lighten($gray, 33%); //#f3f6f8
 $gray-dark: darken($gray, 38%); //#2e4453
-
-// $gray-text: ideal for standard, non placeholder text
-// $gray-text-min: minimum contrast needed for WCAG 2.0 AA on white background
-$gray-text: $gray-dark;
-$gray-text-min: darken($gray, 18%); //#537994
-
 // $gray color functions:
 // lighten( $gray, 10% ) //#a8bece
 // lighten( $gray, 20% ) //#c8d7e1
@@ -33,12 +24,26 @@ $gray-text-min: darken($gray, 18%); //#537994
 // darken( $gray, 10% ) //#668eaa
 // darken( $gray, 20% ) //#4f748e
 // darken( $gray, 30% ) //#3d596d
-//
-// See wordpress.com/design-handbook/colors/ for more info.
 
-// Secondary Accent (Oranges)
-$orange-jazzy: #f0821e;
-$orange-fire: #d54e21;
+// $gray-text: ideal for standard, non placeholder text
+// $gray-text-min: minimum contrast needed for WCAG 2.0 AA on white background
+$gray-text: $gray-dark;
+$gray-text-min: darken($gray, 18%); //#537994
+
+// Jetpack Primary Accent
+$green-jetpack: #00be28;
+
+// WooCommerce Color Palette
+// See https://woocommerce.com/style-guide/#sg-palette for more info.
+
+// Woo Primary Accent
+$purple-woo: #96588a;
+$green-woo: #71b02f;
+
+// Woo Background
+$grey-dark-woo: #3c3c3c;
+$grey-light-woo: #f7f7f7;
+$grey-woo: #e6e6e6;
 
 // Alerts
 $alert-yellow: #f0b849;
@@ -49,15 +54,6 @@ $alert-purple: #855da6;
 // Essentials
 $white: rgba(255, 255, 255, 1);
 $transparent: rgba(255, 255, 255, 0);
-
-// Uncommon
-$border-ultra-light-gray: #e8f0f5;
-
-// Layout
-$masterbar-color: $blue-wordpress;
-$sidebar-bg-color: lighten($gray, 30%);
-$sidebar-text-color: $gray-dark;
-$sidebar-selected-color: $gray-text-min;
 
 //Social media colors
 $color-facebook: #39579a;
