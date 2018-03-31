@@ -39,7 +39,7 @@ button {
 	appearance: none;
 
 	&:hover {
-		border-color: lighten($gray, 10%);
+		border-color: var(--neutral-lighten-10);
 		color: $gray-dark;
 	}
 	&:active {

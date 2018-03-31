@@ -28,7 +28,7 @@
 	}
 
 	&:hover {
-		border-color: lighten($gray, 10%);
+		border-color: var(--neutral-lighten-10);
 	}
 
 	&:focus {
@@ -44,16 +44,16 @@
 	&:disabled {
 		background: $gray-light;
 		border-color: var(--neutral-lighten-30);
-		color: lighten($gray, 10%);
+		color: var(--neutral-lighten-10);
 		opacity: 1;
-		-webkit-text-fill-color: lighten($gray, 10%);
+		-webkit-text-fill-color: var(--neutral-lighten-10);
 
 		&:hover {
 			cursor: default;
 		}
 
 		&::placeholder {
-			color: lighten($gray, 10%);
+			color: var(--neutral-lighten-10);
 		}
 	}
 
@@ -174,7 +174,7 @@ input[type='checkbox'] {
 		color: var(--selected);
 	}
 	&:disabled:checked:before {
-		color: lighten($gray, 10%);
+		color: var(--neutral-lighten-10);
 	}
 }
 
