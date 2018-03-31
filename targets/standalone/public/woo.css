@@ -9,4 +9,5 @@
 	--active: #96588a;
 	--active-opacity-7: rgba(150, 88, 138, 0.7);
 	--active-lighten-10: lighten(#96588a, 10%);
+	--focused: #96588a;
 }
