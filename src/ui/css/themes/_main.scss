@@ -10,4 +10,14 @@
 	--active: $blue-light;
 	--active-opacity-7: rgba($blue-light, 0.7);
 	--focused: $blue-wordpress;
+	--neutral: $gray;
+	--neutral-opacity-5: rgba($gray, 0.5);
+	--neutral-light: $gray-light;
+	--neutral-dark: $gray-dark;
+	--neutral-darken-30: darken($gray, 30%);
+	--neutral-lighten-10: lighten($gray, 10%);
+	--neutral-lighten-20: lighten($gray, 20%);
+	--neutral-lighten-20-opacity-5: transparentize(lighten($gray, 20%), 0.5);
+	--neutral-lighten-25: lighten($gray, 25%);
+	--neutral-lighten-30: lighten($gray, 30%);
 }

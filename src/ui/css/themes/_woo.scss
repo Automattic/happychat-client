@@ -13,4 +13,14 @@
 	--active: $purple-woo;
 	--active-opacity-7: rgba($purple-woo, 0.7);
 	--focused: $purple-woo;
+	--neutral: $gray-woo;
+	--neutral-opacity-5: rgba($gray-woo, 0.5);
+	--neutral-light: $gray-light-woo;
+	--neutral-dark: $gray-dark-woo;
+	--neutral-darken-30: darken($gray-woo, 30%);
+	--neutral-lighten-10: lighten($gray-woo, 10%);
+	--neutral-lighten-20: lighten($gray-woo, 20%);
+	--neutral-lighten-20-opacity-5: transparentize(lighten($gray-woo, 20%), 0.5);
+	--neutral-lighten-25: lighten($gray-woo, 25%);
+	--neutral-lighten-30: lighten($gray-woo, 30%);
 }
