@@ -2,7 +2,7 @@
 
 .happychat__notice {
 	padding: 12px;
-	border-top: 1px solid lighten($gray, 20%);
+	border-top: 1px solid var(--neutral-lighten-20);
 	color: $white;
 	background-color: lighten($gray-dark, 20%);
 	margin: 0;

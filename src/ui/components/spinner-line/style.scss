@@ -16,7 +16,7 @@ hr.spinner-line {
 	background-image: linear-gradient(
 		to right,
 		lighten($gray, 10%) 0%,
-		lighten($gray, 20%) 50%,
+		var(--neutral-lighten-20) 50%,
 		lighten($gray, 10%) 100%
 	);
 	background-size: 300px 100%;

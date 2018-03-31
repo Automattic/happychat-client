@@ -57,7 +57,7 @@
 
 // Clickable Card
 .card__link-indicator {
-	color: lighten($gray, 20%);
+	color: var(--neutral-lighten-20);
 	display: block;
 	height: 100%;
 	position: absolute;
