@@ -187,7 +187,7 @@ button {
 .button.is-borderless {
 	border: none;
 	background: none;
-	color: var(--button-is-borderless-color);
+	color: $gray-text-min;
 	padding-left: 0;
 	padding-right: 0;
 
