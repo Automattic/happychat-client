@@ -17,6 +17,7 @@
 	--neutral-opacity-5: rgba($gray-woo, 0.5);
 	--neutral-light: $gray-light-woo;
 	--neutral-dark: $gray-dark-woo;
+	--neutral-dark-lighten-20: lighten($gray-dark-woo, 20%);
 	--neutral-darken-30: darken($gray-woo, 30%);
 	--neutral-lighten-10: lighten($gray-woo, 10%);
 	--neutral-lighten-20: lighten($gray-woo, 20%);
