@@ -21,4 +21,6 @@
 	--neutral-lighten-20-opacity-5: transparentize(lighten($gray, 20%), 0.5);
 	--neutral-lighten-25: lighten($gray, 25%);
 	--neutral-lighten-30: lighten($gray, 30%);
+	--text: $gray-dark;
+	--text-min: darken($gray, 18%);
 }

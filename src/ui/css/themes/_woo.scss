@@ -24,4 +24,6 @@
 	--neutral-lighten-20-opacity-5: transparentize($gray-woo, 0.5);
 	--neutral-lighten-25: $gray-woo;
 	--neutral-lighten-30: $gray-woo;
+	--text: $gray-dark-woo;
+	--text-min: darken($gray-woo, 18%);
 }

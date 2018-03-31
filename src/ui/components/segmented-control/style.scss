@@ -44,7 +44,7 @@
 	border-right: none;
 	font-size: 14px;
 	line-height: 18px;
-	color: $gray-text-min;
+	color: var(--text-min);
 	text-align: center;
 
 	&:focus {

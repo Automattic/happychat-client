@@ -25,11 +25,6 @@ $gray-dark: darken($gray, 38%); //#2e4453
 // darken( $gray, 20% ) //#4f748e
 // darken( $gray, 30% ) //#3d596d
 
-// $gray-text: ideal for standard, non placeholder text
-// $gray-text-min: minimum contrast needed for WCAG 2.0 AA on white background
-$gray-text: $gray-dark;
-$gray-text-min: darken($gray, 18%); //#537994
-
 // Jetpack Primary Accent
 $green-jetpack: #00be28;
 
