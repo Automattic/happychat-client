@@ -1,9 +1,9 @@
 /** @format */
 
 :root {
-	--selected: #00be28;
-	--selected-darken-5: darken(#00be28, 5%);
-	--selected-darken-8: darken(#00be28, 8%);
-	--selected-lighten-5: lighten(#00be28, 5%);
-	--selected-lighten-10: lighten(#00be28, 10%);
+	--selected: $green-jetpack;
+	--selected-darken-5: darken($green-jetpack, 5%);
+	--selected-darken-8: darken($green-jetpack, 8%);
+	--selected-lighten-5: lighten($green-jetpack, 5%);
+	--selected-lighten-10: lighten($green-jetpack, 10%);
 }
