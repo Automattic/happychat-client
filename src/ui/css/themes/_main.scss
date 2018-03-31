@@ -1,0 +1,17 @@
+/** @format */
+
+:root {
+	--button-is-borderless-color: $gray-text-min;
+	--count-border-color: $gray;
+	--count-color: $gray-text-min;
+	--selected: $blue-medium;
+	--selected-darken-5: darken($blue-medium, 5%);
+	--selected-darken-8: darken($blue-medium, 8%);
+	--selected-lighten-5: lighten($blue-medium, 5%);
+	--selected-lighten-10: lighten($blue-medium, 10%);
+	--active: $blue-light;
+	--active-opacity-7: rgba($blue-light, 0.7);
+	--active-lighten-10: lighten($blue-light, 10%);
+	--focused: $blue-wordpress;
+	--link-highlight: tint($blue-medium, 20%);
+}
