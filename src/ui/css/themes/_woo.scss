@@ -25,5 +25,5 @@
 	--neutral-lighten-25: $gray-woo;
 	--neutral-lighten-30: $gray-woo;
 	--text: $gray-dark-woo;
-	--text-min: darken($gray-woo, 18%);
+	--text-min: lighten($gray-dark-woo, 18%);
 }
