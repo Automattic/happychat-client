@@ -127,7 +127,7 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	const styleHC = document.createElement( 'link' );
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute( 'href', './happychat.css' );
+	styleHC.setAttribute( 'href', 'https://widgets.wp.com/happychat/happychat.css' );
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
 
 	const styleHCTheme = document.createElement( 'link' );
@@ -136,9 +136,8 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	let styleHCThemePromise = Promise.resolve();
 	if ( groups && groups.length > 0 ) {
 		const groupName = groups[ 0 ];
-		console.log( 'groupName is ', groupName );
 		if ( groupName === 'woo' || groupName === 'jpop' ) {
-			styleHCTheme.setAttribute( 'href', './' + groupName + '.css' );
+			styleHCTheme.setAttribute( 'href', 'https://widgets.wp.com/happychat/' + groupName + '.css' );
 			styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
 		}
 	}
