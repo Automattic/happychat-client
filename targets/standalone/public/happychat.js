@@ -20687,7 +20687,7 @@ var createIframe = function createIframe(props) {
 	var styleHC = document.createElement('link');
 	styleHC.setAttribute('rel', 'stylesheet');
 	styleHC.setAttribute('type', 'text/css');
-	styleHC.setAttribute('href', './happychat.css');
+	styleHC.setAttribute('href', 'https://widgets.wp.com/happychat/happychat.css');
 	var styleHCPromise = new Promise(function (resolve) {
 		return styleHC.onload = function () {
 			return resolve();
@@ -20700,9 +20700,8 @@ var createIframe = function createIframe(props) {
 	var styleHCThemePromise = Promise.resolve();
 	if (groups && groups.length > 0) {
 		var groupName = groups[0];
-		console.log('groupName is ', groupName);
 		if (groupName === 'woo' || groupName === 'jpop') {
-			styleHCTheme.setAttribute('href', './' + groupName + '.css');
+			styleHCTheme.setAttribute('href', 'https://widgets.wp.com/happychat/' + groupName + '.css');
 			styleHCThemePromise = new Promise(function (resolve) {
 				return styleHCTheme.onload = function () {
 					return resolve();
