@@ -16,7 +16,12 @@
 		<script type="text/javascript">
 			wpcomOAuth.get( function( result ){
 				Happychat.open( {
-					accessToken: result.access_token,
+					authentication: {
+						type: 'wpcom-oauth-by-token',
+						options: {
+							token: result.access_token,
+						},
+					},
 					nodeId: 'support',
 					groups: ['woo'],
 					entryOptions: {
