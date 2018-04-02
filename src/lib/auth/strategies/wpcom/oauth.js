@@ -10,13 +10,11 @@ import debugFactory from 'debug';
  * Internal dependencies
  */
 import { WPcomStrategy } from './index';
-import config from 'src/config';
 
 /**
  * Module variables
  */
 const debug = debugFactory( 'happychat-client:auth:wpcom:oauth' );
-const oAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 
 /**
  * WPCOM oAuth strategy, it can be used as with the regular oAuth flow or bypass that by passing it
@@ -26,7 +24,6 @@ const oAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
  * expose here methods for each WPCOM endpoint that will be used.
  *
  * Supported WPCOM oAuth flows:
- *  - 'wpcom-oauth'          regular wpcom oAuth process using `wpcom-oauth-cors` package
  *  - 'wpcom-oauth-by-token' regular wpcom oAuth based on given token using `wpcom-xhr-request`
  * @extends WPcomStrategy
  */
@@ -41,7 +38,6 @@ export default class WPcomOAuth extends WPcomStrategy {
 	constructor( authentication ) {
 		super( authentication.type );
 		this.options = authentication.options;
-		this.token = null;
 	}
 
 	/**
@@ -51,7 +47,7 @@ export default class WPcomOAuth extends WPcomStrategy {
 	 * @private
 	 */
 	_prepareParams( args ) {
-		args.authToken = this._getToken();
+		args.authToken = this.options.token;
 		return args;
 	}
 
@@ -59,11 +55,10 @@ export default class WPcomOAuth extends WPcomStrategy {
 	 * Method that creates a request handler which will be used when calling endpoints, it will
 	 * overwrite the placeholder `_request`.
 	 *
-	 * @param {Object} token access token
 	 * @returns {function} authenticated promisfied wrapper for the 'wpcom-xhr-request' request
 	 * @private
 	 */
-	_createAuthenticatedRequest( token ) {
+	_createAuthenticatedRequest() {
 		/**
 		 * It is basically a wrapper that promisifies and adds authentication to the request
 		 * method of 'wpcom-xhr-request'
@@ -73,7 +68,7 @@ export default class WPcomOAuth extends WPcomStrategy {
 		 */
 		return ( args ) => {
 			return new Promise( ( resolve, reject ) => {
-				if ( ! token ) {
+				if ( ! this.options.token ) {
 					return reject( `Authentication ${ this.type } error: token is missing` );
 				}
 
@@ -103,59 +98,19 @@ export default class WPcomOAuth extends WPcomStrategy {
 	}
 
 	/**
-	 * Get the access token
-	 * @returns {string} The access token
-	 * @private
-	 */
-	_getToken() {
-		return this.token;
-	}
-
-	/**
-	 * Set the access token, used after a login or when we already have the token and we bypass the
-	 * oAuth login flow.
-	 * @param {string} token The access token
-	 */
-	setToken( token ) {
-		this.token = token;
-	}
-
-	/**
 	 * Login method for oAuth strategy. If the token was passed when instantiating this strategy
 	 * it will just overwrite the request method and return the promisifed token.
-	 *
-	 * If there is not access token saved, we follow the regular WPCOM oAuth flow in order to get
-	 * one, it is then saved and the request method is overwritten.
 	 *
 	 * It also overwrites the `_request` method with a promisified authenticated one
 	 *
 	 * @returns {Promise} the oauth access token
 	 */
 	login() {
-		const token = this._getToken();
-		if ( token ) {
-			debug( 'Token is present, customer is authenticated' );
-			// overwrite the request method to an authenticated promisified xhr request
-			this._request = this._createAuthenticatedRequest( token );
+		// overwrite the request method to an authenticated promisified xhr request
+		this._request = this._createAuthenticatedRequest( this.options.token );
 
-			// bail if already authenticated
-			return Promise.resolve( token );
-		}
-
-		return new Promise( ( resolve, reject ) => {
-			debug( 'Get token, customer is not authenticated' );
-			oAuth.get( ( auth ) => {
-				if ( ! auth || ! auth.access_token ) {
-					return reject( `Authentication ${ this.type } error: token is missing` );
-				}
-
-				// overwrite the request method to an authenticated promisified xhr request
-				this._request = this._createAuthenticatedRequest( auth.access_token );
-
-				this.setToken( auth.access_token );
-				resolve( auth.access_token );
-			} );
-		} );
+		// bail if already authenticated
+		return Promise.resolve( this.options.token );
 	}
 
 	// API endpoints

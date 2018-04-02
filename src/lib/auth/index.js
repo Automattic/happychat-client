@@ -9,7 +9,6 @@ import debugFactory from 'debug';
  * Internal dependencies
  */
 import {
-	AUTH_TYPE_WPCOM_OAUTH,
 	AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN,
 	AUTH_TYPE_WPCOM_PROXY_IFRAME,
 } from './strategies';
@@ -32,7 +31,6 @@ const debug = debugFactory( 'happychat-client:auth' );
  * re-initialization.
  *
  * Currently implemented strategies are:
- *  - 'wpcom-oauth'          regular wpcom oAuth process using `wpcom-oauth-cors` package
  *  - 'wpcom-oauth-by-token' regular wpcom oAuth based on given token using `wpcom-xhr-request`
  *  - 'wpcom-proxy-iframe'   proxy iframe wpcom authentication using Calypso's wpcom object
  *
@@ -48,10 +46,6 @@ const init = ( auth ) => {
 	debug( 'Authentication library was initialized', auth );
 
 	switch ( auth.type ) {
-		case AUTH_TYPE_WPCOM_OAUTH:
-			strategy = new WPcomOAuth( auth );
-			break;
-
 		case AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN:
 			if ( ! auth.options ) {
 				throw new Error( `Strategy ${ auth.type } requires parameter 'options'.` );
@@ -60,11 +54,7 @@ const init = ( auth ) => {
 				throw new Error( `Strategy ${ auth.type } requires parameter 'options.token'.` );
 			}
 
-			// uses the same oAuth library as `AUTH_TYPE_WPCOM_OAUTH` but we have the token so we
-			// set it manually instead of going through the oAuth flow. This is used by Woo and
-			// WordPress plugin implementations where we already have the oAuth token.
 			strategy = new WPcomOAuth( auth );
-			strategy.setToken( auth.options.token );
 			break;
 
 		case AUTH_TYPE_WPCOM_PROXY_IFRAME:
