@@ -2,12 +2,11 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
-const LodashModuleReplacementPlugin = require( 'lodash-webpack-plugin' );
 
 module.exports = {
-	entry: './targets/browser/index.js',
+	entry: './targets/cdn/index.js',
 	output: {
-		filename: './targets/browser/happychat.js',
+		filename: './targets/cdn/happychat.js',
 	},
 	module: {
 		rules: [
@@ -19,10 +18,6 @@ module.exports = {
 		],
 	},
 	plugins: [
-		new LodashModuleReplacementPlugin( {
-			paths: true,
-			shorthands: true,
-		} ),
 		new webpack.DefinePlugin( {
 			'process.env.NODE_ENV': JSON.stringify( 'production' ),
 		} ),

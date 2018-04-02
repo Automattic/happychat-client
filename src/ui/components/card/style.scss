@@ -7,7 +7,7 @@
 	padding: 16px;
 	box-sizing: border-box;
 	background: $white;
-	box-shadow: 0 0 0 1px transparentize(lighten($gray, 20%), 0.5), 0 1px 2px lighten($gray, 30%);
+	box-shadow: 0 0 0 1px var(--neutral-lighten-20-opacity-5), 0 1px 2px var(--neutral-lighten-30);
 
 	@include clear-fix;
 
@@ -43,7 +43,7 @@
 	}
 
 	&.is-info {
-		border-left: 3px solid $blue-wordpress;
+		border-left: 3px solid var(--focused);
 	}
 
 	&.is-success {
@@ -57,7 +57,7 @@
 
 // Clickable Card
 .card__link-indicator {
-	color: lighten($gray, 20%);
+	color: var(--neutral-lighten-20);
 	display: block;
 	height: 100%;
 	position: absolute;
@@ -67,7 +67,7 @@
 
 a.card:hover {
 	.card__link-indicator {
-		color: lighten($gray, 10%);
+		color: var(--neutral-lighten-10);
 	}
 }
 
@@ -75,6 +75,6 @@ a.card:focus {
 	outline: 0;
 
 	.card__link-indicator {
-		color: $link-highlight;
+		color: var(--selected-tint-20);
 	}
 }

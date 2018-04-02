@@ -17,10 +17,10 @@ button {
 
 .button {
 	background: $white;
-	border-color: lighten($gray, 20%);
+	border-color: var(--neutral-lighten-20);
 	border-style: solid;
 	border-width: 1px 1px 2px;
-	color: $gray-dark;
+	color: var(--neutral-dark);
 	cursor: pointer;
 	display: inline-block;
 	margin: 0;
@@ -39,21 +39,21 @@ button {
 	appearance: none;
 
 	&:hover {
-		border-color: lighten($gray, 10%);
-		color: $gray-dark;
+		border-color: var(--neutral-lighten-10);
+		color: var(--neutral-dark);
 	}
 	&:active {
 		border-width: 2px 1px 1px;
 	}
 	&:visited {
-		color: $gray-dark;
+		color: var(--neutral-dark);
 	}
 	&[disabled],
 	&:disabled,
 	&.disabled {
-		color: lighten($gray, 30%);
+		color: var(--neutral-lighten-30);
 		background: $white;
-		border-color: lighten($gray, 30%);
+		border-color: var(--neutral-lighten-30);
 		cursor: default;
 
 		&:active {
@@ -61,17 +61,17 @@ button {
 		}
 	}
 	.accessible-focus &:focus {
-		border-color: $blue-medium;
-		box-shadow: 0 0 0 2px $blue-light;
+		border-color: var(--selected);
+		box-shadow: 0 0 0 2px var(--active);
 	}
 	&.is-compact {
 		padding: 7px;
-		color: $gray-text-min;
+		color: var(--text-min);
 		font-size: 12px;
 		line-height: 1;
 
 		&:disabled {
-			color: lighten($gray, 30%);
+			color: var(--neutral-lighten-30);
 		}
 		.gridicon {
 			top: 5px;
@@ -96,10 +96,10 @@ button {
 		background-size: 120px 100%;
 		background-image: linear-gradient(
 			-45deg,
-			lighten($gray, 30%) 28%,
+			var(--neutral-lighten-30) 28%,
 			$white 28%,
 			$white 72%,
-			lighten($gray, 30%) 72%
+			var(--neutral-lighten-30) 72%
 		);
 	}
 	&.hidden {
@@ -116,13 +116,13 @@ button {
 
 // Primary buttons
 .button.is-primary {
-	background: $blue-medium;
-	border-color: darken($blue-medium, 8%);
+	background: var(--selected);
+	border-color: var(--selected-darken-8);
 	color: $white;
 
 	&:hover,
 	&:focus {
-		border-color: $blue-dark;
+		border-color: var(--neutral-dark);
 		color: $white;
 	}
 	&.is-compact {
@@ -131,20 +131,20 @@ button {
 	&[disabled],
 	&:disabled,
 	&.disabled {
-		color: lighten($gray, 30%);
+		color: var(--neutral-lighten-30);
 		background: $white;
-		border-color: lighten($gray, 30%);
+		border-color: var(--neutral-lighten-30);
 	}
 	&.is-busy {
 		background-size: 120px 100%;
 		background-image: linear-gradient(
 			-45deg,
-			$blue-medium 28%,
-			darken($blue-medium, 5%) 28%,
-			darken($blue-medium, 5%) 72%,
-			$blue-medium 72%
+			var(--selected) 28%,
+			var(--selected-darken-5) 28%,
+			var(--selected-darken-5) 72%,
+			var(--selected) 72%
 		);
-		border-color: darken($blue-medium, 8%);
+		border-color: var(--selected-darken-8);
 	}
 }
 
@@ -164,7 +164,7 @@ button {
 	&[disabled],
 	&:disabled {
 		color: lighten($alert-red, 30%);
-		border-color: lighten($gray, 30%);
+		border-color: var(--neutral-lighten-30);
 	}
 }
 
@@ -187,13 +187,13 @@ button {
 .button.is-borderless {
 	border: none;
 	background: none;
-	color: var(--button-is-borderless-color);
+	color: var(--text-min);
 	padding-left: 0;
 	padding-right: 0;
 
 	&:hover,
 	&:focus {
-		color: $gray-dark;
+		color: var(--neutral-dark);
 	}
 
 	.gridicon {
@@ -204,7 +204,7 @@ button {
 
 	&[disabled],
 	&:disabled {
-		color: lighten($gray, 30%);
+		color: var(--neutral-lighten-30);
 		cursor: default;
 
 		&:active {
@@ -285,7 +285,7 @@ input[type='submit']::-moz-focus-inner {
 	border: none;
 	border-radius: 0;
 	padding: 0;
-	color: $blue-medium;
+	color: var(--selected);
 	font-weight: 400;
 	font-size: inherit;
 	line-height: 1.65;
@@ -293,7 +293,7 @@ input[type='submit']::-moz-focus-inner {
 	&:hover,
 	&:focus,
 	&:active {
-		color: $link-highlight;
+		color: var(--selected-tint-20);
 		box-shadow: none;
 	}
 }

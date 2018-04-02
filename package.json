@@ -14,14 +14,16 @@
     "> 1%"
   ],
   "scripts": {
-    "preanalyze-bundles": "webpack --config webpack.browser.config.js --profile --json > stats.json",
+    "preanalyze-bundles": "webpack --config webpack.cdn.config.js --profile --json > stats.json",
     "analyze-bundles": "webpack-bundle-analyzer stats.json .",
     "prestart": "npm run targets:standalone",
     "start": "webpack-dev-server --config webpack.standalone.config.js",
     "targets": "run-p targets:*",
-    "targets:browser": "run-p targets:browser:*",
-    "targets:browser:css": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/browser/happychat.css",
-    "targets:browser:js": "webpack --config webpack.browser.config.js",
+    "targets:cdn": "run-p targets:cdn:*",
+    "targets:cdn:css:main": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/happychat.css",
+    "targets:dist:css:woo": "node-sass src/ui/css/themes/_woo.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/woo.css",
+    "targets:dist:css:jpop": "node-sass src/ui/css/themes/_jpop.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/jpop.css",
+    "targets:cdn:js": "webpack --config webpack.cdn.config.js",
     "targets:standalone": "webpack --config webpack.standalone.config.js",
     "targets:wordpress": "webpack --config webpack.wordpress.config.js",
     "test": "jest -c jest.config.json"
@@ -46,7 +48,6 @@
     "eslint-plugin-wpcalypso": "3.4.1",
     "events": "1.0.2",
     "jest": "21.2.1",
-    "lodash-webpack-plugin": "0.11.4",
     "node-sass": "4.5.3",
     "npm-run-all": "4.0.2",
     "postcss-cli": "2.5.1",

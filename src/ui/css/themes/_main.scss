@@ -1,0 +1,26 @@
+/** @format */
+
+:root {
+	--selected: $blue-medium;
+	--selected-darken-5: darken($blue-medium, 5%);
+	--selected-darken-8: darken($blue-medium, 8%);
+	--selected-lighten-5: lighten($blue-medium, 5%);
+	--selected-lighten-10: lighten($blue-medium, 10%);
+	--selected-tint-20: tint($blue-medium, 20%);
+	--active: $blue-light;
+	--active-opacity-7: rgba($blue-light, 0.7);
+	--focused: $blue-wordpress;
+	--neutral: $gray;
+	--neutral-opacity-5: rgba($gray, 0.5);
+	--neutral-light: $gray-light;
+	--neutral-dark: $gray-dark;
+	--neutral-dark-lighten-20: lighten($gray-dark, 20%);
+	--neutral-darken-30: darken($gray, 30%);
+	--neutral-lighten-10: lighten($gray, 10%);
+	--neutral-lighten-20: lighten($gray, 20%);
+	--neutral-lighten-20-opacity-5: transparentize(lighten($gray, 20%), 0.5);
+	--neutral-lighten-25: lighten($gray, 25%);
+	--neutral-lighten-30: lighten($gray, 30%);
+	--text: $gray-dark;
+	--text-min: darken($gray, 18%);
+}
