@@ -3,7 +3,7 @@ const path = require( 'path' );
 const webpack = require( 'webpack' );
 
 module.exports = {
-	entry: './index.js',
+	entry: './targets/wordpress/index.js',
 	output: {
 		filename: './targets/wordpress/assets/happychat.js',
 	},
