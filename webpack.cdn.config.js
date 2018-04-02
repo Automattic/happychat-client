@@ -4,7 +4,11 @@ const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
 module.exports = {
+<<<<<<< HEAD:webpack.cdn.config.js
 	entry: './targets/cdn/index.js',
+=======
+	entry: './targets/dist/index.js',
+>>>>>>> master:webpack.dist.config.js
 	output: {
 		filename: './targets/cdn/happychat.js',
 	},
