@@ -36,6 +36,9 @@ switch ( env ) {
 		config.devtool = 'source-map';
 		config.devServer = {
 			contentBase: path.resolve( __dirname, 'targets/standalone' ),
+			historyApiFallback: {
+				index: 'example.html',
+			  },
 			publicPath: '/',
 			port: 9000,
 		};
