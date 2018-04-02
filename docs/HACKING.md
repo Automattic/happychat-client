@@ -2,10 +2,16 @@
 
 Topics discussed:
 
+* Configs
 * OAuth ID
 * Repository layout
 * The library renders within an iframe
 * Color palette and themes
+
+## Configs
+Config files are loaded based on the environment from the `src/config` directory. If you need to override 
+some of the values you can create a `development.local.json` that will be ignored by git.
+See [src/config/README.md](./src/config/README.md) for more info.
 
 ## OAuth ID
 

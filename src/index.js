@@ -127,7 +127,15 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	const styleHC = document.createElement( 'link' );
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute( 'href', 'https://widgets.wp.com/happychat/happychat.css' );
+
+	// while developing load local css
+	if ( process.env.NODE_ENV === 'development' ) {
+		styleHC.setAttribute( 'href', 'happychat.css' );
+	} else {
+		styleHC.setAttribute( 'href', 'https://widgets.wp.com/happychat/happychat.css' );
+	}
+
+	// TODO: rework this to use skills and have local themes loaded
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
 
 	const styleHCTheme = document.createElement( 'link' );
