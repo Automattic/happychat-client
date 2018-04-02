@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
  * Internal dependencies
  */
 import config from 'src/config';
+import authenticator from 'src/lib/auth';
 
 // actions
 import {
@@ -31,7 +32,6 @@ import {
 } from 'src/state/constants';
 
 // selectors
-import getHappychatAuth from 'src/lib/wpcom/get-happychat-auth';
 import canUserSendMessages from 'src/state/selectors/can-user-send-messages';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import getChatTimeline from 'src/state/selectors/get-chat-timeline';
@@ -343,8 +343,7 @@ class Form extends React.Component {
 
 	render() {
 		const {
-			accessToken,
-			getAuth,
+			authentication,
 			isConnectionUninitialized,
 			isHappychatEnabled,
 			onInitConnection,
@@ -353,8 +352,7 @@ class Form extends React.Component {
 		return (
 			<div>
 				<HappychatConnection
-					accessToken={ accessToken }
-					getAuth={ getAuth }
+					authentication={ authentication }
 					isConnectionUninitialized={ isConnectionUninitialized }
 					isHappychatEnabled={ isHappychatEnabled }
 					onInitConnection={ onInitConnection }
@@ -367,7 +365,6 @@ class Form extends React.Component {
 }
 
 Form.propTypes = {
-	accessToken: PropTypes.string.isRequired,
 	canChat: PropTypes.bool,
 	entry: PropTypes.string,
 	entryOptions: PropTypes.object,
@@ -396,7 +393,7 @@ const mapState = state => {
 		fallbackTicketPathToShow: getFallbackTicketPathToShow( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
-		getAuth: getHappychatAuth( state ),
+		authentication: authenticator.authorizeChat( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
 		isConnectionUninitialized: isHCConnectionUninitialized( state ),

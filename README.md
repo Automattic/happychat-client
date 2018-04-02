@@ -8,7 +8,6 @@ Take the JavaScript bundle at [targets/standalone/happychat.js](./targets/standa
 
 	Happychat.open({
 		nodeId: '<HTML node ID where the UI will be rendered>',
-		accessToken: '<WordPress.com accessToken>'
 	});
 
 This code will render a contact form under the HTML node provided, and will let you open a chat session if there is some operator available in Happychat server.

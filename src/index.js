@@ -15,7 +15,6 @@ import find from 'lodash/find';
  */
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
-import getUser from 'src/lib/wpcom/get-wpcom-user';
 // UI components
 import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
@@ -181,20 +180,19 @@ const isAnyCanChatPropFalse = ( canChat, entryOptions ) =>
 		false === entryOptions.itemList[ 0 ].canChat );
 
 /* eslint-disable camelcase */
-const renderHappychat = (
+export const renderHappychat = (
 	targetNode,
 	{
-		user: {
+		userObject: {
 			ID,
 			email,
 			username,
 			display_name,
 			avatar_URL,
 			language,
-			groups = [ HAPPYCHAT_GROUP_WPCOM ],
-			accessToken,
-			canChat = true,
 		},
+		groups = [ HAPPYCHAT_GROUP_WPCOM ],
+		canChat = true,
 		entry = ENTRY_FORM,
 		entryOptions = {},
 	}
@@ -219,53 +217,18 @@ const renderHappychat = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat accessToken={ accessToken } entry={ entry } entryOptions={ entryOptions } />
+			<Happychat entry={ entry } entryOptions={ entryOptions } />
 		</Provider>,
 		targetNode
 	);
 };
 /* eslint-enable camelcase */
 
-const renderError = ( targetNode, { error } ) =>
-	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
-
-/* eslint-disable camelcase */
-const getWPComUser = ( accessToken, groups, canChat ) =>
-	getUser( accessToken ).then(
-		( { ID, email, username, display_name, avatar_URL, language } ) => ( {
-			ID,
-			email,
-			username,
-			display_name,
-			avatar_URL,
-			language,
-			accessToken,
-			groups,
-			canChat,
-		} )
-	);
-/* eslint-enable camelcase */
-
-export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOptions, canChat } ) => {
-	let getAccessToken = accessToken;
-	if ( 'string' === typeof accessToken ) {
-		getAccessToken = () => Promise.resolve( accessToken );
-	}
-
-	const targetNode = createIframe(
-		{ nodeId, groups, entryOptions },
-		dispatchAssetsFinishedDownloading
-	);
-	getAccessToken()
-		.then( token => getWPComUser( token, groups, canChat ) )
-		.then( user =>
-			renderHappychat( targetNode, {
-				user,
-				entry,
-				entryOptions,
-			} )
-		)
-		.catch( error => renderError( targetNode, { error } ) );
+export const createTargetNode = ( { nodeId, groups, entryOptions } ) => {
+	return createIframe( { nodeId, groups, entryOptions }, dispatchAssetsFinishedDownloading );
 };
+
+export const renderError = ( targetNode, { error } ) =>
+	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
 
 export const eventAPI = eventAPIFactory( store );

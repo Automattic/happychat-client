@@ -1,6 +1,48 @@
 # Authentication
 
-Happychat Embedded uses an user token for querying the WordPress.com REST API.
+Happychat Embedded supports 2 different authentication strategies. You can select the preferred
+strategy via the `authentication` parameter of the `Happychat.open()` method.
+
+### Direct WPCOM oAuth (wpcom-oauth-by-token)
+Exemplified in the `WordPress` target this strategy follows assumes that oAuth flows were already 
+followed and we have an `access_token`. The token will be passed to the Happychat client api and
+it will be used to access WP.com endpoints.
+
+Inside the package this type is represented by the `AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN` constant.
+```
+// Happychat setup for this strategy
+Happychat.open(
+	authentication: {
+		type: 'wpcom-oauth-by-token',
+		options: {
+			token: 'your-oauth-access-token'
+		}
+	}
+)
+```
+
+### Proxy Iframe WPCOM oAuth (wpcom-proxy-iframe)
+Exemplified in the Calypso integration this strategy is using a passed `proxy` object that is 
+assumed to be an authenticated instance of [wpcom-proxy-request](https://github.com/Automattic/wpcom-proxy-request).
+That instance will be used to call WP.com endpoints similar to how it works in Calypso.
+
+This strategy assumes that the actual customer authentication is done on the host's side (Calypso in
+our case).
+
+Inside the package this type is represented by the `AUTH_TYPE_WPCOM_PROXY_IFRAME` constant.
+```
+// Happychat setup for this strategy
+Happychat.open(
+	authentication: {
+		type: 'wpcom-proxy-iframe',
+		options: {
+			proxy: wpComProxyIframeObject
+		}
+	}
+)
+```
+
+**For more info about the internals of the authentication library see [this](./src/lib/auth/README.md)**
 
 ## Wordpress.com REST API endpoints in use
 
