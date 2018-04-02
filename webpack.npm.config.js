@@ -2,7 +2,6 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
-const LodashModuleReplacementPlugin = require( 'lodash-webpack-plugin' );
 
 const env = process.env.NODE_ENV;
 
@@ -45,10 +44,6 @@ switch ( env ) {
 	case 'production':
 		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
 		config.plugins.push( new UglifyJsPlugin() );
-		config.plugins.push( new LodashModuleReplacementPlugin( {
-			paths: true,
-			shorthands: true,
-		} ) );
 		break;
 }
 

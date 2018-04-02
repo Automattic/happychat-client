@@ -6,7 +6,7 @@ const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 const env = process.env.NODE_ENV;
 
 const config = {
-	entry: './targets/browser/index.js',
+	entry: './targets/wordpress/index.js',
 	output: {
 		filename: 'happychat.js',
 		path: path.resolve( __dirname, 'targets/wordpress/assets' ),
