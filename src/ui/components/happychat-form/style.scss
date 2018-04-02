@@ -9,22 +9,22 @@
 
 	::-webkit-scrollbar-thumb {
 		border-radius: 10px;
-		background-color: lighten($gray, 10%);
+		background-color: var(--neutral-lighten-10);
 		border: 3px solid transparent;
 		background-clip: padding-box;
 
 		&:hover {
-			background-color: $gray;
+			background-color: var(--neutral);
 		}
 	}
 }
 
 // override colors and fonts
 .happychat__page {
-	background-color: $gray-light;
+	background-color: var(--neutral-light);
 	font-family: $sans;
 	font-size: 14px;
-	border: 1px solid lighten($gray, 25%);
+	border: 1px solid var(--neutral-lighten-25);
 }
 
 // make textarea to fill the whole box

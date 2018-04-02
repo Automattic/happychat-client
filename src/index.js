@@ -48,7 +48,7 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
 const createIframe = ( props, assetsLoadedHook = () => {} ) => {
-	const { nodeId, entryOptions } = props;
+	const { nodeId, groups, entryOptions } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
 	const primaryHasAnySecondary = options =>
@@ -60,7 +60,7 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 
 	// Calculate height based on the number of components
 	// the iframe may need to render.
-	let iframeHeight = 380;
+	let iframeHeight = 480;
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
 	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
@@ -116,29 +116,43 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	);
 	iframeElement.contentDocument.head.appendChild( styleLoading );
 
-	// Then, we inject two stylesheets: the noticon custom font and Happychat.
-	// We want to tell Happychat when they are downloaded, and we do so by Promise.all()
+	// Then, we inject the stylesheets: the noticon custom font, Happychat, and the theme if any.
+	// We want to tell Happychat when they are downloaded, and we do so by means of the onload method
+	// of the stylesheets, which will resolve the Promise.all()
 	const styleNoticon = document.createElement( 'link' );
-	const styleNoticonPromise = new Promise( resolve => {
-		styleNoticon.onload = () => resolve();
-	} );
-	const styleHC = document.createElement( 'link' );
-	const styleHCPromise = new Promise( resolve => {
-		styleHC.onload = () => resolve();
-	} );
-	Promise.all( [ styleNoticonPromise, styleHCPromise ] ).then( () => assetsLoadedHook() );
-
-	// config noticon styles: append it to the iframe's head will trigger the network request
 	styleNoticon.setAttribute( 'rel', 'stylesheet' );
 	styleNoticon.setAttribute( 'type', 'text/css' );
 	styleNoticon.setAttribute( 'href', 'https://s1.wp.com/i/noticons/noticons.css' );
-	iframeElement.contentDocument.head.appendChild( styleNoticon );
+	const styleNoticonPromise = new Promise( resolve => ( styleNoticon.onload = () => resolve() ) );
 
-	// config noticon styles: append it to the iframe's head will trigger the network request
+	const styleHC = document.createElement( 'link' );
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
 	styleHC.setAttribute( 'href', config( 'css_url' ) );
+
+	// TODO: rework this to use skills and have local themes loaded
+	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
+
+	const styleHCTheme = document.createElement( 'link' );
+	styleHCTheme.setAttribute( 'rel', 'stylesheet' );
+	styleHCTheme.setAttribute( 'type', 'text/css' );
+	let styleHCThemePromise = Promise.resolve();
+	if ( groups && groups.length > 0 ) {
+		const groupName = groups[ 0 ];
+		if ( groupName === 'woo' || groupName === 'jpop' ) {
+			styleHCTheme.setAttribute( 'href', 'https://widgets.wp.com/happychat/' + groupName + '.css' );
+			styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
+		}
+	}
+
+	Promise.all( [ styleNoticonPromise, styleHCPromise, styleHCThemePromise ] ).then( () =>
+		assetsLoadedHook()
+	);
+
+	// appending the stylesheets to the iframe will trigger the network request
+	iframeElement.contentDocument.head.appendChild( styleNoticon );
 	iframeElement.contentDocument.head.appendChild( styleHC );
+	iframeElement.contentDocument.head.appendChild( styleHCTheme );
 
 	// some CSS styles depend on these top-level classes being present
 	iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
@@ -232,26 +246,16 @@ const getWPComUser = ( accessToken, groups, canChat ) =>
 	);
 /* eslint-enable camelcase */
 
-/**
- * Renders a Happychat or Support form in the HTML Element provided by the nodeId.
- *
- * @param {String} nodeId Mandatory. HTML Node id where Happychat will be rendered.
- * @param {Array} groups Mandatory. Happychat groups this user belongs to.
- * @param {String|Promise} accessToken Mandatory. A valid WP.com access token,
- * 				       or a Promise that returns one.
- * @param {String} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
- * 			 ENTRY_FORM is the default and will render the contact form.
- * 			 ENTRY_CHAT will render the chat form.
- * @param {Object} entryOptions Optional. Contains options to configure the selected entry.
- * @param {Boolean} canChat Optional. Whether the user can be offered chat. True by default.
- */
 export const initHappychat = ( { nodeId, groups, accessToken, entry, entryOptions, canChat } ) => {
 	let getAccessToken = accessToken;
 	if ( 'string' === typeof accessToken ) {
 		getAccessToken = () => Promise.resolve( accessToken );
 	}
 
-	const targetNode = createIframe( { nodeId, entryOptions }, dispatchAssetsFinishedDownloading );
+	const targetNode = createIframe(
+		{ nodeId, groups, entryOptions },
+		dispatchAssetsFinishedDownloading
+	);
 	getAccessToken()
 		.then( token => getWPComUser( token, groups, canChat ) )
 		.then( user =>

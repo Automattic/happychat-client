@@ -9,4 +9,6 @@ stats.json
 
 # Targets dists
 targets/**/happychat.css
+targets/**/jpop.css
+targets/**/woo.css
 targets/**/happychat.js

@@ -20,17 +20,17 @@ For all production builds `NODE_ENV` is set to `production` within the webpack c
 It'll build the CSS asset using the `postcss.config.json`. Note that the CSS is automatically requested once the Happychat component is initialized. You never need to embed this manually in your page. It's served from the WordPress.com CDN at https://widgets.wp.com/happychat/happychat.css so any time it's updated it needs to be uploaded there for changes to take effect.
 
 
-## targets/browser
+## targets/cdn
 
-Contains the production-ready JavaScript and CSS assets. It'll build the JS library using the `webpack.browser.config.js`. 
+Contains the production-ready JavaScript and CSS assets. It'll build the JS library using the `webpack.cdn.config.js`. 
 
 To develop this target (`http://localhost:9000`), execute:
 
-	npm run dev:browser
+	npm run dev:cdn
 
 To build this target for production, execute:
 
-	npm run build:browser
+	npm run build:cdn
 
 
 ## targets/standalone
