@@ -9,14 +9,12 @@ import isEmpty from 'lodash/isEmpty';
  * Internal dependencies
  */
 import {
-	createIframe,
-	dispatchAssetsFinishedDownloading,
+	createTargetNode,
 	eventAPI,
 	renderHappychat,
 	renderError,
  } from './index';
 import authenticator from 'src/lib/auth';
-import { AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN } from 'src/lib/auth/strategies';
 
 const api = {
 	/**
@@ -27,7 +25,6 @@ const api = {
 	 * @param {Object} authentication.options Optional. Authentication options
 	 * @param {Object} authentication.options.token Optional. WP.com oAuth access token to be used
 	 * @param {Object} authentication.options.proxy Optional. WP.com proxy object to be used
-	 * @param {string} accessToken Optional. A valid WP.com access token.
 	 * @param {boolean} canChat Optional. Whether the user can be offered chat. True by default.
 	 * @param {string} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
 	 * @param {Object} entryOptions Optional. Contains options to configure the selected entry.
@@ -39,7 +36,6 @@ const api = {
 	 */
 	open: ( {
 		authentication,
-		accessToken,
 		canChat,
 		entry,
 		entryOptions,
@@ -47,22 +43,9 @@ const api = {
 		nodeId,
 		user,
 	} ) => {
-		// backwards compatibility for older accessToken only authentication
-		if ( accessToken && isEmpty( authentication ) ) {
-			authentication = {
-				type: AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN,
-				options: {
-					token: accessToken,
-				},
-			};
-		}
-
 		authenticator.init( authentication );
 
-		const targetNode = createIframe(
-			{ nodeId, groups, entryOptions },
-			dispatchAssetsFinishedDownloading
-		);
+		const targetNode = createTargetNode( { nodeId, groups, entryOptions } );
 
 		authenticator.login()
 			.then( () => isEmpty( user ) ? authenticator.getUser() : Promise.resolve( user ) )

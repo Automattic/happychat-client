@@ -224,6 +224,10 @@ export const renderHappychat = (
 };
 /* eslint-enable camelcase */
 
+export const createTargetNode = ( { nodeId, groups, entryOptions } ) => {
+	return createIframe( { nodeId, groups, entryOptions }, dispatchAssetsFinishedDownloading );
+};
+
 export const renderError = ( targetNode, { error } ) =>
 	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
 

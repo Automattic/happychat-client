@@ -3,30 +3,10 @@
 Happychat Embedded supports 3 different authentication strategies. You can select the preferred
 strategy via the `authentication` parameter of the `Happychat.open()` method.
 
-### Regular WPCOM oAuth (wpcom-oauth)
-Exemplified in the `standalone` target this strategy follows regular oAuth flows for authenticating
-against WP.com api. It is using the official [wpcom-oauth-cors](https://github.com/Automattic/wpcom-oauth-cors)
-package.
-
-If the customer is not logged in, permission will be requested to use the app, the token will be 
-saved in `localStorage` and used whenever endpoints are called.
-
-Inside the package this type is represented by the `AUTH_TYPE_WPCOM_OAUTH` constant.
-```
-// Happychat setup for this strategy
-Happychat.open(
-	authentication: {
-		type: 'wpcom-oauth'
-	}
-)
-```
-
 ### Direct WPCOM oAuth (wpcom-oauth-by-token)
 Exemplified in the `WordPress` target this strategy follows assumes that oAuth flows were already 
 followed and we have an `access_token`. The token will be passed to the Happychat client api and
 it will be used to access WP.com endpoints.
-
-**There is a fallback that allows to directly send the `accessToken` to the `Happychat.open` method in order to keep backwards compatibility.**
 
 Inside the package this type is represented by the `AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN` constant.
 ```

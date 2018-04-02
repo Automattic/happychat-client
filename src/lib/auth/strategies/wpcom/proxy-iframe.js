@@ -29,7 +29,7 @@ export default class WPcomProxyIframe extends WPcomStrategy {
 	/**
 	 * Pass the authentication type to the parent and save the auth options and access token.
 	 * @param {Object} authentication information about the authentication type and its options
-	 * @param {string} authentication.type authentication type (wpcom-oauth|wpcom-oauth-by-token)
+	 * @param {string} authentication.type authentication type (wpcom-oauth-by-token)
 	 * @param {Object} authentication.options Set of options sent to auth implementations
 	 */
 	constructor( authentication ) {

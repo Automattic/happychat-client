@@ -45,7 +45,10 @@
 	window.Happychat &&
 		Happychat.open( {
 			nodeId: happychatSettings.nodeId,
-			accessToken: happychatSettings.accessToken,
+			authentication: {
+				type: 'wpcom-oauth-by-token',
+				options: { token: happychatSettings.accessToken },
+			},
 			groups: happychatSettings.groups,
 			canChat: toBoolean( happychatSettings.canChat ),
 			entry: happychatSettings.entry,

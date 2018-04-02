@@ -343,7 +343,7 @@ class Form extends React.Component {
 
 	render() {
 		const {
-			happychatAuthentication,
+			authentication,
 			isConnectionUninitialized,
 			isHappychatEnabled,
 			onInitConnection,
@@ -352,7 +352,7 @@ class Form extends React.Component {
 		return (
 			<div>
 				<HappychatConnection
-					happychatAuthentication={ happychatAuthentication }
+					authentication={ authentication }
 					isConnectionUninitialized={ isConnectionUninitialized }
 					isHappychatEnabled={ isHappychatEnabled }
 					onInitConnection={ onInitConnection }
@@ -393,7 +393,7 @@ const mapState = state => {
 		fallbackTicketPathToShow: getFallbackTicketPathToShow( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
-		happychatAuthentication: authenticator.authorizeChat( state ),
+		authentication: authenticator.authorizeChat( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
 		isConnectionUninitialized: isHCConnectionUninitialized( state ),

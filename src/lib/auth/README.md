@@ -19,7 +19,7 @@ Currently implemented strategies are:
 
 | Key | Value | Required | Default | Available Values | Description |
 | --- | --- | --- | --- | --- | --- |
-| `type` | string | Required | - | `wpcom-oauth` \| `wpcom-oauth-by-token` \| `wpcom-proxy-iframe` | A valid implemented strategy type |
+| `type` | string | Required | - | `wpcom-oauth-by-token` \| `wpcom-proxy-iframe` | A valid implemented strategy type |
 | `options` | object | Optional | - | - | Set of authentication options
 | `options.token` | string | Required by `wpcom-oauth-by-token` | - | - | oauth accessToken
 | `options.proxy` | object | Required by `wpcom-proxy-iframe` | - | - | wpcom auth proxy object
