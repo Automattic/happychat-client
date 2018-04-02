@@ -9,7 +9,6 @@ initialize the library it will be shared throughout the entire codebase without 
 re-initialization.
 
 Currently implemented strategies are:
- - `wpcom-oauth` - regular wpcom oAuth process using `wpcom-oauth-cors` package
  - `wpcom-oauth-by-token` - regular wpcom oAuth based on given token using `wpcom-xhr-request`
  - `wpcom-proxy-iframe` - proxy iframe wpcom authentication using Calypso's wpcom object
 
@@ -34,11 +33,9 @@ Currently implemented strategies are:
 ## Strategies
 
 ### Existing strategies
-`wpcom-oauth` - inside the package this type is represented by the `AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN` constant and it is implemented by [WPcomOAuth](./src/lib/auth/strategies/oauth.js)
-
 `wpcom-oauth-by-token` - inside the package this type is represented by the `AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN` constant and it is implemented by [WPcomOAuth](./src/lib/auth/strategies/oauth.js)
 
-`wpcom-proxy-iframe` - inside the package this type is represented by the `AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN` constant and it is implemented by [WPcomProxyIframe](./src/lib/auth/strategies/proxy-iframe.js)
+`wpcom-proxy-iframe` - inside the package this type is represented by the `AUTH_TYPE_WPCOM_PROXY_IFRAME` constant and it is implemented by [WPcomProxyIframe](./src/lib/auth/strategies/proxy-iframe.js)
 
 ### Add a new strategy
 All strategies should extend and implement all methods of [BaseStrategy](./src/lib/auth/strategies/index.js).

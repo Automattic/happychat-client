@@ -4,14 +4,12 @@
  * Internal dependencies
  */
 import api from 'src/api';
-import { AUTH_TYPE_WPCOM_OAUTH } from 'src/lib/auth/strategies';
+import config from 'src/config';
 
-/**
- * Module variables
- */
+const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'example_oauth_client_id' ) );
 
-// expose the authentication configuration
-window.happychatAuth = { type: AUTH_TYPE_WPCOM_OAUTH };
+// expose wpcom oauth package
+window.wpcomOAuth = wpcomOAuth;
 
 // expose the happychat api
 window.Happychat = api;
