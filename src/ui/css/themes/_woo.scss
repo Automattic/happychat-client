@@ -1,0 +1,29 @@
+/** @format */
+
+@import '../shared/colors';
+@import '../shared/functions/tint-and-shade';
+
+:root {
+	--selected: $purple-woo;
+	--selected-darken-5: darken($purple-woo, 5%);
+	--selected-darken-8: darken($purple-woo, 8%);
+	--selected-lighten-5: lighten($purple-woo, 5%);
+	--selected-lighten-10: lighten($purple-woo, 10%);
+	--selected-tint-20: tint($purple-woo, 20%);
+	--active: $purple-woo;
+	--active-opacity-7: rgba($purple-woo, 0.7);
+	--focused: $purple-woo;
+	--neutral: $gray-woo;
+	--neutral-opacity-5: rgba($gray-woo, 0.5);
+	--neutral-light: $gray-light-woo;
+	--neutral-dark: $gray-dark-woo;
+	--neutral-dark-lighten-20: lighten($gray-dark-woo, 20%);
+	--neutral-darken-30: darken($gray-woo, 30%);
+	--neutral-lighten-10: $gray-woo;
+	--neutral-lighten-20: $gray-woo;
+	--neutral-lighten-20-opacity-5: transparentize($gray-woo, 0.5);
+	--neutral-lighten-25: $gray-woo;
+	--neutral-lighten-30: $gray-woo;
+	--text: $gray-dark-woo;
+	--text-min: lighten($gray-dark-woo, 18%);
+}

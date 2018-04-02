@@ -1,0 +1,29 @@
+/** @format */
+
+@import '../shared/colors';
+@import '../shared/functions/tint-and-shade';
+
+:root {
+	--selected: $green-jetpack;
+	--selected-darken-5: darken($green-jetpack, 5%);
+	--selected-darken-8: darken($green-jetpack, 8%);
+	--selected-lighten-5: lighten($green-jetpack, 5%);
+	--selected-lighten-10: lighten($green-jetpack, 10%);
+	--selected-tint-20: tint($green-jetpack, 20%);
+	--active: $green-jetpack;
+	--active-opacity-7: rgba($green-jetpack, 0.7);
+	--focused: $green-jetpack;
+	--neutral: $gray;
+	--neutral-opacity-5: rgba($gray, 0.5);
+	--neutral-light: $gray-light;
+	--neutral-dark: $gray-dark;
+	--neutral-dark-lighten-20: lighten($gray-dark, 20%);
+	--neutral-darken-30: darken($gray, 30%);
+	--neutral-lighten-10: lighten($gray, 10%);
+	--neutral-lighten-20: lighten($gray, 20%);
+	--neutral-lighten-20-opacity-5: transparentize(lighten($gray, 20%), 0.5);
+	--neutral-lighten-25: lighten($gray, 25%);
+	--neutral-lighten-30: lighten($gray, 30%);
+	--text: $gray-dark;
+	--text-min: darken($gray, 18%);
+}
