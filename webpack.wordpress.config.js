@@ -1,10 +1,9 @@
 /** @format */
 const path = require( 'path' );
 const webpack = require( 'webpack' );
-const LodashModuleReplacementPlugin = require( 'lodash-webpack-plugin' );
 
 module.exports = {
-	entry: './targets/dist/index.js',
+	entry: './targets/wordpress/index.js',
 	output: {
 		filename: './targets/wordpress/assets/happychat.js',
 	},
@@ -18,10 +17,6 @@ module.exports = {
 		],
 	},
 	plugins: [
-		new LodashModuleReplacementPlugin( {
-			paths: true,
-			shorthands: true,
-		} ),
 		new webpack.DefinePlugin( {
 			'process.env.NODE_ENV': JSON.stringify( 'development' ),
 		} ),

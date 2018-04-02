@@ -15,26 +15,26 @@
 	margin: 0;
 	padding: 7px 14px;
 	width: 100%;
-	color: $gray-dark;
+	color: var(--neutral-dark);
 	font-size: 16px;
 	line-height: 1.5;
-	border: 1px solid lighten($gray, 20%);
+	border: 1px solid var(--neutral-lighten-20);
 	background-color: $white;
 	transition: all 0.15s ease-in-out;
 	box-sizing: border-box;
 
 	&::placeholder {
-		color: $gray;
+		color: var(--neutral);
 	}
 
 	&:hover {
-		border-color: lighten($gray, 10%);
+		border-color: var(--neutral-lighten-10);
 	}
 
 	&:focus {
-		border-color: $blue-wordpress;
+		border-color: var(--focused);
 		outline: none;
-		box-shadow: 0 0 0 2px $blue-light;
+		box-shadow: 0 0 0 2px var(--active);
 
 		&::-ms-clear {
 			display: none;
@@ -42,18 +42,18 @@
 	}
 
 	&:disabled {
-		background: $gray-light;
-		border-color: lighten($gray, 30%);
-		color: lighten($gray, 10%);
+		background: var(--neutral-light);
+		border-color: var(--neutral-lighten-30);
+		color: var(--neutral-lighten-10);
 		opacity: 1;
-		-webkit-text-fill-color: lighten($gray, 10%);
+		-webkit-text-fill-color: var(--neutral-lighten-10);
 
 		&:hover {
 			cursor: default;
 		}
 
 		&::placeholder {
-			color: lighten($gray, 10%);
+			color: var(--neutral-lighten-10);
 		}
 	}
 
@@ -171,10 +171,10 @@ input[type='checkbox'] {
 		width: 16px;
 		font: 400 23px/1 Noticons;
 		speak: none;
-		color: $blue-medium;
+		color: var(--selected);
 	}
 	&:disabled:checked:before {
-		color: lighten($gray, 10%);
+		color: var(--neutral-lighten-10);
 	}
 }
 
@@ -191,14 +191,14 @@ input[type='radio'] {
 		width: 8px;
 		height: 8px;
 		text-indent: -9999px;
-		background: $blue-medium;
+		background: var(--selected);
 		vertical-align: middle;
 		border-radius: 50%;
 		animation: grow 0.2s ease-in-out;
 	}
 
 	&:disabled:checked:before {
-		background: lighten($gray, 30%);
+		background: var(--neutral-lighten-30);
 	}
 }
 
@@ -236,11 +236,11 @@ select {
 	background: $white
 		url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiPiAgICAgICAgPHRpdGxlPmFycm93LWRvd248L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBza2V0Y2g6dHlwZT0iTVNQYWdlIj4gICAgICAgIDxnIGlkPSJhcnJvdy1kb3duIiBza2V0Y2g6dHlwZT0iTVNBcnRib2FyZEdyb3VwIiBmaWxsPSIjQzhEN0UxIj4gICAgICAgICAgICA8cGF0aCBkPSJNMTUuNSw2IEwxNyw3LjUgTDEwLjI1LDE0LjI1IEwzLjUsNy41IEw1LDYgTDEwLjI1LDExLjI1IEwxNS41LDYgWiIgaWQ9IkRvd24tQXJyb3ciIHNrZXRjaDp0eXBlPSJNU1NoYXBlR3JvdXAiPjwvcGF0aD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==)
 		no-repeat right 10px center;
-	border-color: lighten($gray, 20%);
+	border-color: var(--neutral-lighten-20);
 	border-style: solid;
 	border-radius: 4px;
 	border-width: 1px 1px 2px;
-	color: $gray-dark;
+	color: var(--neutral-dark);
 	cursor: pointer;
 	display: inline-block;
 	margin: 0;
@@ -265,8 +265,8 @@ select {
 
 	&:focus {
 		background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiPiA8dGl0bGU+YXJyb3ctZG93bjwvdGl0bGU+IDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiA8ZGVmcz48L2RlZnM+IDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHNrZXRjaDp0eXBlPSJNU1BhZ2UiPiA8ZyBpZD0iYXJyb3ctZG93biIgc2tldGNoOnR5cGU9Ik1TQXJ0Ym9hcmRHcm91cCIgZmlsbD0iIzJlNDQ1MyI+IDxwYXRoIGQ9Ik0xNS41LDYgTDE3LDcuNSBMMTAuMjUsMTQuMjUgTDMuNSw3LjUgTDUsNiBMMTAuMjUsMTEuMjUgTDE1LjUsNiBaIiBpZD0iRG93bi1BcnJvdyIgc2tldGNoOnR5cGU9Ik1TU2hhcGVHcm91cCI+PC9wYXRoPiA8L2c+IDwvZz48L3N2Zz4=);
-		border-color: $blue-medium;
-		box-shadow: 0 0 0 2px $blue-light;
+		border-color: var(--selected);
+		box-shadow: 0 0 0 2px var(--active);
 		outline: 0;
 		-moz-outline: none;
 		-moz-user-focus: ignore;
@@ -307,13 +307,13 @@ select {
 	// IE: Remove default background and color styles on focus
 	&::-ms-value {
 		background: none;
-		color: $gray-dark;
+		color: var(--neutral-dark);
 	}
 
 	// Firefox: Remove the focus outline, see http://stackoverflow.com/questions/3773430/remove-outline-from-select-box-in-ff/18853002#18853002
 	&:-moz-focusring {
 		color: transparent;
-		text-shadow: 0 0 0 $gray-dark;
+		text-shadow: 0 0 0 var(--neutral-dark);
 	}
 }
 
