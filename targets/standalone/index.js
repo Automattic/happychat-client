@@ -4,7 +4,7 @@
  * Internal dependencies
  */
 import api from 'src/api';
-import config from 'targets/standalone/config';
+import config from 'src/config';
 
 const wpcomOAuth = require( 'wpcom-oauth-cors' )( config( 'oauth_client_id' ) );
 

@@ -14,7 +14,7 @@
     "> 1%"
   ],
   "scripts": {
-    "preanalyze-bundles": "webpack --config webpack.cdn.config.js --profile --json > stats.json",
+    "preanalyze-bundles": "webpack --config webpack.standalone.config.js --profile --json > stats.json",
     "analyze-bundles": "webpack-bundle-analyzer stats.json .",
     "postinstall": "node bin/fix-local-config",
     "start": "run-p dev:standalone",
@@ -24,13 +24,6 @@
     "dev:standalone:css:main": "node-sass src/form.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/happychat.css",
     "dev:standalone:css:woo": "node-sass src/ui/css/themes/_woo.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/woo.css",
     "dev:standalone:css:jpop": "node-sass src/ui/css/themes/_jpop.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/jpop.css",
-
-    "dev:cdn": "run-p dev:cdn:*",
-    "dev:cdn:js": "NODE_ENV=development webpack-dev-server --config webpack.cdn.config.js",
-    "dev:cdn:css": "run-p dev:cdn:css:*",
-    "dev:cdn:css:main": "node-sass src/form.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/happychat.css",
-    "dev:cdn:css:woo": "node-sass src/ui/css/themes/_woo.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/woo.css",
-    "dev:cdn:css:jpop": "node-sass src/ui/css/themes/_jpop.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/jpop.css",
 
     "dev:npm": "run-p dev:npm:*",
     "dev:npm:js": "NODE_ENV=development ./node_modules/babel-cli/bin/babel.js --watch src --out-dir targets/npm",
@@ -54,13 +47,6 @@
     "build:standalone:css:main": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/happychat.css",
     "build:standalone:css:woo": "node-sass src/ui/css/themes/_woo.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/woo.css",
     "build:standalone:css:jpop": "node-sass src/ui/css/themes/_jpop.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/jpop.css",
-
-    "build:cdn": "run-p build:cdn:*",
-    "build:cdn:js": "NODE_ENV=production webpack -p --config webpack.cdn.config.js",
-    "build:cdn:css": "run-p build:cdn:css:*",
-    "build:cdn:css:main": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/happychat.css",
-    "build:cdn:css:woo": "node-sass src/ui/css/themes/_woo.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/woo.css",
-    "build:cdn:css:jpop": "node-sass src/ui/css/themes/_jpop.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/jpop.css",
 
     "build:npm": "run-p build:npm:*",
     "build:npm:js": "NODE_ENV=production ./node_modules/babel-cli/bin/babel.js src --out-dir targets/npm",
