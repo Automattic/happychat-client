@@ -2,15 +2,15 @@
 
 This folder contains target apps that embed the Happychat library and we actively maintain. Every target has a companion webpack build config and a npm command.
 
-## targets/dist
+## targets/cdn
 
 Contains the production-ready JavaScript and CSS assets.
 
 To build this target, execute:
 
-	npm run targets:dist
+	npm run targets:cdn
 
-It'll build the JS library using the `webpack.dist.config.js`. By defining `NODE_ENV` to `production` within the webpack config, we leverage some optimizations of our dependencies (slimmer React build, for example) and also take the config values from `src/config/production.json` (which, for example, teach the library to connect to Happychat production server).
+It'll build the JS library using the `webpack.cdn.config.js`. By defining `NODE_ENV` to `production` within the webpack config, we leverage some optimizations of our dependencies (slimmer React build, for example) and also take the config values from `src/config/production.json` (which, for example, teach the library to connect to Happychat production server).
 
 It'll build the CSS asset using the `postcss.config.json`. Note that the CSS is automatically requested once the Happychat component is initialized. You never need to embed this manually in your page. It's served from the WordPress.com CDN at https://widgets.wp.com/happychat/happychat.css so any time it's updated it needs to be uploaded there for changes to take effect.
 
@@ -43,5 +43,5 @@ This build uses `webpack.wordpress.config.js` which doesn't include some product
 
 Should you want a production build, execute
 
-	npm run targets:dist:js
-	cp targets/dist/happychat.js targets/wordpress/assets/happychat.js
+	npm run targets:cdn:js
+	cp targets/cdn/happychat.js targets/wordpress/assets/happychat.js
