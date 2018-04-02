@@ -17,7 +17,7 @@ $sans-rtl: Tahoma, $sans;
 	font-weight: 400;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	color: darken($gray, 30);
+	color: var(--neutral-lighten-30);
 }
 
 // NOTE:

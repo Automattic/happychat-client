@@ -2,15 +2,14 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
-const LodashModuleReplacementPlugin = require( 'lodash-webpack-plugin' );
 
 const env = process.env.NODE_ENV;
 
 const config = {
-	entry: './targets/browser/index.js',
+	entry: './targets/cdn/index.js',
 	output: {
 		filename: 'happychat.js',
-		path: path.resolve( __dirname, 'targets/browser' ),
+		path: path.resolve( __dirname, 'targets/cdn' ),
 	},
 	module: {
 		rules: [
@@ -36,8 +35,6 @@ switch ( env ) {
 	case 'development':
 		config.devtool = 'source-map';
 		config.devServer = {
-			contentBase: path.resolve( __dirname, 'targets/browser' ),
-			publicPath: '/',
 			port: 9000,
 		};
 		break;
@@ -45,10 +42,6 @@ switch ( env ) {
 	case 'production':
 		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
 		config.plugins.push( new UglifyJsPlugin() );
-		config.plugins.push( new LodashModuleReplacementPlugin( {
-			paths: true,
-			shorthands: true,
-		} ) );
 		break;
 }
 

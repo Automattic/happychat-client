@@ -2,12 +2,11 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
-const LodashModuleReplacementPlugin = require( 'lodash-webpack-plugin' );
 
 const env = process.env.NODE_ENV;
 
 const config = {
-	entry: './targets/browser/index.js',
+	entry: './targets/wordpress/index.js',
 	output: {
 		filename: 'happychat.js',
 		path: path.resolve( __dirname, 'targets/wordpress/assets' ),
@@ -43,10 +42,6 @@ switch ( env ) {
 	case 'production':
 		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
 		config.plugins.push( new UglifyJsPlugin() );
-		config.plugins.push( new LodashModuleReplacementPlugin( {
-			paths: true,
-			shorthands: true,
-		} ) );
 		break;
 }
 
