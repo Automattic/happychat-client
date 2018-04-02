@@ -8,8 +8,7 @@ const env = process.env.NODE_ENV;
 const config = {
 	entry: './targets/standalone/index.js',
 	output: {
-		filename: 'happychat.js',
-		path: path.resolve( __dirname, 'targets/standalone' ),
+		filename: './targets/standalone/happychat.js',
 	},
 	module: {
 		rules: [

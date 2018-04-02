@@ -8,8 +8,7 @@ const env = process.env.NODE_ENV;
 const config = {
 	entry: './src/api.js',
 	output: {
-		filename: 'happychat.js',
-		path: path.resolve( __dirname, 'targets/npm' ),
+		filename: './targets/npm/happychat.js',
 	},
 	module: {
 		rules: [
