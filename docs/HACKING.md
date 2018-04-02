@@ -28,8 +28,8 @@ The WordPress target doesn't need one because it's a plugin that runs within a W
 	- `state`: Redux state tree.
 	- `ui`: React components - these are unconnected to state.
 - `targets`: apps that use the Happychat library
-	- `cdn`: the production-ready JS and CSS assets.
-	- `standalone`: bare HTML page with Happychat embedded.
+	- `npm`: Happychat embeddedable npm package that exposes the api.
+	- `standalone`: the production-ready JS and CSS assets. with a bare HTML page with Happychat example.
 	- `wordpress`: WordPress plugin that exposes `happychat` as a shortcode.
 
 The library entry point lives at `src/index.js` and uses `src/form.js` and `src/form.scss`. This is where the UI components are connected to state. Code that lives in `src/state` and `src/ui` doesn't know anything about each other, which forces us to create better APIs that make them reusable in other scenarios.
