@@ -10,6 +10,7 @@ describe( 'Connection', () => {
 	beforeEach( () => {
 		component = new HappychatConnection();
 		component.props = {
+			authentication: jest.fn(),
 			onInitConnection: jest.fn(),
 			getAuth: jest.fn(),
 		};
