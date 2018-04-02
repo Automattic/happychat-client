@@ -1,25 +1,25 @@
 /** @format */
 
 ::selection {
-	background: rgba($blue-light, 0.7);
-	color: $gray-dark;
+	background: var(--active-opacity-7);
+	color: $white;
 }
 
 body {
 	font-family: $sans;
 	font-size: 15px;
 	line-height: 1.5;
-	color: $gray-dark;
+	color: var(--neutral-dark);
 	margin: 1; // separate from iframe, so children can style the borders
 }
 
 a,
 a:visited {
-	color: $blue-wordpress;
+	color: var(--focused);
 }
 
 a:hover,
 a:focus,
 a:active {
-	color: $link-highlight;
+	color: var(--selected-tint-20);
 }

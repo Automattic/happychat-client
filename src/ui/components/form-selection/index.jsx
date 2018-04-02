@@ -88,7 +88,10 @@ class FormSelection extends React.Component {
 						</ControlItem>
 					) ) }
 				</SegmentedControl>
-				<SelectDropdown selectedText={ selectedItem ? selectedItem.label : 'Select an option' }>
+				<SelectDropdown
+					isSearchable={ false }
+					selectedText={ selectedItem ? selectedItem.label : 'Select an option' }
+				>
 					{ opts.map( option => (
 						<DropdownItem { ...option.props }>{ option.label }</DropdownItem>
 					) ) }
