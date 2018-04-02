@@ -3,17 +3,17 @@
 .count {
 	display: inline-block;
 	padding: 1px 6px;
-	border: solid 1px var(--count-border-color);
+	border: solid 1px var(--neutral);
 	border-radius: 12px;
 	font-size: 11px;
 	font-weight: 600;
 	line-height: 14px;
-	color: var(--count-color);
+	color: var(--text-min);
 	text-align: center;
 
 	&.is-primary {
 		color: $white;
-		border-color: $blue-medium;
-		background-color: $blue-medium;
+		border-color: var(--selected);
+		background-color: var(--selected);
 	}
 }

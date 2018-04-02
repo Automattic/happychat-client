@@ -20,6 +20,7 @@ import Count from 'src/ui/components/count';
 import DropdownItem from './item';
 import DropdownSeparator from './separator';
 import DropdownLabel from './label';
+import Search from './search';
 
 /**
  * SelectDropdown
@@ -30,6 +31,7 @@ class SelectDropdown extends Component {
 		selectedIcon: PropTypes.element,
 		selectedCount: PropTypes.number,
 		initialSelected: PropTypes.string,
+		isSearchable: PropTypes.bool,
 		className: PropTypes.string,
 		style: PropTypes.object,
 		onSelect: PropTypes.func,
@@ -51,6 +53,7 @@ class SelectDropdown extends Component {
 		onSelect: () => {},
 		onToggle: () => {},
 		style: {},
+		isSearchable: true,
 	};
 
 	static instances = 0;
@@ -62,9 +65,10 @@ class SelectDropdown extends Component {
 		this.navigateItem = this.navigateItem.bind( this );
 		this.toggleDropdown = this.toggleDropdown.bind( this );
 		this.handleOutsideClick = this.handleOutsideClick.bind( this );
+		this.onSearch = this.onSearch.bind( this );
 
 		// state
-		const initialState = { isOpen: false };
+		const initialState = { isOpen: false, searchValue: null };
 
 		if ( props.options.length ) {
 			initialState.selected = this.getInitialSelectedItem( props );
@@ -152,7 +156,7 @@ class SelectDropdown extends Component {
 		return result( find( options, { value: selectedValue } ), 'icon' );
 	}
 
-	dropdownOptions() {
+	dropdownOptions( searchValue ) {
 		let refIndex = 0;
 		const self = this;
 
@@ -188,13 +192,13 @@ class SelectDropdown extends Component {
 		}
 
 		return this.props.options.map( function( item, index ) {
-			if ( ! item ) {
+			if ( ! searchValue && ! item ) {
 				return (
 					<DropdownSeparator key={ 'dropdown-separator-' + this.state.instanceId + '-' + index } />
 				);
 			}
 
-			if ( item.isLabel ) {
+			if ( ! searchValue && item.isLabel ) {
 				return (
 					<DropdownLabel key={ 'dropdown-label-' + this.state.instanceId + '-' + index }>
 						{ item.label }
@@ -202,24 +206,29 @@ class SelectDropdown extends Component {
 				);
 			}
 
-			const dropdownItem = (
-				<DropdownItem
-					key={ 'dropdown-item-' + this.state.instanceId + '-' + item.value }
-					ref={ 'item-' + refIndex }
-					isDropdownOpen={ this.state.isOpen }
-					selected={ this.state.selected === item.value }
-					onClick={ this.onSelectItem( item ) }
-					path={ item.path }
-					icon={ item.icon }
-				>
-					{ item.label }
-				</DropdownItem>
-			);
+			if ( ! searchValue || ( item.label && item.label.match( new RegExp( searchValue, 'i' ) ) ) ) {
+				const dropdownItem = (
+					<DropdownItem
+						key={ 'dropdown-item-' + this.state.instanceId + '-' + item.value }
+						ref={ 'item-' + refIndex }
+						isDropdownOpen={ this.state.isOpen }
+						selected={ this.state.selected === item.value }
+						onClick={ this.onSelectItem( item ) }
+						path={ item.path }
+						icon={ item.icon }
+					>
+						{ item.label }
+					</DropdownItem>
+				);
 
-			refIndex++;
-
-			return dropdownItem;
+				refIndex++;
+				return dropdownItem;
+			}
 		}, this );
+	}
+
+	onSearch( value ) {
+		this.setState( { searchValue: value } );
 	}
 
 	render() {
@@ -267,7 +276,9 @@ class SelectDropdown extends Component {
 						aria-labelledby={ 'select-dropdown-' + this.state.instanceId }
 						aria-expanded={ this.state.isOpen }
 					>
-						{ this.dropdownOptions() }
+						{ this.props.isSearchable &&
+							this.state.isOpen && <Search onSearch={ this.onSearch } /> }
+						{ this.dropdownOptions( this.state.searchValue ) }
 					</ul>
 				</div>
 			</div>
@@ -291,6 +302,7 @@ class SelectDropdown extends Component {
 			delete this.focused;
 			this.setState( {
 				isOpen: false,
+				searchValue: null,
 			} );
 		}
 	}
