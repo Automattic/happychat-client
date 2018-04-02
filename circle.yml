@@ -1,4 +1,6 @@
 machine:
+  environment:
+    NODE_ENV: development
   node:
     version: 8.9.1
 dependencies:

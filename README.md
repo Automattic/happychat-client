@@ -22,6 +22,7 @@ Note that:
 
 Three integration targets are implemented in this repository:
 - CDN: Happychat embeddedable library that exposes the Happychat API through browser's `window`.
+- npm: Happychat embeddedable npm package that exposes the api.
 - Standalone: Happychat embedded in a bare HTML page.
 - WordPress: Happychat exposed as a shortcode in a WordPress environment.
 
