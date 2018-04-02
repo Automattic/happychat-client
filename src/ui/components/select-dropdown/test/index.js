@@ -188,7 +188,7 @@ describe( 'index', () => {
 			SelectDropdown.prototype.closeDropdown.call( fakeContext );
 
 			expect( setStateSpy.mock.calls.length ).toBe( 1 );
-			expect( setStateSpy ).lastCalledWith( { isOpen: false } );
+			expect( setStateSpy ).lastCalledWith( { isOpen: false, searchValue: null } );
 
 			expect( fakeContext.focused ).toBeUndefined();
 		} );

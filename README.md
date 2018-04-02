@@ -4,7 +4,7 @@ A JavaScript library to embed customer-facing Happychat in any host.
 
 ## How to use it
 
-Take the JavaScript bundle at [targets/browser/happychat.js](./targets/browser/happychat.js) and embed it within your project. It'd expose the `Happychat` global variable:
+Take the JavaScript bundle at [targets/cdn/happychat.js](./targets/cdn/happychat.js) and embed it within your project. It'd expose the `Happychat` global variable:
 
 	Happychat.open({
 		nodeId: '<HTML node ID where the UI will be rendered>',
@@ -21,9 +21,9 @@ Note that:
 ### Targets
 
 Three integration targets are implemented in this repository:
-- browser: Happychat embeddedable library that exposes the Happychat API through browser's `window`.
+- CDN: Happychat embeddedable library that exposes the Happychat API through browser's `window`.
 - npm: Happychat embeddedable npm package that exposes the api.
-- standalone: Happychat embedded in a bare HTML page.
+- Standalone: Happychat embedded in a bare HTML page.
 - WordPress: Happychat exposed as a shortcode in a WordPress environment.
 
 See [targets/README.md](./targets/README.md) for more info.
