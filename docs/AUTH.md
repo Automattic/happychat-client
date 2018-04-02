@@ -1,6 +1,6 @@
 # Authentication
 
-Happychat Embedded supports 3 different authentication strategies. You can select the preferred
+Happychat Embedded supports 2 different authentication strategies. You can select the preferred
 strategy via the `authentication` parameter of the `Happychat.open()` method.
 
 ### Direct WPCOM oAuth (wpcom-oauth-by-token)
