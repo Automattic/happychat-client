@@ -34,7 +34,7 @@ const store = createStore(
 	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
 
-export const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
+const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
 /**
  * Creates an iframe in the node provided by the nodeId prop.
