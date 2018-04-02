@@ -19,7 +19,7 @@
     "prestart": "npm run targets:standalone",
     "start": "webpack-dev-server --config webpack.standalone.config.js",
     "targets": "run-p targets:*",
-    "targets:cdn": "run-p targets:cdn:*",
+    "targets:cdn": "run-p targets:cdn:* && run-p targets:cdn:*:*",
     "targets:cdn:css:main": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/happychat.css",
     "targets:cdn:css:woo": "node-sass src/ui/css/themes/_woo.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/woo.css",
     "targets:cdn:css:jpop": "node-sass src/ui/css/themes/_jpop.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/cdn/jpop.css",
