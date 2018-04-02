@@ -59,17 +59,3 @@ To develop this target (`http://localhost:9000`), execute:
 To build this target for production, execute:
 
 	npm run build:wordpress
-
-## targets/npm
-
-Contains a npm package that exposes the api. It is transpiled using babel and while developing starts a webpack dev server
-that will serve the css file. It'll build the JS library using the `webpack.npm.config.js`. 
-**When the package will be published we need to build the files prior to packaging. Right now built files are gitignored.**
-
-To develop this target (`http://localhost:9000`), execute:
-
-	npm run dev:npm
-
-To build this target for production, execute:
-
-	npm run build:npm
