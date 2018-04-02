@@ -14,8 +14,7 @@
     "> 1%"
   ],
   "scripts": {
-    "preanalyze-bundles": "webpack --config webpack.cdn.config.js --profile --json > stats.json",
-    "analyze-bundles": "webpack-bundle-analyzer stats.json .",
+    "analyze-bundles": "NODE_ENV=analyze webpack -p --config webpack.standalone.config.js",
     "postinstall": "node bin/fix-local-config",
     "start": "run-p dev:standalone",
     "dev:standalone": "run-p dev:standalone:*",
