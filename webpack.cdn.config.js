@@ -35,8 +35,6 @@ switch ( env ) {
 	case 'development':
 		config.devtool = 'source-map';
 		config.devServer = {
-			contentBase: path.resolve( __dirname, 'targets/cdn' ),
-			publicPath: '/',
 			port: 9000,
 		};
 		break;
@@ -44,6 +42,7 @@ switch ( env ) {
 	case 'production':
 		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
 		config.plugins.push( new UglifyJsPlugin() );
+		break;
 }
 
 module.exports = config;
