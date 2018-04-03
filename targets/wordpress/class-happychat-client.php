@@ -87,7 +87,7 @@ class Happychat_Client {
 	private function get_happychat_settings() {
 		$happychat_settings = [
 			'accessToken'  => null,
-			'entry'        => 'ENTRY_FORM',
+			'entry'        => 'form',
 			'entryOptions' => [],
 			'groups'       => [ get_option( 'happychat_user_group' ) ],
 			'canChat'      => 'true',

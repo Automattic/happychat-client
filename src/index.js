@@ -16,7 +16,7 @@ import find from 'lodash/find';
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
 // UI components
-import Happychat, { ENTRY_FORM } from 'src/form';
+import Happychat from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
 // state: general, actions, selectors
 import eventAPIFactory from 'src/state/event-api';
@@ -27,6 +27,7 @@ import { setAssetsLoaded } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
+import { ENTRY_FORM, LAYOUT_FULLSCREEN } from 'src/constants';
 
 const store = createStore(
 	reducer,
@@ -47,7 +48,7 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
 const createIframe = ( props, assetsLoadedHook = () => {} ) => {
-	const { nodeId, groups, entryOptions } = props;
+	const { entryOptions, groups, layout, nodeId } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
 	const primaryHasAnySecondary = options =>
@@ -69,6 +70,11 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	iframeElement.height = iframeHeight + 'em';
 	iframeElement.frameBorder = 0;
 	iframeElement.scrolling = 'no';
+
+	// full height for fullescreen layout
+	if ( layout === LAYOUT_FULLSCREEN ) {
+		iframeElement.height = '100%';
+	}
 
 	document.getElementById( nodeId ).appendChild( iframeElement );
 
@@ -156,6 +162,11 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	// some CSS styles depend on these top-level classes being present
 	iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
 
+	// add class for fullscreen
+	if ( layout === LAYOUT_FULLSCREEN ) {
+		iframeElement.contentDocument.body.classList.add( 'is-fullscreen' );
+	}
+
 	// React advises to use an element -not the body itself- as the target render,
 	// that's why we create this wrapperElement inside the iframe.
 	const targetNode = document.createElement( 'div' );
@@ -189,7 +200,7 @@ export const renderHappychat = (
 			username,
 			display_name,
 			avatar_URL,
-			language,
+			localeSlug,
 		},
 		groups = [ HAPPYCHAT_GROUP_WPCOM ],
 		canChat = true,
@@ -208,7 +219,7 @@ export const renderHappychat = (
 		} )
 	);
 	store.dispatch( setGroups( groups ) );
-	store.dispatch( setLocale( language ) );
+	store.dispatch( setLocale( localeSlug ) );
 	store.dispatch( setFallbackTicketOptions( fallbackTicket ) );
 
 	isAnyCanChatPropFalse( canChat, entryOptions )
@@ -224,8 +235,8 @@ export const renderHappychat = (
 };
 /* eslint-enable camelcase */
 
-export const createTargetNode = ( { nodeId, groups, entryOptions } ) => {
-	return createIframe( { nodeId, groups, entryOptions }, dispatchAssetsFinishedDownloading );
+export const createTargetNode = ( props ) => {
+	return createIframe( props, dispatchAssetsFinishedDownloading );
 };
 
 export const renderError = ( targetNode, { error } ) =>
