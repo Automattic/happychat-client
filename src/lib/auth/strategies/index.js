@@ -1,11 +1,5 @@
 /** @format */
 
-/**
- * Constants representing allowed and implemented authentication strategies
- */
-export const AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN = 'wpcom-oauth-by-token';
-export const AUTH_TYPE_WPCOM_PROXY_IFRAME = 'wpcom-proxy-iframe';
-
  /**
   * "Abstract" class representing a base strategy, it should be extended by implemented strategies
   * as a fail safe that all exposed methods are implemented.

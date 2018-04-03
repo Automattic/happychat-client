@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
  */
 import config from 'src/config';
 import authenticator from 'src/lib/auth';
+import { ENTRY_FORM } from 'src/constants';
 
 // actions
 import {
@@ -61,9 +62,6 @@ import Card from 'src/ui/components/card';
 import CompactCard from 'src/ui/components/card/compact';
 import FormLabel from 'src/ui/components/form-label';
 import SpinnerLine from 'src/ui/components/spinner-line';
-
-const ENTRY_FORM = 'form';
-const ENTRY_CHAT = 'chat';
 
 class ChatComponent {
 	constructor( props ) {
@@ -422,4 +420,3 @@ const mapDispatch = {
 };
 
 export default connect( mapState, mapDispatch )( mockLocalize( Form ) );
-export { ENTRY_FORM, ENTRY_CHAT };

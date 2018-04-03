@@ -11,7 +11,7 @@ import debugFactory from 'debug';
 import {
 	AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN,
 	AUTH_TYPE_WPCOM_PROXY_IFRAME,
-} from './strategies';
+} from 'src/constants';
 import WPcomOAuth from './strategies/wpcom/oauth';
 import WPcomProxyIframe from './strategies/wpcom/proxy-iframe';
 

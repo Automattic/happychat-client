@@ -31,7 +31,7 @@
     "dev:npm:css:main": "node-sass src/form.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/npm/happychat.css",
     "dev:npm:css:woo": "node-sass src/ui/css/themes/_woo.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/npm/woo.css",
     "dev:npm:css:jpop": "node-sass src/ui/css/themes/_jpop.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/npm/jpop.css",
-    "dev:npm:serve-css": "NODE_ENV=development webpack-dev-server --config webpack.npm.config.js",
+    "dev:npm:css:serve": "NODE_ENV=development webpack-dev-server --config webpack.npm.config.js",
 
     "dev:wordpress": "run-p dev:wordpress:*",
     "dev:wordpress:js": "NODE_ENV=development webpack-dev-server --config webpack.wordpress.config.js",
