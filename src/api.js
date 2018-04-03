@@ -15,7 +15,7 @@ import {
 	renderError,
  } from './index';
 import authenticator from 'src/lib/auth';
-import { LAYOUT_PANEL } from './constants';
+import { LAYOUT_PANEL, THEME_CALYPSO } from './constants';
 
 const api = {
 	/**
@@ -35,6 +35,7 @@ const api = {
 	 * @param {Array} layout Optional. Happychat layout (panel or fullscreen) default value is panel
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Object} user Optional. Customer information .
+	 * @param {string} theme Optional. Selected color theme.
 	 */
 	open: ( {
 		authentication,
@@ -45,10 +46,11 @@ const api = {
 		layout = LAYOUT_PANEL,
 		nodeId,
 		user,
+		theme = THEME_CALYPSO,
 	} ) => {
 		authenticator.init( authentication );
 
-		const targetNode = createTargetNode( { entryOptions, groups, layout, nodeId } );
+		const targetNode = createTargetNode( { entryOptions, groups, layout, nodeId, theme } );
 
 		authenticator.login()
 			.then( () => isEmpty( user ) ? authenticator.getUser() : Promise.resolve( user ) )

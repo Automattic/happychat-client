@@ -27,7 +27,7 @@ import { setAssetsLoaded } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
-import { ENTRY_FORM, LAYOUT_FULLSCREEN } from 'src/constants';
+import { ENTRY_FORM, LAYOUT_FULLSCREEN, THEME_CALYPSO } from 'src/constants';
 
 const store = createStore(
 	reducer,
@@ -48,7 +48,7 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
 const createIframe = ( props, assetsLoadedHook = () => {} ) => {
-	const { entryOptions, groups, layout, nodeId } = props;
+	const { entryOptions, groups, layout, nodeId, theme } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
 	const primaryHasAnySecondary = options =>
@@ -135,19 +135,17 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	styleHC.setAttribute( 'type', 'text/css' );
 	styleHC.setAttribute( 'href', config( 'css_url' ) );
 
-	// TODO: rework this to use skills and have local themes loaded
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
 
 	const styleHCTheme = document.createElement( 'link' );
 	styleHCTheme.setAttribute( 'rel', 'stylesheet' );
 	styleHCTheme.setAttribute( 'type', 'text/css' );
 	let styleHCThemePromise = Promise.resolve();
-	if ( groups && groups.length > 0 ) {
-		const groupName = groups[ 0 ];
-		if ( groupName === 'woo' || groupName === 'jpop' ) {
-			styleHCTheme.setAttribute( 'href', 'https://widgets.wp.com/happychat/' + groupName + '.css' );
-			styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
-		}
+
+	if ( theme !== THEME_CALYPSO ) {
+		// if we are not using the default theme load the requested one
+		styleHCTheme.setAttribute( 'href', 'https://widgets.wp.com/happychat/' + theme + '.css' );
+		styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
 	}
 
 	Promise.all( [ styleNoticonPromise, styleHCPromise, styleHCThemePromise ] ).then( () =>
@@ -200,6 +198,7 @@ export const renderHappychat = (
 			username,
 			display_name,
 			avatar_URL,
+			language,
 			localeSlug,
 		},
 		groups = [ HAPPYCHAT_GROUP_WPCOM ],
@@ -219,7 +218,8 @@ export const renderHappychat = (
 		} )
 	);
 	store.dispatch( setGroups( groups ) );
-	store.dispatch( setLocale( localeSlug ) );
+	// TODO: fix this - currentUser object differs from calypso to oauth.
+	store.dispatch( setLocale( language | localeSlug ) );
 	store.dispatch( setFallbackTicketOptions( fallbackTicket ) );
 
 	isAnyCanChatPropFalse( canChat, entryOptions )
