@@ -68,7 +68,7 @@ class Happychat_Client {
 	}
 
 	private function validate_entry( $entry ) {
-		if ( ! $entry || ! $this->is_valid_entry( $group ) ) {
+		if ( ! $entry || ! $this->is_valid_entry( $entry ) ) {
 			$entry = 'form';
 		}
 		return $entry;
