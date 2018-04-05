@@ -96,9 +96,13 @@ class Happychat_Client {
 
 		$happychat_settings = apply_filters( 'happychat_settings', $happychat_settings );
 
-		$happychat_settings['entry'] = $this->validate_entry( $happychat_settings['entry'] );
+		$path_to_create = isset( $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] ) ? $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] : NULL;
+		$path_to_show   = isset( $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] ) ? $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] : NULL;
+
 		$happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] = $this->validate_path( $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] );
 		$happychat_settings['entryOptions']['fallbackTicket']['pathToShow']   = $this->validate_path( $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] );
+
+		$happychat_settings['entry']  = $this->validate_entry( $happychat_settings['entry'] );
 		$happychat_settings['groups'] = [ $this->validate_group( $happychat_settings['groups'][0] ) ];
 
 		return $happychat_settings;
@@ -127,3 +131,4 @@ class Happychat_Client {
 		wp_enqueue_script( 'happychat-init' );
 	}
 }
+
