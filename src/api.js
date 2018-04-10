@@ -15,7 +15,7 @@ import {
 	renderError,
  } from './index';
 import authenticator from 'src/lib/auth';
-import { LAYOUT_MAX_WIDTH_FIXED_HEIGHT } from './constants';
+import { LAYOUT_MAX_WIDTH_FIXED_HEIGHT, THEME_CALYPSO } from './constants';
 
 const api = {
 	/**
@@ -35,6 +35,7 @@ const api = {
 	 * @param {String} layout Optional. The chat layout max-width-fixed-height | max-parent-size | panel-fixed-size | panel-max-parent-size
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Object} user Optional. Customer information .
+	 * @param {string} theme Optional. Selected color theme.
 	 */
 	open: ( {
 		authentication,
@@ -45,10 +46,11 @@ const api = {
 		layout = LAYOUT_MAX_WIDTH_FIXED_HEIGHT,
 		nodeId,
 		user,
+		theme = THEME_CALYPSO,
 	} ) => {
 		authenticator.init( authentication );
 
-		const targetNode = createTargetNode( { entryOptions, groups, layout, nodeId } );
+		const targetNode = createTargetNode( { entryOptions, groups, layout, nodeId, theme } );
 
 		authenticator.login()
 			.then( () => isEmpty( user ) ? authenticator.getUser() : Promise.resolve( user ) )

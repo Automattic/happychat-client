@@ -10,6 +10,7 @@ body {
 	font-size: 15px;
 	line-height: 1.5;
 	color: var(--neutral-dark);
+	background: var(--neutral-lighten-30);
 	margin: 1; // separate from iframe, so children can style the borders
 }
 

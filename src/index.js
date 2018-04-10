@@ -34,6 +34,7 @@ import {
 	LAYOUT_MAX_PARENT_SIZE,
 	LAYOUT_PANEL_FIXED_SIZE,
 	LAYOUT_PANEL_MAX_PARENT_SIZE,
+	THEME_CALYPSO,
 } from 'src/constants';
 
 const store = createStore(
@@ -55,26 +56,26 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
 const createIframe = ( props, assetsLoadedHook = () => {} ) => {
-	const { entryOptions, groups, layout, nodeId } = props;
+	const { entryOptions, groups, layout, nodeId, theme } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
 	let iframeHeight = 0;
 	let iframeWidth = 0;
 	switch ( layout ) {
 		case LAYOUT_MAX_WIDTH_FIXED_HEIGHT:
-	const primaryHasAnySecondary = options =>
-		Array.isArray( options ) && find( options, opt => opt.secondaryOptions );
+			const primaryHasAnySecondary = options =>
+			Array.isArray( options ) && find( options, opt => opt.secondaryOptions );
 
-	const isThereAnySecondaryOptions = options =>
-		options &&
-		( options.secondaryOptions || primaryHasAnySecondary( entryOptions.primaryOptions ) );
+			const isThereAnySecondaryOptions = options =>
+				options &&
+				( options.secondaryOptions || primaryHasAnySecondary( entryOptions.primaryOptions ) );
 
-	// Calculate height based on the number of components
-	// the iframe may need to render.
+			// Calculate height based on the number of components
+			// the iframe may need to render.
 			iframeHeight = 480;
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
-	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
+			iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
+			iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
+			iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
 
 			iframeHeight = iframeHeight + 'em';
 			iframeWidth = '100%';
@@ -157,20 +158,17 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	styleHC.setAttribute( 'type', 'text/css' );
 	styleHC.setAttribute( 'href', config( 'css_url' ) );
 
-	// TODO: rework this to use skills and have local themes loaded
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
 
 	const styleHCTheme = document.createElement( 'link' );
 	styleHCTheme.setAttribute( 'rel', 'stylesheet' );
 	styleHCTheme.setAttribute( 'type', 'text/css' );
 	let styleHCThemePromise = Promise.resolve();
-	if ( groups && groups.length > 0 ) {
-		const groupName = groups[ 0 ];
-		if ( groupName === 'woo' || groupName === 'jpop' ) {
-			styleHCTheme.setAttribute( 'href', 'https://widgets.wp.com/happychat/' + groupName + '.css' );
-			styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
-		}
-	}
+
+	// if we are not using the default theme load the requested one
+	// TODO: cleanup the css url to use base url
+	styleHCTheme.setAttribute( 'href', config( 'css_url' ).replace( 'happychat.css', theme + '.css' ) );
+	styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
 
 	Promise.all( [ styleNoticonPromise, styleHCPromise, styleHCThemePromise ] ).then( () =>
 		assetsLoadedHook()
@@ -222,12 +220,14 @@ export const renderHappychat = (
 			username,
 			display_name,
 			avatar_URL,
+			language,
 			localeSlug,
 		},
 		groups = [ HAPPYCHAT_GROUP_WPCOM ],
 		canChat = true,
 		entry = ENTRY_FORM,
 		entryOptions = {},
+		layout,
 	}
 ) => {
 	const { fallbackTicket } = entryOptions;
@@ -241,7 +241,8 @@ export const renderHappychat = (
 		} )
 	);
 	store.dispatch( setGroups( groups ) );
-	store.dispatch( setLocale( localeSlug ) );
+	// TODO: fix this - currentUser object differs from calypso to oauth.
+	store.dispatch( setLocale( language | localeSlug ) );
 	store.dispatch( setFallbackTicketOptions( fallbackTicket ) );
 
 	isAnyCanChatPropFalse( canChat, entryOptions )
@@ -250,7 +251,7 @@ export const renderHappychat = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat entry={ entry } entryOptions={ entryOptions } />
+			<Happychat entry={ entry } entryOptions={ entryOptions } layout={ layout } />
 		</Provider>,
 		targetNode
 	);

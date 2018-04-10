@@ -21,6 +21,7 @@ with the following top-level properties:
 | `canChat` | bool | Optional | `true` | Whether the user can be offered chat or not. |
 | `layout` | string | Optional | `max-width-fixed-height` | The chat layout `max-width-fixed-height`\|`max-parent-size`\|`panel-fixed-size`\|`panel-max-parent-size` |
 | `nodeId` | string | Mandatory | `null` | The id of the HTMLNode where Happychat will be rendered. |
+| `theme` | string | Optional | `calypso` | Color theme. Valid values are `calypso`, `woo`, and `woo`
 
 ### The entry prop
 

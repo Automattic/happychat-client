@@ -1,5 +1,8 @@
 /** @format */
 
+@import '../shared/colors';
+@import '../shared/functions/tint-and-shade';
+
 :root {
 	--selected: $blue-medium;
 	--selected-darken-5: darken($blue-medium, 5%);
