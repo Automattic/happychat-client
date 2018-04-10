@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import find from 'lodash/find';
+import includes from 'lodash/includes';
 
 /**
  * Internal dependencies
@@ -16,7 +17,7 @@ import find from 'lodash/find';
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
 // UI components
-import Happychat, { ENTRY_FORM } from 'src/form';
+import Happychat from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
 // state: general, actions, selectors
 import eventAPIFactory from 'src/state/event-api';
@@ -27,6 +28,13 @@ import { setAssetsLoaded } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
+import {
+	ENTRY_FORM,
+	LAYOUT_MAX_WIDTH_FIXED_HEIGHT,
+	LAYOUT_MAX_PARENT_SIZE,
+	LAYOUT_PANEL_FIXED_SIZE,
+	LAYOUT_PANEL_MAX_PARENT_SIZE,
+} from 'src/constants';
 
 const store = createStore(
 	reducer,
@@ -47,9 +55,13 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
 const createIframe = ( props, assetsLoadedHook = () => {} ) => {
-	const { nodeId, groups, entryOptions } = props;
+	const { entryOptions, groups, layout, nodeId } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
+	let iframeHeight = 0;
+	let iframeWidth = 0;
+	switch ( layout ) {
+		case LAYOUT_MAX_WIDTH_FIXED_HEIGHT:
 	const primaryHasAnySecondary = options =>
 		Array.isArray( options ) && find( options, opt => opt.secondaryOptions );
 
@@ -59,14 +71,30 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 
 	// Calculate height based on the number of components
 	// the iframe may need to render.
-	let iframeHeight = 480;
+			iframeHeight = 480;
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
 	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
 
+			iframeHeight = iframeHeight + 'em';
+			iframeWidth = '100%';
+			break;
+
+		case LAYOUT_PANEL_FIXED_SIZE:
+			iframeHeight = '330em';
+			iframeWidth = '150em';
+			break;
+
+		case LAYOUT_MAX_PARENT_SIZE:
+		case LAYOUT_PANEL_MAX_PARENT_SIZE:
+			iframeHeight = '100%';
+			iframeWidth = '100%';
+			break;
+	}
+
 	// style iframe element
-	iframeElement.width = '100%';
-	iframeElement.height = iframeHeight + 'em';
+	iframeElement.width = iframeWidth;
+	iframeElement.height = iframeHeight;
 	iframeElement.frameBorder = 0;
 	iframeElement.scrolling = 'no';
 
@@ -156,6 +184,11 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	// some CSS styles depend on these top-level classes being present
 	iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
 
+	// add class for fullscreen
+	if ( includes( [ LAYOUT_MAX_PARENT_SIZE, LAYOUT_PANEL_MAX_PARENT_SIZE ], layout ) ) {
+		iframeElement.contentDocument.body.classList.add( 'is-fullscreen' );
+	}
+
 	// React advises to use an element -not the body itself- as the target render,
 	// that's why we create this wrapperElement inside the iframe.
 	const targetNode = document.createElement( 'div' );
@@ -189,7 +222,7 @@ export const renderHappychat = (
 			username,
 			display_name,
 			avatar_URL,
-			language,
+			localeSlug,
 		},
 		groups = [ HAPPYCHAT_GROUP_WPCOM ],
 		canChat = true,
@@ -208,7 +241,7 @@ export const renderHappychat = (
 		} )
 	);
 	store.dispatch( setGroups( groups ) );
-	store.dispatch( setLocale( language ) );
+	store.dispatch( setLocale( localeSlug ) );
 	store.dispatch( setFallbackTicketOptions( fallbackTicket ) );
 
 	isAnyCanChatPropFalse( canChat, entryOptions )
@@ -224,8 +257,8 @@ export const renderHappychat = (
 };
 /* eslint-enable camelcase */
 
-export const createTargetNode = ( { nodeId, groups, entryOptions } ) => {
-	return createIframe( { nodeId, groups, entryOptions }, dispatchAssetsFinishedDownloading );
+export const createTargetNode = ( props ) => {
+	return createIframe( props, dispatchAssetsFinishedDownloading );
 };
 
 export const renderError = ( targetNode, { error } ) =>

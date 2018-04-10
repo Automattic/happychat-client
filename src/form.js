@@ -78,6 +78,7 @@ class ChatComponent {
 			isCurrentUser,
 			isExternalUrl,
 			isServerReachable,
+			layout,
 			message,
 			onSendMessage,
 			onSendNotTyping,
@@ -100,6 +101,7 @@ class ChatComponent {
 				isCurrentUser={ isCurrentUser }
 				isExternalUrl={ isExternalUrl }
 				isServerReachable={ isServerReachable }
+				layout={ layout }
 				message={ message }
 				onSendMessage={ onSendMessage }
 				onSendNotTyping={ onSendNotTyping }
@@ -366,6 +368,7 @@ Form.propTypes = {
 	canChat: PropTypes.bool,
 	entry: PropTypes.string,
 	entryOptions: PropTypes.object,
+	layout: PropTypes.string,
 };
 
 // Whether URL should open a new tab or not.

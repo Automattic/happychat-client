@@ -2,6 +2,13 @@
 
 // experiment: style scrollbars
 .happychat__page {
+	height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+	align-content: stretch;
+
 	::-webkit-scrollbar {
 		width: 12px;
 		height: 12px;
@@ -27,6 +34,11 @@
 	border: 1px solid var(--neutral-lighten-25);
 }
 
+// override for fullscreen
+body.is-fullscreen .happychat__page {
+	border: 0;
+}
+
 // make textarea to fill the whole box
 .happychat__message > textarea {
 	width: 100%;
@@ -35,7 +47,6 @@
 
 // small tweaks to conversation container
 .happychat__conversation {
-	height: 80vh; // set height so it can be scrolled
 	padding-left: 6px;
 	padding-right: 6px;
 }

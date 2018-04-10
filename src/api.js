@@ -15,6 +15,7 @@ import {
 	renderError,
  } from './index';
 import authenticator from 'src/lib/auth';
+import { LAYOUT_MAX_WIDTH_FIXED_HEIGHT } from './constants';
 
 const api = {
 	/**
@@ -26,13 +27,14 @@ const api = {
 	 * @param {Object} authentication.options.token Optional. WP.com oAuth access token to be used
 	 * @param {Object} authentication.options.proxy Optional. WP.com proxy object to be used
 	 * @param {boolean} canChat Optional. Whether the user can be offered chat. True by default.
-	 * @param {string} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
+	 * @param {string} entry Optional. Valid values are 'form', 'chat'.
+	 * 			 ENTRY_FORM (constant for 'form') is the default and will render the contact form.
+	 * 			 ENTRY_CHAT (constant for 'chat') will render the chat form.
 	 * @param {Object} entryOptions Optional. Contains options to configure the selected entry.
 	 * @param {Array} groups Mandatory. Happychat groups this user belongs to.
+	 * @param {String} layout Optional. The chat layout max-width-fixed-height | max-parent-size | panel-fixed-size | panel-max-parent-size
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Object} user Optional. Customer information .
-	 * 			 ENTRY_FORM is the default and will render the contact form.
-	 * 			 ENTRY_CHAT will render the chat form.
 	 */
 	open: ( {
 		authentication,
@@ -40,22 +42,24 @@ const api = {
 		entry,
 		entryOptions,
 		groups,
+		layout = LAYOUT_MAX_WIDTH_FIXED_HEIGHT,
 		nodeId,
 		user,
 	} ) => {
 		authenticator.init( authentication );
 
-		const targetNode = createTargetNode( { nodeId, groups, entryOptions } );
+		const targetNode = createTargetNode( { entryOptions, groups, layout, nodeId } );
 
 		authenticator.login()
 			.then( () => isEmpty( user ) ? authenticator.getUser() : Promise.resolve( user ) )
 			.then( userObject =>
 				renderHappychat( targetNode, {
-					userObject,
 					canChat,
-					groups,
 					entry,
 					entryOptions,
+					groups,
+					layout,
+					userObject,
 				} )
 			)
 			.catch( error => renderError( targetNode, { error } ) );

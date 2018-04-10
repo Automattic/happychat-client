@@ -13,6 +13,10 @@ body {
 	margin: 1; // separate from iframe, so children can style the borders
 }
 
+body.is-fullscreen {
+	margin: 0;
+}
+
 a,
 a:visited {
 	color: var(--focused);
