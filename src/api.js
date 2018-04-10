@@ -32,7 +32,7 @@ const api = {
 	 * 			 ENTRY_CHAT (constant for 'chat') will render the chat form.
 	 * @param {Object} entryOptions Optional. Contains options to configure the selected entry.
 	 * @param {Array} groups Mandatory. Happychat groups this user belongs to.
-	 * @param {Array} layout Optional. Happychat layout (panel or fullscreen) default value is panel
+	 * @param {String} layout Optional. The chat layout max-width-fixed-height | max-parent-size | panel-fixed-size | panel-max-parent-size
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Object} user Optional. Customer information .
 	 */

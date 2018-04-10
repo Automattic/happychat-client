@@ -19,7 +19,7 @@ with the following top-level properties:
 | `entryOptions` | object | Optional | `{}` | Configures happychat entry points. See details below. |
 | `groups` | array | Optional | `[WP.com]` | What group the chat session should be routed to. Valid values are `WP.com`, `woo`, and `jpop`. |
 | `canChat` | bool | Optional | `true` | Whether the user can be offered chat or not. |
-| `layout` | string | Optional | `panel` | The chat layout fullscreen (100%), panel (floating) |
+| `layout` | string | Optional | `max-width-fixed-height` | The chat layout `max-width-fixed-height`\|`max-parent-size`\|`panel-fixed-size`\|`panel-max-parent-size` |
 | `nodeId` | string | Mandatory | `null` | The id of the HTMLNode where Happychat will be rendered. |
 
 ### The entry prop
