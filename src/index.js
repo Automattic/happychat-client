@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import find from 'lodash/find';
+import includes from 'lodash/includes';
 
 /**
  * Internal dependencies
@@ -27,7 +28,14 @@ import { setAssetsLoaded } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
-import { ENTRY_FORM, LAYOUT_FULLSCREEN, THEME_CALYPSO } from 'src/constants';
+import {
+	ENTRY_FORM,
+	LAYOUT_MAX_WIDTH_FIXED_HEIGHT,
+	LAYOUT_MAX_PARENT_SIZE,
+	LAYOUT_PANEL_FIXED_SIZE,
+	LAYOUT_PANEL_MAX_PARENT_SIZE,
+	THEME_CALYPSO,
+} from 'src/constants';
 
 const store = createStore(
 	reducer,
@@ -51,6 +59,10 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	const { entryOptions, groups, layout, nodeId, theme } = props;
 	const iframeElement = document.createElement( 'iframe' );
 
+	let iframeHeight = 0;
+	let iframeWidth = 0;
+	switch ( layout ) {
+		case LAYOUT_MAX_WIDTH_FIXED_HEIGHT:
 	const primaryHasAnySecondary = options =>
 		Array.isArray( options ) && find( options, opt => opt.secondaryOptions );
 
@@ -60,21 +72,32 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 
 	// Calculate height based on the number of components
 	// the iframe may need to render.
-	let iframeHeight = 480;
+			iframeHeight = 480;
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
 	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
 
+			iframeHeight = iframeHeight + 'em';
+			iframeWidth = '100%';
+			break;
+
+		case LAYOUT_PANEL_FIXED_SIZE:
+			iframeHeight = '330em';
+			iframeWidth = '150em';
+			break;
+
+		case LAYOUT_MAX_PARENT_SIZE:
+		case LAYOUT_PANEL_MAX_PARENT_SIZE:
+			iframeHeight = '100%';
+			iframeWidth = '100%';
+			break;
+	}
+
 	// style iframe element
-	iframeElement.width = '100%';
-	iframeElement.height = iframeHeight + 'em';
+	iframeElement.width = iframeWidth;
+	iframeElement.height = iframeHeight;
 	iframeElement.frameBorder = 0;
 	iframeElement.scrolling = 'no';
-
-	// full height for fullescreen layout
-	if ( layout === LAYOUT_FULLSCREEN ) {
-		iframeElement.height = '100%';
-	}
 
 	document.getElementById( nodeId ).appendChild( iframeElement );
 
@@ -161,7 +184,7 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	iframeElement.contentDocument.body.classList.add( hasTouch() ? 'touch' : 'notouch' );
 
 	// add class for fullscreen
-	if ( layout === LAYOUT_FULLSCREEN ) {
+	if ( includes( [ LAYOUT_MAX_PARENT_SIZE, LAYOUT_PANEL_MAX_PARENT_SIZE ], layout ) ) {
 		iframeElement.contentDocument.body.classList.add( 'is-fullscreen' );
 	}
 

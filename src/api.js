@@ -15,7 +15,7 @@ import {
 	renderError,
  } from './index';
 import authenticator from 'src/lib/auth';
-import { LAYOUT_PANEL, THEME_CALYPSO } from './constants';
+import { LAYOUT_MAX_WIDTH_FIXED_HEIGHT, THEME_CALYPSO } from './constants';
 
 const api = {
 	/**
@@ -32,7 +32,7 @@ const api = {
 	 * 			 ENTRY_CHAT (constant for 'chat') will render the chat form.
 	 * @param {Object} entryOptions Optional. Contains options to configure the selected entry.
 	 * @param {Array} groups Mandatory. Happychat groups this user belongs to.
-	 * @param {Array} layout Optional. Happychat layout (panel or fullscreen) default value is panel
+	 * @param {String} layout Optional. The chat layout max-width-fixed-height | max-parent-size | panel-fixed-size | panel-max-parent-size
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Object} user Optional. Customer information .
 	 * @param {string} theme Optional. Selected color theme.
@@ -43,7 +43,7 @@ const api = {
 		entry,
 		entryOptions,
 		groups,
-		layout = LAYOUT_PANEL,
+		layout = LAYOUT_MAX_WIDTH_FIXED_HEIGHT,
 		nodeId,
 		user,
 		theme = THEME_CALYPSO,

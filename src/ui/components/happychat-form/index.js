@@ -5,6 +5,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import includes from 'lodash/includes';
 
 /**
  * Internal dependencies
@@ -12,6 +13,8 @@ import PropTypes from 'prop-types';
 import { Composer } from 'src/ui/components/composer';
 import { Notices } from 'src/ui/components/notices';
 import { Timeline } from 'src/ui/components/timeline';
+import { Title } from 'src/ui/components/title';
+import { LAYOUT_PANEL_FIXED_SIZE, LAYOUT_PANEL_MAX_PARENT_SIZE } from 'src/constants';
 
 /**
  * React component for rendering a happychat client
@@ -47,6 +50,7 @@ export class HappychatForm extends Component {
 			isCurrentUser,
 			isExternalUrl,
 			isServerReachable,
+			layout,
 			message,
 			onSendMessage,
 			onSendNotTyping,
@@ -59,6 +63,9 @@ export class HappychatForm extends Component {
 
 		return (
 			<div className="happychat__page" aria-live="polite" aria-relevant="additions">
+				{ includes( [ LAYOUT_PANEL_FIXED_SIZE, LAYOUT_PANEL_MAX_PARENT_SIZE ], layout ) &&
+					<Title /> }
+
 				<Timeline
 					currentUserEmail={ currentUserEmail }
 					currentUserGroup={ currentUserGroup }
@@ -97,6 +104,7 @@ HappychatForm.propTypes = {
 	isCurrentUser: PropTypes.func,
 	isExternalUrl: PropTypes.func,
 	isServerReachable: PropTypes.bool,
+	layout: PropTypes.string,
 	message: PropTypes.string,
 	onSendMessage: PropTypes.func,
 	onSendNotTyping: PropTypes.func,
