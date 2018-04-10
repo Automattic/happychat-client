@@ -15,7 +15,7 @@ import {
 	renderError,
  } from './index';
 import authenticator from 'src/lib/auth';
-import { LAYOUT_PANEL } from './constants';
+import { LAYOUT_MAX_WIDTH_FIXED_HEIGHT } from './constants';
 
 const api = {
 	/**
@@ -42,7 +42,7 @@ const api = {
 		entry,
 		entryOptions,
 		groups,
-		layout = LAYOUT_PANEL,
+		layout = LAYOUT_MAX_WIDTH_FIXED_HEIGHT,
 		nodeId,
 		user,
 	} ) => {
