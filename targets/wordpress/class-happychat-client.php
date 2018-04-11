@@ -29,7 +29,7 @@ class Happychat_Client {
 		// The host should provide a valid WordPress.com token
 		// for the user, so we can make authenticated requests
 		// on its behalf.
-		if ( ! $happychat_settings['accessToken'] ) {
+		if ( empty( $happychat_settings['authentication'] ) ) {
 			return '';
 		}
 
@@ -86,7 +86,7 @@ class Happychat_Client {
 
 	private function get_happychat_settings() {
 		$happychat_settings = [
-			'accessToken'  => null,
+			'authentication'  => [],
 			'entry'        => 'ENTRY_FORM',
 			'entryOptions' => [],
 			'groups'       => [ get_option( 'happychat_user_group' ) ],
