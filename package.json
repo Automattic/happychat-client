@@ -24,7 +24,6 @@
     "dev:standalone:css:main": "node-sass src/form.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/happychat.css",
     "dev:standalone:css:woo": "node-sass src/ui/css/themes/_woo.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/woo.css",
     "dev:standalone:css:jpop": "node-sass src/ui/css/themes/_jpop.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/jpop.css",
-
     "dev:npm": "run-p dev:npm:*",
     "dev:npm:js": "NODE_ENV=development ./node_modules/babel-cli/bin/babel.js --watch src --out-dir targets/npm",
     "dev:npm:css": "run-p dev:npm:css:*",
@@ -32,14 +31,12 @@
     "dev:npm:css:woo": "node-sass src/ui/css/themes/_woo.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/npm/woo.css",
     "dev:npm:css:jpop": "node-sass src/ui/css/themes/_jpop.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/npm/jpop.css",
     "dev:npm:serve-css": "NODE_ENV=development webpack-dev-server --config webpack.npm.config.js",
-
     "dev:wordpress": "run-p dev:wordpress:*",
     "dev:wordpress:js": "NODE_ENV=development webpack-dev-server --config webpack.wordpress.config.js",
     "dev:wordpress:css": "run-p dev:wordpress:css:*",
     "dev:wordpress:css:main": "node-sass src/form.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/wordpress/happychat.css",
     "dev:wordpress:css:woo": "node-sass src/ui/css/themes/_woo.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/wordpress/woo.css",
     "dev:wordpress:css:jpop": "node-sass src/ui/css/themes/_jpop.scss | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/wordpress/jpop.css",
-
     "build": "run-p build:*",
     "build:standalone": "run-p build:standalone:*",
     "build:standalone:js": "NODE_ENV=production webpack -p --config webpack.standalone.config.js -p",
@@ -47,14 +44,12 @@
     "build:standalone:css:main": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/happychat.css",
     "build:standalone:css:woo": "node-sass src/ui/css/themes/_woo.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/woo.css",
     "build:standalone:css:jpop": "node-sass src/ui/css/themes/_jpop.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/jpop.css",
-
     "build:npm": "run-p build:npm:*",
     "build:npm:js": "NODE_ENV=production ./node_modules/babel-cli/bin/babel.js src --out-dir targets/npm",
     "build:npm:css": "run-p build:npm:css:*",
     "build:npm:css:main": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/npm/happychat.css",
     "build:npm:css:woo": "node-sass src/ui/css/themes/_woo.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/npm/woo.css",
     "build:npm:css:jpop": "node-sass src/ui/css/themes/_jpop.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/npm/jpop.css",
-
     "build:wordpress": "run-p build:wordpress:*",
     "build:wordpress:js": "NODE_ENV=production webpack -p --config webpack.wordpress.config.js",
     "build:wordpress:css": "run-p build:wordpress:css:*",
