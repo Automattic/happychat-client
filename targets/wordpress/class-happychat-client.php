@@ -107,7 +107,6 @@ class Happychat_Client {
 		$happychat_settings['groups'] = [ $this->validate_group( $happychat_settings['groups'][0] ) ];
 
 		return $happychat_settings;
-
 	}
 
 	private function enqueue_scripts( $happychat_settings ) {
@@ -133,4 +132,3 @@ class Happychat_Client {
 		wp_enqueue_script( 'happychat-init' );
 	}
 }
-
