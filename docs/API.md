@@ -10,16 +10,41 @@ with the following top-level properties:
 
 | Key | Value | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `authentication` | Object | Mandatory | `null` |  Set of authentication options see [more](./src/lib/auth/README.md) |
-| `authentication.type` | Object | Mandatory | `null` |  Type of authentication strategy used |
-| `authentication.options` | Object | Optional | `null` |  Authentication options |
-| `authentication.options.token` | Object | Optional | `null` |  WP.com oAuth access token to be used |
-| `authentication.options.proxy` | Object | Optional | `null` |  WP.com proxy object to be used |
+| `authentication` | object | Mandatory | `null` |  Configures Happychat authentication. See details below. |
 | `entry` | string | Optional | `ENTRY_FORM` | What should be rendered as the first entry point for Happychat. Valid values are `ENTRY_FORM` (renders the contact form) `ENTRY_CHAT` (renders the chat form). |
-| `entryOptions` | object | Optional | `{}` | Configures happychat entry points. See details below. |
+| `entryOptions` | object | Optional | `{}` | Configures Happychat entry points. See details below. |
 | `groups` | array | Optional | `[WP.com]` | What group the chat session should be routed to. Valid values are `WP.com`, `woo`, and `jpop`. |
 | `canChat` | bool | Optional | `true` | Whether the user can be offered chat or not. |
 | `nodeId` | string | Mandatory | `null` | The id of the HTMLNode where Happychat will be rendered. |
+
+### Authentication
+
+Happychat currently supports two authentication mechanisms ([more info](./src/lib/auth/README.md)):
+
+* Via WordPress.com OAUth token, used in the standalone example.
+* Via a proxy iframe that send requests to WordPress.com, used in Calypso.
+
+How to configure authentication via OAUth token:
+
+	Happychat.open( {
+		authentication: {
+			type: 'wpcom-oauth-by-token',
+			options: {
+				token: <WordPress.com OAUth access token>
+			},
+		},
+	} );
+
+How to configure authentication via proxy iframe:
+
+	Happychat.open( {
+		authentication: {
+			type: 'wpcom-proxy-iframe',
+			options: {
+				proxy: <WordPress.com proxy object>
+			},
+		},
+	} );
 
 ### The entry prop
 
