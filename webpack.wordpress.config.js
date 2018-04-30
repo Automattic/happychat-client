@@ -34,6 +34,11 @@ const config = {
 switch ( env ) {
 	case 'development':
 		config.devtool = 'source-map';
+		config.devServer = {
+			contentBase: path.resolve( __dirname, 'targets/wordpress' ),
+			publicPath: '/',
+			port: 9000,
+		};
 		break;
 
 	case 'production':
