@@ -71,6 +71,8 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 | `secondaryOptions` | array | `[]` | Contains the options to be shown in the secondary menu. They'll be rendered either as a segmented control or a dropdown depending on the window width. If not provided, this section won't be shown. |
 | `itemListTitle` | string | `Which product do you need help with?` | Title of item list menu. |
 | `itemList` | array | `[]` | Contains the options to be shown in the item list menu. They'll be rendered as a dropdown. If not provided, this section won't be shown. |
+| `openTextFieldTitle` | string | `What is the URL of your site?` | Title for the textfield component. |
+| `openTextField` | bool | `false` | Whether to show a textfield. |
 | `fallbackTicket` | object | `{}` | Configures a default route that Happychat will use to offer ticket support as a fallback when chat is not available. |
 
 **primaryOptions**

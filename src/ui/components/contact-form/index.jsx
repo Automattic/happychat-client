@@ -67,6 +67,7 @@ export class ContactForm extends React.Component {
 			itemListTitle,
 			itemList: newItemList,
 			itemSelected: newItemSelected,
+			openTextField: '',
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -214,6 +215,22 @@ export class ContactForm extends React.Component {
 		);
 	}
 
+	maybeOpenTextField() {
+		const { openTextField, openTextFieldTitle } = this.props;
+		return openTextField ? (
+			<div>
+				<FormLabel>{ openTextFieldTitle }</FormLabel>
+				<FormTextInput
+					name="openTextField"
+					value={ this.state.openTextField }
+					onChange={ this.handleChange }
+				/>
+			</div>
+		) : (
+			''
+		);
+	}
+
 	render() {
 		const { formTitle, submitFormText } = this.props;
 
@@ -239,6 +256,8 @@ export class ContactForm extends React.Component {
 						onChange={ this.handleChange }
 					/>
 
+					{ this.maybeOpenTextField() }
+
 					<FormButton
 						disabled={ ! this.prepareCanSubmitForm() }
 						type="button"
@@ -261,6 +280,8 @@ ContactForm.propTypes = {
 	secondaryOptionsTitle: PropTypes.string,
 	itemListTitle: PropTypes.string,
 	itemList: PropTypes.array,
+	openTextField: PropTypes.bool,
+	openTextFieldTitle: PropTypes.string,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
@@ -276,6 +297,8 @@ ContactForm.defaultProps = {
 	secondaryOptionsTitle: 'Any more info you want to share?',
 	itemListTitle: 'Which product do you need help with?',
 	itemList: [],
+	openTextField: false,
+	openTextFieldTitle: 'What is the URL of your site?',
 	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',

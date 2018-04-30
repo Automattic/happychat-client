@@ -42,6 +42,7 @@
 							{ value: 'jp', label: 'Jetpack', secondary: [ 'plugins' ] },
 							{ value: 'wc', label: 'WooCommerce', secondary: [ 'plugins' ] },
 						],
+						openTextField: true,
 						fallbackTicket: {
 							headers: {
 								'X-Test-Header': 'test header',
@@ -53,7 +54,7 @@
 					}
 				} );
 			} );
-			
+
 
 			// test events API
 			var reportChatStatus= function(chatStatus){

@@ -228,6 +228,8 @@ class TicketFormComponent {
 				secondaryOptionsTitle,
 				itemList,
 				itemListTitle,
+				openTextField,
+				openTextFieldTitle,
 			},
 		} = this.props;
 
@@ -287,6 +289,8 @@ class TicketFormComponent {
 						itemList={ itemList }
 						itemListTitle={ itemListTitle }
 						showSubject={ true }
+						openTextField={ openTextField }
+						openTextFieldTitle={ openTextFieldTitle }
 						submitForm={ this.submitForm }
 						submitFormText={ 'Send a ticket' }
 						onEvent={ this.onEvent }
