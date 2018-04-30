@@ -99,13 +99,14 @@ class Happychat_Client {
 		$path_to_create = isset( $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] ) ? $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] : null;
 		$path_to_show   = isset( $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] ) ? $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] : null;
 
-		$happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] = $this->validate_path( $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] );
-		$happychat_settings['entryOptions']['fallbackTicket']['pathToShow']   = $this->validate_path( $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] );
+		$happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] = $this->validate_path( $path_to_create );
+		$happychat_settings['entryOptions']['fallbackTicket']['pathToShow']   = $this->validate_path( $path_to_show );
 
 		$happychat_settings['entry']  = $this->validate_entry( $happychat_settings['entry'] );
 		$happychat_settings['groups'] = [ $this->validate_group( $happychat_settings['groups'][0] ) ];
 
 		return $happychat_settings;
+
 	}
 
 	private function enqueue_scripts( $happychat_settings ) {
