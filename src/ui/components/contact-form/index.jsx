@@ -315,7 +315,7 @@ ContactForm.defaultProps = {
 	secondaryOptionsTitle: 'Any more info you want to share?',
 	itemListTitle: 'Which product do you need help with?',
 	itemList: [],
-	openTextField: false,
+	openTextField: {},
 	openTextFieldTitle: 'What is the URL of your site?',
 	showSubject: false,
 	submitForm: () => {},
