@@ -43,6 +43,8 @@ export class ContactForm extends React.Component {
 			itemListTitle,
 			openTextField,
 			openTextFieldTitle,
+			openTextArea,
+			openTextAreaTitle,
 		} = this.props;
 		const primarySelected = getSelectedOption( primaryOptions );
 		const newSecondaryOptions = filterByTargetValue(
@@ -72,6 +74,9 @@ export class ContactForm extends React.Component {
 			openTextField,
 			openTextFieldTitle,
 			openTextFieldValue: '',
+			openTextArea,
+			openTextAreaTitle,
+			openTextAreaValue: '',
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -237,6 +242,36 @@ export class ContactForm extends React.Component {
 		);
 	}
 
+	maybeOpenTextArea() {
+		const {
+			primarySelected,
+			secondarySelected,
+			openTextArea,
+			openTextAreaTitle,
+			openTextAreaValue,
+		} = this.state;
+		const shouldShowOpenText = options => {
+			const newOptions = filterByTargetValue(
+				filterByTargetValue( [ options ], primarySelected.value, 'primary' ),
+				secondarySelected.value,
+				'secondary'
+			);
+			return Array.isArray( newOptions ) && newOptions.length === 1;
+		};
+		return shouldShowOpenText( openTextArea ) ? (
+			<div>
+				<FormLabel>{ openTextAreaTitle }</FormLabel>
+				<FormTextarea
+					name="openTextAreaValue"
+					value={ openTextAreaValue }
+					onChange={ this.handleChange }
+				/>
+			</div>
+		) : (
+			''
+		);
+	}
+
 	maybeSubject() {
 		const { showSubject } = this.props;
 		return showSubject ? (
@@ -276,6 +311,8 @@ export class ContactForm extends React.Component {
 
 					{ this.maybeOpenTextField() }
 
+					{ this.maybeOpenTextArea() }
+
 					<FormButton
 						disabled={ ! this.prepareCanSubmitForm() }
 						type="button"
@@ -300,6 +337,8 @@ ContactForm.propTypes = {
 	itemList: PropTypes.array,
 	openTextField: PropTypes.object,
 	openTextFieldTitle: PropTypes.string,
+	openTextArea: PropTypes.object,
+	openTextAreaTitle: PropTypes.string,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
@@ -317,6 +356,8 @@ ContactForm.defaultProps = {
 	itemList: [],
 	openTextField: {},
 	openTextFieldTitle: 'What is the URL of your site?',
+	openTextArea: {},
+	openTextAreaTitle: 'Any more info you want to share?',
 	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',

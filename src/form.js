@@ -228,6 +228,8 @@ class TicketFormComponent {
 				secondaryOptionsTitle,
 				itemList,
 				itemListTitle,
+				openTextArea,
+				openTextAreaTitle,
 				openTextField,
 				openTextFieldTitle,
 			},
@@ -289,6 +291,8 @@ class TicketFormComponent {
 						itemList={ itemList }
 						itemListTitle={ itemListTitle }
 						showSubject={ true }
+						openTextArea={ openTextArea }
+						openTextAreaTitle={ openTextAreaTitle }
 						openTextField={ openTextField }
 						openTextFieldTitle={ openTextFieldTitle }
 						submitForm={ this.submitForm }
