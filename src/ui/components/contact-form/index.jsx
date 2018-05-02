@@ -41,6 +41,8 @@ export class ContactForm extends React.Component {
 			secondaryOptionsTitle,
 			itemList,
 			itemListTitle,
+			openTextField,
+			openTextFieldTitle,
 		} = this.props;
 		const primarySelected = getSelectedOption( primaryOptions );
 		const newSecondaryOptions = filterByTargetValue(
@@ -67,7 +69,9 @@ export class ContactForm extends React.Component {
 			itemListTitle,
 			itemList: newItemList,
 			itemSelected: newItemSelected,
-			openTextField: '',
+			openTextField,
+			openTextFieldTitle,
+			openTextFieldValue: '',
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -203,28 +207,42 @@ export class ContactForm extends React.Component {
 		);
 	}
 
-	maybeSubject() {
-		const { showSubject } = this.props;
-		return showSubject ? (
+	maybeOpenTextField() {
+		const {
+			primarySelected,
+			secondarySelected,
+			openTextField,
+			openTextFieldTitle,
+			openTextFieldValue,
+		} = this.state;
+		const shouldShowOpenText = options => {
+			const newOptions = filterByTargetValue(
+				filterByTargetValue( [ options ], primarySelected.value, 'primary' ),
+				secondarySelected.value,
+				'secondary'
+			);
+			return Array.isArray( newOptions ) && newOptions.length === 1;
+		};
+		return shouldShowOpenText( openTextField ) ? (
 			<div>
-				<FormLabel>{ 'Subject' }</FormLabel>
-				<FormTextInput name="subject" value={ this.state.subject } onChange={ this.handleChange } />
+				<FormLabel>{ openTextFieldTitle }</FormLabel>
+				<FormTextInput
+					name="openTextFieldValue"
+					value={ openTextFieldValue }
+					onChange={ this.handleChange }
+				/>
 			</div>
 		) : (
 			''
 		);
 	}
 
-	maybeOpenTextField() {
-		const { openTextField, openTextFieldTitle } = this.props;
-		return openTextField ? (
+	maybeSubject() {
+		const { showSubject } = this.props;
+		return showSubject ? (
 			<div>
-				<FormLabel>{ openTextFieldTitle }</FormLabel>
-				<FormTextInput
-					name="openTextField"
-					value={ this.state.openTextField }
-					onChange={ this.handleChange }
-				/>
+				<FormLabel>{ 'Subject' }</FormLabel>
+				<FormTextInput name="subject" value={ this.state.subject } onChange={ this.handleChange } />
 			</div>
 		) : (
 			''
@@ -280,7 +298,7 @@ ContactForm.propTypes = {
 	secondaryOptionsTitle: PropTypes.string,
 	itemListTitle: PropTypes.string,
 	itemList: PropTypes.array,
-	openTextField: PropTypes.bool,
+	openTextField: PropTypes.object,
 	openTextFieldTitle: PropTypes.string,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,

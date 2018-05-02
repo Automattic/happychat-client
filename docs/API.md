@@ -72,7 +72,7 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 | `itemListTitle` | string | `Which product do you need help with?` | Title of item list menu. |
 | `itemList` | array | `[]` | Contains the options to be shown in the item list menu. They'll be rendered as a dropdown. If not provided, this section won't be shown. |
 | `openTextFieldTitle` | string | `What is the URL of your site?` | Title for the textfield component. |
-| `openTextField` | bool | `false` | Whether to show a textfield. |
+| `openTextField` | object | `{}` | Contains conditions under which to show the text field. |
 | `fallbackTicket` | object | `{}` | Configures a default route that Happychat will use to offer ticket support as a fallback when chat is not available. |
 
 **primaryOptions**
@@ -110,6 +110,16 @@ For example:
 	{ value: 'themes', label: 'Themes', primary: [ 'before-buy' ], secondary: [ 'themes' ] }
 
 this option will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`.
+
+**openTextField**
+
+Can define `primary` and `secondary` options that control when to show this field.
+
+For example:
+
+	{ primary: [ 'before-buy' ], secondary: [ 'themes' ] }
+
+the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`.
 
 **fallbackTicket config options**
 
