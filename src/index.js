@@ -127,7 +127,7 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	const styleHC = document.createElement( 'link' );
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute( 'href', config( 'css_url' ) );
+	styleHC.setAttribute( 'href', config( 'css_url' ) + 'happychat.css' );
 
 	// TODO: rework this to use skills and have local themes loaded
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
@@ -139,7 +139,7 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	if ( groups && groups.length > 0 ) {
 		const groupName = groups[ 0 ];
 		if ( groupName === 'woo' || groupName === 'jpop' ) {
-			styleHCTheme.setAttribute( 'href', 'https://widgets.wp.com/happychat/' + groupName + '.css' );
+			styleHCTheme.setAttribute( 'href', config( 'css_url' ) + groupName + '.css' );
 			styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
 		}
 	}
@@ -183,14 +183,7 @@ const isAnyCanChatPropFalse = ( canChat, entryOptions ) =>
 export const renderHappychat = (
 	targetNode,
 	{
-		userObject: {
-			ID,
-			email,
-			username,
-			display_name,
-			avatar_URL,
-			language,
-		},
+		userObject: { ID, email, username, display_name, avatar_URL, language },
 		groups = [ HAPPYCHAT_GROUP_WPCOM ],
 		canChat = true,
 		entry = ENTRY_FORM,
