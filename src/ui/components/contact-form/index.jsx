@@ -222,7 +222,7 @@ export class ContactForm extends React.Component {
 		} = this.state;
 		const shouldShowOpenText = options => {
 			const newOptions = filterByTargetValue(
-				filterByTargetValue( [ options ], primarySelected.value, 'primary' ),
+				filterByTargetValue( options, primarySelected.value, 'primary' ),
 				secondarySelected.value,
 				'secondary'
 			);
@@ -252,7 +252,7 @@ export class ContactForm extends React.Component {
 		} = this.state;
 		const shouldShowOpenText = options => {
 			const newOptions = filterByTargetValue(
-				filterByTargetValue( [ options ], primarySelected.value, 'primary' ),
+				filterByTargetValue( options, primarySelected.value, 'primary' ),
 				secondarySelected.value,
 				'secondary'
 			);
@@ -335,9 +335,9 @@ ContactForm.propTypes = {
 	secondaryOptionsTitle: PropTypes.string,
 	itemListTitle: PropTypes.string,
 	itemList: PropTypes.array,
-	openTextField: PropTypes.object,
+	openTextField: PropTypes.array,
 	openTextFieldTitle: PropTypes.string,
-	openTextArea: PropTypes.object,
+	openTextArea: PropTypes.array,
 	openTextAreaTitle: PropTypes.string,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
@@ -354,9 +354,9 @@ ContactForm.defaultProps = {
 	secondaryOptionsTitle: 'Any more info you want to share?',
 	itemListTitle: 'Which product do you need help with?',
 	itemList: [],
-	openTextField: {},
+	openTextField: [],
 	openTextFieldTitle: 'What is the URL of your site?',
-	openTextArea: {},
+	openTextArea: [],
 	openTextAreaTitle: 'Any more info you want to share?',
 	showSubject: false,
 	submitForm: () => {},
