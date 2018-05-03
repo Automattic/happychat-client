@@ -41,6 +41,10 @@ export class ContactForm extends React.Component {
 			secondaryOptionsTitle,
 			itemList,
 			itemListTitle,
+			openTextField,
+			openTextFieldTitle,
+			openTextArea,
+			openTextAreaTitle,
 		} = this.props;
 		const primarySelected = getSelectedOption( primaryOptions );
 		const newSecondaryOptions = filterByTargetValue(
@@ -67,6 +71,12 @@ export class ContactForm extends React.Component {
 			itemListTitle,
 			itemList: newItemList,
 			itemSelected: newItemSelected,
+			openTextField,
+			openTextFieldTitle,
+			openTextFieldValue: '',
+			openTextArea,
+			openTextAreaTitle,
+			openTextAreaValue: '',
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -202,6 +212,66 @@ export class ContactForm extends React.Component {
 		);
 	}
 
+	maybeOpenTextField() {
+		const {
+			primarySelected,
+			secondarySelected,
+			openTextField,
+			openTextFieldTitle,
+			openTextFieldValue,
+		} = this.state;
+		const shouldShowOpenText = options => {
+			const newOptions = filterByTargetValue(
+				filterByTargetValue( options, primarySelected.value, 'primary' ),
+				secondarySelected.value,
+				'secondary'
+			);
+			return Array.isArray( newOptions ) && newOptions.length === 1;
+		};
+		return shouldShowOpenText( openTextField ) ? (
+			<div>
+				<FormLabel>{ openTextFieldTitle }</FormLabel>
+				<FormTextInput
+					name="openTextFieldValue"
+					value={ openTextFieldValue }
+					onChange={ this.handleChange }
+				/>
+			</div>
+		) : (
+			''
+		);
+	}
+
+	maybeOpenTextArea() {
+		const {
+			primarySelected,
+			secondarySelected,
+			openTextArea,
+			openTextAreaTitle,
+			openTextAreaValue,
+		} = this.state;
+		const shouldShowOpenText = options => {
+			const newOptions = filterByTargetValue(
+				filterByTargetValue( options, primarySelected.value, 'primary' ),
+				secondarySelected.value,
+				'secondary'
+			);
+			return Array.isArray( newOptions ) && newOptions.length === 1;
+		};
+		return shouldShowOpenText( openTextArea ) ? (
+			<div>
+				<FormLabel>{ openTextAreaTitle }</FormLabel>
+				<FormTextarea
+					name="openTextAreaValue"
+					value={ openTextAreaValue }
+					onChange={ this.handleChange }
+				/>
+			</div>
+		) : (
+			''
+		);
+	}
+
 	maybeSubject() {
 		const { showSubject } = this.props;
 		return showSubject ? (
@@ -239,6 +309,10 @@ export class ContactForm extends React.Component {
 						onChange={ this.handleChange }
 					/>
 
+					{ this.maybeOpenTextField() }
+
+					{ this.maybeOpenTextArea() }
+
 					<FormButton
 						disabled={ ! this.prepareCanSubmitForm() }
 						type="button"
@@ -261,6 +335,10 @@ ContactForm.propTypes = {
 	secondaryOptionsTitle: PropTypes.string,
 	itemListTitle: PropTypes.string,
 	itemList: PropTypes.array,
+	openTextField: PropTypes.array,
+	openTextFieldTitle: PropTypes.string,
+	openTextArea: PropTypes.array,
+	openTextAreaTitle: PropTypes.string,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
@@ -276,6 +354,10 @@ ContactForm.defaultProps = {
 	secondaryOptionsTitle: 'Any more info you want to share?',
 	itemListTitle: 'Which product do you need help with?',
 	itemList: [],
+	openTextField: [],
+	openTextFieldTitle: 'What is the URL of your site?',
+	openTextArea: [],
+	openTextAreaTitle: 'Any more info you want to share?',
 	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',

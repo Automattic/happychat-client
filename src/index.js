@@ -59,10 +59,12 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 
 	// Calculate height based on the number of components
 	// the iframe may need to render.
-	let iframeHeight = 480;
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
-	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
+	let iframeHeight = 415;
+	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 95 : 0 );
+	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 95 : 0 );
+	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 100 : 0 );
+	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextField ? 100 : 0 );
+	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextArea ? 150 : 0 );
 
 	// style iframe element
 	iframeElement.width = '100%';
@@ -127,7 +129,7 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	const styleHC = document.createElement( 'link' );
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute( 'href', config( 'css_url' ) );
+	styleHC.setAttribute( 'href', config( 'css_url' ) + 'happychat.css' );
 
 	// TODO: rework this to use skills and have local themes loaded
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
@@ -139,7 +141,7 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	if ( groups && groups.length > 0 ) {
 		const groupName = groups[ 0 ];
 		if ( groupName === 'woo' || groupName === 'jpop' ) {
-			styleHCTheme.setAttribute( 'href', 'https://widgets.wp.com/happychat/' + groupName + '.css' );
+			styleHCTheme.setAttribute( 'href', config( 'css_url' ) + groupName + '.css' );
 			styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
 		}
 	}
@@ -183,14 +185,7 @@ const isAnyCanChatPropFalse = ( canChat, entryOptions ) =>
 export const renderHappychat = (
 	targetNode,
 	{
-		userObject: {
-			ID,
-			email,
-			username,
-			display_name,
-			avatar_URL,
-			language,
-		},
+		userObject: { ID, email, username, display_name, avatar_URL, language },
 		groups = [ HAPPYCHAT_GROUP_WPCOM ],
 		canChat = true,
 		entry = ENTRY_FORM,

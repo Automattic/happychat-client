@@ -71,6 +71,10 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 | `secondaryOptions` | array | `[]` | Contains the options to be shown in the secondary menu. They'll be rendered either as a segmented control or a dropdown depending on the window width. If not provided, this section won't be shown. |
 | `itemListTitle` | string | `Which product do you need help with?` | Title of item list menu. |
 | `itemList` | array | `[]` | Contains the options to be shown in the item list menu. They'll be rendered as a dropdown. If not provided, this section won't be shown. |
+| `openTextFieldTitle` | string | `What is the URL of your site?` | Title for the textfield component. |
+| `openTextField` | object | `{}` | Contains conditions under which to show the text field. |
+| `openTextAreaTitle` | string | `Any more info you want to share?` | Title for the textarea component. |
+| `openTextArea` | object | `{}` | Contains conditions under which to show the text area.|
 | `fallbackTicket` | object | `{}` | Configures a default route that Happychat will use to offer ticket support as a fallback when chat is not available. |
 
 **primaryOptions**
@@ -109,11 +113,45 @@ For example:
 
 this option will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`.
 
+**openTextField / openTextArea**
+
+Can define `primary` and `secondary` options that control when to show this field.
+
+For example:
+
+	{ primary: [ 'before-buy' ], secondary: [ 'themes' ] }
+
+the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`.
+
 **fallbackTicket config options**
 
-* `pathToCreate`: path to the create ticket endpoint where Happychat will make a XHR request with the form data, so the host can process it. It may return an operation ID that will be used by the `pathToShow` option to show a message to the user.
-* `pathToShow`: upon a successful response from the `pathToCreate` endpoint, Happychat can show a link to the ticket created if one is configured. This admits a `<ticket-id>` expression that will be filled with the response provided by the `pathToCreate` endpoint.
-* `headers`: additional request headers to be sent along the `pathToCreate` request. This allows for hooking WordPress nonces into the request, for example.
+The contact form can create a chat session or route the request to a specified endpoint. Here's how to configure it:
+
+`pathToCreate`: path to the endpoint where Happychat will make a XHR request with the form data. The request payload will be a JSON object containing all entryOptions properties and:
+
+* primarySelected: the selected primary option,
+* secondarySelected: the selected secondary option,
+* itemSelected:	the selected item option,
+* subject: the subject's value,
+* message: the message's value,
+* openTextAreaValue: the openTextArea's value,
+* openTextFieldValue:	the openTextField's value,
+
+`pathToShow`: upon a successful response from the `pathToCreate` endpoint, Happychat can show a link to the ticket created if one is configured. This admits a `<ticket-id>` expression that will be filled with the response provided by the `pathToCreate` endpoint.
+
+`headers`: additional request headers to be sent along the `pathToCreate` request. This allows for hooking WordPress nonces into the request, for example.
+
+For example:
+
+	{
+		headers: {
+			'X-Test-Header': 'Savoury butter is the best breakfast',
+		},
+		pathToCreate: '/create-ticket',
+		pathToShow: '/show-ticket/<ticket-id>',
+	}
+
+will send a XHR request to the '/create-ticket' endpoint with the following payload. Upon successful response, the form will shown a message with a link to the `<path>/show-ticket/<ticket-id>` URL, being `ticket-id` the response received from making a request to `pathToShow`.
 
 ### Examples
 
