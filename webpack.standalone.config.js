@@ -2,6 +2,7 @@
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
+const BundleAnalyzerPlugin = require( 'webpack-bundle-analyzer' ).BundleAnalyzerPlugin;
 
 const env = process.env.NODE_ENV;
 
@@ -38,7 +39,7 @@ switch ( env ) {
 			contentBase: path.resolve( __dirname, 'targets/standalone' ),
 			historyApiFallback: {
 				index: 'example.html',
-			  },
+			},
 			publicPath: '/',
 			port: 9000,
 		};
@@ -47,6 +48,13 @@ switch ( env ) {
 	case 'production':
 		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
 		config.plugins.push( new UglifyJsPlugin() );
+		break;
+
+	case 'analyze':
+		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
+		config.plugins.push( new UglifyJsPlugin() );
+		// same as production + bundle analyzer
+		config.plugins.push( new BundleAnalyzerPlugin() );
 		break;
 }
 
