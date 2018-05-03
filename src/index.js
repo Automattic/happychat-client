@@ -59,10 +59,12 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 
 	// Calculate height based on the number of components
 	// the iframe may need to render.
-	let iframeHeight = 480;
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
-	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
+	let iframeHeight = 415;
+	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 95 : 0 );
+	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 95 : 0 );
+	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 100 : 0 );
+	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextField ? 100 : 0 );
+	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextArea ? 150 : 0 );
 
 	// style iframe element
 	iframeElement.width = '100%';
