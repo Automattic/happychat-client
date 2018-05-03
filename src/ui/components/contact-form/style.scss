@@ -4,6 +4,11 @@
 	.form-textarea {
 		// Fix the width of our text area so that it can only be resized vertically
 		resize: vertical;
+
+		margin-bottom: 24px;
+		@include breakpoint( '>960px' ) {
+			margin-bottom: 32px;
+		}
 	}
 
 	.form-button {
