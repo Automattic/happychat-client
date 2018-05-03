@@ -4,6 +4,7 @@ node_modules/
 
 # Project
 tokens
+stats.json
 *.local.json
 
 # Targets dists
