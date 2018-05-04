@@ -62,19 +62,19 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	let iframeWidth = 0;
 	switch ( layout ) {
 		case LAYOUT_MAX_WIDTH_FIXED_HEIGHT:
-	const primaryHasAnySecondary = options =>
+			const primaryHasAnySecondary = options =>
 		Array.isArray( options ) && find( options, opt => opt.secondaryOptions );
 
-	const isThereAnySecondaryOptions = options =>
+			const isThereAnySecondaryOptions = options =>
 		options &&
 		( options.secondaryOptions || primaryHasAnySecondary( entryOptions.primaryOptions ) );
 
 	// Calculate height based on the number of components
 	// the iframe may need to render.
 			iframeHeight = 480;
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
-	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
+			iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 110 : 0 );
+			iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 110 : 0 );
+			iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 70 : 0 );
 
 			iframeHeight = iframeHeight + 'em';
 			iframeWidth = '100%';
@@ -144,8 +144,8 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	iframeElement.contentDocument.head.appendChild( styleLoading );
 
 	// Then, we inject the stylesheets: the noticon custom font, Happychat, and the theme if any.
-	// We want to tell Happychat when they are downloaded, and we do so by means of the onload method
-	// of the stylesheets, which will resolve the Promise.all()
+	// We want to tell Happychat when they are downloaded, and we do so by means of the onload
+	// method of the stylesheets, which will resolve the Promise.all()
 	const styleNoticon = document.createElement( 'link' );
 	styleNoticon.setAttribute( 'rel', 'stylesheet' );
 	styleNoticon.setAttribute( 'type', 'text/css' );
@@ -167,8 +167,13 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	if ( groups && groups.length > 0 ) {
 		const groupName = groups[ 0 ];
 		if ( groupName === 'woo' || groupName === 'jpop' ) {
-			styleHCTheme.setAttribute( 'href', 'https://widgets.wp.com/happychat/' + groupName + '.css' );
-			styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
+			styleHCTheme.setAttribute(
+				'href',
+				'https://widgets.wp.com/happychat/' + groupName + '.css'
+			);
+			styleHCThemePromise = new Promise(
+				resolve => ( styleHCTheme.onload = () => resolve() )
+			);
 		}
 	}
 
@@ -228,6 +233,8 @@ export const renderHappychat = (
 		canChat = true,
 		entry = ENTRY_FORM,
 		entryOptions = {},
+		minimized,
+		layout,
 	}
 ) => {
 	const { fallbackTicket } = entryOptions;
@@ -250,7 +257,12 @@ export const renderHappychat = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat entry={ entry } entryOptions={ entryOptions } />
+			<Happychat
+				entry={ entry }
+				entryOptions={ entryOptions }
+				minimized={ minimized }
+				layout={ layout }
+			/>
 		</Provider>,
 		targetNode
 	);
