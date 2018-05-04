@@ -47,6 +47,7 @@ const api = {
 		entryOptions,
 		groups,
 		layout = LAYOUT_MAX_WIDTH_FIXED_HEIGHT,
+		minimized = false,
 		nodeId,
 		user,
 	} ) => {
@@ -63,6 +64,7 @@ const api = {
 					entryOptions,
 					groups,
 					layout,
+					minimized,
 					userObject,
 				} )
 			)
