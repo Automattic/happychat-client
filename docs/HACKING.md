@@ -4,20 +4,44 @@ Topics discussed:
 
 * Configs
 * OAuth ID
+* WordPress.com OAuth access token
 * Repository layout
 * The library renders within an iframe
 * Color palette and themes
 
 ## Configs
-Config files are loaded based on the environment from the `src/config` directory. If you need to override 
+Config files are loaded based on the environment from the `src/config` directory. If you need to override
 some of the values you can create a `development.local.json` that will be ignored by git.
 See [src/config/README.md](./src/config/README.md) for more info.
 
-## OAuth ID
+## WordPress.com OAuth ID
 
 The standalone target uses the `oauth_client_id` at [targets/standalone/config/index.js](./targets/standalone/config/index.js) to authenticate requests to WordPress.com.
 
 The WordPress target doesn't need one because it's a plugin that runs within a WordPress site. It's the site responsibility to register a [WordPress.com OAuth application](http://developer.wordpress.com/apps/) so it's whitelisted to make requests to the WordPress.com REST API ([OAuth docs](https://developer.wordpress.com/docs/oauth2/)).
+
+## WordPress.com OAuth access token
+
+If the [authentication mechanism](./AUTH.md) used is WordPress.com OAuth, you'll need to pass the WordPress OAuth access token to the library like:
+
+```
+Happychat.open(
+	authentication: {
+		type: 'wpcom-oauth-by-token',
+		options: { token: 'your-oauth-access-token' }
+	}
+)
+```
+
+If, for whatever reason, you want to get a valid token, here's one way to do it:
+
+* Download https://github.com/Automattic/happychat-client
+* Within the repo, execute `npm install && npm start` and visit `localhost:9000`.
+* The first time, you'll be redirected to the WordPress.com OAuth process.
+* When you're back at `localhost:9000`, check the `access_token` property stored locally. Note that this token is only valid for the WordPress.com you are logged with.
+	* In chrome, you may find it under `Application > Local Storage > localhost:9000`.
+
+![](./img/oauth-access-token.png)
 
 ## Repository layout
 
