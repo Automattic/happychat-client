@@ -62,6 +62,8 @@ import Card from 'src/ui/components/card';
 import CompactCard from 'src/ui/components/card/compact';
 import FormLabel from 'src/ui/components/form-label';
 import SpinnerLine from 'src/ui/components/spinner-line';
+import ChatButton from 'src/ui/components/chat-button';
+import Gridicon from 'gridicons';
 
 class ChatComponent {
 	constructor( props ) {
@@ -239,7 +241,8 @@ class TicketFormComponent {
 				form = <MessageForm message="Sending ticket..." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
-				form = <MessageForm message="Sorry, ticket could not be created - something went wrong." />;
+				form = <MessageForm
+							message="Sorry, ticket could not be created - something went wrong." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
 				let hideLink = false;
@@ -274,7 +277,8 @@ class TicketFormComponent {
 				);
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
-				form = <MessageForm message="Sorry, ticket could not be created - API timed out." />;
+				form = <MessageForm
+							message="Sorry, ticket could not be created - API timed out." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_NEW:
 			default:
@@ -347,7 +351,10 @@ class Form extends React.Component {
 		const {
 			authentication,
 			isConnectionUninitialized,
+			isChatOpen,
 			isHappychatEnabled,
+			minimized,
+			onOpenChat,
 			onInitConnection,
 		} = this.props;
 
@@ -360,7 +367,10 @@ class Form extends React.Component {
 					onInitConnection={ onInitConnection }
 				/>
 
-				{ this.getSupportComponent().render() }
+				{ ( minimized || ! isChatOpen ) &&
+					<ChatButton onClick={ onOpenChat }><Gridicon icon="chat" /></ChatButton> }
+
+				{ ( ! minimized || isChatOpen ) && this.getSupportComponent().render() }
 			</div>
 		);
 	}
@@ -371,6 +381,7 @@ Form.propTypes = {
 	entry: PropTypes.string,
 	entryOptions: PropTypes.object,
 	layout: PropTypes.string,
+	minimized: PropTypes.bool,
 };
 
 // Whether URL should open a new tab or not.
@@ -414,6 +425,7 @@ const mapState = state => {
 const mapDispatch = {
 	onInitConnection: initConnection,
 	onOpenChat: openChat,
+	onCloseChat: closeChat,
 	onRequestFallbackTicket: requestFallbackTicket,
 	onSendMessage: sendMessage,
 	onSendNotTyping: sendNotTyping,
