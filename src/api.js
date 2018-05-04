@@ -32,7 +32,11 @@ const api = {
 	 * 			 ENTRY_CHAT (constant for 'chat') will render the chat form.
 	 * @param {Object} entryOptions Optional. Contains options to configure the selected entry.
 	 * @param {Array} groups Mandatory. Happychat groups this user belongs to.
-	 * @param {String} layout Optional. The chat layout max-width-fixed-height | max-parent-size | panel-fixed-size | panel-max-parent-size
+	 * @param {String} layout Optional. The chat layout available options:
+	 * 										max-width-fixed-height
+	 * 										max-parent-size
+	 * 										panel-fixed-size
+	 * 										panel-max-parent-size
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Object} user Optional. Customer information .
 	 */
@@ -64,20 +68,26 @@ const api = {
 			)
 			.catch( error => renderError( targetNode, { error } ) );
 	},
+
 	/**
 	 * Method to subscribe to Happychat events, either 'availability' or 'chatStatus'.
 	 *
 	 * @param  {String}   eventName The name of the event to be subscribed to.
 	 * @param  {Function} callback  The callback function to subscribe to the event.
+	 * @returns {Function} event subscribe function
 	 */
 	on: ( eventName, callback ) => eventAPI.subscribeTo( eventName, callback ),
+
 	/**
 	 * Method to unsubscribe from Happychat events, either 'availability' or 'chatStatus'.
 	 *
 	 * @param  {String}   eventName The name of the event to be unsubscribed from.
 	 * @param  {Function} callback  The callback function to unsubscribe from the event.
+	 * @returns {Function} event unsubscribe function
 	 */
+
 	off: ( eventName, callback ) => eventAPI.unsubscribeFrom( eventName, callback ),
+
 	/**
 	 * Method to send events to the Happychat server, to be shown to operators.
 	 * This is useful, for example, to send any action the user may have done in the page, etc.
@@ -103,8 +113,17 @@ const api = {
 	 * }
 	 *
 	 * @param  {Object} userInfo The object shape described above.
+	 * @returns {Function} send user info function
 	 */
 	sendUserInfo: userInfo => eventAPI.sendUserInfoMsg( userInfo ),
+
+	/**
+	 * Method to chat panel open/closed
+	 *
+	 * @param  {String} status chat status
+	 * @returns {Function} set chat status function
+	 */
+	setChatOpen: status => eventAPI.setChatOpen( status ),
 };
 
 export default api;
