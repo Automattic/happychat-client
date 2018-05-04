@@ -3,29 +3,40 @@
 /**
  * Internal dependencies
  */
-import { sendEvent, sendUserInfo } from 'src/state/connection/actions';
+import {
+	sendEvent,
+	sendMessage,
+	sendPreferences,
+	sendUserInfo,
+} from 'src/state/connection/actions';
 import { setChatStatus } from 'src/state/ui/actions';
 import isChatFormOpen from 'src/state/selectors/is-chatform-open';
 import getChatStatus from 'src/state/selectors/get-chat-status';
-import getUserInfo from 'src/state/selectors/get-user-info';
 import isAvailable from 'src/state/selectors/is-available';
+import getHappychatLastActivityTimestamp from 'src/state/selectors/get-chat-lastactivitytimestamp';
+import getConnectionStatus from 'src/state/selectors/get-connection-status';
+import { HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED } from 'src/state/constants';
 
 const eventAPI = store => {
 	const subscribers = {
-		availability: [],
+		chatAvailability: [],
 		chatStatus: [],
 		chatPanelOpen: [],
+		chatLastActivity: [],
+		connectionStatus: [],
 	};
 
+	let oldChatActivity = Date.now();
 	let oldChatOpenStatus = false;
 	let oldAvailability = false;
 	let oldChatStatus = 'new';
+	let oldConnectionStatus = HAPPYCHAT_CONNECTION_STATUS_UNINITIALIZED;
 	store.subscribe( () => {
 		const state = store.getState();
 		const newAvailability = isAvailable( state );
 		if ( newAvailability !== oldAvailability ) {
 			oldAvailability = newAvailability;
-			subscribers.availability.forEach( subscriber => subscriber( newAvailability ) );
+			subscribers.chatAvailability.forEach( subscriber => subscriber( newAvailability ) );
 		}
 
 		const newChatStatus = getChatStatus( state );
@@ -40,6 +51,18 @@ const eventAPI = store => {
 			subscribers.chatPanelOpen.forEach(
 				subscriber => subscriber( isChatFormOpen( state ) )
 			);
+		}
+
+		const newConnectionStatus = getConnectionStatus( store.getState() );
+		if ( newConnectionStatus !== oldConnectionStatus ) {
+			oldConnectionStatus = newConnectionStatus;
+			subscribers.connectionStatus.forEach( subscriber => subscriber( newConnectionStatus ) );
+		}
+
+		const newChatActivity = getHappychatLastActivityTimestamp( store.getState() );
+		if ( newChatActivity !== oldChatActivity ) {
+			oldChatActivity = newChatActivity;
+			subscribers.chatLastActivity.forEach( subscriber => subscriber( newChatActivity ) );
 		}
 	} );
 
@@ -58,19 +81,23 @@ const eventAPI = store => {
 		isSubscribed( subscriber, eventName ) &&
 		subscribers[ eventName ].splice( subscribers[ eventName ].indexOf( subscriber ), 1 );
 
-	const sendEventMsg = msg => store.dispatch( sendEvent( msg ) );
+	const sendEventHandler = msg => store.dispatch( sendEvent( msg ) );
+	const sendMessageHandler = ( msg, meta ) => store.dispatch( sendMessage( msg, meta ) );
 
-	const sendUserInfoMsg = userInfo =>
-		store.dispatch( sendUserInfo( getUserInfo( store.getState() )( userInfo ) ) );
+	const updatePreferences = payload => store.dispatch( sendPreferences( payload ) );
+
+	const sendUserInfoMsg = userInfo => store.dispatch( sendUserInfo( userInfo ) );
 
 	const setChatOpen = ( status ) => store.dispatch( setChatStatus( status ) );
 
 	return {
 		subscribeTo,
 		unsubscribeFrom,
-		sendEventMsg,
+		sendEventHandler,
+		sendMessageHandler,
 		sendUserInfoMsg,
 		setChatOpen,
+		updatePreferences,
 	};
 };
 

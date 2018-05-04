@@ -95,8 +95,19 @@ const api = {
 	 * This is useful, for example, to send any action the user may have done in the page, etc.
 	 *
 	 * @param  {String} msg Message to be sent
+	 * @returns {Function} send event function
 	 */
-	sendEvent: msg => eventAPI.sendEventMsg( msg ),
+	sendEvent: msg => eventAPI.sendEventHandler( msg ),
+
+	/**
+	 * Method to send messages to the Happychat server.
+	 *
+	 * @param  {String} msg Message to be sent
+	 * @param  {Object} meta Message meta
+	 * @returns {Function} send message function
+	 */
+	sendMessage: ( msg, meta ) => eventAPI.sendMessageHandler( msg, meta ),
+
 	/**
 	 * Method to send user information to the Happychat server. This information
 	 * will be shown to operators at the beginning of the chat.
@@ -118,6 +129,14 @@ const api = {
 	 * @returns {Function} send user info function
 	 */
 	sendUserInfo: userInfo => eventAPI.sendUserInfoMsg( userInfo ),
+
+	/**
+	 * Method to send preferences (skills) to the Happychat server.
+	 *
+	 * @param  {Object} payload preferences object
+	 * @returns {Function} send preferences function
+	 */
+	updatePreferences: payload => eventAPI.updatePreferences( payload ),
 
 	/**
 	 * Method to chat panel open/closed
