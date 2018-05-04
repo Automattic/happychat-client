@@ -52,6 +52,7 @@ export class HappychatForm extends Component {
 			isServerReachable,
 			layout,
 			message,
+			onCloseChat,
 			onSendMessage,
 			onSendNotTyping,
 			onSendTyping,
@@ -64,7 +65,7 @@ export class HappychatForm extends Component {
 		return (
 			<div className="happychat__page" aria-live="polite" aria-relevant="additions">
 				{ includes( [ LAYOUT_PANEL_FIXED_SIZE, LAYOUT_PANEL_MAX_PARENT_SIZE ], layout ) &&
-					<Title /> }
+					<Title onCloseChat={ onCloseChat } /> }
 
 				<Timeline
 					currentUserEmail={ currentUserEmail }
@@ -106,6 +107,7 @@ HappychatForm.propTypes = {
 	isServerReachable: PropTypes.bool,
 	layout: PropTypes.string,
 	message: PropTypes.string,
+	onCloseChat: PropTypes.func,
 	onSendMessage: PropTypes.func,
 	onSendNotTyping: PropTypes.func,
 	onSendTyping: PropTypes.func,

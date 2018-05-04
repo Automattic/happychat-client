@@ -1,6 +1,7 @@
 # Generic
 node_modules/
 *.map
+.history
 
 # Project
 tokens

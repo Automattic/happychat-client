@@ -22,7 +22,7 @@ import {
 	sendNotTyping,
 	sendTyping,
 } from 'src/state/connection/actions';
-import { blur, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
+import { blur, closeChat, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
@@ -80,6 +80,7 @@ class ChatComponent {
 			isServerReachable,
 			layout,
 			message,
+			onCloseChat,
 			onSendMessage,
 			onSendNotTyping,
 			onSendTyping,
@@ -103,6 +104,7 @@ class ChatComponent {
 				isServerReachable={ isServerReachable }
 				layout={ layout }
 				message={ message }
+				onCloseChat={ onCloseChat }
 				onSendMessage={ onSendMessage }
 				onSendNotTyping={ onSendNotTyping }
 				onSendTyping={ onSendTyping }

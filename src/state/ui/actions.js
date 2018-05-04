@@ -12,7 +12,7 @@ import {
 	HAPPYCHAT_SET_CURRENT_MESSAGE,
 } from 'src/state/action-types';
 
-const setChatOpen = isOpen => ( { type: HAPPYCHAT_OPEN, isOpen } );
+export const setChatOpen = isOpen => ( { type: HAPPYCHAT_OPEN, isOpen } );
 const setChatMinimizing = isMinimizing => ( { type: HAPPYCHAT_MINIMIZING, isMinimizing } );
 
 /**
