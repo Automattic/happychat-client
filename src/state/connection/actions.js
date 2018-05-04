@@ -325,18 +325,14 @@ export const sendNotTyping = () => sendTyping( false );
  * Returns an action object that prepares the user routing preferences (locale and groups)
  * to be send to happychat as a SocketIO event.
  *
- * @param { String } locale representing the user selected locale
- * @param { Array } groups of string happychat groups (wp.com, jpop) based on the site selected
  * @param { Object } skills object based on product and language ( formerly group and locale )
  *
  * @return { Object } Action object
  */
-export const sendPreferences = ( locale, groups, skills ) => ( {
+export const sendPreferences = ( { skills } ) => ( {
 	type: HAPPYCHAT_IO_SEND_PREFERENCES,
 	event: 'preferences',
 	payload: {
-		locale,
-		groups,
 		skills,
 	},
 } );
