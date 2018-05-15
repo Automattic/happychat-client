@@ -115,13 +115,13 @@ this option will only be shown when the value of the selected primary option is 
 
 **openTextField / openTextArea**
 
-Can define `primary` and `secondary` options that control when to show this field.
+Can define `primary` and `secondary` options that control when to show this field. The open text fields can also have a boolean `isRequired` option, that signals whether the form can be submitted without filling these fields - by default, its value is false.
 
 For example:
 
-	{ primary: [ 'before-buy' ], secondary: [ 'themes' ] }
+	{ primary: [ 'before-buy' ], secondary: [ 'themes' ], isRequired: true }
 
-the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`.
+the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`. Unless it's filled, the submit button will be disabled.
 
 **fallbackTicket config options**
 
