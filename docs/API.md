@@ -79,9 +79,9 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 
 **primaryOptions**
 
-Every option is an object that needs to have the `value` and `label` props. Values within a menu need to be unique; the labels will be shown in the UI.
+Every option is an object that needs to have the `value` and `label` props. Values within a menu need to be unique; the labels will be shown in the UI. Both need to be strings.
 
-Every option can also have an optional `canChat` property (will be true if none is passed). If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected.
+Every option can also have an optional boolean `canChat` property (will be true if none is passed). If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected.
 
 For example:
 
