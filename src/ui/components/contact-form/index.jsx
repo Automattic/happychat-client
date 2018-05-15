@@ -228,7 +228,7 @@ export class ContactForm extends React.Component {
 			);
 			return Array.isArray( newOptions ) && newOptions.length === 1;
 		};
-		return shouldShowOpenText( openTextField ) ? (
+		return shouldShowOpenText( openTextField ? [ openTextField ] : [] ) ? (
 			<div>
 				<FormLabel>{ openTextFieldTitle }</FormLabel>
 				<FormTextInput
@@ -258,7 +258,7 @@ export class ContactForm extends React.Component {
 			);
 			return Array.isArray( newOptions ) && newOptions.length === 1;
 		};
-		return shouldShowOpenText( openTextArea ) ? (
+		return shouldShowOpenText( openTextArea ? [ openTextArea ] : [] ) ? (
 			<div>
 				<FormLabel>{ openTextAreaTitle }</FormLabel>
 				<FormTextarea
@@ -335,9 +335,9 @@ ContactForm.propTypes = {
 	secondaryOptionsTitle: PropTypes.string,
 	itemListTitle: PropTypes.string,
 	itemList: PropTypes.array,
-	openTextField: PropTypes.array,
+	openTextField: PropTypes.object,
 	openTextFieldTitle: PropTypes.string,
-	openTextArea: PropTypes.array,
+	openTextArea: PropTypes.object,
 	openTextAreaTitle: PropTypes.string,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
@@ -354,9 +354,9 @@ ContactForm.defaultProps = {
 	secondaryOptionsTitle: 'Any more info you want to share?',
 	itemListTitle: 'Which product do you need help with?',
 	itemList: [],
-	openTextField: [],
+	openTextField: null,
 	openTextFieldTitle: 'What is the URL of your site?',
-	openTextArea: [],
+	openTextArea: null,
 	openTextAreaTitle: 'Any more info you want to share?',
 	showSubject: false,
 	submitForm: () => {},
