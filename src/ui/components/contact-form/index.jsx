@@ -151,12 +151,23 @@ export class ContactForm extends React.Component {
 		}
 	}
 
+	areRequiredFieldsFilled() {
+		const { openTextField, openTextFieldValue, openTextArea, openTextAreaValue } = this.state;
+		if (
+			( openTextField && openTextField.isRequired === true && '' === openTextFieldValue ) ||
+			( openTextArea && openTextArea.isRequired === true && '' === openTextAreaValue )
+		) {
+			return false;
+		}
+		return true;
+	}
+
 	prepareCanSubmitForm() {
 		let canSubmit = '' !== this.state.message;
 		if ( this.props.showSubject ) {
 			canSubmit = canSubmit && '' !== this.state.subject;
 		}
-		return canSubmit && this.props.canSubmitForm();
+		return canSubmit && this.areRequiredFieldsFilled() && this.props.canSubmitForm();
 	}
 
 	prepareSubmitForm() {
