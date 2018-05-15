@@ -47,12 +47,14 @@
 							secondary: [ 'themes' ],
 							isRequired: true,
 							isValid: function( data ) {
-								return '' !== data;
+								return 'http://localhost:9000' === data;
 							}
 						},
-						openTextArea: { primary: [ 'before-buy' ], secondary: [ 'themes' ], isRequired: true, isValid: function( data ) {
-							return '' !== data;
-						} },
+						openTextArea: {
+							primary: [ 'before-buy' ],
+							secondary: [ 'themes' ],
+							isRequired: true
+						},
 						fallbackTicket: {
 							headers: {
 								'X-Test-Header': 'test header',

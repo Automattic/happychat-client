@@ -115,7 +115,12 @@ this option will only be shown when the value of the selected primary option is 
 
 **openTextField / openTextArea**
 
-Can define `primary` and `secondary` options that control when to show this field. The open text fields can also have a boolean `isRequired` option and a function as the `isValid` option. `isRequired` signals whether the form can be submitted without filling these fields (by default, its value is false). `isValid` is a function that should return a boolean indicating whether the data in the field is valid or not, and it's used to determine the submit button status (it'll disabled if `isValid` returns false).
+Can define `primary` and `secondary` options that control when to show this field.
+
+The open text fields can also have a boolean `isRequired` option and a function as the `isValid` option.
+
+* `isRequired` signals whether the field is required to be able to submit the form. By default, its value is false.
+* `isValid` is a function that should return a boolean indicating whether the data in the field is valid or not. It's used to determine the submit button status - it'll be disabled if `isValid` returns false. By default, if no `isValid` function is provided, it'll check whether the field value is not void. Using the `isValid` without the `isRequired` option has no effect.
 
 For example:
 
@@ -124,11 +129,11 @@ For example:
 		secondary: [ 'themes' ],
 		isRequired: true,
 		isValid: function( data ) {
-			return '' !== data;
+			return 'http://localhost' !== data;
 		}
 	}
 
-the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`. Unless it's filled with some character, the submit button will be disabled.
+the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`. Unless it's filled with the URL `http://localhost`, the submit button will be disabled.
 
 **fallbackTicket config options**
 

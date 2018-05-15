@@ -153,13 +153,17 @@ export class ContactForm extends React.Component {
 
 	areRequiredFieldsFilled() {
 		const { openTextField, openTextFieldValue, openTextArea, openTextAreaValue } = this.state;
+		const defaultValidator = value => '' !== value;
+		const isValid = ( validator, value ) =>
+			validator ? validator( value ) : defaultValidator( value );
+
 		if (
 			( openTextField &&
 				openTextField.isRequired === true &&
-				! openTextField.isValid( openTextFieldValue ) ) ||
+				! isValid( openTextField.isValid, openTextFieldValue ) ) ||
 			( openTextArea &&
 				openTextArea.isRequired === true &&
-				! openTextArea.isValid( openTextAreaValue ) )
+				! isValid( openTextArea.isValid, openTextAreaValue ) )
 		) {
 			return false;
 		}
