@@ -67,9 +67,29 @@ const url = ( state = defaultUrl, action ) => {
 	return state;
 };
 
+const defaultMethod = 'POST';
+const method = ( state = defaultMethod, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return get( action, 'options.method', defaultMethod );
+	}
+	return state;
+};
+
+const defaultTimeout = 10000;
+const timeout = ( state = defaultTimeout, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return get( action, 'options.timeout', defaultTimeout );
+	}
+	return state;
+};
+
 export default combineReducers( {
+	url,
+	method,
 	headers,
+	timeout,
 	response,
 	status,
-	url,
 } );

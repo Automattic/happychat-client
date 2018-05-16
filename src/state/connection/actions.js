@@ -214,16 +214,18 @@ export const requestTranscript = ( timestamp, timeout = 10000 ) => ( {
  * @param { Object } requestParams An object containing the required parameters for the request.
  * 									{
  *                  		url: URL used to send the request,
+ *                  		method: the HTTP request method to use,
  *                  		headers: array containing request headers,
  *                  		payload: contents to be sent,
- *                      timeout: how long (in ms) has the server to respond
- *                               before the callbackTimeout action is dispatched,
+ *                      timeout: how long in milliseconds has the server to respond
+ *                               before the callbackTimeout action is dispatched
  * 							    }
  * @return { Object } Action object
  */
-export const requestFallbackTicket = ( { url, headers, payload, timeout = 10000 } ) => ( {
+export const requestFallbackTicket = ( { url, method, headers, payload, timeout } ) => ( {
 	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
 	url,
+	method,
 	headers,
 	payload,
 	timeout,

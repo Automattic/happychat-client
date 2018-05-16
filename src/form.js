@@ -38,6 +38,8 @@ import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
 import getFallbackTicketHeaders from 'src/state/selectors/get-fallbackticket-headers';
 import getFallbackTicketUrl from 'src/state/selectors/get-fallbackticket-url';
+import getFallbackTicketMethod from 'src/state/selectors/get-fallbackticket-method';
+import getFallbackTicketTimeout from 'src/state/selectors/get-fallbackticket-timeout';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
@@ -56,9 +58,6 @@ import { HappychatConnection } from 'src/ui/components/connection';
 import { HappychatForm } from 'src/ui/components/happychat-form';
 import { ContactForm } from 'src/ui/components/contact-form';
 import { MessageForm } from 'src/ui/components/message-form';
-import Card from 'src/ui/components/card';
-import CompactCard from 'src/ui/components/card/compact';
-import FormLabel from 'src/ui/components/form-label';
 import SpinnerLine from 'src/ui/components/spinner-line';
 
 const ENTRY_FORM = 'form';
@@ -193,11 +192,18 @@ class TicketFormComponent {
 	}
 
 	submitForm( formState ) {
-		const { fallbackTicketUrl, fallbackTicketHeaders } = this.props;
+		const {
+			fallbackTicketUrl,
+			fallbackTicketMethod,
+			fallbackTicketHeaders,
+			fallbackTicketTimeout,
+		} = this.props;
 		this.props.onRequestFallbackTicket( {
 			url: fallbackTicketUrl,
+			method: fallbackTicketMethod,
 			headers: fallbackTicketHeaders,
 			payload: formState,
+			timeout: fallbackTicketTimeout,
 		} );
 	}
 
@@ -216,7 +222,6 @@ class TicketFormComponent {
 
 	render() {
 		const {
-			fallbackTicketResponse,
 			fallbackTicketStatus,
 			entryOptions: {
 				formTitle,
@@ -366,8 +371,10 @@ const mapState = state => {
 		currentUserGroup: getUserGroupExpanded( state ),
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
+		fallbackTicketMethod: getFallbackTicketMethod( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
+		fallbackTicketTimeout: getFallbackTicketTimeout( state ),
 		fallbackTicketUrl: getFallbackTicketUrl( state ),
 		authentication: authenticator.authorizeChat( state ),
 		isChatOpen: isChatFormOpen( state ),
