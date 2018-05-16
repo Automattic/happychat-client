@@ -137,8 +137,6 @@ The contact form can create a chat session or route the request to a specified e
 * openTextAreaValue: the openTextArea's value,
 * openTextFieldValue:	the openTextField's value,
 
-`pathToShow`: upon a successful response from the `pathToCreate` endpoint, Happychat can show a link to the ticket created if one is configured. This admits a `<ticket-id>` expression that will be filled with the response provided by the `pathToCreate` endpoint.
-
 `headers`: additional request headers to be sent along the `pathToCreate` request. This allows for hooking WordPress nonces into the request, for example.
 
 For example:
@@ -147,11 +145,10 @@ For example:
 		headers: {
 			'X-Test-Header': 'Savoury butter is the best breakfast',
 		},
-		pathToCreate: '/create-ticket',
-		pathToShow: '/show-ticket/<ticket-id>',
+		pathToCreate: '/create-ticket'
 	}
 
-will send a XHR request to the '/create-ticket' endpoint with the following payload. Upon successful response, the form will shown a message with a link to the `<path>/show-ticket/<ticket-id>` URL, being `ticket-id` the response received from making a request to `pathToShow`.
+will send a XHR request to the '/create-ticket' endpoint with the following payload.
 
 ### Examples
 

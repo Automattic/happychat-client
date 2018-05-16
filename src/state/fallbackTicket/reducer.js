@@ -67,19 +67,9 @@ const pathToCreate = ( state = defaultPathToCreate, action ) => {
 	return state;
 };
 
-const defaultPathToShow = null;
-const pathToShow = ( state = defaultPathToShow, action ) => {
-	switch ( action.type ) {
-		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.pathToShow', defaultPathToShow );
-	}
-	return state;
-};
-
 export default combineReducers( {
 	headers,
 	pathToCreate,
-	pathToShow,
 	response,
 	status,
 } );

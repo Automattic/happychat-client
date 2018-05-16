@@ -38,7 +38,6 @@ import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
 import getFallbackTicketHeaders from 'src/state/selectors/get-fallbackticket-headers';
 import getFallbackTicketPathToCreate from 'src/state/selectors/get-fallbackticket-path-create';
-import getFallbackTicketPathToShow from 'src/state/selectors/get-fallbackticket-path-show';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
@@ -219,7 +218,6 @@ class TicketFormComponent {
 		const {
 			fallbackTicketResponse,
 			fallbackTicketStatus,
-			fallbackTicketPathToShow,
 			entryOptions: {
 				formTitle,
 				primaryOptions,
@@ -244,36 +242,7 @@ class TicketFormComponent {
 				form = <MessageForm message="Sorry, ticket could not be created - something went wrong." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
-				let hideLink = false;
-				if ( ! fallbackTicketPathToShow || ! fallbackTicketResponse ) {
-					hideLink = true;
-				}
-				form = (
-					<div className="message-form">
-						<CompactCard>
-							<p className="message-form__header-title">Contact Us</p>
-						</CompactCard>
-						<Card>
-							{ hideLink ? (
-								<FormLabel>Thanks! Ticket has been successfully created.</FormLabel>
-							) : (
-								<FormLabel>
-									Thanks! Ticket{' '}
-									<a
-										href={ fallbackTicketPathToShow.replace(
-											'<ticket-id>',
-											fallbackTicketResponse
-										) }
-										target="_blank"
-									>
-										{ fallbackTicketResponse }
-									</a>{' '}
-									has been successfully created.
-								</FormLabel>
-							) }
-						</Card>
-					</div>
-				);
+				form = <MessageForm message="Thanks! Ticket was successfully created." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
 				form = <MessageForm message="Sorry, ticket could not be created - API timed out." />;
@@ -398,7 +367,6 @@ const mapState = state => {
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
 		fallbackTicketPathToCreate: getFallbackTicketPathToCreate( state ),
-		fallbackTicketPathToShow: getFallbackTicketPathToShow( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		authentication: authenticator.authorizeChat( state ),
