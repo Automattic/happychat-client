@@ -37,7 +37,7 @@ import getChatStatus from 'src/state/selectors/get-chat-status';
 import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
 import getFallbackTicketHeaders from 'src/state/selectors/get-fallbackticket-headers';
-import getFallbackTicketPathToCreate from 'src/state/selectors/get-fallbackticket-path-create';
+import getFallbackTicketUrl from 'src/state/selectors/get-fallbackticket-url';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
@@ -189,13 +189,13 @@ class TicketFormComponent {
 	}
 
 	canSubmitForm() {
-		return this.props.fallbackTicketPathToCreate;
+		return this.props.fallbackTicketUrl;
 	}
 
 	submitForm( formState ) {
-		const { fallbackTicketPathToCreate, fallbackTicketHeaders } = this.props;
+		const { fallbackTicketUrl, fallbackTicketHeaders } = this.props;
 		this.props.onRequestFallbackTicket( {
-			path: fallbackTicketPathToCreate,
+			url: fallbackTicketUrl,
 			headers: fallbackTicketHeaders,
 			payload: formState,
 		} );
@@ -280,8 +280,8 @@ class FormComponent {
 	}
 
 	getSupportVariation() {
-		const { fallbackTicketPathToCreate, isUserEligibleForChat, isChatAvailable } = this.props;
-		if ( ! fallbackTicketPathToCreate || ( isUserEligibleForChat && isChatAvailable ) ) {
+		const { fallbackTicketUrl, isUserEligibleForChat, isChatAvailable } = this.props;
+		if ( ! fallbackTicketUrl || ( isUserEligibleForChat && isChatAvailable ) ) {
 			return new ChatFormComponent( this.props );
 		}
 		return new TicketFormComponent( this.props );
@@ -366,9 +366,9 @@ const mapState = state => {
 		currentUserGroup: getUserGroupExpanded( state ),
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
-		fallbackTicketPathToCreate: getFallbackTicketPathToCreate( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
+		fallbackTicketUrl: getFallbackTicketUrl( state ),
 		authentication: authenticator.authorizeChat( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),

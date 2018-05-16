@@ -127,7 +127,7 @@ the field will only be shown when the value of the selected primary option is `b
 
 The contact form can create a chat session or route the request to a specified endpoint. Here's how to configure it:
 
-`pathToCreate`: path to the endpoint where Happychat will make a XHR request with the form data. The request payload will be a JSON object containing all entryOptions properties and:
+`url`: URL endpoint where Happychat will make a XHR request with the form data. The request payload will be a JSON object containing all entryOptions properties and:
 
 * primarySelected: the selected primary option,
 * secondarySelected: the selected secondary option,
@@ -137,7 +137,7 @@ The contact form can create a chat session or route the request to a specified e
 * openTextAreaValue: the openTextArea's value,
 * openTextFieldValue:	the openTextField's value,
 
-`headers`: additional request headers to be sent along the `pathToCreate` request. This allows for hooking WordPress nonces into the request, for example.
+`headers`: additional request headers to be sent along the request. This allows for hooking WordPress nonces into the request, for example.
 
 For example:
 
@@ -145,10 +145,10 @@ For example:
 		headers: {
 			'X-Test-Header': 'Savoury butter is the best breakfast',
 		},
-		pathToCreate: '/create-ticket'
+		url: '/create-ticket'
 	}
 
-will send a XHR request to the '/create-ticket' endpoint with the following payload.
+will send a XHR request to the '/create-ticket' endpoint.
 
 ### Examples
 
@@ -285,7 +285,7 @@ In some cases, we'd want to offer a fallback option when chat is not available. 
 				{ 'value': 'p4', 'label': 'WooCommerce' },
 			],
 			fallbackTicket: {
-				'pathToCreate': '/create-ticket'
+				'url': '/create-ticket'
 			}
 		} );
 

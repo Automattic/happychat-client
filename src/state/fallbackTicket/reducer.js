@@ -58,18 +58,18 @@ const headers = ( state = defaultHeaders, action ) => {
 	return state;
 };
 
-const defaultPathToCreate = null;
-const pathToCreate = ( state = defaultPathToCreate, action ) => {
+const defaultUrl = null;
+const url = ( state = defaultUrl, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.pathToCreate', defaultPathToCreate );
+			return get( action, 'options.url', defaultUrl );
 	}
 	return state;
 };
 
 export default combineReducers( {
 	headers,
-	pathToCreate,
 	response,
 	status,
+	url,
 } );
