@@ -18,7 +18,7 @@ import {
 } from '../action-types';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
-	HAPPYCHAT_FALLBACK_TICKET_SENDING,
+	HAPPYCHAT_FALLBACK_TICKET_INFLIGHT,
 	HAPPYCHAT_FALLBACK_TICKET_SUCCESS,
 	HAPPYCHAT_FALLBACK_TICKET_FAILURE,
 	HAPPYCHAT_FALLBACK_TICKET_TIMEOUT,
@@ -27,7 +27,7 @@ import {
 const status = ( state = HAPPYCHAT_FALLBACK_TICKET_NEW, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
-			return HAPPYCHAT_FALLBACK_TICKET_SENDING;
+			return HAPPYCHAT_FALLBACK_TICKET_INFLIGHT;
 		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_RECEIVE:
 			return startsWith( action.status, '2' ) // HTTP succesful status are 2XX
 				? HAPPYCHAT_FALLBACK_TICKET_SUCCESS
@@ -58,28 +58,68 @@ const headers = ( state = defaultHeaders, action ) => {
 	return state;
 };
 
-const defaultPathToCreate = null;
-const pathToCreate = ( state = defaultPathToCreate, action ) => {
+const defaultUrl = null;
+const url = ( state = defaultUrl, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.pathToCreate', defaultPathToCreate );
+			return get( action, 'options.url', defaultUrl );
 	}
 	return state;
 };
 
-const defaultPathToShow = null;
-const pathToShow = ( state = defaultPathToShow, action ) => {
+const defaultMethod = 'POST';
+const method = ( state = defaultMethod, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.pathToShow', defaultPathToShow );
+			return get( action, 'options.method', defaultMethod );
+	}
+	return state;
+};
+
+const defaultTimeout = 10000;
+const timeout = ( state = defaultTimeout, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return get( action, 'options.timeout', defaultTimeout );
+	}
+	return state;
+};
+
+const defaultMsgTimeout = 'Request timed out, it was not successful.';
+const msgTimeout = ( state = defaultMsgTimeout, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return get( action, 'options.msgTimeout', defaultMsgTimeout );
+	}
+	return state;
+};
+
+const defaultMsgInFlight = 'Sending request...';
+const msgInFlight = ( state = defaultMsgTimeout, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return get( action, 'options.msgInFlight', defaultMsgInFlight );
+	}
+	return state;
+};
+
+const defaultParseResponse = responseText => responseText;
+const parseResponse = ( state = defaultParseResponse, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return get( action, 'options.parseResponse', defaultParseResponse );
 	}
 	return state;
 };
 
 export default combineReducers( {
 	headers,
-	pathToCreate,
-	pathToShow,
+	method,
+	msgInFlight,
+	msgTimeout,
+	parseResponse,
 	response,
 	status,
+	timeout,
+	url,
 } );

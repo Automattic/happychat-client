@@ -209,21 +209,34 @@ export const requestTranscript = ( timestamp, timeout = 10000 ) => ( {
  * to be sent as a XHR POST request to the fallback ticket API endpoint.
  *
  * Note that this action is never sent through SocketIO, that's why
- * it doesn't include the payload.event property, but the payload.path.
+ * it doesn't include the payload.event property, but the payload.url.
  *
- * @param  { String } path URL path that will be used to send the request.
- * @param  { Object } message Message to be sent
- * @param { Number } timeout The number of milliseconds to wait for server response.
- *                 	 If it hasn't responded after the timeout, the connection library
- *                 	 will dispatch the receiveTranscriptTimeout action.
+ * @param { Object } requestParams An object containing the required parameters for the request.
+ * 									{
+ *                  		url: URL used to send the request,
+ *                  		method: the HTTP request method to use,
+ *                  		headers: array containing request headers,
+ *                  		payload: contents to be sent,
+ *                      timeout: how long in milliseconds has the server to respond
+ *                               before the callbackTimeout action is dispatched
+ * 							    }
  * @return { Object } Action object
  */
-export const requestFallbackTicket = ( { path, headers, payload, timeout = 10000 } ) => ( {
-	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
-	path,
+export const requestFallbackTicket = ( {
+	url,
+	method,
 	headers,
 	payload,
 	timeout,
+	parseResponse = responseText => responseText,
+} ) => ( {
+	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
+	url,
+	method,
+	headers,
+	payload,
+	timeout,
+	parseResponse,
 	callback: receiveFallbackTicket,
 	callbackTimeout: receiveFallbackTicketTimeout,
 } );

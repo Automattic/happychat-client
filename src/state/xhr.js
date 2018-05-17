@@ -13,18 +13,19 @@
  * @param  { Function } dispatch Redux dispatch function
  * @param  { Object } action A Redux action with props
  *                  	{
- *                  		path: URL path used to send the request,
+ *                  		url: URL used to send the request,
+ *                  		method: the HTTP request method to use,
+ *                  		headers: array containing request headers,
  *                  		payload: contents to be sent,
  *                  		callback: a Redux action creator,
  *                  		callbackTimeout: a Redux action creator,
  *                  	}
- * @param  { Number } timeout How long (in milliseconds) has the server to respond
- * @return { Promise } Fulfilled (returns the response)
- *                     or rejected (returns an error message)
+ * @param  { Number } timeout: how long (in ms) has the server to respond
+ * 										before the callbackTimeout action is dispatched
  */
 const makeRequest = ( dispatch, action, timeout ) => {
 	const xhr = new XMLHttpRequest();
-	xhr.open( 'POST', action.path, true );
+	xhr.open( action.method, action.url, true );
 	xhr.setRequestHeader( 'Content-type', 'application/json; charset=UTF-8' );
 	for ( const header in action.headers ) {
 		xhr.setRequestHeader( header, action.headers[ header ] );
@@ -35,7 +36,12 @@ const makeRequest = ( dispatch, action, timeout ) => {
 
 	xhr.onreadystatechange = () => {
 		if ( xhr.readyState === XMLHttpRequest.DONE ) {
-			dispatch( action.callback( { status: xhr.status, responseText: xhr.responseText } ) );
+			dispatch(
+				action.callback( {
+					status: xhr.status,
+					responseText: action.parseResponse( xhr.responseText ),
+				} )
+			);
 		}
 	};
 

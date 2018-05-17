@@ -51,7 +51,7 @@ export const HAPPYCHAT_CHAT_STATUS_PENDING = 'pending';
 
 // Fallback ticket status
 export const HAPPYCHAT_FALLBACK_TICKET_NEW = 'new';
-export const HAPPYCHAT_FALLBACK_TICKET_SENDING = 'sending';
+export const HAPPYCHAT_FALLBACK_TICKET_INFLIGHT = 'inflight';
 export const HAPPYCHAT_FALLBACK_TICKET_FAILURE = 'failure';
 export const HAPPYCHAT_FALLBACK_TICKET_SUCCESS = 'success';
 export const HAPPYCHAT_FALLBACK_TICKET_TIMEOUT = 'timeout';

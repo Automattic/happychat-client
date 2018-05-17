@@ -1,5 +1,19 @@
 # API
 
+* Init settings
+	* authentication
+	* entry
+	* entryOptions
+	* groups
+	* canChat
+	* nodeId
+* Examples
+	* Default
+	* With titles and primary, secondary, and itemList menus
+	* With conditional secondaryOptions and itemList
+	* Configure when to offer chat
+	* Fallback ticket when there is no chat
+
 ## Init Settings
 
 Happychat can be configured by a settings object on initialization
@@ -17,7 +31,7 @@ with the following top-level properties:
 | `canChat` | bool | Optional | `true` | Whether the user can be offered chat or not. |
 | `nodeId` | string | Mandatory | `null` | The id of the HTMLNode where Happychat will be rendered. |
 
-### Authentication
+### authentication
 
 Happychat currently supports two authentication mechanisms ([more info](./src/lib/auth/README.md)):
 
@@ -46,7 +60,7 @@ How to configure authentication via proxy iframe:
 		},
 	} );
 
-### The entry prop
+### entry
 
 The Happychat library provides two main interfaces: a contact form, and a chat form. By default, it'll show the contact form and it will render the chat form on clicking the form submit button. The contact form main behavior can be changed through the `entryOptions` prop.
 
@@ -58,7 +72,7 @@ Chat form:
 
 ![](./img/chat-form.png)
 
-### The entryOptions prop
+### entryOptions
 
 The `entryOptions` property allows for configuring the text and behavior or Happychat entry point.
 
@@ -87,7 +101,7 @@ For example:
 
 		{ 'value': 'themes', 'label': 'Themes', 'canChat': false }
 
-when this option is selected chat won't be offered.
+dwhen this option is selected chat won't be offered.
 
 **secondaryOptions**
 
@@ -115,31 +129,26 @@ this option will only be shown when the value of the selected primary option is 
 
 **openTextField / openTextArea**
 
-Can define `primary` and `secondary` options that control when to show this field.
-
-The open text fields can also have a boolean `isRequired` option and a function as the `isValid` option.
-
-* `isRequired` signals whether the field is required to be able to submit the form. By default, its value is false.
-* `isValid` is a function that should return a boolean indicating whether the data in the field is valid or not. It's used to determine the submit button status - it'll be disabled if `isValid` returns false. By default, if no `isValid` function is provided, it'll check whether the field value is not void. Using the `isValid` without the `isRequired` option has no effect.
+Can define `primary` and `secondary` options that control when to show this field. The open text fields can also have a boolean `isRequired` option, which signals whether the field is required to be able to submit the form. By default, its value is false.
 
 For example:
 
-	{
-		primary: [ 'before-buy' ],
-		secondary: [ 'themes' ],
-		isRequired: true,
-		isValid: function( data ) {
-			return 'http://localhost' !== data;
-		}
-	}
+	{ primary: [ 'before-buy' ], secondary: [ 'themes' ], isRequired: true }
 
-the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`. Unless it's filled with the URL `http://localhost`, the submit button will be disabled.
+the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`. If it's void, the submit button will be disabled.
 
 **fallbackTicket config options**
 
 The contact form can create a chat session or route the request to a specified endpoint. Here's how to configure it:
 
-`pathToCreate`: path to the endpoint where Happychat will make a XHR request with the form data. The request payload will be a JSON object containing all entryOptions properties and:
+* `url`: URL endpoint where Happychat will make a XHR request with the form data. If no `url` is provided, the fallbackTicket feature will be disabled.
+* `headers`: additional HTTP request headers to be sent along the request. This allows for hooking WordPress nonces into the request, for example. None by default.
+* `method`: HTTP Request method to use. `POST` by default.
+* `parseResponse`: a function callback that will be passed the response to the request and should return the content to be displayed by Happychat (can be HTML or plain text).
+* `msgTimeout`: the message to be shown in case the request times out. `Request timed out, it was not successful.` by default.
+* `msgInFlight`: the message to be shown while the request is in flight. `Sending request...` by default.
+
+The request payload will be a JSON object containing all entryOptions properties and:
 
 * primarySelected: the selected primary option,
 * secondarySelected: the selected secondary option,
@@ -149,37 +158,53 @@ The contact form can create a chat session or route the request to a specified e
 * openTextAreaValue: the openTextArea's value,
 * openTextFieldValue:	the openTextField's value,
 
-`pathToShow`: upon a successful response from the `pathToCreate` endpoint, Happychat can show a link to the ticket created if one is configured. This admits a `<ticket-id>` expression that will be filled with the response provided by the `pathToCreate` endpoint.
-
-`headers`: additional request headers to be sent along the `pathToCreate` request. This allows for hooking WordPress nonces into the request, for example.
-
 For example:
 
 	{
+		url: '/create-ticket',
 		headers: {
 			'X-Test-Header': 'Savoury butter is the best breakfast',
 		},
-		pathToCreate: '/create-ticket',
-		pathToShow: '/show-ticket/<ticket-id>',
+		parseResponse: function( response ) {
+			return JSON.parse( response ).data;
+		},
+		msgInFlight: 'Ticket is being created...',
+		msgTimeout: 'Could not create the ticket, the server did not respond in time'
 	}
 
-will send a XHR request to the '/create-ticket' endpoint with the following payload. Upon successful response, the form will shown a message with a link to the `<path>/show-ticket/<ticket-id>` URL, being `ticket-id` the response received from making a request to `pathToShow`.
+will send a HTTP POST request to the '/create-ticket' endpoint, including a `X-Test-Header`. Upon receiving the response, the contents will be converted to an object and the `data` key will be passed to Happychat as a message to render.
 
-### Examples
+### groups
 
-#### Default
+Currently, Happychat can connect customers to any of these groups:
+
+| Group | Key to use |
+| --- | --- | --- | --- | --- |
+| WordPress | `WP.com` |
+| WooCommerce | `woo` |
+| Jetpack | `jpop` |
+
+### canChat
+
+Whether the user can be offered chat or not. If this property is false, no chat will be offered.
+
+### nodeId
+
+The Happychat library will create an iframe within the HTML node provided by this id.
+
+## Examples
+
+### Default
 
 Settings:
 
-	Happychat.open( {
-		nodeId: <HTML Node ID>,
-	} );
+	Happychat.open( { nodeId: <HTML Node ID> } );
 
 will render this form:
 
 ![](./img/contact-form-default.png)
 
-#### With titles and primary, secondary and itemList menus
+### With titles and primary, secondary, and itemList menus
 
 Settings:
 
@@ -209,7 +234,7 @@ Settings:
 
 ![](./img/contact-form-configured.png)
 
-#### With conditional secondaryOptions and itemList
+### With conditional secondaryOptions and itemList
 
 Settings:
 
@@ -241,7 +266,7 @@ Settings:
 
 ![](./img/contact-form-configured.png)
 
-#### Configure when to offer chat
+### Configure when to offer chat
 
 Using the form in the previous example, we can configure when to offer chat by using the `canChat` property per option - note that if the `canChat` global property is set to false, we'll never offer chat for that user.
 
@@ -273,7 +298,7 @@ For example, for these settings:
 
 If any of `Help with my account` (primary menu), `Plugins` (secondary menu) or `2011 theme` (itemList menu) is selected no chat will be offered - no matter whether there is actual chat availability in the system.
 
-#### Fallback ticket when there is no chat
+### Fallback ticket when there is no chat
 
 In some cases, we'd want to offer a fallback option when chat is not available. Use the `fallbackTicket` prop for this. When chat is not available, the form will show an additional "Subject" field and the submit button will change to "Send a ticket".
 
@@ -300,7 +325,7 @@ In some cases, we'd want to offer a fallback option when chat is not available. 
 				{ 'value': 'p4', 'label': 'WooCommerce' },
 			],
 			fallbackTicket: {
-				'pathToCreate': '/create-ticket'
+				'url': '/create-ticket'
 			}
 		} );
 

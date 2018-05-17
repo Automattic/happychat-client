@@ -39,6 +39,14 @@
 			newOptions.secondaryOptions = newSecondaryOptions;
 		}
 
+		// Adapt WordPress REST API wp_send_json_success response
+		// to the response format expected by Happychat.
+		if ( options.fallbackTicket ) {
+			newOptions.fallbackTicket.parseResponse = function( responseText ) {
+				return JSON.parse( responseText ).data;
+			};
+		}
+
 		return newOptions;
 	};
 

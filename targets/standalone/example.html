@@ -46,9 +46,6 @@
 							primary: [ 'before-buy' ],
 							secondary: [ 'themes' ],
 							isRequired: true,
-							isValid: function( data ) {
-								return 'http://localhost:9000' === data;
-							}
 						},
 						openTextArea: {
 							primary: [ 'before-buy' ],
@@ -56,12 +53,11 @@
 							isRequired: true
 						},
 						fallbackTicket: {
+							url: '/create-ticket',
 							headers: {
 								'X-Test-Header': 'test header',
 								'X-Test-Header-2': 'test 2'
-							},
-							pathToCreate: '/create-ticket',
-							pathToShow: '/show-ticket/<ticket-id>',
+							}
 						}
 					}
 				} );
