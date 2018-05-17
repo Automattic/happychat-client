@@ -85,7 +85,7 @@ const timeout = ( state = defaultTimeout, action ) => {
 	return state;
 };
 
-const defaultMsgTimeout = 'Sorry, ticket could not be created - API timed out.';
+const defaultMsgTimeout = 'Request timed out, it was not successful.';
 const msgTimeout = ( state = defaultMsgTimeout, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
@@ -94,7 +94,7 @@ const msgTimeout = ( state = defaultMsgTimeout, action ) => {
 	return state;
 };
 
-const defaultMsgSending = 'Sending ticket...';
+const defaultMsgSending = 'Sending request...';
 const msgSending = ( state = defaultMsgTimeout, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
@@ -113,13 +113,13 @@ const parseResponse = ( state = defaultParseResponse, action ) => {
 };
 
 export default combineReducers( {
-	url,
-	method,
 	headers,
-	timeout,
+	method,
+	msgSending,
+	msgTimeout,
+	parseResponse,
 	response,
 	status,
-	msgTimeout,
-	msgSending,
-	parseResponse,
+	timeout,
+	url,
 } );
