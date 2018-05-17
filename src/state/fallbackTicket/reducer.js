@@ -94,11 +94,11 @@ const msgTimeout = ( state = defaultMsgTimeout, action ) => {
 	return state;
 };
 
-const defaultMsgSending = 'Sending request...';
-const msgSending = ( state = defaultMsgTimeout, action ) => {
+const defaultMsgInFlight = 'Sending request...';
+const msgInFlight = ( state = defaultMsgTimeout, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.msgSending', defaultMsgSending );
+			return get( action, 'options.msgInFlight', defaultMsgInFlight );
 	}
 	return state;
 };
@@ -115,7 +115,7 @@ const parseResponse = ( state = defaultParseResponse, action ) => {
 export default combineReducers( {
 	headers,
 	method,
-	msgSending,
+	msgInFlight,
 	msgTimeout,
 	parseResponse,
 	response,

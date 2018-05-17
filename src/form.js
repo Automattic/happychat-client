@@ -42,7 +42,7 @@ import getFallbackTicketParseResponse from 'src/state/selectors/get-fallbacktick
 import getFallbackTicketMethod from 'src/state/selectors/get-fallbackticket-method';
 import getFallbackTicketTimeout from 'src/state/selectors/get-fallbackticket-timeout';
 import getFallbackTicketMsgTimeout from 'src/state/selectors/get-fallbackticket-msgtimeout';
-import getFallbackTicketMsgSending from 'src/state/selectors/get-fallbackticket-msgsending';
+import getFallbackTicketMsgInFlight from 'src/state/selectors/get-fallbackticket-msginflight';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
@@ -230,7 +230,7 @@ class TicketFormComponent {
 			fallbackTicketStatus,
 			fallbackTicketResponse,
 			fallbackTicketMsgTimeout,
-			fallbackTicketMsgSending,
+			fallbackTicketMsgInFlight,
 			entryOptions: {
 				formTitle,
 				primaryOptions,
@@ -249,7 +249,7 @@ class TicketFormComponent {
 		let form;
 		switch ( fallbackTicketStatus ) {
 			case HAPPYCHAT_FALLBACK_TICKET_INFLIGHT:
-				form = <MessageForm message={ fallbackTicketMsgSending } />;
+				form = <MessageForm message={ fallbackTicketMsgInFlight } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
@@ -379,7 +379,7 @@ const mapState = state => {
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
 		fallbackTicketMethod: getFallbackTicketMethod( state ),
 		fallbackTicketMsgTimeout: getFallbackTicketMsgTimeout( state ),
-		fallbackTicketMsgSending: getFallbackTicketMsgSending( state ),
+		fallbackTicketMsgInFlight: getFallbackTicketMsgInFlight( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		fallbackTicketTimeout: getFallbackTicketTimeout( state ),
