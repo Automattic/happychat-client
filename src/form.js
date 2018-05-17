@@ -225,6 +225,7 @@ class TicketFormComponent {
 	render() {
 		const {
 			fallbackTicketStatus,
+			fallbackTicketResponse,
 			fallbackTicketMsgTimeout,
 			fallbackTicketMsgSending,
 			entryOptions: {
@@ -248,10 +249,8 @@ class TicketFormComponent {
 				form = <MessageForm message={ fallbackTicketMsgSending } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
-				form = <MessageForm message="Sorry, ticket could not be created - something went wrong." />;
-				break;
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
-				form = <MessageForm message="Thanks! Ticket was successfully created." />;
+				form = <MessageForm message={ fallbackTicketResponse } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
 				form = <MessageForm message={ fallbackTicketMsgTimeout } />;
