@@ -250,7 +250,7 @@ class TicketFormComponent {
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
-				form = <MessageForm message={ fallbackTicketResponse } />;
+				form = <MessageForm html={ fallbackTicketResponse } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
 				form = <MessageForm message={ fallbackTicketMsgTimeout } />;

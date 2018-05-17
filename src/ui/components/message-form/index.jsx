@@ -15,14 +15,19 @@ import Card from 'src/ui/components/card';
 
 export class MessageForm extends React.Component {
 	render() {
-		const { message } = this.props;
+		const { message, html } = this.props;
+		const createMarkup = contents => ( { __html: contents } );
 		return (
 			<div className="message-form">
 				<CompactCard>
 					<p className="message-form__header-title">Contact Us</p>
 				</CompactCard>
 				<Card>
-					<FormLabel>{ message }</FormLabel>
+					{ html ? (
+						<FormLabel dangerouslySetInnerHTML={ createMarkup( html ) } />
+					) : (
+						<FormLabel>{ message }</FormLabel>
+					) }
 				</Card>
 			</div>
 		);
@@ -31,8 +36,10 @@ export class MessageForm extends React.Component {
 
 MessageForm.propTypes = {
 	message: PropTypes.string,
+	html: PropTypes.string,
 };
 
 MessageForm.defaultProps = {
 	message: 'We are having problems to offer support at the moment. Please, bear with us.',
+	html: '<p>We are having problems to offer support at the moment. Please, bear with us.</p>',
 };
