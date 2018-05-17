@@ -25,7 +25,7 @@ import { blur, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
-	HAPPYCHAT_FALLBACK_TICKET_SENDING,
+	HAPPYCHAT_FALLBACK_TICKET_INFLIGHT,
 	HAPPYCHAT_FALLBACK_TICKET_SUCCESS,
 	HAPPYCHAT_FALLBACK_TICKET_FAILURE,
 	HAPPYCHAT_FALLBACK_TICKET_TIMEOUT,
@@ -244,7 +244,7 @@ class TicketFormComponent {
 
 		let form;
 		switch ( fallbackTicketStatus ) {
-			case HAPPYCHAT_FALLBACK_TICKET_SENDING:
+			case HAPPYCHAT_FALLBACK_TICKET_INFLIGHT:
 				form = <MessageForm message={ fallbackTicketMsgSending } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
