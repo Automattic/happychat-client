@@ -38,7 +38,7 @@ import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
 import getFallbackTicketHeaders from 'src/state/selectors/get-fallbackticket-headers';
 import getFallbackTicketUrl from 'src/state/selectors/get-fallbackticket-url';
-import getFallbackTicketParseResponse from 'src/state/selectors/get-fallbackticket-parseResponse';
+import getFallbackTicketParseResponse from 'src/state/selectors/get-fallbackticket-parseresponse';
 import getFallbackTicketMethod from 'src/state/selectors/get-fallbackticket-method';
 import getFallbackTicketTimeout from 'src/state/selectors/get-fallbackticket-timeout';
 import getFallbackTicketMsgTimeout from 'src/state/selectors/get-fallbackticket-msgtimeout';
