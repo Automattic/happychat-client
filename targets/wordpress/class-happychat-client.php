@@ -96,13 +96,10 @@ class Happychat_Client {
 
 		$happychat_settings = apply_filters( 'happychat_settings', $happychat_settings );
 
-		$happychat_settings['entry']  = $this->validate_entry( $happychat_settings['entry'] );
+		$happychat_settings['entry'] = $this->validate_entry( $happychat_settings['entry'] );
 
-		$path_to_create = isset( $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] ) ? $happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] : null;
-		$path_to_show   = isset( $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] ) ? $happychat_settings['entryOptions']['fallbackTicket']['pathToShow'] : null;
-
-		$happychat_settings['entryOptions']['fallbackTicket']['pathToCreate'] = $this->validate_path( $path_to_create );
-		$happychat_settings['entryOptions']['fallbackTicket']['pathToShow']   = $this->validate_path( $path_to_show );
+		$url = isset( $happychat_settings['entryOptions']['fallbackTicket']['url'] ) ? $happychat_settings['entryOptions']['fallbackTicket']['url'] : null;
+		$happychat_settings['entryOptions']['fallbackTicket']['url'] = $this->validate_path( $url );
 
 		$happychat_settings['groups'] = [ $this->validate_group( $happychat_settings['groups'][0] ) ];
 
