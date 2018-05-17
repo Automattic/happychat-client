@@ -40,6 +40,8 @@ import getFallbackTicketHeaders from 'src/state/selectors/get-fallbackticket-hea
 import getFallbackTicketUrl from 'src/state/selectors/get-fallbackticket-url';
 import getFallbackTicketMethod from 'src/state/selectors/get-fallbackticket-method';
 import getFallbackTicketTimeout from 'src/state/selectors/get-fallbackticket-timeout';
+import getFallbackTicketMsgTimeout from 'src/state/selectors/get-fallbackticket-msgtimeout';
+import getFallbackTicketMsgSending from 'src/state/selectors/get-fallbackticket-msgsending';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
@@ -223,6 +225,8 @@ class TicketFormComponent {
 	render() {
 		const {
 			fallbackTicketStatus,
+			fallbackTicketMsgTimeout,
+			fallbackTicketMsgSending,
 			entryOptions: {
 				formTitle,
 				primaryOptions,
@@ -241,7 +245,7 @@ class TicketFormComponent {
 		let form;
 		switch ( fallbackTicketStatus ) {
 			case HAPPYCHAT_FALLBACK_TICKET_SENDING:
-				form = <MessageForm message="Sending ticket..." />;
+				form = <MessageForm message={ fallbackTicketMsgSending } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
 				form = <MessageForm message="Sorry, ticket could not be created - something went wrong." />;
@@ -250,7 +254,7 @@ class TicketFormComponent {
 				form = <MessageForm message="Thanks! Ticket was successfully created." />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
-				form = <MessageForm message="Sorry, ticket could not be created - API timed out." />;
+				form = <MessageForm message={ fallbackTicketMsgTimeout } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_NEW:
 			default:
@@ -372,6 +376,8 @@ const mapState = state => {
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
 		fallbackTicketMethod: getFallbackTicketMethod( state ),
+		fallbackTicketMsgTimeout: getFallbackTicketMsgTimeout( state ),
+		fallbackTicketMsgSending: getFallbackTicketMsgSending( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		fallbackTicketTimeout: getFallbackTicketTimeout( state ),
