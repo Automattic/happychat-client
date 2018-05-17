@@ -36,7 +36,12 @@ const makeRequest = ( dispatch, action, timeout ) => {
 
 	xhr.onreadystatechange = () => {
 		if ( xhr.readyState === XMLHttpRequest.DONE ) {
-			dispatch( action.callback( { status: xhr.status, responseText: xhr.responseText } ) );
+			dispatch(
+				action.callback( {
+					status: xhr.status,
+					responseText: action.parseResponse( xhr.responseText ),
+				} )
+			);
 		}
 	};
 

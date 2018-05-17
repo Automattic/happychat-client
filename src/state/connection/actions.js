@@ -222,13 +222,21 @@ export const requestTranscript = ( timestamp, timeout = 10000 ) => ( {
  * 							    }
  * @return { Object } Action object
  */
-export const requestFallbackTicket = ( { url, method, headers, payload, timeout } ) => ( {
+export const requestFallbackTicket = ( {
+	url,
+	method,
+	headers,
+	payload,
+	timeout,
+	parseResponse = responseText => responseText,
+} ) => ( {
 	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
 	url,
 	method,
 	headers,
 	payload,
 	timeout,
+	parseResponse,
 	callback: receiveFallbackTicket,
 	callbackTimeout: receiveFallbackTicketTimeout,
 } );

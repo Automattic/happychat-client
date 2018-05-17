@@ -38,6 +38,7 @@ import getChatTimeline from 'src/state/selectors/get-chat-timeline';
 import getConnectionStatus from 'src/state/selectors/get-connection-status';
 import getFallbackTicketHeaders from 'src/state/selectors/get-fallbackticket-headers';
 import getFallbackTicketUrl from 'src/state/selectors/get-fallbackticket-url';
+import getFallbackTicketParseResponse from 'src/state/selectors/get-fallbackticket-parseResponse';
 import getFallbackTicketMethod from 'src/state/selectors/get-fallbackticket-method';
 import getFallbackTicketTimeout from 'src/state/selectors/get-fallbackticket-timeout';
 import getFallbackTicketMsgTimeout from 'src/state/selectors/get-fallbackticket-msgtimeout';
@@ -199,6 +200,7 @@ class TicketFormComponent {
 			fallbackTicketMethod,
 			fallbackTicketHeaders,
 			fallbackTicketTimeout,
+			fallbackTicketParseResponse,
 		} = this.props;
 		this.props.onRequestFallbackTicket( {
 			url: fallbackTicketUrl,
@@ -206,6 +208,7 @@ class TicketFormComponent {
 			headers: fallbackTicketHeaders,
 			payload: formState,
 			timeout: fallbackTicketTimeout,
+			parseResponse: fallbackTicketParseResponse,
 		} );
 	}
 
@@ -381,6 +384,7 @@ const mapState = state => {
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		fallbackTicketTimeout: getFallbackTicketTimeout( state ),
 		fallbackTicketUrl: getFallbackTicketUrl( state ),
+		fallbackTicketParseResponse: getFallbackTicketParseResponse( state ),
 		authentication: authenticator.authorizeChat( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
