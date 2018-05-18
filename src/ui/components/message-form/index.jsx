@@ -22,11 +22,13 @@ export class MessageForm extends React.Component {
 		return (
 			<div className="message-form">
 				<CompactCard>
-					<Button compact borderless onClick={ onBack }>
-						<GridiconArrowLeft size={ 18 } />
-						Back
-					</Button>
-					<p className="message-form__header-title">Contact Us</p>
+					<p className="message-form__header-title">
+						<Button compact borderless onClick={ onBack }>
+							<GridiconArrowLeft size={ 18 } />
+							Back
+						</Button>
+						<span>Contact us</span>
+					</p>
 				</CompactCard>
 				<Card>
 					<FormLabel dangerouslySetInnerHTML={ createMarkup( message ) } />
