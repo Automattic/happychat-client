@@ -21,7 +21,7 @@ import {
 	sendNotTyping,
 	sendTyping,
 } from 'src/state/connection/actions';
-import { blur, focus, openChat, setCurrentMessage } from 'src/state/ui/actions';
+import { blur, focus, openChat, setCurrentMessage, resetForm } from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
@@ -244,6 +244,7 @@ class TicketFormComponent {
 				openTextField,
 				openTextFieldTitle,
 			},
+			onResetForm,
 		} = this.props;
 
 		let form;
@@ -253,10 +254,10 @@ class TicketFormComponent {
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
-				form = <MessageForm message={ fallbackTicketResponse } />;
+				form = <MessageForm onBack={ onResetForm } message={ fallbackTicketResponse } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
-				form = <MessageForm message={ fallbackTicketMsgTimeout } />;
+				form = <MessageForm onBack={ onResetForm } message={ fallbackTicketMsgTimeout } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_NEW:
 			default:
@@ -403,6 +404,7 @@ const mapState = state => {
 const mapDispatch = {
 	onInitConnection: initConnection,
 	onOpenChat: openChat,
+	onResetForm: resetForm,
 	onRequestFallbackTicket: requestFallbackTicket,
 	onSendMessage: sendMessage,
 	onSendNotTyping: sendNotTyping,
