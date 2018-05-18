@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import GridiconArrowLeft from 'gridicons/dist/arrow-left';
 
 /**
  * Internal dependencies
@@ -12,14 +13,19 @@ import PropTypes from 'prop-types';
 import FormLabel from 'src/ui/components/form-label';
 import CompactCard from 'src/ui/components/card/compact';
 import Card from 'src/ui/components/card';
+import Button from 'src/ui/components/button';
 
 export class MessageForm extends React.Component {
 	render() {
-		const { message } = this.props;
+		const { message, onBack } = this.props;
 		const createMarkup = contents => ( { __html: contents } );
 		return (
 			<div className="message-form">
 				<CompactCard>
+					<Button compact borderless onClick={ onBack }>
+						<GridiconArrowLeft size={ 18 } />
+						Back
+					</Button>
 					<p className="message-form__header-title">Contact Us</p>
 				</CompactCard>
 				<Card>
@@ -32,5 +38,5 @@ export class MessageForm extends React.Component {
 
 MessageForm.propTypes = {
 	message: PropTypes.string,
-	html: PropTypes.string,
+	onBack: PropTypes.func,
 };
