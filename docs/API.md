@@ -140,11 +140,13 @@ the field will only be shown when the value of the selected primary option is `b
 
 **defaultValues**
 
-Contains default values for the `primaryOptions`.
+If provided, this object contains default values for the `primaryOptions`, `secondaryOptions`, and `itemList`.
 
 For example:
 
-	{ primary: 'before-buy' }
+	{ primary: 'before-buy', secondary: 'themes', item: '2011' }
+
+will make the form to be pre-loaded with these options by default.
 
 **fallbackTicket config options**
 

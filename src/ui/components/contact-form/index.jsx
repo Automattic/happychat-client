@@ -19,12 +19,8 @@ import FormButton from 'src/ui/components/form-button';
 import FormSelection from 'src/ui/components/form-selection';
 import SelectDropdown from 'src/ui/components/select-dropdown';
 
-import debugFactory from 'debug';
-const debug = debugFactory( 'happychat-client:default-values' );
-
 const getSelectedOption = ( options, defaultValue ) => {
 	if ( Array.isArray( options ) && options.length > 0 ) {
-		debug( 'option selected: ', find( options, { value: defaultValue } ) || options[ 0 ] );
 		return find( options, { value: defaultValue } ) || options[ 0 ];
 	}
 	return {};
@@ -54,21 +50,21 @@ export class ContactForm extends React.Component {
 			openTextFieldTitle,
 			openTextArea,
 			openTextAreaTitle,
+			defaultValues,
 		} = this.props;
-		const defaultValues = { primary: 'broken' };
 		const primarySelected = getSelectedOption( primaryOptions, defaultValues.primary );
 		const newSecondaryOptions = filterByTargetValue(
 			secondaryOptions,
 			primarySelected.value,
 			'primary'
 		);
-		const newSecondarySelected = getSelectedOption( newSecondaryOptions );
+		const newSecondarySelected = getSelectedOption( newSecondaryOptions, defaultValues.secondary );
 		const newItemList = filterByTargetValue(
 			filterByTargetValue( itemList, primarySelected.value, 'primary' ),
 			newSecondarySelected.value,
 			'secondary'
 		);
-		const newItemSelected = getSelectedOption( newItemList );
+		const newItemSelected = getSelectedOption( newItemList, defaultValues.item );
 		this.state = {
 			subject: '',
 			message: '',
@@ -366,6 +362,7 @@ ContactForm.propTypes = {
 	openTextFieldTitle: PropTypes.string,
 	openTextArea: PropTypes.object,
 	openTextAreaTitle: PropTypes.string,
+	defaultValues: PropTypes.object,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
@@ -385,6 +382,7 @@ ContactForm.defaultProps = {
 	openTextFieldTitle: 'What is the URL of your site?',
 	openTextArea: null,
 	openTextAreaTitle: 'Any more info you want to share?',
+	defaultValues: {},
 	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',
