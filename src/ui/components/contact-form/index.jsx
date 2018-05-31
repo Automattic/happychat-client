@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import find from 'lodash/find';
 
 /**
  * Internal dependencies
@@ -18,8 +19,16 @@ import FormButton from 'src/ui/components/form-button';
 import FormSelection from 'src/ui/components/form-selection';
 import SelectDropdown from 'src/ui/components/select-dropdown';
 
-const getSelectedOption = options =>
-	Array.isArray( options ) && options.length > 0 ? options[ 0 ] : {};
+import debugFactory from 'debug';
+const debug = debugFactory( 'happychat-client:default-values' );
+
+const getSelectedOption = ( options, defaultValue ) => {
+	if ( Array.isArray( options ) && options.length > 0 ) {
+		debug( 'option selected: ', find( options, { value: defaultValue } ) || options[ 0 ] );
+		return find( options, { value: defaultValue } ) || options[ 0 ];
+	}
+	return {};
+};
 
 const filterByTargetValue = ( options, targetValue, filterKey ) => {
 	const allOptions = Array.isArray( options ) ? options : [];
@@ -46,7 +55,8 @@ export class ContactForm extends React.Component {
 			openTextArea,
 			openTextAreaTitle,
 		} = this.props;
-		const primarySelected = getSelectedOption( primaryOptions );
+		const defaultValues = { primary: 'broken' };
+		const primarySelected = getSelectedOption( primaryOptions, defaultValues.primary );
 		const newSecondaryOptions = filterByTargetValue(
 			secondaryOptions,
 			primarySelected.value,
@@ -77,6 +87,7 @@ export class ContactForm extends React.Component {
 			openTextArea,
 			openTextAreaTitle,
 			openTextAreaValue: '',
+			defaultValues,
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -175,13 +186,18 @@ export class ContactForm extends React.Component {
 	}
 
 	maybePrimaryOptions() {
-		const { primaryOptions, primaryOptionsTitle } = this.state;
+		const {
+			primaryOptions,
+			primaryOptionsTitle,
+			defaultValues: { primary: primarySelected },
+		} = this.state;
 		return Array.isArray( primaryOptions ) && primaryOptions.length > 0 ? (
 			<div>
 				<FormLabel>{ primaryOptionsTitle }</FormLabel>
 				<FormSelection
 					name="primarySelected"
 					options={ primaryOptions }
+					optionSelected={ primarySelected }
 					onClick={ this.handleOptionChange }
 				/>
 			</div>

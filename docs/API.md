@@ -89,6 +89,7 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 | `openTextField` | object | `{}` | Contains conditions under which to show the text field. |
 | `openTextAreaTitle` | string | `Any more info you want to share?` | Title for the textarea component. |
 | `openTextArea` | object | `{}` | Contains conditions under which to show the text area.|
+| `defaultValues` | object | `{}` | Configures default values for the form. |
 | `fallbackTicket` | object | `{}` | Configures a default route that Happychat will use to offer ticket support as a fallback when chat is not available. |
 
 **primaryOptions**
@@ -136,6 +137,14 @@ For example:
 	{ primary: [ 'before-buy' ], secondary: [ 'themes' ], isRequired: true }
 
 the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`. If it's void, the submit button will be disabled.
+
+**defaultValues**
+
+Contains default values for the `primaryOptions`.
+
+For example:
+
+	{ primary: 'before-buy' }
 
 **fallbackTicket config options**
 
