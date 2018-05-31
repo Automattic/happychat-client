@@ -160,6 +160,7 @@ class ChatFormComponent {
 				secondaryOptionsTitle,
 				itemList,
 				itemListTitle,
+				defaultValues,
 			},
 		} = this.props;
 		return (
@@ -172,6 +173,7 @@ class ChatFormComponent {
 				secondaryOptionsTitle={ secondaryOptionsTitle }
 				itemList={ itemList }
 				itemListTitle={ itemListTitle }
+				defaultValues={ defaultValues }
 				showSubject={ false }
 				submitForm={ this.submitForm }
 				submitFormText={ 'Chat with us' }
@@ -243,6 +245,7 @@ class TicketFormComponent {
 				openTextAreaTitle,
 				openTextField,
 				openTextFieldTitle,
+				defaultValues,
 			},
 			onResetForm,
 		} = this.props;
@@ -271,6 +274,7 @@ class TicketFormComponent {
 						secondaryOptionsTitle={ secondaryOptionsTitle }
 						itemList={ itemList }
 						itemListTitle={ itemListTitle }
+						defaultValues={ defaultValues }
 						showSubject={ true }
 						openTextArea={ openTextArea }
 						openTextAreaTitle={ openTextAreaTitle }

@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import find from 'lodash/find';
 
 /**
  * Internal dependencies
@@ -18,8 +19,12 @@ import FormButton from 'src/ui/components/form-button';
 import FormSelection from 'src/ui/components/form-selection';
 import SelectDropdown from 'src/ui/components/select-dropdown';
 
-const getSelectedOption = options =>
-	Array.isArray( options ) && options.length > 0 ? options[ 0 ] : {};
+const getSelectedOption = ( options, defaultValue ) => {
+	if ( Array.isArray( options ) && options.length > 0 ) {
+		return find( options, { value: defaultValue } ) || options[ 0 ];
+	}
+	return {};
+};
 
 const filterByTargetValue = ( options, targetValue, filterKey ) => {
 	const allOptions = Array.isArray( options ) ? options : [];
@@ -45,20 +50,21 @@ export class ContactForm extends React.Component {
 			openTextFieldTitle,
 			openTextArea,
 			openTextAreaTitle,
+			defaultValues,
 		} = this.props;
-		const primarySelected = getSelectedOption( primaryOptions );
+		const primarySelected = getSelectedOption( primaryOptions, defaultValues.primary );
 		const newSecondaryOptions = filterByTargetValue(
 			secondaryOptions,
 			primarySelected.value,
 			'primary'
 		);
-		const newSecondarySelected = getSelectedOption( newSecondaryOptions );
+		const newSecondarySelected = getSelectedOption( newSecondaryOptions, defaultValues.secondary );
 		const newItemList = filterByTargetValue(
 			filterByTargetValue( itemList, primarySelected.value, 'primary' ),
 			newSecondarySelected.value,
 			'secondary'
 		);
-		const newItemSelected = getSelectedOption( newItemList );
+		const newItemSelected = getSelectedOption( newItemList, defaultValues.item );
 		this.state = {
 			subject: '',
 			message: '',
@@ -77,6 +83,7 @@ export class ContactForm extends React.Component {
 			openTextArea,
 			openTextAreaTitle,
 			openTextAreaValue: '',
+			defaultValues,
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
@@ -175,13 +182,18 @@ export class ContactForm extends React.Component {
 	}
 
 	maybePrimaryOptions() {
-		const { primaryOptions, primaryOptionsTitle } = this.state;
+		const {
+			primaryOptions,
+			primaryOptionsTitle,
+			defaultValues: { primary: primarySelected },
+		} = this.state;
 		return Array.isArray( primaryOptions ) && primaryOptions.length > 0 ? (
 			<div>
 				<FormLabel>{ primaryOptionsTitle }</FormLabel>
 				<FormSelection
 					name="primarySelected"
 					options={ primaryOptions }
+					optionSelected={ primarySelected }
 					onClick={ this.handleOptionChange }
 				/>
 			</div>
@@ -350,6 +362,7 @@ ContactForm.propTypes = {
 	openTextFieldTitle: PropTypes.string,
 	openTextArea: PropTypes.object,
 	openTextAreaTitle: PropTypes.string,
+	defaultValues: PropTypes.object,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
@@ -369,6 +382,7 @@ ContactForm.defaultProps = {
 	openTextFieldTitle: 'What is the URL of your site?',
 	openTextArea: null,
 	openTextAreaTitle: 'Any more info you want to share?',
+	defaultValues: {},
 	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',
