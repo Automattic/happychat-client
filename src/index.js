@@ -192,7 +192,6 @@ export const renderHappychat = (
 		entryOptions = {},
 	}
 ) => {
-	const { fallbackTicket } = entryOptions;
 	store.dispatch(
 		setCurrentUser( {
 			ID,
@@ -204,7 +203,7 @@ export const renderHappychat = (
 	);
 	store.dispatch( setGroups( groups ) );
 	store.dispatch( setLocale( language ) );
-	store.dispatch( setFallbackTicketOptions( fallbackTicket ) );
+	store.dispatch( setFallbackTicketOptions( entryOptions ) );
 
 	isAnyCanChatPropFalse( canChat, entryOptions )
 		? store.dispatch( setEligibility( false ) )
