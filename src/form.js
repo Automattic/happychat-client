@@ -256,6 +256,8 @@ class TicketFormComponent {
 				form = <MessageForm message={ fallbackTicketMsgInFlight } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
+				form = <MessageForm onBack={ onResetForm } message={ fallbackTicketResponse } />;
+				break;
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
 				form = <MessageForm onBack={ onResetForm } message={ fallbackTicketResponse } />;
 				break;
