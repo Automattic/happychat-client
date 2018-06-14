@@ -159,10 +159,33 @@ export class ContactForm extends React.Component {
 	}
 
 	areRequiredFieldsFilled() {
-		const { openTextField, openTextFieldValue, openTextArea, openTextAreaValue } = this.state;
+		const {
+			openTextField,
+			openTextFieldValue,
+			openTextArea,
+			openTextAreaValue,
+			primarySelected,
+			secondarySelected,
+		} = this.state;
+
+		const isOpenTextShown = options => {
+			const newOptions = filterByTargetValue(
+				filterByTargetValue( options, primarySelected.value, 'primary' ),
+				secondarySelected.value,
+				'secondary'
+			);
+			return Array.isArray( newOptions ) && newOptions.length === 1;
+		};
+
 		if (
-			( openTextField && openTextField.isRequired === true && '' === openTextFieldValue ) ||
-			( openTextArea && openTextArea.isRequired === true && '' === openTextAreaValue )
+			( openTextField &&
+				openTextField.isRequired &&
+				'' === openTextFieldValue &&
+				isOpenTextShown( openTextField ? [ openTextField ] : [] ) ) ||
+			( openTextArea &&
+				openTextArea.isRequired &&
+				'' === openTextAreaValue &&
+				isOpenTextShown( openTextArea ? [ openTextArea ] : [] ) )
 		) {
 			return false;
 		}
