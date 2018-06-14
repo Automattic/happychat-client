@@ -115,12 +115,21 @@ const parseResponse = ( state = defaultParseResponse, action ) => {
 	return state;
 };
 
+const payload = ( state = {}, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
+			return action.payload;
+	}
+	return state;
+};
+
 export default combineReducers( {
 	headers,
 	method,
 	msgInFlight,
 	msgTimeout,
 	parseResponse,
+	payload,
 	response,
 	status,
 	timeout,

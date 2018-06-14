@@ -15,6 +15,7 @@ Happychat state shape:
 	- `method` - HTTP method to be used in the request
 	- `msgInFlight` - message to show while the request is in flight
 	- `msgTimeout` - message to show if the request times out
+	- `payload` - the contents of the request
 	- `parseResponse` - function to be used to parse the server response (see [API docs](../docs/API.md))
 	- `response` - response contents
 	- `status` - one of the HAPPYCHAT_FALLBACK_TICKET [constants](./constants.js).
