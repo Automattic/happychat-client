@@ -101,16 +101,10 @@ export const formDefaultValues = ( state = {}, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FORM_DEFAULT_VALUES:
 			return action.values;
-		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
-			const { primarySelected, secondarySelected, itemSelected } = action.payload;
-			return {
-				primary: primarySelected.value,
-				secondary: secondarySelected.value,
-				item: itemSelected.value,
-			};
 	}
 	return state;
 };
+
 export default combineReducers( {
 	currentMessage,
 	formDefaultValues,
