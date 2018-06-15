@@ -66,8 +66,8 @@ export class ContactForm extends React.Component {
 		);
 		const newItemSelected = getSelectedOption( newItemList, defaultValues.item );
 		this.state = {
-			subject: '',
-			message: '',
+			subject: defaultValues.subject || '',
+			message: defaultValues.message || '',
 			primaryOptionsTitle,
 			primaryOptions,
 			primarySelected,
@@ -79,10 +79,10 @@ export class ContactForm extends React.Component {
 			itemSelected: newItemSelected,
 			openTextField,
 			openTextFieldTitle,
-			openTextFieldValue: '',
+			openTextFieldValue: defaultValues.openTextField || '',
 			openTextArea,
 			openTextAreaTitle,
-			openTextAreaValue: '',
+			openTextAreaValue: defaultValues.openTextArea || '',
 			defaultValues,
 		};
 		this.handleChange = this.handleChange.bind( this );

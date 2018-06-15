@@ -230,10 +230,10 @@ class TicketFormComponent {
 		}
 	}
 
-	onResetForm( { primary, secondary, item } ) {
+	onResetForm( values ) {
 		const { onResetForm } = this.props;
 		return () => {
-			onResetForm( { primary, secondary, item } );
+			onResetForm( values );
 		};
 	}
 
@@ -273,6 +273,10 @@ class TicketFormComponent {
 							primary: fallbackTicketPayload.primarySelected.value,
 							secondary: fallbackTicketPayload.secondarySelected.value,
 							item: fallbackTicketPayload.itemSelected.value,
+							subject: fallbackTicketPayload.subject,
+							message: fallbackTicketPayload.message,
+							openTextField: fallbackTicketPayload.openTextFieldValue,
+							openTextArea: fallbackTicketPayload.openTextAreaValue,
 						} ) }
 						message={ fallbackTicketResponse }
 					/>
@@ -293,6 +297,10 @@ class TicketFormComponent {
 							primary: fallbackTicketPayload.primarySelected.value,
 							secondary: fallbackTicketPayload.secondarySelected.value,
 							item: fallbackTicketPayload.itemSelected.value,
+							subject: fallbackTicketPayload.subject,
+							message: fallbackTicketPayload.message,
+							openTextField: fallbackTicketPayload.openTextFieldValue,
+							openTextArea: fallbackTicketPayload.openTextAreaValue,
 						} ) }
 						message={ fallbackTicketMsgTimeout }
 					/>

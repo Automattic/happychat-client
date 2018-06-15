@@ -68,9 +68,9 @@ export const setCurrentMessage = message => ( { type: HAPPYCHAT_SET_CURRENT_MESS
  */
 export const setAssetsLoaded = () => ( { type: HAPPYCHAT_ASSETS_LOADED } );
 
-export const resetForm = ( { primary, secondary, item } ) => ( {
+export const resetForm = values => ( {
 	type: HAPPYCHAT_RESET_FORM,
-	values: { primary, secondary, item },
+	values,
 } );
 
 export const setFormDefaultValues = values => ( { type: HAPPYCHAT_FORM_DEFAULT_VALUES, values } );
