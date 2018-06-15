@@ -21,7 +21,14 @@ import {
 	sendNotTyping,
 	sendTyping,
 } from 'src/state/connection/actions';
-import { blur, focus, openChat, setCurrentMessage, resetForm } from 'src/state/ui/actions';
+import {
+	blur,
+	focus,
+	openChat,
+	setCurrentMessage,
+	setFormDefaultValues,
+	resetForm,
+} from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
@@ -43,6 +50,7 @@ import getFallbackTicketMethod from 'src/state/selectors/get-fallbackticket-meth
 import getFallbackTicketTimeout from 'src/state/selectors/get-fallbackticket-timeout';
 import getFallbackTicketMsgTimeout from 'src/state/selectors/get-fallbackticket-msgtimeout';
 import getFallbackTicketMsgInFlight from 'src/state/selectors/get-fallbackticket-msginflight';
+import getFallbackTicketPayload from 'src/state/selectors/get-fallbackticket-payload';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getUser from 'src/state/selectors/get-user';
@@ -189,6 +197,7 @@ class TicketFormComponent {
 		this.canSubmitForm = this.canSubmitForm.bind( this );
 		this.submitForm = this.submitForm.bind( this );
 		this.onEvent = this.onEvent.bind( this );
+		this.onResetForm = this.onResetForm.bind( this );
 		this.render = this.render.bind( this );
 	}
 
@@ -227,12 +236,25 @@ class TicketFormComponent {
 		}
 	}
 
+	onResetForm( { primary, secondary, item } ) {
+		const { onResetForm, onSetFormDefaultValues } = this.props;
+		return () => {
+			onSetFormDefaultValues( {
+				primary,
+				secondary,
+				item,
+			} );
+			onResetForm();
+		};
+	}
+
 	render() {
 		const {
 			fallbackTicketStatus,
 			fallbackTicketResponse,
 			fallbackTicketMsgTimeout,
 			fallbackTicketMsgInFlight,
+			fallbackTicketPayload,
 			entryOptions: {
 				formTitle,
 				primaryOptions,
@@ -247,7 +269,6 @@ class TicketFormComponent {
 				openTextFieldTitle,
 				defaultValues,
 			},
-			onResetForm,
 		} = this.props;
 
 		let form;
@@ -256,13 +277,36 @@ class TicketFormComponent {
 				form = <MessageForm message={ fallbackTicketMsgInFlight } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
-				form = <MessageForm onBack={ onResetForm } message={ fallbackTicketResponse } />;
+				form = (
+					<MessageForm
+						onBack={ this.onResetForm( {
+							primary: fallbackTicketPayload.primarySelected.value,
+							secondary: fallbackTicketPayload.secondarySelected.value,
+							item: fallbackTicketPayload.itemSelected.value,
+						} ) }
+						message={ fallbackTicketResponse }
+					/>
+				);
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
-				form = <MessageForm onBack={ onResetForm } message={ fallbackTicketResponse } />;
+				form = (
+					<MessageForm
+						onBack={ this.onResetForm( defaultValues ) }
+						message={ fallbackTicketResponse }
+					/>
+				);
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
-				form = <MessageForm onBack={ onResetForm } message={ fallbackTicketMsgTimeout } />;
+				form = (
+					<MessageForm
+						onBack={ this.onResetForm( {
+							primary: fallbackTicketPayload.primarySelected.value,
+							secondary: fallbackTicketPayload.secondarySelected.value,
+							item: fallbackTicketPayload.itemSelected.value,
+						} ) }
+						message={ fallbackTicketMsgTimeout }
+					/>
+				);
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_NEW:
 			default:
@@ -387,6 +431,7 @@ const mapState = state => {
 		fallbackTicketMethod: getFallbackTicketMethod( state ),
 		fallbackTicketMsgTimeout: getFallbackTicketMsgTimeout( state ),
 		fallbackTicketMsgInFlight: getFallbackTicketMsgInFlight( state ),
+		fallbackTicketPayload: getFallbackTicketPayload( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		fallbackTicketTimeout: getFallbackTicketTimeout( state ),
@@ -417,6 +462,7 @@ const mapDispatch = {
 	onSendTyping: sendTyping,
 	onSetCurrentMessage: setCurrentMessage,
 	onSetEligibility: setEligibility,
+	onSetFormDefaultValues: setFormDefaultValues,
 	setBlurred: blur,
 	setFocused: focus,
 };
