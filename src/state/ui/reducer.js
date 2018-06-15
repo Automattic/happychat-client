@@ -14,6 +14,8 @@ import {
 	HAPPYCHAT_MINIMIZING,
 	HAPPYCHAT_BLUR,
 	HAPPYCHAT_FOCUS,
+	HAPPYCHAT_FORM_DEFAULT_VALUES,
+	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
 	HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE,
 	HAPPYCHAT_SET_CURRENT_MESSAGE,
 } from '../action-types';
@@ -95,4 +97,25 @@ export const isReady = ( state = false, action ) => {
 	return state;
 };
 
-export default combineReducers( { currentMessage, isMinimizing, isOpen, isReady, lostFocusAt } );
+export const formDefaultValues = ( state = {}, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FORM_DEFAULT_VALUES:
+			return action.values;
+		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
+			const { primarySelected, secondarySelected, itemSelected } = action.payload;
+			return {
+				primary: primarySelected.value,
+				secondary: secondarySelected.value,
+				item: itemSelected.value,
+			};
+	}
+	return state;
+};
+export default combineReducers( {
+	currentMessage,
+	formDefaultValues,
+	isMinimizing,
+	isOpen,
+	isReady,
+	lostFocusAt,
+} );
