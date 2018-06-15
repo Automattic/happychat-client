@@ -2,29 +2,42 @@
 
 Happychat state shape:
 
-- chat
-  - lastActivityTimestamp - milliseconds since the ongoing chat received or set a message.
-  - status - one of the HAPPYCHAT_CHAT_STATUS_* [constants](./constants.js)
-  - timeline - array of timeline messages, as received from the Happychat service.
-- connection
-  - error - one of the HAPPYCHAT_CONNECTION_ERROR_* [constants](./constants.js)
-  - isAvailable - whether the Happychat service is accepting new chats.
-  - status - one of the HAPPYCHAT_CONNECTION_STATUS_* [constants](./constants.js)
-- ui
-  - currentMessage - current message as typed by the customer in the happychat client.
-  - isMinimizing - whether the happychat client is minimizing.
-  - isOpen - whether the happychat client is opened.
-  - lostFocusAt - milliseconds since the happychat client lost focus.
-- user
-  - currentUser
-    - email
-  - geoLocation
-    - city
-    - country_long
-    - country_short
-    - region
-  - groups
-  - locale
+- `chat`
+  - `lastActivityTimestamp` - ms since the ongoing chat received or set a message.
+  - `status` - one of the HAPPYCHAT_CHAT_STATUS [constants](./constants.js)
+  - `timeline` - array of timeline messages, as received from the Happychat service.
+- `connection`
+  - `error` - one of the HAPPYCHAT_CONNECTION_ERROR [constants](./constants.js)
+  - `isAvailable` - whether the Happychat service is accepting new chats.
+  - `status` - one of the HAPPYCHAT_CONNECTION_STATUS [constants](./constants.js)
+- `fallbackTicket`
+	- `headers` - HTTP headers to be sent along the request
+	- `method` - HTTP method to be used in the request
+	- `msgInFlight` - message to show while the request is in flight
+	- `msgTimeout` - message to show if the request times out
+	- `payload` - the contents of the request
+	- `parseResponse` - function to be used to parse the server response (see [API docs](../docs/API.md))
+	- `response` - response contents
+	- `status` - one of the HAPPYCHAT_FALLBACK_TICKET [constants](./constants.js).
+	- `timeout` - ms to wait until a request is considered timed out
+	- `url` - where to send the request
+- `ui`
+  - `currentMessage` - current message as typed by the customer in the happychat client.
+  - `isMinimizing` - whether the happychat client is minimizing.
+  - `isOpen` - whether the happychat client is opened.
+  - `isReady` - whether the necessary CSS assets have been received.
+  - `lostFocusAt` - ms since the happychat client lost focus.
+- `user`
+  - `currentUser`
+    - `email`
+  - `geoLocation`
+    - `city`
+    - `country_long`
+    - `country_short`
+    - `region`
+  - `groups` - chat groups the user belongs to, used to route the user to the proper agent.
+  - `isEligible` - whether the user can be offered chat.
+  - `locale`
 
 # SocketIO API
 

@@ -9,6 +9,7 @@ import {
 	HAPPYCHAT_MINIMIZING,
 	HAPPYCHAT_BLUR,
 	HAPPYCHAT_FOCUS,
+	HAPPYCHAT_FORM_DEFAULT_VALUES,
 	HAPPYCHAT_RESET_FORM,
 	HAPPYCHAT_SET_CURRENT_MESSAGE,
 } from 'src/state/action-types';
@@ -67,4 +68,9 @@ export const setCurrentMessage = message => ( { type: HAPPYCHAT_SET_CURRENT_MESS
  */
 export const setAssetsLoaded = () => ( { type: HAPPYCHAT_ASSETS_LOADED } );
 
-export const resetForm = () => ( { type: HAPPYCHAT_RESET_FORM } );
+export const resetForm = values => ( {
+	type: HAPPYCHAT_RESET_FORM,
+	values,
+} );
+
+export const setFormDefaultValues = values => ( { type: HAPPYCHAT_FORM_DEFAULT_VALUES, values } );

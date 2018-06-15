@@ -66,8 +66,8 @@ export class ContactForm extends React.Component {
 		);
 		const newItemSelected = getSelectedOption( newItemList, defaultValues.item );
 		this.state = {
-			subject: '',
-			message: '',
+			subject: defaultValues.subject || '',
+			message: defaultValues.message || '',
 			primaryOptionsTitle,
 			primaryOptions,
 			primarySelected,
@@ -79,16 +79,33 @@ export class ContactForm extends React.Component {
 			itemSelected: newItemSelected,
 			openTextField,
 			openTextFieldTitle,
-			openTextFieldValue: '',
+			openTextFieldValue: defaultValues.openTextField || '',
 			openTextArea,
 			openTextAreaTitle,
-			openTextAreaValue: '',
+			openTextAreaValue: defaultValues.openTextArea || '',
 			defaultValues,
 		};
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
 		this.handleOptionChange = this.handleOptionChange.bind( this );
 		this.prepareSubmitForm = this.prepareSubmitForm.bind( this );
+	}
+
+	shouldComponentUpdate( nextProps, nextState ) {
+		if (
+			nextProps.showSubject !== this.props.showSubject ||
+			nextProps.submitFormText !== this.props.submitFormText ||
+			nextState.subject !== this.state.subject ||
+			nextState.message !== this.state.message ||
+			nextState.primarySelected !== this.state.primarySelected ||
+			nextState.secondarySelected !== this.state.secondarySelected ||
+			nextState.itemSelected !== this.state.itemSelected ||
+			nextState.openTextFieldValue !== this.state.openTextFieldValue ||
+			nextState.openTextAreaValue !== this.state.openTextAreaValue
+		) {
+			return true;
+		}
+		return false;
 	}
 
 	componentDidUpdate( prevProps, prevState ) {

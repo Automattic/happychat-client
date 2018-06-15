@@ -14,7 +14,9 @@ import {
 	HAPPYCHAT_MINIMIZING,
 	HAPPYCHAT_BLUR,
 	HAPPYCHAT_FOCUS,
+	HAPPYCHAT_FORM_DEFAULT_VALUES,
 	HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE,
+	HAPPYCHAT_RESET_FORM,
 	HAPPYCHAT_SET_CURRENT_MESSAGE,
 } from '../action-types';
 
@@ -95,4 +97,20 @@ export const isReady = ( state = false, action ) => {
 	return state;
 };
 
-export default combineReducers( { currentMessage, isMinimizing, isOpen, isReady, lostFocusAt } );
+export const formDefaultValues = ( state = {}, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_FORM_DEFAULT_VALUES:
+		case HAPPYCHAT_RESET_FORM:
+			return action.values;
+	}
+	return state;
+};
+
+export default combineReducers( {
+	currentMessage,
+	formDefaultValues,
+	isMinimizing,
+	isOpen,
+	isReady,
+	lostFocusAt,
+} );

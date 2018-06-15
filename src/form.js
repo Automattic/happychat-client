@@ -43,8 +43,10 @@ import getFallbackTicketMethod from 'src/state/selectors/get-fallbackticket-meth
 import getFallbackTicketTimeout from 'src/state/selectors/get-fallbackticket-timeout';
 import getFallbackTicketMsgTimeout from 'src/state/selectors/get-fallbackticket-msgtimeout';
 import getFallbackTicketMsgInFlight from 'src/state/selectors/get-fallbackticket-msginflight';
+import getFallbackTicketPayload from 'src/state/selectors/get-fallbackticket-payload';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
+import getFormDefaultValues from 'src/state/selectors/get-form-defaultvalues';
 import getUser from 'src/state/selectors/get-user';
 import getUserGroupExpanded from 'src/state/selectors/get-user-group-expanded';
 import getUserEligibility from 'src/state/selectors/get-user-eligibility';
@@ -189,6 +191,7 @@ class TicketFormComponent {
 		this.canSubmitForm = this.canSubmitForm.bind( this );
 		this.submitForm = this.submitForm.bind( this );
 		this.onEvent = this.onEvent.bind( this );
+		this.onResetForm = this.onResetForm.bind( this );
 		this.render = this.render.bind( this );
 	}
 
@@ -227,12 +230,21 @@ class TicketFormComponent {
 		}
 	}
 
+	onResetForm( values ) {
+		const { onResetForm } = this.props;
+		return () => {
+			onResetForm( values );
+		};
+	}
+
 	render() {
 		const {
 			fallbackTicketStatus,
 			fallbackTicketResponse,
 			fallbackTicketMsgTimeout,
 			fallbackTicketMsgInFlight,
+			fallbackTicketPayload,
+			defaultValues,
 			entryOptions: {
 				formTitle,
 				primaryOptions,
@@ -245,9 +257,8 @@ class TicketFormComponent {
 				openTextAreaTitle,
 				openTextField,
 				openTextFieldTitle,
-				defaultValues,
+				defaultValues: initValues,
 			},
-			onResetForm,
 		} = this.props;
 
 		let form;
@@ -256,11 +267,44 @@ class TicketFormComponent {
 				form = <MessageForm message={ fallbackTicketMsgInFlight } />;
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_FAILURE:
+				form = (
+					<MessageForm
+						onBack={ this.onResetForm( {
+							primary: fallbackTicketPayload.primarySelected.value,
+							secondary: fallbackTicketPayload.secondarySelected.value,
+							item: fallbackTicketPayload.itemSelected.value,
+							subject: fallbackTicketPayload.subject,
+							message: fallbackTicketPayload.message,
+							openTextField: fallbackTicketPayload.openTextFieldValue,
+							openTextArea: fallbackTicketPayload.openTextAreaValue,
+						} ) }
+						message={ fallbackTicketResponse }
+					/>
+				);
+				break;
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
-				form = <MessageForm onBack={ onResetForm } message={ fallbackTicketResponse } />;
+				form = (
+					<MessageForm
+						onBack={ this.onResetForm( initValues ) }
+						message={ fallbackTicketResponse }
+					/>
+				);
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_TIMEOUT:
-				form = <MessageForm onBack={ onResetForm } message={ fallbackTicketMsgTimeout } />;
+				form = (
+					<MessageForm
+						onBack={ this.onResetForm( {
+							primary: fallbackTicketPayload.primarySelected.value,
+							secondary: fallbackTicketPayload.secondarySelected.value,
+							item: fallbackTicketPayload.itemSelected.value,
+							subject: fallbackTicketPayload.subject,
+							message: fallbackTicketPayload.message,
+							openTextField: fallbackTicketPayload.openTextFieldValue,
+							openTextArea: fallbackTicketPayload.openTextAreaValue,
+						} ) }
+						message={ fallbackTicketMsgTimeout }
+					/>
+				);
 				break;
 			case HAPPYCHAT_FALLBACK_TICKET_NEW:
 			default:
@@ -380,11 +424,13 @@ const mapState = state => {
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
 		currentUserGroup: getUserGroupExpanded( state ),
+		defaultValues: getFormDefaultValues( state ),
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
 		fallbackTicketMethod: getFallbackTicketMethod( state ),
 		fallbackTicketMsgTimeout: getFallbackTicketMsgTimeout( state ),
 		fallbackTicketMsgInFlight: getFallbackTicketMsgInFlight( state ),
+		fallbackTicketPayload: getFallbackTicketPayload( state ),
 		fallbackTicketResponse: getFallbackTicketResponse( state ),
 		fallbackTicketStatus: getFallbackTicketStatus( state ),
 		fallbackTicketTimeout: getFallbackTicketTimeout( state ),

@@ -5,6 +5,7 @@
  */
 import { combineReducers } from 'redux';
 import get from 'lodash/get';
+import omit from 'lodash/omit';
 import startsWith from 'lodash/startsWith';
 
 /**
@@ -56,7 +57,7 @@ const defaultHeaders = [];
 const headers = ( state = defaultHeaders, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.headers', defaultHeaders );
+			return get( action, 'options.fallbackTicket.headers', defaultHeaders );
 	}
 	return state;
 };
@@ -65,7 +66,7 @@ const defaultUrl = null;
 const url = ( state = defaultUrl, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.url', defaultUrl );
+			return get( action, 'options.fallbackTicket.url', defaultUrl );
 	}
 	return state;
 };
@@ -74,7 +75,7 @@ const defaultMethod = 'POST';
 const method = ( state = defaultMethod, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.method', defaultMethod );
+			return get( action, 'options.fallbackTicket.method', defaultMethod );
 	}
 	return state;
 };
@@ -83,7 +84,7 @@ const defaultTimeout = 10000;
 const timeout = ( state = defaultTimeout, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.timeout', defaultTimeout );
+			return get( action, 'options.fallbackTicket.timeout', defaultTimeout );
 	}
 	return state;
 };
@@ -92,7 +93,7 @@ const defaultMsgTimeout = 'Request timed out, it was not successful.';
 const msgTimeout = ( state = defaultMsgTimeout, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.msgTimeout', defaultMsgTimeout );
+			return get( action, 'options.fallbackTicket.msgTimeout', defaultMsgTimeout );
 	}
 	return state;
 };
@@ -101,7 +102,7 @@ const defaultMsgInFlight = 'Sending request...';
 const msgInFlight = ( state = defaultMsgTimeout, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.msgInFlight', defaultMsgInFlight );
+			return get( action, 'options.fallbackTicket.msgInFlight', defaultMsgInFlight );
 	}
 	return state;
 };
@@ -110,7 +111,18 @@ const defaultParseResponse = responseText => responseText;
 const parseResponse = ( state = defaultParseResponse, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
-			return get( action, 'options.parseResponse', defaultParseResponse );
+			return get( action, 'options.fallbackTicket.parseResponse', defaultParseResponse );
+	}
+	return state;
+};
+
+const defaultPayload = {};
+const payload = ( state = defaultPayload, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
+			return action.payload;
+		case HAPPYCHAT_FALLBACK_TICKET_OPTIONS:
+			return omit( get( action, 'options', defaultPayload ), 'fallbackTicket' );
 	}
 	return state;
 };
@@ -121,6 +133,7 @@ export default combineReducers( {
 	msgInFlight,
 	msgTimeout,
 	parseResponse,
+	payload,
 	response,
 	status,
 	timeout,
