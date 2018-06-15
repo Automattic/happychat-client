@@ -21,14 +21,7 @@ import {
 	sendNotTyping,
 	sendTyping,
 } from 'src/state/connection/actions';
-import {
-	blur,
-	focus,
-	openChat,
-	setCurrentMessage,
-	setFormDefaultValues,
-	resetForm,
-} from 'src/state/ui/actions';
+import { blur, focus, openChat, setCurrentMessage, resetForm } from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
@@ -53,6 +46,7 @@ import getFallbackTicketMsgInFlight from 'src/state/selectors/get-fallbackticket
 import getFallbackTicketPayload from 'src/state/selectors/get-fallbackticket-payload';
 import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-response';
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
+import getFormDefaultValues from 'src/state/selectors/get-form-defaultvalues';
 import getUser from 'src/state/selectors/get-user';
 import getUserGroupExpanded from 'src/state/selectors/get-user-group-expanded';
 import getUserEligibility from 'src/state/selectors/get-user-eligibility';
@@ -237,14 +231,9 @@ class TicketFormComponent {
 	}
 
 	onResetForm( { primary, secondary, item } ) {
-		const { onResetForm, onSetFormDefaultValues } = this.props;
+		const { onResetForm } = this.props;
 		return () => {
-			onSetFormDefaultValues( {
-				primary,
-				secondary,
-				item,
-			} );
-			onResetForm();
+			onResetForm( { primary, secondary, item } );
 		};
 	}
 
@@ -255,6 +244,7 @@ class TicketFormComponent {
 			fallbackTicketMsgTimeout,
 			fallbackTicketMsgInFlight,
 			fallbackTicketPayload,
+			defaultValues,
 			entryOptions: {
 				formTitle,
 				primaryOptions,
@@ -267,7 +257,7 @@ class TicketFormComponent {
 				openTextAreaTitle,
 				openTextField,
 				openTextFieldTitle,
-				defaultValues,
+				defaultValues: initValues,
 			},
 		} = this.props;
 
@@ -291,7 +281,7 @@ class TicketFormComponent {
 			case HAPPYCHAT_FALLBACK_TICKET_SUCCESS:
 				form = (
 					<MessageForm
-						onBack={ this.onResetForm( defaultValues ) }
+						onBack={ this.onResetForm( initValues ) }
 						message={ fallbackTicketResponse }
 					/>
 				);
@@ -426,6 +416,7 @@ const mapState = state => {
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
 		currentUserGroup: getUserGroupExpanded( state ),
+		defaultValues: getFormDefaultValues( state ),
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
 		fallbackTicketMethod: getFallbackTicketMethod( state ),
@@ -462,7 +453,6 @@ const mapDispatch = {
 	onSendTyping: sendTyping,
 	onSetCurrentMessage: setCurrentMessage,
 	onSetEligibility: setEligibility,
-	onSetFormDefaultValues: setFormDefaultValues,
 	setBlurred: blur,
 	setFocused: focus,
 };
