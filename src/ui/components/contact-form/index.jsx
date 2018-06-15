@@ -91,6 +91,23 @@ export class ContactForm extends React.Component {
 		this.prepareSubmitForm = this.prepareSubmitForm.bind( this );
 	}
 
+	shouldComponentUpdate( nextProps, nextState ) {
+		if (
+			nextProps.showSubject !== this.props.showSubject ||
+			nextProps.submitFormText !== this.props.submitFormText ||
+			nextState.subject !== this.state.subject ||
+			nextState.message !== this.state.message ||
+			nextState.primarySelected !== this.state.primarySelected ||
+			nextState.secondarySelected !== this.state.secondarySelected ||
+			nextState.itemSelected !== this.state.itemSelected ||
+			nextState.openTextFieldValue !== this.state.openTextFieldValue ||
+			nextState.openTextAreaValue !== this.state.openTextAreaValue
+		) {
+			return true;
+		}
+		return false;
+	}
+
 	componentDidUpdate( prevProps, prevState ) {
 		if (
 			prevState.primarySelected.canChat !== this.state.primarySelected.canChat ||
