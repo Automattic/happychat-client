@@ -57,14 +57,16 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 		options &&
 		( options.secondaryOptions || primaryHasAnySecondary( entryOptions.primaryOptions ) );
 
-	// Calculate height based on the number of components
-	// the iframe may need to render.
+	// Calculate height based on the number of components the iframe may need to render.
 	let iframeHeight = 415;
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 95 : 0 );
 	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 95 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 100 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextField ? 100 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextArea ? 150 : 0 );
+	// We need 480 as min height for the chat form,
+	// so we adjust the height if the ticket form components haven't grown it further.
+	iframeHeight = iframeHeight > 480 ? iframeHeight : 480;
 
 	// style iframe element
 	iframeElement.width = '100%';
