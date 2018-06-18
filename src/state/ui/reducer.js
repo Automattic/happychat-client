@@ -101,7 +101,7 @@ export const formDefaultValues = ( state = {}, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_FORM_DEFAULT_VALUES:
 		case HAPPYCHAT_RESET_FORM:
-			return action.values;
+			return action.values || {};
 	}
 	return state;
 };
