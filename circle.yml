@@ -2,7 +2,7 @@ machine:
   environment:
     NODE_ENV: development
   node:
-    version: 8.9.1
+    version: 10.4.1
 dependencies:
   override:
     - npm install
