@@ -1,0 +1,14 @@
+/** @format */
+
+.form-setting-explanation {
+	color: var(--text-min);
+	display: block;
+	font-size: 13px;
+	font-style: italic;
+	font-weight: 400;
+	margin: 5px 0 0 0;
+
+	&.is-indented {
+		margin-left: 24px;
+	}
+}

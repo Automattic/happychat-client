@@ -14,6 +14,7 @@ import SegmentedControl from 'src/ui/components/segmented-control';
 import ControlItem from 'src/ui/components/segmented-control/item';
 import SelectDropdown from 'src/ui/components/select-dropdown';
 import DropdownItem from 'src/ui/components/select-dropdown/item';
+import FormSettingExplanation from 'src/ui/components/form-setting-explanation';
 
 const areOptionsDistinct = ( nextOpts, currentOpts ) => {
 	if ( nextOpts.length !== currentOpts.length ) {
@@ -73,6 +74,7 @@ class FormSelection extends React.Component {
 				selected: option.value === this.state.selection,
 				value: option.value,
 				title: option.label,
+				explanation: option.explanation,
 				onClick: this.handleClick( option ),
 			},
 		} ) );
@@ -96,6 +98,11 @@ class FormSelection extends React.Component {
 						<DropdownItem { ...option.props }>{ option.label }</DropdownItem>
 					) ) }
 				</SelectDropdown>
+				{ selectedItem.props.explanation ? (
+					<FormSettingExplanation>{ selectedItem.props.explanation }</FormSettingExplanation>
+				) : (
+					''
+				) }
 			</div>
 		);
 	}
