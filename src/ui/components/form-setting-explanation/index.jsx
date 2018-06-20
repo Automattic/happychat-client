@@ -3,36 +3,33 @@
 /**
  * External dependencies
  */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { omit } from 'lodash';
 
-export default class extends React.Component {
-	static displayName = 'FormSettingExplanation';
+const createMarkup = contents => ( {
+	__html: contents,
+} );
 
-	static propTypes = {
-		noValidate: PropTypes.bool,
-		isIndented: PropTypes.bool,
-		className: PropTypes.string,
-	};
-
-	static defaultProps = {
-		noValidate: false,
-		isIndented: false,
-	};
-
+class FormSettingsExplanation extends React.Component {
 	render() {
-		const classes = classNames( this.props.className, 'form-setting-explanation', {
-			'no-validate': this.props.noValidate,
-			'is-indented': this.props.isIndented,
-		} );
+		const { message } = this.props;
+		const classes = classNames( this.props.className, 'form-setting-explanation' );
 
 		return (
-			<p { ...omit( this.props, 'className', 'noValidate', 'isIndented' ) } className={ classes }>
-				{ this.props.children }
-			</p>
+			<p
+				{ ...omit( this.props, 'className', 'message' ) }
+				className={ classes }
+				dangerouslySetInnerHTML={ createMarkup( message ) }
+			/>
 		);
 	}
 }
+
+FormSettingsExplanation.propTypes = {
+	className: PropTypes.string,
+	message: PropTypes.string,
+};
+
+export default FormSettingsExplanation;

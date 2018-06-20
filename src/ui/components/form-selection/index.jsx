@@ -99,7 +99,7 @@ class FormSelection extends React.Component {
 					) ) }
 				</SelectDropdown>
 				{ selectedItem.props.explanation ? (
-					<FormSettingExplanation>{ selectedItem.props.explanation }</FormSettingExplanation>
+					<FormSettingExplanation message={ selectedItem.props.explanation } />
 				) : (
 					''
 				) }
