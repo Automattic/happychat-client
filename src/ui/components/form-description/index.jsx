@@ -12,10 +12,10 @@ const createMarkup = contents => ( {
 	__html: contents,
 } );
 
-class FormSettingsExplanation extends React.Component {
+class FormDescription extends React.Component {
 	render() {
 		const { message } = this.props;
-		const classes = classNames( this.props.className, 'form-setting-explanation' );
+		const classes = classNames( this.props.className, 'form-description' );
 
 		return (
 			<p
@@ -27,9 +27,9 @@ class FormSettingsExplanation extends React.Component {
 	}
 }
 
-FormSettingsExplanation.propTypes = {
+FormDescription.propTypes = {
 	className: PropTypes.string,
 	message: PropTypes.string,
 };
 
-export default FormSettingsExplanation;
+export default FormDescription;

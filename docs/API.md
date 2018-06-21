@@ -99,17 +99,17 @@ Every option is an object that needs to have the `value` and `label` props. Valu
 In addition to these, an option may declare two more optional properties:
 
 * `canChat` - boolean, true by default. If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected.
-* `explanation`  - text, blank by default. If `explanation` is present, the message will be shown alongside the component.
+* `description`  - text, blank by default. If `description` is present, a message will be shown alongside the component.
 
 For example:
 
-		{ 'value': 'themes', 'label': 'Themes', 'canChat': false, explanation: 'There is no chat available for Themes.' }
+		{ 'value': 'themes', 'label': 'Themes', 'canChat': false, description: 'There is no chat available for Themes.' }
 
-when this option is selected chat won't be offered, and a explanation message will be shown.
+when this option is selected chat won't be offered, and a description message will be shown.
 
 **secondaryOptions**
 
-In addition to the `value`, `label`, and `canChat` properties, the options in this section can define a `primary` option.
+In addition to the `value`, `label`, `canChat`, and `description` properties, the options in this section can define a `primary` option.
 
 `primary` is an array that contains values of the options present in the `primaryOptions` section. When the selected primary option is any of the items from this array, the secondary option will be rendered - otherwise it won't be shown. If the option doesn't have a primary property, it'll be always rendered.
 
