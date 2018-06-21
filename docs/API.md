@@ -121,7 +121,7 @@ this option will only be shown when the value of the selected primary option is 
 
 **itemList**
 
-In addition to the `value`, `label`, `canChat` and `primary` properties, the options in this section can define a `secondary` option.
+In addition to the `value`, `label`, `canChat`, `description`, and `primary` properties, the options in this section can define a `secondary` option.
 
 The `secondary` property works the same way that the `primary` one but taking into account the selected secondary option instead.
 
