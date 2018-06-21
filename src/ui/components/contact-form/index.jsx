@@ -16,6 +16,7 @@ import FormTextarea from 'src/ui/components/form-textarea';
 import FormTextInput from 'src/ui/components/form-text-input';
 import FormLabel from 'src/ui/components/form-label';
 import FormButton from 'src/ui/components/form-button';
+import FormDescription from 'src/ui/components/form-description';
 import FormSelection from 'src/ui/components/form-selection';
 import SelectDropdown from 'src/ui/components/select-dropdown';
 
@@ -269,6 +270,7 @@ export class ContactForm extends React.Component {
 					options={ itemList }
 					onSelect={ this.handleItemSelected }
 				/>
+				{ itemSelected.description ? <FormDescription message={ itemSelected.description } /> : '' }
 			</div>
 		) : (
 			''

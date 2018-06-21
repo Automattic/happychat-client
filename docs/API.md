@@ -96,17 +96,20 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 
 Every option is an object that needs to have the `value` and `label` props. Values within a menu need to be unique; the labels will be shown in the UI. Both need to be strings.
 
-Every option can also have an optional boolean `canChat` property (will be true if none is passed). If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected.
+In addition to these, an option may declare two more optional properties:
+
+* `canChat` - boolean, true by default. If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected.
+* `description`  - text, blank by default. If `description` is present, a message will be shown alongside the component.
 
 For example:
 
-		{ 'value': 'themes', 'label': 'Themes', 'canChat': false }
+		{ 'value': 'themes', 'label': 'Themes', 'canChat': false, description: 'There is no chat available for Themes.' }
 
-dwhen this option is selected chat won't be offered.
+when this option is selected chat won't be offered, and a description message will be shown.
 
 **secondaryOptions**
 
-In addition to the `value`, `label`, and `canChat` properties, the options in this section can define a `primary` option.
+In addition to the `value`, `label`, `canChat`, and `description` properties, the options in this section can define a `primary` option.
 
 `primary` is an array that contains values of the options present in the `primaryOptions` section. When the selected primary option is any of the items from this array, the secondary option will be rendered - otherwise it won't be shown. If the option doesn't have a primary property, it'll be always rendered.
 
@@ -118,7 +121,7 @@ this option will only be shown when the value of the selected primary option is 
 
 **itemList**
 
-In addition to the `value`, `label`, `canChat` and `primary` properties, the options in this section can define a `secondary` option.
+In addition to the `value`, `label`, `canChat`, `description`, and `primary` properties, the options in this section can define a `secondary` option.
 
 The `secondary` property works the same way that the `primary` one but taking into account the selected secondary option instead.
 
