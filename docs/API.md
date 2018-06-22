@@ -99,13 +99,21 @@ Every option is an object that needs to have the `value` and `label` props. Valu
 In addition to these, an option may declare two more optional properties:
 
 * `canChat` - boolean, true by default. If `canChat` is set to false, Happychat won't let to start a chat session when this option is selected.
-* `description`  - text, blank by default. If `description` is present, a message will be shown alongside the component.
+* `description`  - array of paragraphs, none by default. For any element in `description`, a HTML paragraph will be created below the component.
 
 For example:
 
-		{ 'value': 'themes', 'label': 'Themes', 'canChat': false, description: 'There is no chat available for Themes.' }
+		{
+			value: 'themes',
+			label: 'Themes',
+			canChat: false,
+			description: [
+				'There is no chat available for Themes.',
+				'Find themes <a target="_parent" href="http://wordpress.com/themes">here</a>.'
+			]
+		}
 
-when this option is selected chat won't be offered, and a description message will be shown.
+when this option is selected chat won't be offered, and two messages (in different paragraphs) will be shown below the component.
 
 **secondaryOptions**
 

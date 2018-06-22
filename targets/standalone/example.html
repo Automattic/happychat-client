@@ -28,20 +28,27 @@
 				groups: ['woo'],
 				entryOptions: {
 					primaryOptions: [
-						{ 'value': 'before-buy', 'label': 'Before you buy', description: '<p>Primary description with <a target="_parent" href="http://wordpress.com">link</a>.</p><p>And a second paragraph</p>' },
-						{ 'value': 'account', 'label': 'Help with my account', },
-						{ 'value': 'broken', 'label': 'Something is broken', canChat: false },
+						{
+							value: 'before-buy',
+							label: 'Before you buy',
+							description: [
+								'Primary description with <a target="_parent" href="http://wordpress.com">link</a>.',
+								'And a second paragraph.',
+							],
+						},
+						{ value: 'account', label: 'Help with my account', },
+						{ value: 'broken', label: 'Something is broken', canChat: false },
 					],
 					secondaryOptions: [
-						{ 'value': 'config', 'label': 'Help configuring', canChat: false, primary: ['account'], description: 'Secondary description.' },
-						{ 'value': 'order', 'label': 'Help with an order', primary: ['account'], },
-						{ 'value': 'themes', 'label': 'Themes', canChat: false, primary: ['before-buy', 'broken'], },
-						{ 'value': 'plugins', 'label': 'Plugins', primary: ['before-buy', 'broken'], },
+						{ value: 'config', label: 'Help configuring', canChat: false, primary: ['account'], description: ['A secondary description.'] },
+						{ value: 'order', label: 'Help with an order', primary: ['account'], },
+						{ value: 'themes', label: 'Themes', canChat: false, primary: ['before-buy', 'broken'], },
+						{ value: 'plugins', label: 'Plugins', primary: ['before-buy', 'broken'], },
 					],
 					itemList: [
-						{ value: '2010', label: '2010 theme', primary: ['before-buy'], secondary: ['themes'], description: 'An item description' },
+						{ value: '2010', label: '2010 theme', primary: ['before-buy'], secondary: ['themes'], description: ['An item description'] },
 						{ value: '2011', label: '2011 theme', primary: ['before-buy'], secondary: ['themes'] },
-						{ value: 'jp', label: 'Jetpack', secondary: ['plugins'], description: 'An awesome <a target="_parent" href="https://jetpack.com/">plugin</a>' },
+						{ value: 'jp', label: 'Jetpack', secondary: ['plugins'], description: ['An awesome <a target="_blank" href="https://jetpack.com/">plugin</a>'] },
 						{ value: 'wc', label: 'WooCommerce', secondary: ['plugins'] },
 					],
 					openTextField: {
