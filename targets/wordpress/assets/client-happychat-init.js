@@ -21,9 +21,6 @@
 		}
 
 		if ( Array.isArray( options.primaryOptions ) ) {
-			// Note that every primary option may define either a canChat property,
-			// or a secondaryOptions array
-			// (for which every secondary option may define a canChat property as well).
 			var newPrimaryOptions = [];
 			options.primaryOptions.forEach( function( option ) {
 				newPrimaryOptions.push( Object.assign( parseOptions( option ) ) );
@@ -37,6 +34,14 @@
 				newSecondaryOptions.push( Object.assign( parseOptions( option ) ) );
 			} );
 			newOptions.secondaryOptions = newSecondaryOptions;
+		}
+
+		if ( Array.isArray( options.itemList ) ) {
+			var newItemList = [];
+			options.itemList.forEach( function( option ) {
+				newItemList.push( Object.assign( parseOptions( option ) ) );
+			} );
+			newOptions.itemList = newItemList;
 		}
 
 		// Adapt WordPress REST API wp_send_json_success response

@@ -214,7 +214,7 @@ export const renderHappychat = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat entry={ entry } entryOptions={ entryOptions } />
+			<Happychat entry={ entry } canChat={ canChat } entryOptions={ entryOptions } />
 		</Provider>,
 		targetNode
 	);
