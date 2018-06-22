@@ -31,10 +31,7 @@
 						{
 							value: 'before-buy',
 							label: 'Before you buy',
-							description: [
-								'Primary description with <a target="_parent" href="http://wordpress.com">link</a>.',
-								'And a second paragraph.',
-							],
+							description: ['Primary description with <a target="_parent" href="http://wordpress.com">link</a>.'],
 						},
 						{ value: 'account', label: 'Help with my account', },
 						{ value: 'broken', label: 'Something is broken', canChat: false },
@@ -42,8 +39,8 @@
 					secondaryOptions: [
 						{ value: 'config', label: 'Help configuring', canChat: false, primary: ['account'], description: ['A secondary description.'] },
 						{ value: 'order', label: 'Help with an order', primary: ['account'], },
-						{ value: 'themes', label: 'Themes', canChat: false, primary: ['before-buy', 'broken'], },
-						{ value: 'plugins', label: 'Plugins', primary: ['before-buy', 'broken'], },
+						{ value: 'themes', label: 'Themes', canChat: false, primary: ['before-buy', 'broken'], description: ['Themes are awesome.'] },
+						{ value: 'plugins', label: 'Plugins', primary: ['before-buy', 'broken'], description: ['Plugins are awesome.'] },
 					],
 					itemList: [
 						{ value: '2010', label: '2010 theme', primary: ['before-buy'], secondary: ['themes'], description: ['An item description'] },
