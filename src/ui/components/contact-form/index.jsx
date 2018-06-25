@@ -270,7 +270,11 @@ export class ContactForm extends React.Component {
 					options={ itemList }
 					onSelect={ this.handleItemSelected }
 				/>
-				{ itemSelected.description ? <FormDescription message={ itemSelected.description } /> : '' }
+				{ itemSelected.description ? (
+					<FormDescription messages={ itemSelected.description } />
+				) : (
+					''
+				) }
 			</div>
 		) : (
 			''
