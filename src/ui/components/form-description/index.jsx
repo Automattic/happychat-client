@@ -14,22 +14,27 @@ const createMarkup = contents => ( {
 
 class FormDescription extends React.Component {
 	render() {
-		const { message } = this.props;
+		const { messages } = this.props;
 		const classes = classNames( this.props.className, 'form-description' );
 
 		return (
-			<p
-				{ ...omit( this.props, 'className', 'message' ) }
-				className={ classes }
-				dangerouslySetInnerHTML={ createMarkup( message ) }
-			/>
+			<div>
+				{ messages.map( ( message, index ) => (
+					<p
+						key={ index }
+						{ ...omit( this.props, 'className', 'messages' ) }
+						className={ classes }
+						dangerouslySetInnerHTML={ createMarkup( message ) }
+					/>
+				) ) }
+			</div>
 		);
 	}
 }
 
 FormDescription.propTypes = {
 	className: PropTypes.string,
-	message: PropTypes.string,
+	messages: PropTypes.array,
 };
 
 export default FormDescription;

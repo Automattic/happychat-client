@@ -100,7 +100,7 @@ class FormSelection extends React.Component {
 					) ) }
 				</SelectDropdown>
 				{ selectedItem.props.description ? (
-					<FormDescription message={ selectedItem.props.description } />
+					<FormDescription messages={ selectedItem.props.description } />
 				) : (
 					''
 				) }

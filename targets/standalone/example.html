@@ -1,89 +1,96 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Happychat Embedded Example</title>
-		<style>
-			body {
-				margin-left: 12%;
-				margin-right: 12%;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="support"></div>
-		<script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
-		<script type="text/javascript">
-			wpcomOAuth.get( function( result ){
-				Happychat.open( {
-					authentication: {
-						type: 'wpcom-oauth-by-token',
-						options: {
-							token: result.access_token,
-						},
+
+<head>
+	<meta charset="utf-8">
+	<title>Happychat Embedded Example</title>
+	<style>
+		body {
+			margin-left: 12%;
+			margin-right: 12%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="support"></div>
+	<script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		wpcomOAuth.get(function (result) {
+			Happychat.open({
+				authentication: {
+					type: 'wpcom-oauth-by-token',
+					options: {
+						token: result.access_token,
 					},
-					nodeId: 'support',
-					groups: ['woo'],
-					entryOptions: {
-						primaryOptions: [
-							{ 'value': 'before-buy', 'label': 'Before you buy', description: '<p>Primary description with <a target="_parent" href="http://wordpress.com">link</a>.</p><p>And a second paragraph</p>' },
-							{ 'value': 'account', 'label': 'Help with my account', },
-							{ 'value': 'broken', 'label': 'Something is broken', canChat: false },
-						],
-						secondaryOptions: [
-							{ 'value': 'config', 'label': 'Help configuring', canChat: false, primary: [ 'account' ], description: 'Secondary description.'},
-							{ 'value': 'order', 'label': 'Help with an order', primary: [ 'account' ], },
-							{ 'value': 'themes', 'label': 'Themes', canChat: false, primary: [ 'before-buy', 'broken' ], },
-							{ 'value': 'plugins', 'label': 'Plugins', primary: [ 'before-buy', 'broken' ], },
-						],
-						itemList: [
-							{ value: '2010', label: '2010 theme', primary: [ 'before-buy' ], secondary: [ 'themes' ], description: 'An item description' },
-							{ value: '2011', label: '2011 theme', primary: [ 'before-buy' ], secondary: [ 'themes' ] },
-							{ value: 'jp', label: 'Jetpack', secondary: [ 'plugins' ], description: 'An awesome <a target="_parent" href="https://jetpack.com/">plugin</a>' },
-							{ value: 'wc', label: 'WooCommerce', secondary: [ 'plugins' ] },
-						],
-						openTextField: {
-							primary: [ 'before-buy' ],
-							secondary: [ 'themes' ],
-							isRequired: true,
+				},
+				nodeId: 'support',
+				groups: ['woo'],
+				entryOptions: {
+					primaryOptions: [
+						{
+							value: 'before-buy',
+							label: 'Before you buy',
+							description: ['Primary description with <a target="_parent" href="http://wordpress.com">link</a>.', 'And a second paragraph.'],
 						},
-						openTextArea: {
-							primary: [ 'before-buy' ],
-							secondary: [ 'themes' ],
-							isRequired: true
-						},
-						defaultValues: {
-							primary: 'before-buy',
-							secondary: 'plugins',
-							item: 'wc',
-							subject: 'More info about WooCommerce plugin',
-						},
-						fallbackTicket: {
-							url: '/create-ticket',
-							headers: {
-								'X-Test-Header': 'test header',
-								'X-Test-Header-2': 'test 2'
-							}
+						{ value: 'account', label: 'Help with my account', },
+						{ value: 'broken', label: 'Something is broken', canChat: false },
+					],
+					secondaryOptions: [
+						{ value: 'config', label: 'Help configuring', canChat: false, primary: ['account'], description: ['A secondary description.'] },
+						{ value: 'order', label: 'Help with an order', primary: ['account'], },
+						{ value: 'themes', label: 'Themes', canChat: false, primary: ['before-buy', 'broken'], description: ['Themes are awesome.'] },
+						{ value: 'plugins', label: 'Plugins', primary: ['before-buy', 'broken'], description: ['Plugins are awesome.'] },
+					],
+					itemList: [
+						{ value: '2010', label: '2010 theme', primary: ['before-buy'], secondary: ['themes'], description: ['An item description.'] },
+						{ value: '2011', label: '2011 theme', primary: ['before-buy'], secondary: ['themes'] },
+						{ value: 'jp', label: 'Jetpack', secondary: ['plugins'], description: ['An awesome plugin.'] },
+						{ value: 'wc', label: 'WooCommerce', secondary: ['plugins'] },
+					],
+					openTextField: {
+						primary: ['before-buy'],
+						secondary: ['themes'],
+						isRequired: true,
+					},
+					openTextArea: {
+						primary: ['before-buy'],
+						secondary: ['themes'],
+						isRequired: true
+					},
+					defaultValues: {
+						primary: 'before-buy',
+						secondary: 'plugins',
+						item: 'wc',
+						subject: 'More info about WooCommerce plugin',
+					},
+					fallbackTicket: {
+						url: '/create-ticket',
+						headers: {
+							'X-Test-Header': 'test header',
+							'X-Test-Header-2': 'test 2'
 						}
 					}
-				} );
-			} );
+				}
+			});
+		});
 
 
-			// test events API
-			var reportChatStatus= function(chatStatus){
-				console.log('chatStatus is ', chatStatus);
-			}
-			Happychat.on('chatStatus', reportChatStatus);
-			var reportAvailability = function(availability){
-				console.log('availibility is ', availability);
-			}
-			Happychat.on('availability', reportAvailability);
-			window.unload = function() {
-				console.log('unload');
-				Happychat.of('availability', reportAvailability);
-				Happychat.of('chatStatus', reportChatStatus);
-			}
-		</script>
-	</body>
+		// test events API
+		var reportChatStatus = function (chatStatus) {
+			console.log('chatStatus is ', chatStatus);
+		}
+		Happychat.on('chatStatus', reportChatStatus);
+		var reportAvailability = function (availability) {
+			console.log('availibility is ', availability);
+		}
+		Happychat.on('availability', reportAvailability);
+		window.unload = function () {
+			console.log('unload');
+			Happychat.of('availability', reportAvailability);
+			Happychat.of('chatStatus', reportChatStatus);
+		}
+	</script>
+</body>
+
 </html>
