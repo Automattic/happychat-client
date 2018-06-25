@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import find from 'lodash/find';
+import max from 'lodash/max';
 
 /**
  * Internal dependencies
@@ -57,8 +58,17 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 		options &&
 		( options.secondaryOptions || primaryHasAnySecondary( entryOptions.primaryOptions ) );
 
-	const isThereAnyDescription = options =>
-		Array.isArray( options ) && options.filter( option => !! option.description );
+	const maxNumberOfDescriptions = options => {
+		let maxLength = 0;
+		let lengths;
+		if ( options ) {
+			lengths = options.map(
+				option => ( Array.isArray( option.description ) ? option.description.length : 0 )
+			);
+			maxLength = max( lengths );
+		}
+		return maxLength;
+	};
 
 	// Calculate height based on the number of components the iframe may need to render.
 	let iframeHeight = 415;
@@ -67,9 +77,9 @@ const createIframe = ( props, assetsLoadedHook = () => {} ) => {
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 100 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextField ? 100 : 0 );
 	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextArea ? 150 : 0 );
-	iframeHeight = iframeHeight + ( isThereAnyDescription( entryOptions.primaryOptions ) ? 23 : 0 );
-	iframeHeight = iframeHeight + ( isThereAnyDescription( entryOptions.secondaryOptions ) ? 23 : 0 );
-	iframeHeight = iframeHeight + ( isThereAnyDescription( entryOptions.itemList ) ? 23 : 0 );
+	iframeHeight = iframeHeight + maxNumberOfDescriptions( entryOptions.primaryOptions ) * 20;
+	iframeHeight = iframeHeight + maxNumberOfDescriptions( entryOptions.secondaryOptions ) * 20;
+	iframeHeight = iframeHeight + maxNumberOfDescriptions( entryOptions.itemList ) * 20;
 
 	// We need 480 as min height for the chat form,
 	// so we adjust the height if the ticket form components haven't grown it further.
