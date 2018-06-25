@@ -19,9 +19,10 @@ class FormDescription extends React.Component {
 
 		return (
 			<div>
-				{ messages.map( message => (
+				{ messages.map( ( message, index ) => (
 					<p
-						{ ...omit( this.props, 'className', 'message' ) }
+						key={ index }
+						{ ...omit( this.props, 'className', 'messages' ) }
 						className={ classes }
 						dangerouslySetInnerHTML={ createMarkup( message ) }
 					/>
