@@ -44,11 +44,13 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  * but also we want to notify happychat when all assets are done downloading.
  *
  * @param  {Object} props Properties used by the renderMethod.
+ * @param  {string} props.nodeId Id of the HTMLNode where the iframe will be created.
+ * @param  {Array} props.groups Happychat groups to be used to choose a theme.
+ * @param  {Object} props.entryOptions Options to be used to calculate the iframe height.
  * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
-const createIframe = ( props, assetsLoadedHook = () => {} ) => {
-	const { nodeId, groups, entryOptions } = props;
+const createIframe = ( { nodeId, groups, entryOptions }, assetsLoadedHook = () => {} ) => {
 	const iframeElement = document.createElement( 'iframe' );
 
 	const primaryHasAnySecondary = options =>
