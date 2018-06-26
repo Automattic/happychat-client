@@ -26,11 +26,12 @@ with the following top-level properties:
 | Key | Value | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `authentication` | object | Mandatory | `null` |  Configures Happychat authentication. See details below. |
+| `canChat` | bool | Optional | `true` | Whether the user can be offered chat or not. |
 | `entry` | string | Optional | `ENTRY_FORM` | What should be rendered as the first entry point for Happychat. Valid values are `ENTRY_FORM` (renders the contact form) `ENTRY_CHAT` (renders the chat form). |
 | `entryOptions` | object | Optional | `{}` | Configures Happychat entry points. See details below. |
 | `groups` | array | Optional | `[WP.com]` | What group the chat session should be routed to. Valid values are `WP.com`, `woo`, and `jpop`. |
-| `canChat` | bool | Optional | `true` | Whether the user can be offered chat or not. |
 | `nodeId` | string | Mandatory | `null` | The id of the HTMLNode where Happychat will be rendered. |
+| `theme` | string | Optional | `null` | The theme to use. Valid values are the group names. |
 
 ### authentication
 
