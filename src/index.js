@@ -37,7 +37,19 @@ const store = createStore(
 
 const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
-const getTheme = groups => ( Array.isArray( groups ) && groups.length > 0 ? groups[ 0 ] : null );
+/**
+ *
+ * @param {string} theme The theme to use
+ * @param {Array} groups Happychat groups: if no theme is provided, it'd use one linked to the group.
+ * @returns {string} A string with one of the valid themes.
+ */
+const getTheme = ( { theme, groups } ) => {
+	if ( theme ) {
+		return theme;
+	}
+
+	return Array.isArray( groups ) && groups.length > 0 ? groups[ 0 ] : null;
+};
 
 const getHeight = entryOptions => {
 	const primaryHasAnySecondary = options =>
@@ -242,9 +254,9 @@ export const renderHappychat = (
 };
 /* eslint-enable camelcase */
 
-export const createTargetNode = ( { nodeId, groups, entryOptions } ) => {
+export const createTargetNode = ( { nodeId, theme, groups, entryOptions } ) => {
 	return createIframe(
-		{ nodeId, theme: getTheme( groups ), height: getHeight( entryOptions ) },
+		{ nodeId, theme: getTheme( { theme, groups } ), height: getHeight( entryOptions ) },
 		dispatchAssetsFinishedDownloading
 	);
 };

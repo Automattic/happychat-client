@@ -8,13 +8,10 @@ import isEmpty from 'lodash/isEmpty';
 /**
  * Internal dependencies
  */
-import {
-	createTargetNode,
-	eventAPI,
-	renderHappychat,
-	renderError,
- } from './index';
+import { createTargetNode, eventAPI, renderHappychat, renderError } from './index';
 import authenticator from 'src/lib/auth';
+
+/** @format */
 
 const api = {
 	/**
@@ -29,26 +26,19 @@ const api = {
 	 * @param {string} entry Optional. Valid values are ENTRY_FORM, ENTRY_CHAT.
 	 * @param {Object} entryOptions Optional. Contains options to configure the selected entry.
 	 * @param {Array} groups Mandatory. Happychat groups this user belongs to.
+	 * @param {Array} theme Optional. The theme to use, valid values are the names of the groups.
+	 * 		If no provided the theme associated to the group will be used.
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
-	 * @param {Object} user Optional. Customer information .
-	 * 			 ENTRY_FORM is the default and will render the contact form.
-	 * 			 ENTRY_CHAT will render the chat form.
+	 * @param {Object} user Optional. Customer information.
 	 */
-	open: ( {
-		authentication,
-		canChat,
-		entry,
-		entryOptions,
-		groups,
-		nodeId,
-		user,
-	} ) => {
+	open: ( { authentication, canChat, entry, entryOptions, groups, nodeId, theme, user } ) => {
 		authenticator.init( authentication );
 
-		const targetNode = createTargetNode( { nodeId, groups, entryOptions } );
+		const targetNode = createTargetNode( { nodeId, theme, groups, entryOptions } );
 
-		authenticator.login()
-			.then( () => isEmpty( user ) ? authenticator.getUser() : Promise.resolve( user ) )
+		authenticator
+			.login()
+			.then( () => ( isEmpty( user ) ? authenticator.getUser() : Promise.resolve( user ) ) )
 			.then( userObject =>
 				renderHappychat( targetNode, {
 					userObject,
