@@ -37,6 +37,8 @@ const store = createStore(
 
 const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
+const getTheme = groups => ( Array.isArray( groups ) && groups.length > 0 ? groups[ 0 ] : null );
+
 /**
  * Creates an iframe in the node provided by the nodeId prop.
  *
@@ -45,12 +47,12 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
  *
  * @param  {Object} props Properties used by the renderMethod.
  * @param  {string} props.nodeId Id of the HTMLNode where the iframe will be created.
- * @param  {Array} props.groups Happychat groups to be used to choose a theme.
+ * @param  {Array} props.theme Theme to download and apply.
  * @param  {Object} props.entryOptions Options to be used to calculate the iframe height.
  * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
-const createIframe = ( { nodeId, groups, entryOptions }, assetsLoadedHook = () => {} ) => {
+const createIframe = ( { nodeId, theme, entryOptions }, assetsLoadedHook = () => {} ) => {
 	const iframeElement = document.createElement( 'iframe' );
 
 	const primaryHasAnySecondary = options =>
@@ -138,7 +140,7 @@ const createIframe = ( { nodeId, groups, entryOptions }, assetsLoadedHook = () =
 	);
 	iframeElement.contentDocument.head.appendChild( styleLoading );
 
-	// Then, we inject the stylesheets: the noticon custom font, Happychat, and the theme if any.
+	// Then, we inject the stylesheets: the noticon custom font, Happychat default, and the theme if any.
 	// We want to tell Happychat when they are downloaded, and we do so by means of the onload method
 	// of the stylesheets, which will resolve the Promise.all()
 	const styleNoticon = document.createElement( 'link' );
@@ -151,20 +153,15 @@ const createIframe = ( { nodeId, groups, entryOptions }, assetsLoadedHook = () =
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
 	styleHC.setAttribute( 'href', config( 'css_url' ) + 'happychat.css' );
-
-	// TODO: rework this to use skills and have local themes loaded
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
 
+	let styleHCThemePromise = Promise.resolve();
 	const styleHCTheme = document.createElement( 'link' );
 	styleHCTheme.setAttribute( 'rel', 'stylesheet' );
 	styleHCTheme.setAttribute( 'type', 'text/css' );
-	let styleHCThemePromise = Promise.resolve();
-	if ( groups && groups.length > 0 ) {
-		const groupName = groups[ 0 ];
-		if ( groupName === 'woo' || groupName === 'jpop' ) {
-			styleHCTheme.setAttribute( 'href', config( 'css_url' ) + groupName + '.css' );
-			styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
-		}
+	if ( theme === 'woo' || theme === 'jpop' ) {
+		styleHCTheme.setAttribute( 'href', config( 'css_url' ) + theme + '.css' );
+		styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
 	}
 
 	Promise.all( [ styleNoticonPromise, styleHCPromise, styleHCThemePromise ] ).then( () =>
@@ -241,7 +238,10 @@ export const renderHappychat = (
 /* eslint-enable camelcase */
 
 export const createTargetNode = ( { nodeId, groups, entryOptions } ) => {
-	return createIframe( { nodeId, groups, entryOptions }, dispatchAssetsFinishedDownloading );
+	return createIframe(
+		{ nodeId, theme: getTheme( groups ), entryOptions },
+		dispatchAssetsFinishedDownloading
+	);
 };
 
 export const renderError = ( targetNode, { error } ) =>
