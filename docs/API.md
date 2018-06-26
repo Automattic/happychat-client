@@ -2,11 +2,12 @@
 
 * Init settings
 	* authentication
+	* canChat
 	* entry
 	* entryOptions
 	* groups
-	* canChat
 	* nodeId
+	* theme
 * Examples
 	* Default
 	* With titles and primary, secondary, and itemList menus
@@ -59,6 +60,10 @@ How to configure authentication via proxy iframe:
 			},
 		},
 	} );
+
+### canChat
+
+Whether the user can be offered chat or not. If this property is false, no chat will be offered. This can also be configured per option, see `entryOptions` below.
 
 ### entry
 
@@ -206,13 +211,13 @@ Currently, Happychat can connect customers to any of these groups:
 | WooCommerce | `woo` |
 | Jetpack | `jpop` |
 
-### canChat
-
-Whether the user can be offered chat or not. If this property is false, no chat will be offered.
-
 ### nodeId
 
 The Happychat library will create an iframe within the HTML node provided by this id.
+
+### theme
+
+The UI theme to use. By default it'll be used the theme that's linked to the chat group (see `groups` above), but if this property is present it'll be overriden.
 
 ## Examples
 

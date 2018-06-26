@@ -74,7 +74,7 @@ We've transitioned to a codebase that supports themes by consolidating the color
 - `jpop`: follows the Jetpack guidelines.
 - `woo`: follows the [WooCommerce guidelines](https://woocommerce.com/style-guide/#sg-palette).
 
-All SCSS color variables are declared at `/home/andres/src/happychat-client/src/ui/css/shared/_colors.scss`. The themes are automatically selected depending on the the chat group the user is routed to. For example, the `woo` theme will be activated when group is `woo`, and `jpop` when group is `jpop`.
+All SCSS color variables are declared at `<repo>/src/ui/css/shared/_colors.scss`. The themes are automatically selected depending on the the chat group the user is routed to. For example, the `woo` theme will be activated when group is `woo`, and `jpop` when group is `jpop`.
 
 Note that CSS Custom Properties support is yet not [ubiquitous](https://caniuse.com/#feat=css-variables) -current offenders are IE11 and Opera Mini- so we use [postcss-custom-properties](https://github.com/postcss/postcss-custom-properties) processors to compile back for those browsers.
 
