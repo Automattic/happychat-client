@@ -39,22 +39,7 @@ const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded(
 
 const getTheme = groups => ( Array.isArray( groups ) && groups.length > 0 ? groups[ 0 ] : null );
 
-/**
- * Creates an iframe in the node provided by the nodeId prop.
- *
- * We want this iframe to be non-blocking respect of the main window onload event,
- * but also we want to notify happychat when all assets are done downloading.
- *
- * @param  {Object} props Properties used by the renderMethod.
- * @param  {string} props.nodeId Id of the HTMLNode where the iframe will be created.
- * @param  {Array} props.theme Theme to download and apply.
- * @param  {Object} props.entryOptions Options to be used to calculate the iframe height.
- * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
- * @returns {HTMLNode} Target node where Happychat can hook into.
- */
-const createIframe = ( { nodeId, theme, entryOptions }, assetsLoadedHook = () => {} ) => {
-	const iframeElement = document.createElement( 'iframe' );
-
+const getHeight = entryOptions => {
 	const primaryHasAnySecondary = options =>
 		Array.isArray( options ) && find( options, opt => opt.secondaryOptions );
 
@@ -88,10 +73,28 @@ const createIframe = ( { nodeId, theme, entryOptions }, assetsLoadedHook = () =>
 	// We need 480 as min height for the chat form,
 	// so we adjust the height if the ticket form components haven't grown it further.
 	iframeHeight = iframeHeight > 480 ? iframeHeight : 480;
+	return iframeHeight;
+};
+
+/**
+ * Creates an iframe in the node provided by the nodeId prop.
+ *
+ * We want this iframe to be non-blocking respect of the main window onload event,
+ * but also we want to notify happychat when all assets are done downloading.
+ *
+ * @param  {Object} props Properties used by the renderMethod.
+ * @param  {string} props.nodeId Id of the HTMLNode where the iframe will be created.
+ * @param  {Array} props.theme Theme to download and apply.
+ * @param  {Object} props.height Height to be given to the iframe.
+ * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
+ * @returns {HTMLNode} Target node where Happychat can hook into.
+ */
+const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) => {
+	const iframeElement = document.createElement( 'iframe' );
 
 	// style iframe element
 	iframeElement.width = '100%';
-	iframeElement.height = iframeHeight + 'em';
+	iframeElement.height = height + 'em';
 	iframeElement.frameBorder = 0;
 	iframeElement.scrolling = 'no';
 
@@ -140,9 +143,11 @@ const createIframe = ( { nodeId, theme, entryOptions }, assetsLoadedHook = () =>
 	);
 	iframeElement.contentDocument.head.appendChild( styleLoading );
 
-	// Then, we inject the stylesheets: the noticon custom font, Happychat default, and the theme if any.
-	// We want to tell Happychat when they are downloaded, and we do so by means of the onload method
-	// of the stylesheets, which will resolve the Promise.all()
+	// Then, we inject the stylesheets: the noticon custom font,
+	// Happychat default, and the theme if any.
+	// We want to tell Happychat when they are downloaded,
+	// and we do so by means of the onload method of the stylesheets,
+	// which will resolve the Promise.all()
 	const styleNoticon = document.createElement( 'link' );
 	styleNoticon.setAttribute( 'rel', 'stylesheet' );
 	styleNoticon.setAttribute( 'type', 'text/css' );
@@ -239,7 +244,7 @@ export const renderHappychat = (
 
 export const createTargetNode = ( { nodeId, groups, entryOptions } ) => {
 	return createIframe(
-		{ nodeId, theme: getTheme( groups ), entryOptions },
+		{ nodeId, theme: getTheme( groups ), height: getHeight( entryOptions ) },
 		dispatchAssetsFinishedDownloading
 	);
 };
