@@ -19,11 +19,11 @@
 	--neutral-dark: #{$gray-dark-woo};
 	--neutral-dark-lighten-20: #{lighten($gray-dark-woo, 20%)};
 	--neutral-darken-30: #{darken($gray-woo, 30%)};
-	--neutral-lighten-10: #{$gray-woo};
-	--neutral-lighten-20: #{$gray-woo};
-	--neutral-lighten-20-opacity-5: #{transparentize($gray-woo, 0.5)};
-	--neutral-lighten-25: #{$gray-woo};
-	--neutral-lighten-30: #{$gray-woo};
+	--neutral-lighten-10: #{lighten($gray-woo, 10%)};
+	--neutral-lighten-20: #{lighten($gray-woo, 20%)};
+	--neutral-lighten-20-opacity-5: #{transparentize(lighten($gray-woo, 20%), 0.5)};
+	--neutral-lighten-25: #{lighten($gray-woo, 25%)};
+	--neutral-lighten-30: #{lighten($gray-woo, 30%)};
 	--text: #{$gray-dark-woo};
 	--text-min: #{lighten($gray-dark-woo, 18%)};
 	--text-lighten-40: #{lighten($gray-dark-woo, 40%)};
