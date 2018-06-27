@@ -39,7 +39,7 @@
     "dev:wordpress:serve-css": "npm run dev:wordpress:css && NODE_ENV=development webpack-dev-server --config webpack.wordpress.config.js",
     "build": "run-p build:*",
     "build:standalone": "run-p build:standalone:*",
-    "build:standalone:js": "NODE_ENV=production webpack -p --config webpack.standalone.config.js -p",
+    "build:standalone:js": "NODE_ENV=production webpack --config webpack.standalone.config.js",
     "build:standalone:css": "run-p build:standalone:css:*",
     "build:standalone:css:main": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/happychat.css",
     "build:standalone:css:woo": "node-sass src/ui/css/themes/_woo.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/woo.css",
