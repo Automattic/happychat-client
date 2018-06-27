@@ -33,6 +33,7 @@ const config = {
 
 switch ( env ) {
 	case 'development':
+		config.mode = 'development';
 		config.devtool = 'source-map';
 		config.devServer = {
 			contentBase: path.resolve( __dirname, 'targets/npm' ),
@@ -42,8 +43,8 @@ switch ( env ) {
 		break;
 
 	case 'production':
-		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
-		config.plugins.push( new UglifyJsPlugin() );
+		config.mode = 'production';
+		config.plugins.push( new UglifyJsPlugin( { parallel: true, extractComments: true } ) );
 		break;
 }
 

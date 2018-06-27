@@ -39,7 +39,7 @@
     "dev:wordpress:serve-css": "npm run dev:wordpress:css && NODE_ENV=development webpack-dev-server --config webpack.wordpress.config.js",
     "build": "run-p build:*",
     "build:standalone": "run-p build:standalone:*",
-    "build:standalone:js": "NODE_ENV=production webpack -p --config webpack.standalone.config.js -p",
+    "build:standalone:js": "NODE_ENV=production webpack --config webpack.standalone.config.js",
     "build:standalone:css": "run-p build:standalone:css:*",
     "build:standalone:css:main": "node-sass src/form.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/happychat.css",
     "build:standalone:css:woo": "node-sass src/ui/css/themes/_woo.scss --output-style compressed | postcss --config postcss.config.json -u autoprefixer -u postcss-custom-properties --no-map -o targets/standalone/woo.css",
@@ -90,9 +90,11 @@
     "postcss-custom-properties": "6.2.0",
     "prettier": "github:automattic/calypso-prettier#503d7779",
     "react-test-renderer": "15.6.2",
-    "webpack": "3.10.0",
-    "webpack-bundle-analyzer": "2.9.1",
-    "webpack-dev-server": "2.9.4"
+    "uglifyjs-webpack-plugin": "1.2.7",
+    "webpack": "4.12.2",
+    "webpack-bundle-analyzer": "2.13.1",
+    "webpack-cli": "3.0.8",
+    "webpack-dev-server": "3.1.4"
   },
   "dependencies": {
     "classnames": "1.1.1",
@@ -109,7 +111,6 @@
     "redux-devtools-extension": "2.13.2",
     "socket.io-client": "2.1.1",
     "twemoji": "2.3",
-    "uglifyjs-webpack-plugin": "1.2.3",
     "uuid": "2.0.1",
     "wpcom-oauth-cors": "1.0.1",
     "wpcom-xhr-request": "1.1.1"
