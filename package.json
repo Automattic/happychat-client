@@ -90,6 +90,7 @@
     "postcss-custom-properties": "6.2.0",
     "prettier": "github:automattic/calypso-prettier#503d7779",
     "react-test-renderer": "15.6.2",
+    "uglifyjs-webpack-plugin": "1.2.7",
     "webpack": "4.12.2",
     "webpack-bundle-analyzer": "2.13.1",
     "webpack-cli": "3.0.8",
@@ -110,7 +111,6 @@
     "redux-devtools-extension": "2.13.2",
     "socket.io-client": "2.1.1",
     "twemoji": "2.3",
-    "uglifyjs-webpack-plugin": "1.2.3",
     "uuid": "2.0.1",
     "wpcom-oauth-cors": "1.0.1",
     "wpcom-xhr-request": "1.1.1"
