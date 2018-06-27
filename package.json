@@ -93,7 +93,7 @@
     "webpack": "4.12.2",
     "webpack-bundle-analyzer": "2.13.1",
     "webpack-cli": "3.0.8",
-    "webpack-dev-server": "2.9.4"
+    "webpack-dev-server": "3.1.4"
   },
   "dependencies": {
     "classnames": "1.1.1",
