@@ -44,7 +44,7 @@ switch ( env ) {
 
 	case 'production':
 		config.mode = 'production';
-		config.plugins.push( new UglifyJsPlugin() );
+		config.plugins.push( new UglifyJsPlugin( { parallel: true, extractComments: true } ) );
 		break;
 }
 
