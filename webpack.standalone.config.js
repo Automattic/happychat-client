@@ -48,13 +48,11 @@ switch ( env ) {
 
 	case 'production':
 		config.mode = 'production';
-		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
 		config.plugins.push( new UglifyJsPlugin() );
 		break;
 
 	case 'analyze':
 		config.mode = 'production';
-		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
 		config.plugins.push( new UglifyJsPlugin() );
 		// same as production + bundle analyzer
 		config.plugins.push( new BundleAnalyzerPlugin() );
