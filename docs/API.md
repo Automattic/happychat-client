@@ -95,6 +95,7 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 | `openTextField` | object | `{}` | Contains conditions under which to show the text field. |
 | `openTextAreaTitle` | string | `Any more info you want to share?` | Title for the textarea component. |
 | `openTextArea` | object | `{}` | Contains conditions under which to show the text area.|
+| `buttonText` | object | `{'ticket': "Send a ticket", 'chat': "Chat with us"}` | Contains the text to show for the two allowed states: offer ticket or chat. |
 | `defaultValues` | object | `{}` | Configures default values for the form. |
 | `fallbackTicket` | object | `{}` | Configures a default route that Happychat will use to offer ticket support as a fallback when chat is not available. |
 
@@ -154,6 +155,14 @@ For example:
 	{ primary: [ 'before-buy' ], secondary: [ 'themes' ], isRequired: true }
 
 the field will only be shown when the value of the selected primary option is `before-buy` and the values of the selected secondary option is `themes`. If it's void, the submit button will be disabled.
+
+**buttonText**
+
+Allows the host to customize the text to bo shown in the form button. It can have two states: either send a ticket or start a chat. By default it'll show `Send a ticket` and `Chat with us`.
+
+For example:
+
+	{'ticket': "Create ticket", 'chat': "Start chat"}
 
 **defaultValues**
 

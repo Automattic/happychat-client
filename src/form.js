@@ -163,6 +163,7 @@ class ChatFormComponent {
 				itemList,
 				itemListTitle,
 				defaultValues,
+				buttonText: { chat: buttonTextChat },
 			},
 		} = this.props;
 		return (
@@ -178,7 +179,7 @@ class ChatFormComponent {
 				defaultValues={ defaultValues }
 				showSubject={ false }
 				submitForm={ this.submitForm }
-				submitFormText={ 'Chat with us' }
+				submitFormText={ buttonTextChat }
 				onEvent={ this.onEvent }
 			/>
 		);
@@ -257,6 +258,7 @@ class TicketFormComponent {
 				openTextAreaTitle,
 				openTextField,
 				openTextFieldTitle,
+				buttonText: { ticket: buttonTextTicket },
 				defaultValues: initValues,
 			},
 		} = this.props;
@@ -325,7 +327,7 @@ class TicketFormComponent {
 						openTextField={ openTextField }
 						openTextFieldTitle={ openTextFieldTitle }
 						submitForm={ this.submitForm }
-						submitFormText={ 'Send a ticket' }
+						submitFormText={ buttonTextTicket }
 						onEvent={ this.onEvent }
 					/>
 				);
