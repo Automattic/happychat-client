@@ -90,7 +90,7 @@
     "postcss-custom-properties": "6.2.0",
     "prettier": "github:automattic/calypso-prettier#503d7779",
     "react-test-renderer": "15.6.2",
-    "webpack": "3.10.0",
+    "webpack": "4.12.2",
     "webpack-bundle-analyzer": "2.9.1",
     "webpack-dev-server": "2.9.4"
   },
