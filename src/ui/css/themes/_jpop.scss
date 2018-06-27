@@ -26,4 +26,5 @@
 	--neutral-lighten-30: #{lighten($gray, 30%)};
 	--text: #{$gray-dark};
 	--text-min: #{darken($gray, 18%)};
+	--text-lighten-40: #{lighten($gray-dark, 40%)};
 }
