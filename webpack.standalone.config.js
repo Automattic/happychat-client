@@ -34,6 +34,7 @@ const config = {
 
 switch ( env ) {
 	case 'development':
+		config.mode = 'development';
 		config.devtool = 'source-map';
 		config.devServer = {
 			contentBase: path.resolve( __dirname, 'targets/standalone' ),
@@ -46,11 +47,13 @@ switch ( env ) {
 		break;
 
 	case 'production':
+		config.mode = 'production';
 		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
 		config.plugins.push( new UglifyJsPlugin() );
 		break;
 
 	case 'analyze':
+		config.mode = 'production';
 		config.plugins.push( new webpack.optimize.ModuleConcatenationPlugin() );
 		config.plugins.push( new UglifyJsPlugin() );
 		// same as production + bundle analyzer
