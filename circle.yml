@@ -1,11 +1,23 @@
-machine:
-  environment:
-    NODE_ENV: development
-  node:
-    version: 10.4.1
-dependencies:
-  override:
-    - npm install
-test:
-  override:
-    - npm run test
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.4.1
+    environment:
+      - NODE_ENV: "development"
+    steps:
+      - checkout
+
+      - restore_cache:
+          name: "Restoring npm cache"
+          keys:
+             - v1-npmcache-{{ checksum ".nvmrc" }}-{{ checksum "package-lock.json" }}
+             - v1-npmcache-{{ checksum ".nvmrc" }}
+      - run: npm ci
+      - save_cache:
+          name: "Saving npm cache"
+          key: v1-npmcache-{{ checksum ".nvmrc" }}-{{ checksum "package-lock.json" }}
+          paths:
+            - ~/.npm
+
+      - run: npm test
