@@ -374,7 +374,7 @@ class SelectDropdown extends Component {
 		if ( ! this.state.isOpen ) {
 			return this.openDropdown();
 		}
-		document.activeElement.click();
+		ReactDom.findDOMNode( this.refs[ 'item-' + this.focused ].refs.itemLink ).click();
 	}
 
 	focusSibling( direction ) {

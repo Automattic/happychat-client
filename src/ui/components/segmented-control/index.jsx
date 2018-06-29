@@ -161,6 +161,10 @@ class SegmentedControl extends React.Component {
 		} );
 	};
 
+	activateElement = () => {
+		ReactDom.findDOMNode( this.refs[ 'item-' + this.focused ].refs.itemLink ).click();
+	};
+
 	navigateItem = event => {
 		switch ( event.keyCode ) {
 			case 9: // tab
@@ -169,7 +173,7 @@ class SegmentedControl extends React.Component {
 			case 32: // space
 			case 13: // enter
 				event.preventDefault();
-				document.activeElement.click();
+				this.activateElement();
 				break;
 			case 37: // left arrow
 				event.preventDefault();
