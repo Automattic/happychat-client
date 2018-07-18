@@ -134,9 +134,27 @@ class ChatFormComponent {
 		return isUserEligibleForChat && isChatAvailable;
 	}
 
-	submitForm( formState ) {
+	submitForm( {
+		primaryOptionsTitle,
+		primarySelected,
+		secondaryOptionsTitle,
+		secondarySelected,
+		itemListTitle,
+		itemSelected,
+		message,
+		openTextFieldTitle,
+		openTextFieldValue,
+		openTextAreaTitle,
+		openTextAreaValue,
+	} ) {
 		this.props.onOpenChat();
-		this.props.onSendMessage( formState.message );
+		let warmUpMessage = primarySelected.label ? ( primaryOptionsTitle + ' ' + primarySelected.label + '\n' ) : '';
+		warmUpMessage = warmUpMessage + ( secondarySelected.label ? ( secondaryOptionsTitle + ' ' + secondarySelected.label + '\n' ) : '' );
+		warmUpMessage = warmUpMessage + ( itemSelected.label ? ( itemListTitle + ' ' + itemSelected.label + '\n' ) : '' );
+		( warmUpMessage !== '' ) && this.props.onSendMessage( warmUpMessage );
+		this.props.onSendMessage( message );
+		openTextFieldValue && this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
+		openTextAreaValue && this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
 	}
 
 	onEvent( formState ) {
