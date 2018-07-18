@@ -13,8 +13,12 @@
 		return 'false' === canChat ? false : true;
 	};
 
+	var cloneObject = function( oldObject ) {
+		return JSON.parse( JSON.stringify( oldObject ) );
+	};
+
 	var parseOptions = function( options ) {
-		var newOptions = Object.assign( {}, options );
+		var newOptions = cloneObject( options );
 
 		if ( options.canChat ) {
 			newOptions.canChat = toBoolean( options.canChat );
@@ -23,7 +27,7 @@
 		if ( Array.isArray( options.primaryOptions ) ) {
 			var newPrimaryOptions = [];
 			options.primaryOptions.forEach( function( option ) {
-				newPrimaryOptions.push( Object.assign( parseOptions( option ) ) );
+				newPrimaryOptions.push( parseOptions( option ) );
 			} );
 			newOptions.primaryOptions = newPrimaryOptions;
 		}
@@ -31,7 +35,7 @@
 		if ( Array.isArray( options.secondaryOptions ) ) {
 			var newSecondaryOptions = [];
 			options.secondaryOptions.forEach( function( option ) {
-				newSecondaryOptions.push( Object.assign( parseOptions( option ) ) );
+				newSecondaryOptions.push( parseOptions( option ) );
 			} );
 			newOptions.secondaryOptions = newSecondaryOptions;
 		}
@@ -39,7 +43,7 @@
 		if ( Array.isArray( options.itemList ) ) {
 			var newItemList = [];
 			options.itemList.forEach( function( option ) {
-				newItemList.push( Object.assign( parseOptions( option ) ) );
+				newItemList.push( parseOptions( option ) );
 			} );
 			newOptions.itemList = newItemList;
 		}
