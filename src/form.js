@@ -148,13 +148,13 @@ class ChatFormComponent {
 		openTextAreaValue,
 	} ) {
 		this.props.onOpenChat();
+		openTextAreaValue && this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
 		let warmUpMessage = primarySelected.label ? ( primaryOptionsTitle + ' ' + primarySelected.label + '\n' ) : '';
 		warmUpMessage = warmUpMessage + ( secondarySelected.label ? ( secondaryOptionsTitle + ' ' + secondarySelected.label + '\n' ) : '' );
 		warmUpMessage = warmUpMessage + ( itemSelected.label ? ( itemListTitle + ' ' + itemSelected.label + '\n' ) : '' );
 		( warmUpMessage !== '' ) && this.props.onSendMessage( warmUpMessage );
-		this.props.onSendMessage( message );
 		openTextFieldValue && this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
-		openTextAreaValue && this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
+		this.props.onSendMessage( message );
 	}
 
 	onEvent( formState ) {
