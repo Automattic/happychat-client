@@ -41,12 +41,14 @@ describe( 'index', () => {
 
 		test( 'should execute toggleDropdown when clicked', () => {
 			const originalToggleDropdown = SelectDropdown.prototype.toggleDropdown;
-			SelectDropdown.prototype.toggleDropdown = jest.fn();
+			SelectDropdown.prototype.onContainerClick = jest.fn();
 
+			const fakeEvent = prepareFakeClickEvent( { } );
 			const dropdown = shallowRenderDropdown();
-			dropdown.find( '.select-dropdown__container' ).simulate( 'click' );
+			dropdown.find( '.select-dropdown__container' ).simulate( 'click', fakeEvent );
 
-			expect( SelectDropdown.prototype.toggleDropdown.mock.calls.length ).toBe( 1 );
+
+			expect( SelectDropdown.prototype.onContainerClick.mock.calls.length ).toBe( 1 );
 			SelectDropdown.prototype.toggleDropdown = originalToggleDropdown;
 		} );
 
@@ -282,6 +284,13 @@ describe( 'index', () => {
 				preventDefault: jest.fn(),
 			};
 		}
+
+		function prepareFakeClickEvent( eventTarget ) {
+			return {
+				target: eventTarget
+			};
+		}
+
 	} );
 
 	/**
