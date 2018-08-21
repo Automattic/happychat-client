@@ -39,17 +39,16 @@ describe( 'index', () => {
 			expect( dropdown.find( '.select-dropdown.is-open' ).length ).toBe( 0 );
 		} );
 
-		test( 'should execute toggleDropdown when clicked', () => {
-			const originalToggleDropdown = SelectDropdown.prototype.toggleDropdown;
+		test( 'should execute onContainerClick when clicked', () => {
+			const originalOnContainerClick = SelectDropdown.prototype.onContainerClick;
 			SelectDropdown.prototype.onContainerClick = jest.fn();
 
 			const fakeEvent = prepareFakeClickEvent( { } );
 			const dropdown = shallowRenderDropdown();
 			dropdown.find( '.select-dropdown__container' ).simulate( 'click', fakeEvent );
 
-
 			expect( SelectDropdown.prototype.onContainerClick.mock.calls.length ).toBe( 1 );
-			SelectDropdown.prototype.toggleDropdown = originalToggleDropdown;
+			SelectDropdown.prototype.onContainerClick = originalOnContainerClick;
 		} );
 
 		test( 'should be possible to control the dropdown via keyboard', () => {
@@ -62,6 +61,12 @@ describe( 'index', () => {
 			expect( SelectDropdown.prototype.navigateItem.mock.calls.length ).toBe( 1 );
 			SelectDropdown.prototype.navigateItem = originalNavigateItem;
 		} );
+
+		function prepareFakeClickEvent( eventTarget ) {
+			return {
+				target: eventTarget,
+			};
+		}
 	} );
 
 	describe( 'getInitialSelectedItem', () => {
@@ -284,13 +289,6 @@ describe( 'index', () => {
 				preventDefault: jest.fn(),
 			};
 		}
-
-		function prepareFakeClickEvent( eventTarget ) {
-			return {
-				target: eventTarget
-			};
-		}
-
 	} );
 
 	/**
