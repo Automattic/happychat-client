@@ -280,7 +280,11 @@ class SelectDropdown extends Component {
 					>
 						{ this.props.isSearchable &&
 							this.state.isOpen && (
-								<Search onSearch={ this.onSearch } placeholder={ this.props.placeholder } />
+								<Search 
+									ref="dropdownSearchBox" 
+									onSearch={ this.onSearch } 
+									placeholder={ this.props.placeholder } 
+								/>
 							) }
 						{ this.dropdownOptions( this.state.searchValue ) }
 					</ul>
@@ -289,7 +293,10 @@ class SelectDropdown extends Component {
 		);
 	}
 
-	toggleDropdown() {
+	toggleDropdown( event ) {
+		// don't toggle the dropdown if the user clicks in the search box
+		if ( event.target === ReactDom.findDOMNode( this.refs.dropdownSearchBox ) )
+			return;
 		this.setState( {
 			isOpen: ! this.state.isOpen,
 		} );
