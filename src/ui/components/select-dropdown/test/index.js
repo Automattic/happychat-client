@@ -40,15 +40,15 @@ describe( 'index', () => {
 		} );
 
 		test( 'should execute onContainerClick when clicked', () => {
-			const originalOnContainerClick = SelectDropdown.prototype.onContainerClick;
-			SelectDropdown.prototype.onContainerClick = jest.fn();
+			const originalOnClick = SelectDropdown.prototype.onClick;
+			SelectDropdown.prototype.onClick = jest.fn();
 
 			const fakeEvent = prepareFakeClickEvent( { } );
 			const dropdown = shallowRenderDropdown();
 			dropdown.find( '.select-dropdown__container' ).simulate( 'click', fakeEvent );
 
-			expect( SelectDropdown.prototype.onContainerClick.mock.calls.length ).toBe( 1 );
-			SelectDropdown.prototype.onContainerClick = originalOnContainerClick;
+			expect( SelectDropdown.prototype.onClick.mock.calls.length ).toBe( 1 );
+			SelectDropdown.prototype.onClick = originalOnClick;
 		} );
 
 		test( 'should be possible to control the dropdown via keyboard', () => {

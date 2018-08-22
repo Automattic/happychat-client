@@ -65,7 +65,7 @@ class SelectDropdown extends Component {
 
 		// bounds
 		this.navigateItem = this.navigateItem.bind( this );
-		this.onContainerClick = this.onContainerClick.bind( this );
+		this.onClick = this.onClick.bind( this );
 		this.toggleDropdown = this.toggleDropdown.bind( this );
 		this.handleOutsideClick = this.handleOutsideClick.bind( this );
 		this.onSearch = this.onSearch.bind( this );
@@ -257,7 +257,7 @@ class SelectDropdown extends Component {
 					aria-controls={ 'select-submenu-' + this.state.instanceId }
 					aria-expanded={ this.state.isOpen }
 					data-tip-target={ this.props.tipTarget }
-					onClick={ this.onContainerClick }
+					onClick={ this.onClick }
 				>
 					<div
 						id={ 'select-dropdown-' + this.state.instanceId }
@@ -294,14 +294,14 @@ class SelectDropdown extends Component {
 		);
 	}
 
-	onContainerClick( event ) {
+	onClick( event ) {
 		// don't toggle the dropdown if the user clicks in the search box
 		if ( event.target === ReactDom.findDOMNode( this.refs.dropdownSearchBox ) )
 			return;
 		this.toggleDropdown();
 	}
 
-	toggleDropdown( ) {
+	toggleDropdown() {
 		this.setState( {
 			isOpen: ! this.state.isOpen,
 		} );
