@@ -43,7 +43,9 @@ describe( 'index', () => {
 			const originalOnClick = SelectDropdown.prototype.onClick;
 			SelectDropdown.prototype.onClick = jest.fn();
 
-			const fakeEvent = prepareFakeClickEvent( { } );
+			const fakeEvent = {
+				target: null,
+			};
 			const dropdown = shallowRenderDropdown();
 			dropdown.find( '.select-dropdown__container' ).simulate( 'click', fakeEvent );
 
@@ -61,12 +63,6 @@ describe( 'index', () => {
 			expect( SelectDropdown.prototype.navigateItem.mock.calls.length ).toBe( 1 );
 			SelectDropdown.prototype.navigateItem = originalNavigateItem;
 		} );
-
-		function prepareFakeClickEvent( eventTarget ) {
-			return {
-				target: eventTarget,
-			};
-		}
 	} );
 
 	describe( 'getInitialSelectedItem', () => {
