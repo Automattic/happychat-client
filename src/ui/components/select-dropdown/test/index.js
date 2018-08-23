@@ -39,18 +39,41 @@ describe( 'index', () => {
 			expect( dropdown.find( '.select-dropdown.is-open' ).length ).toBe( 0 );
 		} );
 
-		test( 'should execute onContainerClick when clicked', () => {
-			const originalOnClick = SelectDropdown.prototype.onClick;
-			SelectDropdown.prototype.onClick = jest.fn();
+		test( 'should call toggleDropdown when clicked', () => {
+			const originalToggleDropdown = SelectDropdown.prototype.toggleDropdown;
+			SelectDropdown.prototype.toggleDropdown = jest.fn();
 
-			const fakeEvent = {
-				target: null,
-			};
-			const dropdown = shallowRenderDropdown();
-			dropdown.find( '.select-dropdown__container' ).simulate( 'click', fakeEvent );
+			const dropdown = mountDropdown();
+			dropdown.find( '.select-dropdown__container' ).simulate( 'click' );
 
-			expect( SelectDropdown.prototype.onClick.mock.calls.length ).toBe( 1 );
-			SelectDropdown.prototype.onClick = originalOnClick;
+			expect( SelectDropdown.prototype.toggleDropdown.mock.calls.length ).toBe( 1 );
+			SelectDropdown.prototype.toggleDropdown = originalToggleDropdown;
+		} );
+
+		test( 'should call toggleDropdown when the click target is not the search box (and it is opened)', () => {
+			const originalToggleDropdown = SelectDropdown.prototype.toggleDropdown;
+			SelectDropdown.prototype.toggleDropdown = jest.fn();
+
+			const dropdown = mountDropdown();
+			dropdown.find( '.select-dropdown__container' ).simulate( 'click' );
+			dropdown.setState( { isOpen: true } ); // open the search box as toggleDropdown is mocked
+			dropdown.find( 'input' ).simulate( 'click' );
+			dropdown.find( '.select-dropdown__container' ).simulate( 'click' );
+
+			expect( SelectDropdown.prototype.toggleDropdown.mock.calls.length ).toBe( 2 );
+			SelectDropdown.prototype.toggleDropdown = originalToggleDropdown;
+		} );
+
+		test( 'should not call toggleDropdown when the click target is the search box (and it is opened)', () => {
+			const originalToggleDropdown = SelectDropdown.prototype.toggleDropdown;
+			SelectDropdown.prototype.toggleDropdown = jest.fn();
+
+			const dropdown = mountDropdown();
+			dropdown.setState( { isOpen: true } ); // open the search box
+			dropdown.find( 'input' ).simulate( 'click' );
+
+			expect( SelectDropdown.prototype.toggleDropdown.mock.calls.length ).toBe( 0 );
+			SelectDropdown.prototype.toggleDropdown = originalToggleDropdown;
 		} );
 
 		test( 'should be possible to control the dropdown via keyboard', () => {
