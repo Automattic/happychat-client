@@ -63,12 +63,23 @@ class SelectDropdown extends Component {
 	constructor( props ) {
 		super( props );
 
-		// bounds
-		this.navigateItem = this.navigateItem.bind( this );
-		this.onClick = this.onClick.bind( this );
-		this.toggleDropdown = this.toggleDropdown.bind( this );
+		// bind methods to this instance
+		this.activateItem = this.activateItem.bind( this );
+		this.closeDropdown = this.closeDropdown.bind( this );
+		this.dropdownOptions = this.dropdownOptions.bind( this );
+		this.focusSibling = this.focusSibling.bind( this );
+		this.getInitialSelectedItem = this.getInitialSelectedItem.bind( this );
+		this.getSelectedIcon = this.getSelectedIcon.bind( this );
+		this.getSelectedText = this.getSelectedText.bind( this );
 		this.handleOutsideClick = this.handleOutsideClick.bind( this );
+		this.navigateItem = this.navigateItem.bind( this );
+		this.navigateItemByTabKey = this.navigateItemByTabKey.bind( this );
+		this.onClick = this.onClick.bind( this );
 		this.onSearch = this.onSearch.bind( this );
+		this.onSelectItem = this.onSelectItem.bind( this );
+		this.openDropdown = this.openDropdown.bind( this );
+		this.selectItem = this.selectItem.bind( this );
+		this.toggleDropdown = this.toggleDropdown.bind( this );
 
 		// state
 		const initialState = { isOpen: false, searchValue: null };

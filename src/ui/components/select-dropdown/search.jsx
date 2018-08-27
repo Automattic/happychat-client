@@ -9,7 +9,10 @@ import PropTypes from 'prop-types';
 class Search extends PureComponent {
 	constructor( props ) {
 		super( props );
+
+		// bind class methods to this instance
 		this.focus = this.focus.bind( this );
+		this.getCurrentSearchValue = this.getCurrentSearchValue.bind( this );
 		this.onChange = this.onChange.bind( this );
 
 		this.state = {
