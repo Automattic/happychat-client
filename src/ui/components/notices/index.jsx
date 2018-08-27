@@ -26,6 +26,13 @@ import {
  * Renders any notices about the chat session to the user
  */
 export class Notices extends Component {
+	constructor() {
+		super( ...arguments );
+
+		// bind class methods
+		this.statusNotice = this.statusNotice.bind( this );
+	}
+
 	statusNotice() {
 		const { isServerReachable, connectionStatus, chatStatus, translate } = this.props;
 
