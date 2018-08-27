@@ -20,7 +20,10 @@ export default class Emojify extends PureComponent {
 
 	constructor( props ) {
 		super( props );
+
+		// bind class methods to this instance
 		this.setRef = this.setRef.bind( this );
+		this.parseEmoji = this.parseEmoji.bind( this );
 	}
 
 	componentDidMount() {
