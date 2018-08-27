@@ -86,9 +86,19 @@ export class ContactForm extends React.Component {
 			openTextAreaValue: defaultValues.openTextArea || '',
 			defaultValues,
 		};
+
+		// bind class methods
+		this.areRequiredFieldsFilled = this.areRequiredFieldsFilled.bind( this );
 		this.handleChange = this.handleChange.bind( this );
 		this.handleItemSelected = this.handleItemSelected.bind( this );
 		this.handleOptionChange = this.handleOptionChange.bind( this );
+		this.maybeItemList = this.maybeItemList.bind( this );
+		this.maybeOpenTextArea = this.maybeOpenTextArea.bind( this );
+		this.maybeOpenTextField = this.maybeOpenTextField.bind( this );
+		this.maybePrimaryOptions = this.maybePrimaryOptions.bind( this );
+		this.maybeSecondaryOptions = this.maybeSecondaryOptions.bind( this );
+		this.maybeSubject = this.maybeSubject.bind( this );
+		this.prepareCanSubmitForm = this.prepareCanSubmitForm.bind( this );
 		this.prepareSubmitForm = this.prepareSubmitForm.bind( this );
 	}
 
