@@ -20,6 +20,8 @@ export default class FormTextInput extends PureComponent {
 	constructor() {
 		super( ...arguments );
 
+		// bind class methods
+		this.focus = this.focus.bind( this );
 		this.selectOnFocus = this.selectOnFocus.bind( this );
 	}
 
