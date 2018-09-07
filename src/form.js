@@ -263,7 +263,7 @@ class TicketFormComponent {
 			fallbackTicketMsgTimeout,
 			fallbackTicketMsgInFlight,
 			fallbackTicketPayload,
-			defaultValues,
+			defaultValues, // the last values stored in state
 			entryOptions: {
 				formTitle,
 				primaryOptions,
@@ -277,7 +277,7 @@ class TicketFormComponent {
 				openTextField,
 				openTextFieldTitle,
 				buttonText: { ticket: buttonTextTicket },
-				defaultValues: initValues,
+				defaultValues: initValues, // initial default values: to be used on fallback success
 			},
 		} = this.props;
 
