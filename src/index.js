@@ -16,6 +16,7 @@ import max from 'lodash/max';
  */
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
+import { getSelectedOption, filterByTargetValue } from 'src/lib/get-settings';
 // UI components
 import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
@@ -204,17 +205,43 @@ const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) 
 	return targetNode;
 };
 
-const isAnyCanChatPropFalse = ( canChat, entryOptions ) =>
-	false === canChat ||
-	( Array.isArray( entryOptions.primaryOptions ) &&
-		entryOptions.primaryOptions.length > 0 &&
-		false === entryOptions.primaryOptions[ 0 ].canChat ) ||
-	( Array.isArray( entryOptions.secondaryOptions ) &&
-		entryOptions.secondaryOptions.length > 0 &&
-		false === entryOptions.secondaryOptions[ 0 ].canChat ) ||
-	( Array.isArray( entryOptions.itemList ) &&
-		entryOptions.itemList.length > 0 &&
-		false === entryOptions.itemList[ 0 ].canChat );
+const getSelectedOptions = ( entryOptions ) => {
+	const { defaultValues } = entryOptions;
+	const primarySelected = getSelectedOption( entryOptions.primaryOptions, defaultValues.primary );
+	const secondaryOptions = filterByTargetValue(
+		entryOptions.secondaryOptions,
+		primarySelected.value,
+		'primary'
+	);
+	const secondarySelected = getSelectedOption(
+		secondaryOptions,
+		defaultValues.secondary
+	);
+	const itemList = filterByTargetValue(
+		filterByTargetValue( entryOptions.itemList, primarySelected.value, 'primary' ),
+		secondarySelected.value,
+		'secondary'
+	);
+	const itemSelected = getSelectedOption( itemList, defaultValues.item );
+	return {
+		primarySelected,
+		secondarySelected,
+		itemSelected,
+	};
+};
+
+const isAnyCanChatPropFalse = ( canChat, entryOptions ) => {
+	const {
+		primarySelected,
+		secondarySelected,
+		itemSelected,
+	} = getSelectedOptions( entryOptions );
+
+	return false === canChat ||
+		false === primarySelected.canChat ||
+		false === secondarySelected.canChat ||
+		false === itemSelected.canChat;
+};
 
 /* eslint-disable camelcase */
 export const renderHappychat = (
