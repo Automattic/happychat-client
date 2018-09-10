@@ -16,7 +16,7 @@ import max from 'lodash/max';
  */
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
-import { getSelectedOption, filterByTargetValue } from 'src/lib/get-options';
+import { getOptions } from 'src/lib/get-options';
 // UI components
 import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
@@ -205,37 +205,12 @@ const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) 
 	return targetNode;
 };
 
-const getSelectedOptions = ( entryOptions ) => {
-	const { defaultValues } = entryOptions;
-	const primarySelected = getSelectedOption( entryOptions.primaryOptions, defaultValues.primary );
-	const secondaryOptions = filterByTargetValue(
-		entryOptions.secondaryOptions,
-		primarySelected.value,
-		'primary'
-	);
-	const secondarySelected = getSelectedOption(
-		secondaryOptions,
-		defaultValues.secondary
-	);
-	const itemList = filterByTargetValue(
-		filterByTargetValue( entryOptions.itemList, primarySelected.value, 'primary' ),
-		secondarySelected.value,
-		'secondary'
-	);
-	const itemSelected = getSelectedOption( itemList, defaultValues.item );
-	return {
-		primarySelected,
-		secondarySelected,
-		itemSelected,
-	};
-};
-
 const isAnyCanChatPropFalse = ( canChat, entryOptions ) => {
 	const {
 		primarySelected,
 		secondarySelected,
 		itemSelected,
-	} = getSelectedOptions( entryOptions );
+	} = getOptions( entryOptions );
 
 	return false === canChat ||
 		false === primarySelected.canChat ||
