@@ -22,24 +22,26 @@ export const filterByTargetValue = ( options, targetValue, filterKey ) => {
 
 export const getOptions = ( values, defaults ) => {
 	const primarySelected = getSelectedOption( values.primaryOptions, defaults.primary );
-	const secondaryOptions = filterByTargetValue(
+	const newSecondaryOptions = filterByTargetValue(
 		values.secondaryOptions,
 		primarySelected.value,
 		'primary'
 	);
 	const secondarySelected = getSelectedOption(
-		secondaryOptions,
+		newSecondaryOptions,
 		defaults.secondary
 	);
-	const itemList = filterByTargetValue(
+	const newItemList = filterByTargetValue(
 		filterByTargetValue( values.itemList, primarySelected.value, 'primary' ),
 		secondarySelected.value,
 		'secondary'
 	);
-	const itemSelected = getSelectedOption( itemList, defaults.item );
+	const itemSelected = getSelectedOption( newItemList, defaults.item );
 	return {
 		primarySelected,
+		newSecondaryOptions,
 		secondarySelected,
+		newItemList,
 		itemSelected,
 	};
 };

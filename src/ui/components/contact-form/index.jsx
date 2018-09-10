@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { getSelectedOption, filterByTargetValue } from 'src/lib/get-options';
+import { getOptions, getSelectedOption, filterByTargetValue } from 'src/lib/get-options';
 import CompactCard from 'src/ui/components/card/compact';
 import Card from 'src/ui/components/card';
 import FormTextarea from 'src/ui/components/form-textarea';
@@ -36,22 +36,17 @@ export class ContactForm extends React.Component {
 			openTextAreaTitle,
 			defaultValues,
 		} = this.props;
-		const primarySelected = getSelectedOption( primaryOptions, defaultValues.primary );
-		const newSecondaryOptions = filterByTargetValue(
-			secondaryOptions,
-			primarySelected.value,
-			'primary'
-		);
-		const newSecondarySelected = getSelectedOption(
+		const {
+			primarySelected,
 			newSecondaryOptions,
-			defaultValues.secondary
-		);
-		const newItemList = filterByTargetValue(
-			filterByTargetValue( itemList, primarySelected.value, 'primary' ),
-			newSecondarySelected.value,
-			'secondary'
-		);
-		const newItemSelected = getSelectedOption( newItemList, defaultValues.item );
+			secondarySelected,
+			newItemList,
+			itemSelected,
+		} = getOptions( {
+			primaryOptions,
+			secondaryOptions,
+			itemList,
+		}, defaultValues );
 		this.state = {
 			subject: defaultValues.subject || '',
 			message: defaultValues.message || '',
@@ -60,10 +55,10 @@ export class ContactForm extends React.Component {
 			primarySelected,
 			secondaryOptionsTitle,
 			secondaryOptions: newSecondaryOptions,
-			secondarySelected: newSecondarySelected,
+			secondarySelected,
 			itemListTitle,
 			itemList: newItemList,
-			itemSelected: newItemSelected,
+			itemSelected,
 			openTextField,
 			openTextFieldTitle,
 			openTextFieldValue: defaultValues.openTextField || '',
