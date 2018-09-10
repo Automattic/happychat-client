@@ -133,42 +133,47 @@ export class ContactForm extends React.Component {
 	}
 
 	handleOptionChange( e ) {
+		// Note that:
+		// - state contains the valid values taking into account the selected options
+		// - props contains the whole set of values
 		if ( e.name === 'primarySelected' ) {
-			const { secondaryOptions, itemList } = this.props;
-			const newPrimarySelected = e.option;
-			const newSecondaryOptions = filterByTargetValue(
-				secondaryOptions,
-				newPrimarySelected.value,
-				'primary'
-			);
-			const newSecondarySelected = getSelectedOption( newSecondaryOptions );
-			const newItemList = filterByTargetValue(
-				filterByTargetValue( itemList, newPrimarySelected.value, 'primary' ),
-				newSecondarySelected.value,
-				'secondary'
-			);
-			const newItemSelected = getSelectedOption( newItemList );
+			const {
+				primarySelected,
+				newSecondaryOptions,
+				secondarySelected,
+				newItemList,
+				itemSelected,
+			} = getOptions( {
+				primaryOptions: this.state.primaryOptions,
+				secondaryOptions: this.props.secondaryOptions,
+				itemList: this.props.itemList,
+			}, {
+				primary: e.option.value,
+			} );
 			this.setState( {
-				primarySelected: newPrimarySelected,
+				primarySelected,
 				secondaryOptions: newSecondaryOptions,
-				secondarySelected: newSecondarySelected,
+				secondarySelected,
 				itemList: newItemList,
-				itemSelected: newItemSelected,
+				itemSelected,
 			} );
 		} else if ( e.name === 'secondarySelected' ) {
-			const { itemList } = this.props;
-			const { primarySelected } = this.state;
-			const newSecondarySelected = e.option;
-			const newItemList = filterByTargetValue(
-				filterByTargetValue( itemList, primarySelected.value, 'primary' ),
-				newSecondarySelected.value,
-				'secondary'
-			);
-			const newItemSelected = getSelectedOption( newItemList );
+			const {
+				secondarySelected,
+				newItemList,
+				itemSelected,
+			} = getOptions( {
+				primaryOptions: this.state.primaryOptions,
+				secondaryOptions: this.state.secondaryOptions,
+				itemList: this.props.itemList,
+			}, {
+				primary: this.state.primarySelected.value,
+				secondary: e.option.value,
+			} );
 			this.setState( {
-				secondarySelected: newSecondarySelected,
+				secondarySelected,
 				itemList: newItemList,
-				itemSelected: newItemSelected,
+				itemSelected,
 			} );
 		}
 	}
