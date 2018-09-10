@@ -16,7 +16,7 @@ import max from 'lodash/max';
  */
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
-import { getSelectedOption, filterByTargetValue } from 'src/lib/get-settings';
+import { getSelectedOption, filterByTargetValue } from 'src/lib/get-options';
 // UI components
 import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';

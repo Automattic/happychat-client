@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 /**
  * Internal dependencies
  */
-import { getSelectedOption, filterByTargetValue } from 'src/lib/get-settings';
+import { getSelectedOption, filterByTargetValue } from 'src/lib/get-options';
 import CompactCard from 'src/ui/components/card/compact';
 import Card from 'src/ui/components/card';
 import FormTextarea from 'src/ui/components/form-textarea';
