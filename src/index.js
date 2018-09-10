@@ -16,6 +16,7 @@ import max from 'lodash/max';
  */
 // utils
 import { hasTouch } from 'src/lib/touch-detect';
+import { getOptions } from 'src/lib/get-options';
 // UI components
 import Happychat, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
@@ -204,17 +205,18 @@ const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) 
 	return targetNode;
 };
 
-const isAnyCanChatPropFalse = ( canChat, entryOptions ) =>
-	false === canChat ||
-	( Array.isArray( entryOptions.primaryOptions ) &&
-		entryOptions.primaryOptions.length > 0 &&
-		false === entryOptions.primaryOptions[ 0 ].canChat ) ||
-	( Array.isArray( entryOptions.secondaryOptions ) &&
-		entryOptions.secondaryOptions.length > 0 &&
-		false === entryOptions.secondaryOptions[ 0 ].canChat ) ||
-	( Array.isArray( entryOptions.itemList ) &&
-		entryOptions.itemList.length > 0 &&
-		false === entryOptions.itemList[ 0 ].canChat );
+const isAnyCanChatPropFalse = ( canChat, { primaryOptions, secondaryOptions, itemList, defaultValues } ) => {
+	const {
+		primarySelected,
+		secondarySelected,
+		itemSelected,
+	} = getOptions( { primaryOptions, secondaryOptions, itemList }, defaultValues );
+
+	return false === canChat ||
+		false === primarySelected.canChat ||
+		false === secondarySelected.canChat ||
+		false === itemSelected.canChat;
+};
 
 /* eslint-disable camelcase */
 export const renderHappychat = (

@@ -5,11 +5,11 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import find from 'lodash/find';
 
 /**
  * Internal dependencies
  */
+import { getOptions, filterByTargetValue } from 'src/lib/get-options';
 import CompactCard from 'src/ui/components/card/compact';
 import Card from 'src/ui/components/card';
 import FormTextarea from 'src/ui/components/form-textarea';
@@ -19,23 +19,6 @@ import FormButton from 'src/ui/components/form-button';
 import FormDescription from 'src/ui/components/form-description';
 import FormSelection from 'src/ui/components/form-selection';
 import SelectDropdown from 'src/ui/components/select-dropdown';
-
-const getSelectedOption = ( options, defaultValue ) => {
-	if ( Array.isArray( options ) && options.length > 0 ) {
-		return find( options, { value: defaultValue } ) || options[ 0 ];
-	}
-	return {};
-};
-
-const filterByTargetValue = ( options, targetValue, filterKey ) => {
-	const allOptions = Array.isArray( options ) ? options : [];
-	return allOptions.filter(
-		option =>
-			! option[ filterKey ] ||
-			( Array.isArray( option[ filterKey ] ) &&
-				option[ filterKey ].some( value => targetValue === value ) )
-	);
-};
 
 export class ContactForm extends React.Component {
 	constructor( props ) {
@@ -53,19 +36,17 @@ export class ContactForm extends React.Component {
 			openTextAreaTitle,
 			defaultValues,
 		} = this.props;
-		const primarySelected = getSelectedOption( primaryOptions, defaultValues.primary );
-		const newSecondaryOptions = filterByTargetValue(
+		const {
+			primarySelected,
+			newSecondaryOptions,
+			secondarySelected,
+			newItemList,
+			itemSelected,
+		} = getOptions( {
+			primaryOptions,
 			secondaryOptions,
-			primarySelected.value,
-			'primary'
-		);
-		const newSecondarySelected = getSelectedOption( newSecondaryOptions, defaultValues.secondary );
-		const newItemList = filterByTargetValue(
-			filterByTargetValue( itemList, primarySelected.value, 'primary' ),
-			newSecondarySelected.value,
-			'secondary'
-		);
-		const newItemSelected = getSelectedOption( newItemList, defaultValues.item );
+			itemList,
+		}, defaultValues );
 		this.state = {
 			subject: defaultValues.subject || '',
 			message: defaultValues.message || '',
@@ -74,10 +55,10 @@ export class ContactForm extends React.Component {
 			primarySelected,
 			secondaryOptionsTitle,
 			secondaryOptions: newSecondaryOptions,
-			secondarySelected: newSecondarySelected,
+			secondarySelected,
 			itemListTitle,
 			itemList: newItemList,
-			itemSelected: newItemSelected,
+			itemSelected,
 			openTextField,
 			openTextFieldTitle,
 			openTextFieldValue: defaultValues.openTextField || '',
@@ -125,7 +106,13 @@ export class ContactForm extends React.Component {
 			prevState.secondarySelected.canChat !== this.state.secondarySelected.canChat ||
 			prevState.itemSelected.canChat !== this.state.itemSelected.canChat
 		) {
-			const { primarySelected, secondarySelected, itemSelected, subject, message } = this.state;
+			const {
+				primarySelected,
+				secondarySelected,
+				itemSelected,
+				subject,
+				message,
+			} = this.state;
 			this.props.onEvent( {
 				primarySelected,
 				secondarySelected,
@@ -146,42 +133,47 @@ export class ContactForm extends React.Component {
 	}
 
 	handleOptionChange( e ) {
+		// Note that:
+		// - state contains the valid values taking into account the selected options
+		// - props contains the whole set of values
 		if ( e.name === 'primarySelected' ) {
-			const { secondaryOptions, itemList } = this.props;
-			const newPrimarySelected = e.option;
-			const newSecondaryOptions = filterByTargetValue(
-				secondaryOptions,
-				newPrimarySelected.value,
-				'primary'
-			);
-			const newSecondarySelected = getSelectedOption( newSecondaryOptions );
-			const newItemList = filterByTargetValue(
-				filterByTargetValue( itemList, newPrimarySelected.value, 'primary' ),
-				newSecondarySelected.value,
-				'secondary'
-			);
-			const newItemSelected = getSelectedOption( newItemList );
+			const {
+				primarySelected,
+				newSecondaryOptions,
+				secondarySelected,
+				newItemList,
+				itemSelected,
+			} = getOptions( {
+				primaryOptions: this.state.primaryOptions,
+				secondaryOptions: this.props.secondaryOptions,
+				itemList: this.props.itemList,
+			}, {
+				primary: e.option.value,
+			} );
 			this.setState( {
-				primarySelected: newPrimarySelected,
+				primarySelected,
 				secondaryOptions: newSecondaryOptions,
-				secondarySelected: newSecondarySelected,
+				secondarySelected,
 				itemList: newItemList,
-				itemSelected: newItemSelected,
+				itemSelected,
 			} );
 		} else if ( e.name === 'secondarySelected' ) {
-			const { itemList } = this.props;
-			const { primarySelected } = this.state;
-			const newSecondarySelected = e.option;
-			const newItemList = filterByTargetValue(
-				filterByTargetValue( itemList, primarySelected.value, 'primary' ),
-				newSecondarySelected.value,
-				'secondary'
-			);
-			const newItemSelected = getSelectedOption( newItemList );
+			const {
+				secondarySelected,
+				newItemList,
+				itemSelected,
+			} = getOptions( {
+				primaryOptions: this.state.primaryOptions,
+				secondaryOptions: this.state.secondaryOptions,
+				itemList: this.props.itemList,
+			}, {
+				primary: this.state.primarySelected.value,
+				secondary: e.option.value,
+			} );
 			this.setState( {
-				secondarySelected: newSecondarySelected,
+				secondarySelected,
 				itemList: newItemList,
-				itemSelected: newItemSelected,
+				itemSelected,
 			} );
 		}
 	}
@@ -356,7 +348,11 @@ export class ContactForm extends React.Component {
 		return showSubject ? (
 			<div>
 				<FormLabel>{ 'Subject' }</FormLabel>
-				<FormTextInput name="subject" value={ this.state.subject } onChange={ this.handleChange } />
+				<FormTextInput
+					name="subject"
+					value={ this.state.subject }
+					onChange={ this.handleChange }
+				/>
 			</div>
 		) : (
 			''
