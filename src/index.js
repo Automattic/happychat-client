@@ -205,12 +205,12 @@ const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) 
 	return targetNode;
 };
 
-const isAnyCanChatPropFalse = ( canChat, entryOptions ) => {
+const isAnyCanChatPropFalse = ( canChat, { primaryOptions, secondaryOptions, itemList, defaultValues } ) => {
 	const {
 		primarySelected,
 		secondarySelected,
 		itemSelected,
-	} = getOptions( entryOptions );
+	} = getOptions( { primaryOptions, secondaryOptions, itemList }, defaultValues );
 
 	return false === canChat ||
 		false === primarySelected.canChat ||
