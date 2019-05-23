@@ -25,6 +25,16 @@
 	font-family: $sans;
 	font-size: 14px;
 	border: 1px solid var(--neutral-lighten-25);
+	max-height: 99vh;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
+	overflow: auto;
+
+	> .card {
+		width: 100%;
+	}
 }
 
 // make textarea to fill the whole box
@@ -47,4 +57,79 @@
 // clean grey border on submit button
 .happychat__submit {
 	border: 0;
+}
+
+.happychat__title {
+	text-align: center;
+}
+
+.happychat__unread-indicator {
+	display: inline-block;
+	align: middle;
+	border-radius: 50%;
+	background-color: var(--selected);
+	width: 12px;
+	height: 12px;
+	margin-left: 6px;
+}
+
+@keyframes happychat-indicator-pulse {
+	0% {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.happychat__typing-indicator {
+	height: 0;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+	padding-left: 16px;
+	
+	> span {
+		position: relative;
+		margin: 6px 0;
+		padding: 8px 12px;
+		background: white;
+		border-radius: 8px 8px 8px 0;
+		display: flex;
+
+		&:after {
+			content: ' ';
+			position: absolute;
+			bottom: 0;
+			left: -8px;
+			width: 0;
+			height: 0;
+			border-bottom: 8px solid #fff;
+			border-left: 8px solid transparent;
+		}
+
+		> span {
+			animation: happychat-indicator-pulse .6s infinite alternate linear;
+			border-radius: 50%;
+			background: var(--selected);
+			width: 8px;
+			height: 8px;
+			margin: 6px 2px;
+		}
+
+		> span:nth-child(3n+1) {
+			animation-delay: 0.2s;
+		}
+
+		> span:nth-child(3n+2) {
+			animation-delay: 0.4s;
+		}
+
+		> span:nth-child(3n+3) {
+			animation-delay: 0.6s;
+		}
+
+	}
 }

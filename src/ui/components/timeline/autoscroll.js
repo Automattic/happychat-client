@@ -14,6 +14,9 @@
 export default {
 	componentWillMount() {
 		this._autoscroll_enabled = true;
+		if ( this.props.onAutoscrollChanged ) {
+			this.props.onAutoscrollChanged( true );
+		}
 		window.addEventListener( 'resize', this.scrollToBottom );
 	},
 
@@ -67,6 +70,9 @@ export default {
 		const { scrollTop, offsetHeight, scrollHeight } = this._autoscroll_node;
 		const enable = scrollTop + offsetHeight >= scrollHeight;
 		if ( this._autoscroll_enabled !== enable ) {
+			if ( this.props.onAutoscrollChanged ) {
+				this.props.onAutoscrollChanged( enable );
+			}
 			this._autoscroll_enabled = enable;
 		}
 	},

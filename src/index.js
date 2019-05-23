@@ -30,11 +30,17 @@ import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
 
+const events = eventAPIFactory();
+
 const store = createStore(
 	reducer,
 	{},
-	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
+	compose(
+    applyMiddleware( socketMiddleware(), events.middleware ),
+  devToolsEnhancer() )
 );
+
+export const eventAPI = events.api(store);
 
 const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
@@ -102,8 +108,10 @@ const getHeight = entryOptions => {
  * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
-const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) => {
+const createIframe = ( { nodeId, theme, height, cssDir }, assetsLoadedHook = () => {} ) => {
 	const iframeElement = document.createElement( 'iframe' );
+
+	const cssURLPrefix = cssDir != null ? cssDir : config( 'css_url' );
 
 	// style iframe element
 	iframeElement.width = '100%';
@@ -170,7 +178,7 @@ const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) 
 	const styleHC = document.createElement( 'link' );
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute( 'href', config( 'css_url' ) + 'happychat.css' );
+	styleHC.setAttribute( 'href', cssURLPrefix + 'happychat.css' );
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
 
 	let styleHCThemePromise = Promise.resolve();
@@ -178,7 +186,7 @@ const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) 
 	styleHCTheme.setAttribute( 'rel', 'stylesheet' );
 	styleHCTheme.setAttribute( 'type', 'text/css' );
 	if ( theme === 'woo' || theme === 'jpop' ) {
-		styleHCTheme.setAttribute( 'href', config( 'css_url' ) + theme + '.css' );
+		styleHCTheme.setAttribute( 'href', cssURLPrefix + theme + '.css' );
 		styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
 	}
 
@@ -256,9 +264,9 @@ export const renderHappychat = (
 };
 /* eslint-enable camelcase */
 
-export const createTargetNode = ( { nodeId, theme, groups, entryOptions } ) => {
+export const createTargetNode = ( { nodeId, theme, groups, entryOptions, cssDir } ) => {
 	return createIframe(
-		{ nodeId, theme: getTheme( { theme, groups } ), height: getHeight( entryOptions ) },
+		{ nodeId, theme: getTheme( { theme, groups } ), height: getHeight( entryOptions ), cssDir },
 		dispatchAssetsFinishedDownloading
 	);
 };
@@ -266,4 +274,3 @@ export const createTargetNode = ( { nodeId, theme, groups, entryOptions } ) => {
 export const renderError = ( targetNode, { error } ) =>
 	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
 
-export const eventAPI = eventAPIFactory( store );

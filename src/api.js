@@ -31,10 +31,10 @@ const api = {
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Object} user Optional. Customer information.
 	 */
-	open: ( { authentication, canChat, entry, entryOptions, groups, nodeId, theme, user } ) => {
+	open: ( { authentication, canChat, entry, entryOptions, groups, nodeId, theme, user, cssDir } ) => {
 		authenticator.init( authentication );
 
-		const targetNode = createTargetNode( { nodeId, theme, groups, entryOptions } );
+		const targetNode = createTargetNode( { nodeId, theme, groups, entryOptions, cssDir } );
 
 		authenticator
 			.login()

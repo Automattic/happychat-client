@@ -22,6 +22,7 @@ import {
 	receiveToken,
 	receiveUnauthorized,
 	requestTranscript,
+	receiveTyping,
 } from 'src/state/connection/actions';
 
 const debug = debugFactory( 'happychat-client:socketio' );
@@ -72,7 +73,8 @@ class Connection {
 						.on( 'reconnecting', () => dispatch( receiveReconnecting() ) )
 						.on( 'status', status => dispatch( receiveStatus( status ) ) )
 						.on( 'accept', accept => dispatch( receiveAccept( accept ) ) )
-						.on( 'message', message => dispatch( receiveMessage( message ) ) );
+						.on( 'message', message => dispatch( receiveMessage( message ) ) )
+						.on( 'typing', () => dispatch( receiveTyping() ) );
 				} )
 				.catch( e => reject( e ) );
 		} );

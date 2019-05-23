@@ -21,7 +21,7 @@ import {
 	sendNotTyping,
 	sendTyping,
 } from 'src/state/connection/actions';
-import { blur, focus, openChat, setCurrentMessage, resetForm } from 'src/state/ui/actions';
+import { blur, focus, openChat, setCurrentMessage, resetForm, setIsDisplayingNewMessages } from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
@@ -56,6 +56,8 @@ import isHCServerReachable from 'src/state/selectors/is-server-reachable';
 import isChatFormOpen from 'src/state/selectors/is-chatform-open';
 import isAvailable from 'src/state/selectors/is-available';
 import isUIReady from 'src/state/selectors/is-ui-ready';
+import isOperatorTyping from 'src/state/selectors/is-operator-typing';
+import hasUnreadMessages from 'src/state/selectors/has-unread-messages';
 
 // UI components
 import { mockLocalize } from 'src/ui/components/localize'; // TODO implement localize
@@ -74,48 +76,8 @@ class ChatComponent {
 	}
 
 	render() {
-		const {
-			chatStatus,
-			connectionStatus,
-			currentUserEmail,
-			currentUserGroup,
-			disabled,
-			isCurrentUser,
-			isExternalUrl,
-			isServerReachable,
-			message,
-			onSendMessage,
-			onSendNotTyping,
-			onSendTyping,
-			onSetCurrentMessage,
-			setBlurred,
-			setFocused,
-			timeline,
-			translate,
-			twemojiUrl,
-		} = this.props;
-
 		return (
-			<HappychatForm
-				chatStatus={ chatStatus }
-				connectionStatus={ connectionStatus }
-				currentUserEmail={ currentUserEmail }
-				currentUserGroup={ currentUserGroup }
-				disabled={ disabled }
-				isCurrentUser={ isCurrentUser }
-				isExternalUrl={ isExternalUrl }
-				isServerReachable={ isServerReachable }
-				message={ message }
-				onSendMessage={ onSendMessage }
-				onSendNotTyping={ onSendNotTyping }
-				onSendTyping={ onSendTyping }
-				onSetCurrentMessage={ onSetCurrentMessage }
-				setBlurred={ setBlurred }
-				setFocused={ setFocused }
-				timeline={ timeline }
-				translate={ translate }
-				twemojiUrl={ twemojiUrl }
-			/>
+			<HappychatForm { ...this.props } />
 		);
 	}
 }
@@ -465,6 +427,8 @@ const mapState = state => {
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
 		isServerReachable: isHCServerReachable( state ),
 		isFormUIReady: isUIReady( state ),
+		isOperatorTyping: isOperatorTyping( state ),
+		hasUnreadMessages: hasUnreadMessages( state ),
 		message: getUICurrentMessage( state ),
 		timeline: getChatTimeline( state ),
 		twemojiUrl: config( 'twemoji_cdn_url' ),
@@ -472,6 +436,7 @@ const mapState = state => {
 };
 
 const mapDispatch = {
+	onAutoscrollChanged: setIsDisplayingNewMessages,
 	onInitConnection: initConnection,
 	onOpenChat: openChat,
 	onResetForm: resetForm,
