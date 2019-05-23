@@ -32,6 +32,7 @@ with the following top-level properties:
 | `groups` | array | Optional | `[WP.com]` | What group the chat session should be routed to. Valid values are `WP.com`, `woo`, and `jpop`. |
 | `nodeId` | string | Mandatory | `null` | The id of the HTMLNode where Happychat will be rendered. |
 | `theme` | string | Optional | `null` | The theme to use. Valid values are the group names. |
+| `cssDir` | string | Optional | `null` | The URL prefix for the folder that contains the happychat CSS files (allows serving from other than widgets.wp.com) |
 
 ### authentication
 

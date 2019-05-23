@@ -30,6 +30,7 @@ const api = {
 	 * 		If no provided the theme associated to the group will be used.
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Object} user Optional. Customer information.
+	 * @param {string} [cssDir=null] URL to directory that contains the CSS for the happychat client
 	 */
 	open: ( { authentication, canChat, entry, entryOptions, groups, nodeId, theme, user, cssDir } ) => {
 		authenticator.init( authentication );
