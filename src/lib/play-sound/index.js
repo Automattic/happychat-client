@@ -2,15 +2,26 @@
  * Internal dependencies
  */
 
-export default () => {
+function isSupported() {
 	if ( typeof window === 'undefined' ) {
-		return;
+		return false;
 	}
 
 	if ( typeof Audio === 'undefined' ) {
-		return;
+		return false;
 	}
 
-	const sound = new Audio( require( './chat-pling.wav' ) );
+	return true;
+}
+
+const SUPPORTED = isSupported();
+
+const SRC = SUPPORTED ? require( './chat-pling.wav' ) : null;
+
+export default () => {
+	if ( ! SUPPORTED ) {
+		return;
+	}
+	const sound = new Audio( SRC );
 	sound.play();
 };
