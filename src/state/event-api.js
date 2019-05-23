@@ -12,7 +12,7 @@ const EVENT_AVAILABILITY = 'availability';
 const EVENT_CHAT_STATUS = 'chatStatus';
 const EVENT_RECEIVE_MESSAGE = 'receiveMessage';
 
-const eventAPI = () => {
+const eventAPI = store => {
 	const subscribers = {
 		[ EVENT_AVAILABILITY ]: [],
 		[ EVENT_CHAT_STATUS ]: [],
@@ -39,7 +39,7 @@ const eventAPI = () => {
 			subscriber => subscriber( ...eventArgs )
 		);
 
-	const observeChange = ( selector, initialValue, eventName ) => store => {
+	const observeChange = ( selector, initialValue, eventName ) => {
 		let current = initialValue;
 		store.subscribe( () => {
 			const updated = selector( store.getState() );
@@ -50,23 +50,15 @@ const eventAPI = () => {
 		} );
 	};
 
-	const observeAvailability = observeChange( isAvailable, false, EVENT_AVAILABILITY );
-	const observeChatStatus = observeChange( getChatStatus, 'new', EVENT_CHAT_STATUS );
+	observeChange( isAvailable, false, EVENT_AVAILABILITY );
+	observeChange( getChatStatus, 'new', EVENT_CHAT_STATUS );
 
 	return {
-		middleware: store => next => action => next( action ),
-		api: store => {
-			observeAvailability( store );
-			observeChatStatus( store );
-
-			return {
-				subscribeTo,
-				unsubscribeFrom,
-				sendEventMsg: msg => store.dispatch( sendEvent( msg ) ),
-				sendUserInfoMsg: userInfo =>
-					store.dispatch( sendUserInfo( getUserInfo( store.getState() )( userInfo ) ) ),
-			};
-		},
+		subscribeTo,
+		unsubscribeFrom,
+		sendEventMsg: msg => store.dispatch( sendEvent( msg ) ),
+		sendUserInfoMsg: userInfo =>
+			store.dispatch( sendUserInfo( getUserInfo( store.getState() )( userInfo ) ) ),
 	};
 };
 

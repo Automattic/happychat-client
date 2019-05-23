@@ -30,17 +30,11 @@ import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
 
-const events = eventAPIFactory();
-
 const store = createStore(
 	reducer,
 	{},
-	compose(
-    applyMiddleware( socketMiddleware(), events.middleware ),
-  devToolsEnhancer() )
+	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
 );
-
-export const eventAPI = events.api(store);
 
 const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
 
@@ -273,4 +267,6 @@ export const createTargetNode = ( { nodeId, theme, groups, entryOptions, cssDir 
 
 export const renderError = ( targetNode, { error } ) =>
 	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
+
+export const eventAPI = eventAPIFactory( store );
 
