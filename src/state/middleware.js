@@ -30,11 +30,20 @@ import makeRequest from 'src/state/xhr';
 import isConnectionConnected from 'src/state/selectors/is-connection-connected';
 import isChatAssigned from 'src/state/selectors/is-chat-assigned';
 import isDisplayingNewMessages from 'src/state/selectors/is-displaying-new-messages';
+import playSound from 'src/lib/play-sound';
 
 const eventMessage = {
 	HAPPYCHAT_BLUR: 'Stopped looking at Happychat',
 	HAPPYCHAT_FOCUS: 'Started looking at Happychat',
 };
+
+function isFocusedWindow() {
+	// not a browser window, assume focused
+	if ( typeof document === 'undefined' ) {
+		return true;
+	}
+	return document.hasFocus();
+}
 
 export const socketMiddleware = ( connection = null ) => {
 	// Allow a connection object to be specified for
@@ -80,7 +89,8 @@ export const socketMiddleware = ( connection = null ) => {
 					break;
 
 				case HAPPYCHAT_IO_RECEIVE_MESSAGE: {
-					if ( ! isDisplayingNewMessages( store.getState() ) ) {
+					if ( ! isDisplayingNewMessages( store.getState() ) || ! isFocusedWindow() ) {
+						playSound();
 						store.dispatch( setHasUnreadMessages( true ) );
 					}
 					break;
