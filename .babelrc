@@ -1,12 +1,11 @@
 {
-	"presets": [ [ "env" ] ],
+	"presets": [ [ "@babel/preset-env" ], [ "@babel/preset-react" ] ],
 	"plugins": [
-		"syntax-jsx",
-		"transform-class-properties",
-		"transform-object-rest-spread",
-		"transform-react-display-name",
-		"transform-react-jsx",
-		"transform-export-extensions",
+		"@babel/plugin-proposal-object-rest-spread",
+		"@babel/plugin-proposal-class-properties",
+		"@babel/plugin-transform-react-display-name",
+		"@babel/plugin-proposal-export-default-from",
+		"@babel/plugin-proposal-export-namespace-from",
 		[ "module-resolver", { "root": ["./"] } ],
 		[ "inline-json", { "matchPattern": "(development|production)" } ]
 	]

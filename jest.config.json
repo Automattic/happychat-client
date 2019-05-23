@@ -6,5 +6,5 @@
 	"roots": [ "<rootDir>/src/" ],
   "testEnvironment": "node",
 	"testMatch": [ "<rootDir>/src/**/test/*.js?(x)" ],
-  "setupTestFrameworkScriptFile": "<rootDir>/setup-jest.js"
+  "setupFilesAfterEnv": [ "<rootDir>/setup-jest.js" ]
 }
