@@ -30,10 +30,12 @@ import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
 
+const events = eventAPIFactory();
+
 const store = createStore(
 	reducer,
 	{},
-	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
+	compose( applyMiddleware( socketMiddleware(), events.middleware ), devToolsEnhancer() )
 );
 
 const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
@@ -102,10 +104,10 @@ const getHeight = entryOptions => {
  * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
-const createIframe = ( { nodeId, theme, height, cssDir }, assetsLoadedHook = () => {} ) => {
+const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) => {
 	const iframeElement = document.createElement( 'iframe' );
 
-	const cssURLPrefix = cssDir != null ? cssDir : config( 'css_url' );
+	const cssURLPrefix = config( 'css_url' );
 
 	// style iframe element
 	iframeElement.width = '100%';
@@ -258,9 +260,9 @@ export const renderHappychat = (
 };
 /* eslint-enable camelcase */
 
-export const createTargetNode = ( { nodeId, theme, groups, entryOptions, cssDir } ) => {
+export const createTargetNode = ( { nodeId, theme, groups, entryOptions } ) => {
 	return createIframe(
-		{ nodeId, theme: getTheme( { theme, groups } ), height: getHeight( entryOptions ), cssDir },
+		{ nodeId, theme: getTheme( { theme, groups } ), height: getHeight( entryOptions ) },
 		dispatchAssetsFinishedDownloading
 	);
 };
@@ -268,5 +270,5 @@ export const createTargetNode = ( { nodeId, theme, groups, entryOptions, cssDir 
 export const renderError = ( targetNode, { error } ) =>
 	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
 
-export const eventAPI = eventAPIFactory( store );
+export const eventAPI = events.subscribe( store );
 

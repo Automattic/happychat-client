@@ -59,7 +59,7 @@
 		return newOptions;
 	};
 
-	window.Happychat &&
+	if ( window.Happychat ) {
 		Happychat.open( {
 			nodeId: happychatSettings.nodeId,
 			authentication: {
@@ -71,6 +71,10 @@
 			entry: happychatSettings.entry,
 			entryOptions: parseOptions( happychatSettings.entryOptions ),
 			theme: happychatSettings.theme,
-			cssDir: happychatSettings.cssDir,
 		} );
+
+		Happychat.on( 'receiveMessage', () => {
+			console.log( 'play sound when received' );
+		} );
+	}
 } )();

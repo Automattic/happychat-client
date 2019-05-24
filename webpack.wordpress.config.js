@@ -10,7 +10,7 @@ const config = {
 	entry: './targets/wordpress/index.js',
 	output: {
 		filename: 'happychat.js',
-		path: path.resolve( __dirname, 'targets/wordpress/assets' ),
+		path: path.resolve( __dirname, 'targets/wordpress/widget' ),
 	},
 	resolve: {
 		extensions: [ '.js', '.jsx' ],

@@ -10,14 +10,8 @@ module.exports = {
 			{
 				test: /\.(js|jsx)$/,
 				use: 'babel-loader',
+				exclude: /node_modules/,
 				include: [ path.resolve( __dirname, 'src' ), path.resolve( __dirname, 'targets' ) ],
-			},
-			{
-				test: /\.(gif|png|jpe?g|svg|mp4|wav)$/i,
-				use: {
-					loader: 'file-loader',
-					options: { name: '[ext]/[name]-[md5:hash:hex:8].[ext]' },
-				},
 			},
 		],
 	},

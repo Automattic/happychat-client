@@ -30,7 +30,6 @@ import makeRequest from 'src/state/xhr';
 import isConnectionConnected from 'src/state/selectors/is-connection-connected';
 import isChatAssigned from 'src/state/selectors/is-chat-assigned';
 import isDisplayingNewMessages from 'src/state/selectors/is-displaying-new-messages';
-import playSound from 'src/lib/play-sound';
 
 const eventMessage = {
 	HAPPYCHAT_BLUR: 'Stopped looking at Happychat',
@@ -89,11 +88,12 @@ export const socketMiddleware = ( connection = null ) => {
 					break;
 
 				case HAPPYCHAT_IO_RECEIVE_MESSAGE: {
+					if ( action.message.source !== 'operator' ) {
+						break;
+					}
 					if ( ! isDisplayingNewMessages( store.getState() ) || ! isFocusedWindow() ) {
-						playSound();
 						store.dispatch( setHasUnreadMessages( true ) );
 					}
-					break;
 				}
 
 				case HAPPYCHAT_IO_RECEIVE_TYPING: {

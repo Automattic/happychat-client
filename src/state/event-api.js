@@ -3,6 +3,7 @@
 /**
  * Internal dependencies
  */
+import { HAPPYCHAT_IO_RECEIVE_MESSAGE } from 'src/state/action-types';
 import { sendEvent, sendUserInfo } from 'src/state/connection/actions';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import getUserInfo from 'src/state/selectors/get-user-info';
@@ -12,7 +13,7 @@ const EVENT_AVAILABILITY = 'availability';
 const EVENT_CHAT_STATUS = 'chatStatus';
 const EVENT_RECEIVE_MESSAGE = 'receiveMessage';
 
-const eventAPI = store => {
+const eventAPI = () => {
 	const subscribers = {
 		[ EVENT_AVAILABILITY ]: [],
 		[ EVENT_CHAT_STATUS ]: [],
@@ -39,7 +40,7 @@ const eventAPI = store => {
 			subscriber => subscriber( ...eventArgs )
 		);
 
-	const observeChange = ( selector, initialValue, eventName ) => {
+	const observeChange = ( selector, initialValue, eventName ) => store => {
 		let current = initialValue;
 		store.subscribe( () => {
 			const updated = selector( store.getState() );
@@ -50,15 +51,32 @@ const eventAPI = store => {
 		} );
 	};
 
-	observeChange( isAvailable, false, EVENT_AVAILABILITY );
-	observeChange( getChatStatus, 'new', EVENT_CHAT_STATUS );
+	const availableOberver = observeChange( isAvailable, false, EVENT_AVAILABILITY );
+	const statusObserver = observeChange( getChatStatus, 'new', EVENT_CHAT_STATUS );
 
 	return {
-		subscribeTo,
-		unsubscribeFrom,
-		sendEventMsg: msg => store.dispatch( sendEvent( msg ) ),
-		sendUserInfoMsg: userInfo =>
-			store.dispatch( sendUserInfo( getUserInfo( store.getState() )( userInfo ) ) ),
+		middleware: () => next => action => {
+			switch ( action.type ) {
+				case HAPPYCHAT_IO_RECEIVE_MESSAGE: {
+					if ( action.message.source === 'operator' ) {
+						emit( EVENT_RECEIVE_MESSAGE );
+					}
+				}
+			}
+			return next( action );
+		},
+		subscribe: store => {
+			availableOberver( store );
+			statusObserver( store );
+
+			return {
+				subscribeTo,
+				unsubscribeFrom,
+				sendEventMsg: msg => store.dispatch( sendEvent( msg ) ),
+				sendUserInfoMsg: userInfo =>
+					store.dispatch( sendUserInfo( getUserInfo( store.getState() )( userInfo ) ) ),
+			};
+		},
 	};
 };
 
