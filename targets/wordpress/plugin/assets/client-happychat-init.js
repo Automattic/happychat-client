@@ -59,16 +59,17 @@
 		return newOptions;
 	};
 
-	window.Happychat && Happychat.open( {
-		nodeId: happychatSettings.nodeId,
-		authentication: {
-			type: 'wpcom-oauth-by-token',
-			options: { token: happychatSettings.accessToken },
-		},
-		groups: happychatSettings.groups,
-		canChat: toBoolean( happychatSettings.canChat ),
-		entry: happychatSettings.entry,
-		entryOptions: parseOptions( happychatSettings.entryOptions ),
-		theme: happychatSettings.theme,
-	} );
+	window.Happychat &&
+		Happychat.open( {
+			nodeId: happychatSettings.nodeId,
+			authentication: {
+				type: 'wpcom-oauth-by-token',
+				options: { token: happychatSettings.accessToken },
+			},
+			groups: happychatSettings.groups,
+			canChat: toBoolean( happychatSettings.canChat ),
+			entry: happychatSettings.entry,
+			entryOptions: parseOptions( happychatSettings.entryOptions ),
+			theme: happychatSettings.theme,
+		} );
 } )();
