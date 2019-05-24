@@ -44,6 +44,21 @@ function isFocusedWindow() {
 	return document.hasFocus();
 }
 
+function playAudibleNotice() {
+	if ( typeof Audio === 'undefined' ) {
+		return;
+	}
+	const audio = new Audio( '//widgets.wp.com/happychat/chat-pling.wav' );
+	const result = audio.play();
+	if ( result && result.catch ) {
+		result.catch(
+			// Safari will throw an error because auto-playing audio is not allowed without
+			// user consent, nooping the error handler
+			error => {}
+		);
+	}
+}
+
 export const socketMiddleware = ( connection = null ) => {
 	// Allow a connection object to be specified for
 	// testing. If blank, use a real connection.
@@ -91,6 +106,7 @@ export const socketMiddleware = ( connection = null ) => {
 					if ( action.message.source !== 'operator' ) {
 						break;
 					}
+					playAudibleNotice();
 					if ( ! isDisplayingNewMessages( store.getState() ) || ! isFocusedWindow() ) {
 						store.dispatch( setHasUnreadMessages( true ) );
 					}

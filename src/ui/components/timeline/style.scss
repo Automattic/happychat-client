@@ -6,11 +6,15 @@
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	padding-bottom: 46px;
 
 	&::before {
-		content: '';
+		content: ' ';
 		flex: 1 1 auto;
+	}
+
+	&::after {
+		content: ' ';
+		flex: 1 0 46px;
 	}
 }
 
