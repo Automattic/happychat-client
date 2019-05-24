@@ -1,8 +1,9 @@
 /** @format */
 const path = require( 'path' );
-const webpack = require( 'webpack' );
 const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 const BundleAnalyzerPlugin = require( 'webpack-bundle-analyzer' ).BundleAnalyzerPlugin;
+const merge = require( 'webpack-merge' );
+const common = require( './webpack.common.js' );
 
 const env = process.env.NODE_ENV;
 
@@ -12,24 +13,7 @@ const config = {
 		filename: 'happychat.js',
 		path: path.resolve( __dirname, 'targets/standalone' ),
 	},
-	module: {
-		rules: [
-			{
-				test: /\.(js|jsx)$/,
-				use: 'babel-loader',
-				include: [ path.resolve( __dirname, 'src' ), path.resolve( __dirname, 'targets' ) ],
-			},
-		],
-	},
-	plugins: [
-		new webpack.DefinePlugin( {
-			'process.env.NODE_ENV': JSON.stringify( env ),
-		} ),
-	],
-	resolve: {
-		extensions: [ '.js', '.jsx' ],
-		modules: [ path.resolve( __dirname ), path.resolve( __dirname, 'node_modules' ) ],
-	},
+	plugins: [],
 };
 
 switch ( env ) {
@@ -69,4 +53,4 @@ switch ( env ) {
 		break;
 }
 
-module.exports = config;
+module.exports = merge( common, config );

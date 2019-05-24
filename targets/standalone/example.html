@@ -82,14 +82,12 @@
 
 
 		// test events API
-		var reportChatStatus = function (chatStatus) {
-			console.log('chatStatus is ', chatStatus);
-		}
-		Happychat.on('chatStatus', reportChatStatus);
-		var reportAvailability = function (availability) {
-			console.log('availibility is ', availability);
-		}
-		Happychat.on('availability', reportAvailability);
+		const report = message => ( ... args ) => console.log(message, ...args);
+
+		Happychat.on('chatStatus', report('chatStatus is'));
+		Happychat.on('availability', report('availability is'));
+		Happychat.on('receiveMessage', report('receive message'));
+
 		window.unload = function () {
 			console.log('unload');
 			Happychat.of('availability', reportAvailability);

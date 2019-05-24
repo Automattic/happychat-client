@@ -211,6 +211,7 @@ export const Timeline = createReactClass( {
 		timeline: PropTypes.array,
 		translate: PropTypes.func,
 		twemojiUrl: PropTypes.string,
+		onAutoscrollChanged: PropTypes.func,
 	},
 
 	getDefaultProps() {

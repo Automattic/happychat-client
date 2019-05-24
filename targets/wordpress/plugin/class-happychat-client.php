@@ -110,7 +110,7 @@ class Happychat_Client {
 		// load happychat library
 		wp_register_script(
 			'happychat-api',
-			plugins_url( 'assets/happychat.js', __FILE__ ),
+			'//widgets.wp.com/happychat/v1/happychat.js',
 			array(),
 			self::VERSION,
 			true

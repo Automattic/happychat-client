@@ -18,6 +18,7 @@ import {
 	HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE,
 	HAPPYCHAT_RESET_FORM,
 	HAPPYCHAT_SET_CURRENT_MESSAGE,
+	HAPPYCHAT_SET_IS_DISPLAYING_NEW_MESSAGES,
 } from '../action-types';
 
 /**
@@ -106,6 +107,14 @@ export const formDefaultValues = ( state = {}, action ) => {
 	return state;
 };
 
+export const isDisplayingNewMessages = ( state = false, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_SET_IS_DISPLAYING_NEW_MESSAGES:
+			return action.isDisplayed;
+	}
+	return state;
+};
+
 export default combineReducers( {
 	currentMessage,
 	formDefaultValues,
@@ -113,4 +122,5 @@ export default combineReducers( {
 	isOpen,
 	isReady,
 	lostFocusAt,
+	isDisplayingNewMessages,
 } );

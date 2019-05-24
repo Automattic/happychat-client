@@ -19,6 +19,7 @@ import {
 	HAPPYCHAT_IO_RECEIVE_RECONNECTING,
 	HAPPYCHAT_IO_RECEIVE_STATUS,
 	HAPPYCHAT_IO_RECEIVE_TOKEN,
+	HAPPYCHAT_IO_RECEIVE_TYPING,
 	HAPPYCHAT_IO_RECEIVE_UNAUTHORIZED,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT,
@@ -184,6 +185,18 @@ export const receiveFallbackTicket = ( { status, responseText } ) => ( {
 export const receiveFallbackTicketTimeout = () => ( {
 	type: HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET_TIMEOUT,
 } );
+
+/**
+ * Action to indicate that the operator is typing
+ */
+export const receiveTyping = () => ({
+	type: HAPPYCHAT_IO_RECEIVE_TYPING,
+});
+
+export const setIsOperatorTying = (isTyping) => ({
+	type: HAPPYCHAT_SET_OPERATOR_IS_TYPING,
+	isTyping
+});
 
 /**
  * Returns an action object that prepares the transcript request

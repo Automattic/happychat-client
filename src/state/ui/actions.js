@@ -12,6 +12,8 @@ import {
 	HAPPYCHAT_FORM_DEFAULT_VALUES,
 	HAPPYCHAT_RESET_FORM,
 	HAPPYCHAT_SET_CURRENT_MESSAGE,
+	HAPPYCHAT_SET_HAS_UNREAD_MESSAGES,
+	HAPPYCHAT_SET_IS_DISPLAYING_NEW_MESSAGES,
 } from 'src/state/action-types';
 
 const setChatOpen = isOpen => ( { type: HAPPYCHAT_OPEN, isOpen } );
@@ -74,3 +76,8 @@ export const resetForm = values => ( {
 } );
 
 export const setFormDefaultValues = values => ( { type: HAPPYCHAT_FORM_DEFAULT_VALUES, values } );
+
+export const setIsDisplayingNewMessages = isDisplayed => ( {
+	type: HAPPYCHAT_SET_IS_DISPLAYING_NEW_MESSAGES,
+	isDisplayed,
+} );

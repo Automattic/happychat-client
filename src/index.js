@@ -105,6 +105,8 @@ const getHeight = entryOptions => {
 const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) => {
 	const iframeElement = document.createElement( 'iframe' );
 
+	const cssURLPrefix = config( 'css_url' );
+
 	// style iframe element
 	iframeElement.width = '100%';
 	iframeElement.height = height + 'em';
@@ -170,7 +172,7 @@ const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) 
 	const styleHC = document.createElement( 'link' );
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute( 'href', config( 'css_url' ) + 'happychat.css' );
+	styleHC.setAttribute( 'href', cssURLPrefix + 'happychat.css' );
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
 
 	let styleHCThemePromise = Promise.resolve();
@@ -178,7 +180,7 @@ const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) 
 	styleHCTheme.setAttribute( 'rel', 'stylesheet' );
 	styleHCTheme.setAttribute( 'type', 'text/css' );
 	if ( theme === 'woo' || theme === 'jpop' ) {
-		styleHCTheme.setAttribute( 'href', config( 'css_url' ) + theme + '.css' );
+		styleHCTheme.setAttribute( 'href', cssURLPrefix + theme + '.css' );
 		styleHCThemePromise = new Promise( resolve => ( styleHCTheme.onload = () => resolve() ) );
 	}
 

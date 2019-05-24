@@ -70,5 +70,6 @@
 			canChat: toBoolean( happychatSettings.canChat ),
 			entry: happychatSettings.entry,
 			entryOptions: parseOptions( happychatSettings.entryOptions ),
+			theme: happychatSettings.theme,
 		} );
 } )();

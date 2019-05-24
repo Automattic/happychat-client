@@ -3,32 +3,22 @@
 /**
  * Internal dependencies
  */
+import { HAPPYCHAT_IO_RECEIVE_MESSAGE } from 'src/state/action-types';
 import { sendEvent, sendUserInfo } from 'src/state/connection/actions';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import getUserInfo from 'src/state/selectors/get-user-info';
 import isAvailable from 'src/state/selectors/is-available';
 
-const eventAPI = store => {
+const EVENT_AVAILABILITY = 'availability';
+const EVENT_CHAT_STATUS = 'chatStatus';
+const EVENT_RECEIVE_MESSAGE = 'receiveMessage';
+
+export default store => {
 	const subscribers = {
-		availability: [],
-		chatStatus: [],
+		[ EVENT_AVAILABILITY ]: [],
+		[ EVENT_CHAT_STATUS ]: [],
+		[ EVENT_RECEIVE_MESSAGE ]: [],
 	};
-
-	let oldAvailability = false;
-	let oldChatStatus = 'new';
-	store.subscribe( () => {
-		const newAvailability = isAvailable( store.getState() );
-		if ( newAvailability !== oldAvailability ) {
-			oldAvailability = newAvailability;
-			subscribers.availability.forEach( subscriber => subscriber( newAvailability ) );
-		}
-
-		const newChatStatus = getChatStatus( store.getState() );
-		if ( newChatStatus !== oldChatStatus ) {
-			oldChatStatus = newChatStatus;
-			subscribers.chatStatus.forEach( subscriber => subscriber( newChatStatus ) );
-		}
-	} );
 
 	const eventNameExist = eventName => subscribers.hasOwnProperty( eventName );
 
@@ -45,17 +35,30 @@ const eventAPI = store => {
 		isSubscribed( subscriber, eventName ) &&
 		subscribers[ eventName ].splice( subscribers[ eventName ].indexOf( subscriber ), 1 );
 
-	const sendEventMsg = msg => store.dispatch( sendEvent( msg ) );
+	const emit = ( eventName, ...eventArgs ) =>
+		eventNameExist( eventName ) && subscribers[ eventName ].forEach(
+			subscriber => subscriber( ...eventArgs )
+		);
 
-	const sendUserInfoMsg = userInfo =>
-		store.dispatch( sendUserInfo( getUserInfo( store.getState() )( userInfo ) ) );
+	const observeChange = ( selector, initialValue, eventName ) => {
+		let current = initialValue;
+		store.subscribe( () => {
+			const updated = selector( store.getState() );
+			if ( updated !== current ) {
+				emit( eventName, updated );
+			}
+			current = updated;
+		} );
+	};
+
+	observeChange( isAvailable, false, EVENT_AVAILABILITY );
+	observeChange( getChatStatus, 'new', EVENT_CHAT_STATUS );
 
 	return {
 		subscribeTo,
 		unsubscribeFrom,
-		sendEventMsg,
-		sendUserInfoMsg,
+		sendEventMsg: msg => store.dispatch( sendEvent( msg ) ),
+		sendUserInfoMsg: userInfo =>
+			store.dispatch( sendUserInfo( getUserInfo( store.getState() )( userInfo ) ) ),
 	};
 };
-
-export default eventAPI;

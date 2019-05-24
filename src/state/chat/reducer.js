@@ -19,6 +19,9 @@ import {
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT,
 	HAPPYCHAT_IO_SEND_MESSAGE_MESSAGE,
+	HAPPYCHAT_SET_HAS_UNREAD_MESSAGES,
+	HAPPYCHAT_SET_OPERATOR_IS_TYPING,
+	HAPPYCHAT_SET_IS_DISPLAYING_NEW_MESSAGES,
 } from '../action-types';
 import { HAPPYCHAT_CHAT_STATUS_DEFAULT } from '../constants';
 
@@ -157,8 +160,34 @@ export const timeline = ( state = [], action ) => {
 	return state;
 };
 
+export const isOperatorTyping = ( state = false, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_SET_OPERATOR_IS_TYPING: {
+			return action.isTyping;
+		}
+		case HAPPYCHAT_IO_RECEIVE_MESSAGE: {
+			return state && action.message.source === 'operator' ? false : state;
+		}
+	}
+	return state;
+};
+
+export const hasUnreadMessages = ( state = false, action ) => {
+	switch ( action.type ) {
+		case HAPPYCHAT_SET_HAS_UNREAD_MESSAGES: {
+			return action.hasUnreadMessages;
+		}
+		case HAPPYCHAT_SET_IS_DISPLAYING_NEW_MESSAGES: {
+			return action.isDisplayed ? false : state;
+		}
+	}
+	return state;
+};
+
 export default combineReducers( {
 	lastActivityTimestamp,
 	status,
 	timeline,
+	isOperatorTyping,
+	hasUnreadMessages,
 } );
