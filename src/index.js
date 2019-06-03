@@ -52,43 +52,6 @@ const getTheme = ( { theme, groups } ) => {
 	return Array.isArray( groups ) && groups.length > 0 ? groups[ 0 ] : null;
 };
 
-const getHeight = entryOptions => {
-	const primaryHasAnySecondary = options =>
-		Array.isArray( options ) && find( options, opt => opt.secondaryOptions );
-
-	const isThereAnySecondaryOptions = options =>
-		options &&
-		( options.secondaryOptions || primaryHasAnySecondary( entryOptions.primaryOptions ) );
-
-	const maxNumberOfDescriptions = options => {
-		let maxLength = 0;
-		let lengths;
-		if ( options ) {
-			lengths = options.map(
-				option => ( Array.isArray( option.description ) ? option.description.length : 0 )
-			);
-			maxLength = max( lengths );
-		}
-		return maxLength;
-	};
-
-	// Calculate height based on the number of components the iframe may need to render.
-	let iframeHeight = 415;
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.primaryOptions ? 95 : 0 );
-	iframeHeight = iframeHeight + ( isThereAnySecondaryOptions( entryOptions ) ? 95 : 0 );
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.itemList ? 100 : 0 );
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextField ? 100 : 0 );
-	iframeHeight = iframeHeight + ( entryOptions && entryOptions.openTextArea ? 150 : 0 );
-	iframeHeight = iframeHeight + maxNumberOfDescriptions( entryOptions.primaryOptions ) * 20;
-	iframeHeight = iframeHeight + maxNumberOfDescriptions( entryOptions.secondaryOptions ) * 20;
-	iframeHeight = iframeHeight + maxNumberOfDescriptions( entryOptions.itemList ) * 20;
-
-	// We need 480 as min height for the chat form,
-	// so we adjust the height if the ticket form components haven't grown it further.
-	iframeHeight = iframeHeight > 480 ? iframeHeight : 480;
-	return iframeHeight;
-};
-
 /**
  * Creates an iframe in the node provided by the nodeId prop.
  *
@@ -98,18 +61,16 @@ const getHeight = entryOptions => {
  * @param  {Object} props Properties used by the renderMethod.
  * @param  {string} props.nodeId Id of the HTMLNode where the iframe will be created.
  * @param  {Array} props.theme Theme to download and apply.
- * @param  {Object} props.height Height to be given to the iframe.
  * @param  {Function} assetsLoadedHook Callback to be executed when all assets are done downloading.
  * @returns {HTMLNode} Target node where Happychat can hook into.
  */
-const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) => {
+const createIframe = ( { nodeId, theme }, assetsLoadedHook = () => {} ) => {
 	const iframeElement = document.createElement( 'iframe' );
 
 	const cssURLPrefix = config( 'css_url' );
 
 	// style iframe element
 	iframeElement.width = '100%';
-	iframeElement.height = height + 'em';
 	iframeElement.frameBorder = 0;
 	iframeElement.scrolling = 'no';
 
@@ -204,6 +165,13 @@ const createIframe = ( { nodeId, theme, height }, assetsLoadedHook = () => {} ) 
 	targetNode.appendChild( spinnerLine );
 	iframeElement.contentDocument.body.appendChild( targetNode );
 
+	setInterval( () => {
+		const h = iframeElement.contentDocument.scrollingElement.scrollHeight;
+		if ( iframeElement.offsetHeight != h ) {
+			iframeElement.setAttribute( 'height', h + 'px' );
+		}
+	}, 200 );
+
 	return targetNode;
 };
 
@@ -260,7 +228,7 @@ export const renderHappychat = (
 
 export const createTargetNode = ( { nodeId, theme, groups, entryOptions } ) => {
 	return createIframe(
-		{ nodeId, theme: getTheme( { theme, groups } ), height: getHeight( entryOptions ) },
+		{ nodeId, theme: getTheme( { theme, groups } ) },
 		dispatchAssetsFinishedDownloading
 	);
 };
