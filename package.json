@@ -79,7 +79,7 @@
     "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.13.1",
     "enzyme-to-json": "3.3.0",
-    "eslint": "3.8.1",
+    "eslint": "4.18.2",
     "eslint-config-wpcalypso": "1.2.0",
     "eslint-plugin-react": "7.1.0",
     "eslint-plugin-wpcalypso": "3.4.1",
