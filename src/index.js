@@ -165,14 +165,14 @@ const createIframe = ( { nodeId, theme }, assetsLoadedHook = () => {} ) => {
 	targetNode.appendChild( spinnerLine );
 	iframeElement.contentDocument.body.appendChild( targetNode );
 
-	setInterval( () => {
+	const heightInterval = setInterval( () => {
 		const h = iframeElement.contentDocument.scrollingElement.scrollHeight;
 		if ( iframeElement.offsetHeight != h ) {
 			iframeElement.setAttribute( 'height', h + 'px' );
 		}
 	}, 200 );
 
-	return targetNode;
+	return { targetNode, heightInterval };
 };
 
 const isAnyCanChatPropFalse = ( canChat, { primaryOptions, secondaryOptions, itemList, defaultValues } ) => {
