@@ -1,6 +1,6 @@
 {
   "name": "happychat-client",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "main": "./targets/npm/api.js",
   "keywords": [],
@@ -16,6 +16,7 @@
   "scripts": {
     "analyze-bundles": "NODE_ENV=analyze webpack -p --config webpack.standalone.config.js",
     "postinstall": "node bin/fix-local-config",
+    "prepublishOnly": "npm run build:npm",
     "start": "run-p dev:standalone",
     "dev:standalone": "run-p dev:standalone:*",
     "dev:standalone:js": "NODE_ENV=development webpack-dev-server --config webpack.standalone.config.js",
