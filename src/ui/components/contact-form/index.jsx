@@ -19,6 +19,7 @@ import FormButton from 'src/ui/components/form-button';
 import FormDescription from 'src/ui/components/form-description';
 import FormSelection from 'src/ui/components/form-selection';
 import SelectDropdown from 'src/ui/components/select-dropdown';
+import Sibyl from 'src/plugins/sibyl';
 
 export class ContactForm extends React.Component {
 	constructor( props ) {
@@ -362,6 +363,8 @@ export class ContactForm extends React.Component {
 	render() {
 		const { formTitle, submitFormText } = this.props;
 
+		const showSibyl = window.location.search.indexOf( 'sibyl' ) >= 0;
+
 		return (
 			<div className="contact-form">
 				<CompactCard>
@@ -387,6 +390,10 @@ export class ContactForm extends React.Component {
 					{ this.maybeOpenTextField() }
 
 					{ this.maybeOpenTextArea() }
+
+					{ showSibyl &&
+						<Sibyl subject={ this.props.showSubject ? this.state.subject : '' } message={ this.state.message } />
+					}
 
 					<FormButton
 						disabled={ ! this.prepareCanSubmitForm() }
