@@ -67,6 +67,7 @@ export class ContactForm extends React.Component {
 			openTextAreaTitle,
 			openTextAreaValue: defaultValues.openTextArea || '',
 			defaultValues,
+			formSubmitListeners: [],
 		};
 
 		// bind class methods
@@ -122,6 +123,10 @@ export class ContactForm extends React.Component {
 				message,
 			} );
 		}
+	}
+
+	addFormSubmitListener = func => {
+		this.setState( { formSubmitListeners: this.state.formSubmitListeners.concat(func) } );
 	}
 
 	handleChange( e ) {
@@ -222,6 +227,7 @@ export class ContactForm extends React.Component {
 	}
 
 	prepareSubmitForm() {
+		this.state.formSubmitListeners.forEach( f => f() );
 		this.props.submitForm( this.state );
 	}
 
@@ -392,7 +398,12 @@ export class ContactForm extends React.Component {
 					{ this.maybeOpenTextArea() }
 
 					{ showSibyl &&
-						<Sibyl subject={ this.props.showSubject ? this.state.subject : '' } message={ this.state.message } />
+						<Sibyl
+							subject={ this.props.showSubject ? this.state.subject : '' }
+							message={ this.state.message }
+							site="en.support.wordpress.com"
+							addFormSubmitListener={this.addFormSubmitListener}
+						/>
 					}
 
 					<FormButton
