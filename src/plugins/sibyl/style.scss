@@ -1,10 +1,14 @@
 /** @format */
 
-.sibyl--heading-card {
-	font-size: 14px;	
-	font-weight: bold;
+.sibyl {
+	.sibyl--heading-card, .sibyl--suggestion-card {
+		font-size: 14px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		padding-left: 14px;
+	}
 }
 
-.sibyl--suggestion-card {
-	font-size: 14px;	
+.sibyl--heading-card {	
+	font-weight: bold;
 }
