@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
  */
 import config from 'src/config';
 import authenticator from 'src/lib/auth';
+import { recordEvent } from 'src/lib/tracks';
 
 // actions
 import {
@@ -70,6 +71,8 @@ import SpinnerLine from 'src/ui/components/spinner-line';
 const ENTRY_FORM = 'form';
 const ENTRY_CHAT = 'chat';
 
+const recordFormSubmit = supportType => recordEvent( 'happychatclient_form_submit', { support_type: supportType } );
+
 class ChatComponent {
 	constructor( props ) {
 		this.props = props;
@@ -117,6 +120,7 @@ class ChatFormComponent {
 		( warmUpMessage !== '' ) && this.props.onSendMessage( warmUpMessage );
 		openTextFieldValue && this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
 		this.props.onSendMessage( message );
+		recordFormSubmit( 'chat' );
 	}
 
 	onEvent( formState ) {
@@ -196,6 +200,7 @@ class TicketFormComponent {
 			timeout: fallbackTicketTimeout,
 			parseResponse: fallbackTicketParseResponse,
 		} );
+		recordFormSubmit( 'ticket' );
 	}
 
 	onEvent( formState ) {
