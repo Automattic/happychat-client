@@ -28,7 +28,7 @@ export default class Sibyl extends React.Component {
 	};
 
 	fetchSuggestions = debounce(() => {
-		const { site, subject, message } = this.props;
+		const { config: { site }, subject, message } = this.props;
 		const query = `${subject} ${message}`.trim();
 
 		if ( ! query ) {
@@ -56,12 +56,12 @@ export default class Sibyl extends React.Component {
 		this.setState({ suggestionClicked: true });
 		recordEvent( 'happychatclient_sibyl_question_click', {
 			question_id: suggestion.id,
-			site: this.props.site
+			site: this.props.config.site
 		} );
 	}
 
 	handleFormSubmit = () => {
-		const { site } = this.props;
+		const { config: { site } } = this.props;
 
 		if ( this.state.suggestionClicked ) {
 			recordEvent( 'happychatclient_sibyl_support_after_question_click', { site } );

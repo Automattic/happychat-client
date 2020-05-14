@@ -149,6 +149,7 @@ class ChatFormComponent {
 				defaultValues,
 				buttonText: { chat: buttonTextChat },
 			},
+			plugins,
 		} = this.props;
 		return (
 			<ContactForm
@@ -165,6 +166,7 @@ class ChatFormComponent {
 				submitForm={ this.submitForm }
 				submitFormText={ buttonTextChat }
 				onEvent={ this.onEvent }
+				plugins={ plugins }
 			/>
 		);
 	}
@@ -246,6 +248,7 @@ class TicketFormComponent {
 				buttonText: { ticket: buttonTextTicket },
 				defaultValues: initValues, // initial default values: to be used on fallback success
 			},
+			plugins,
 		} = this.props;
 
 		let form;
@@ -314,6 +317,7 @@ class TicketFormComponent {
 						submitForm={ this.submitForm }
 						submitFormText={ buttonTextTicket }
 						onEvent={ this.onEvent }
+						plugins={ plugins }
 					/>
 				);
 		}
@@ -392,6 +396,7 @@ Form.propTypes = {
 	canChat: PropTypes.bool,
 	entry: PropTypes.string,
 	entryOptions: PropTypes.object,
+	plugins: PropTypes.object,
 };
 
 // Whether URL should open a new tab or not.

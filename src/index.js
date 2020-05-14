@@ -197,6 +197,7 @@ export const renderHappychat = (
 		canChat = true,
 		entry = ENTRY_FORM,
 		entryOptions = {},
+		plugins = {},
 	}
 ) => {
 	store.dispatch(
@@ -219,7 +220,7 @@ export const renderHappychat = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat entry={ entry } canChat={ canChat } entryOptions={ entryOptions } />
+			<Happychat entry={ entry } canChat={ canChat } entryOptions={ entryOptions } plugins={ plugins } />
 		</Provider>,
 		targetNode
 	);
