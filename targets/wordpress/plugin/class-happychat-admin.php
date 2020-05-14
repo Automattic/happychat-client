@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Happychat_Admin {
 	private static $_instance = null;
-	const VERSION             = '0.0.1-dev';
+	const VERSION             = '0.0.2-dev';
 
 	/**
 	 * Create instance of class
