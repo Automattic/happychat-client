@@ -7,6 +7,7 @@
 	* entryOptions
 	* groups
 	* nodeId
+	* plugins
 	* theme
 * Examples
 	* Default
@@ -31,6 +32,7 @@ with the following top-level properties:
 | `entryOptions` | object | Optional | `{}` | Configures Happychat entry points. See details below. |
 | `groups` | array | Optional | `[WP.com]` | What group the chat session should be routed to. Valid values are `WP.com`, `woo`, and `jpop`. |
 | `nodeId` | string | Mandatory | `null` | The id of the HTMLNode where Happychat will be rendered. |
+| `plugins` | object | Optional | `{}` | Configuration for the plugins you want to activate. See details below.  |
 | `theme` | string | Optional | `null` | The theme to use. Valid values are the group names. |
 | `cssDir` | string | Optional | `null` | The URL prefix for the folder that contains the happychat CSS files (allows serving from other than widgets.wp.com) |
 
@@ -225,6 +227,22 @@ Currently, Happychat can connect customers to any of these groups:
 ### nodeId
 
 The Happychat library will create an iframe within the HTML node provided by this id.
+
+### plugins
+
+_Note: This is an experimental feature!_
+
+When you want to activate a plugin, send a configuration object for the plugin keyed on the plugin's name. For example:
+
+```
+plugins: {
+	sibyl: {
+		site: "en.support.wordpress.com",
+	}
+}
+```
+
+This will activate the Sibyl plugin, and the plugin will be passed the `site` configuration value. Each plugin has its own configuration options.
 
 ### theme
 

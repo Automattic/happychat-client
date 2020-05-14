@@ -89,6 +89,7 @@ class Happychat_Client {
 			'accessToken'  => null,
 			'entry'        => 'ENTRY_FORM',
 			'entryOptions' => [],
+			'plugins'      => [],
 			'groups'       => [ get_option( 'happychat_user_group' ) ],
 			'canChat'      => 'true',
 			'nodeId'       => 'happychat-form',

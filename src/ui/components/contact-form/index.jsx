@@ -367,9 +367,7 @@ export class ContactForm extends React.Component {
 	}
 
 	render() {
-		const { formTitle, submitFormText } = this.props;
-
-		const showSibyl = window.location.search.indexOf( 'sibyl' ) >= 0;
+		const { formTitle, submitFormText, plugins } = this.props;
 
 		return (
 			<div className="contact-form">
@@ -397,12 +395,12 @@ export class ContactForm extends React.Component {
 
 					{ this.maybeOpenTextArea() }
 
-					{ showSibyl &&
+					{ plugins.hasOwnProperty( 'sibyl' ) &&
 						<Sibyl
 							subject={ this.props.showSubject ? this.state.subject : '' }
 							message={ this.state.message }
-							site="en.support.wordpress.com"
 							addFormSubmitListener={this.addFormSubmitListener}
+							config={ plugins[ 'sibyl' ] }
 						/>
 					}
 
@@ -457,4 +455,5 @@ ContactForm.defaultProps = {
 	submitForm: () => {},
 	submitFormText: 'Send',
 	onEvent: () => {},
+	plugins: {},
 };
