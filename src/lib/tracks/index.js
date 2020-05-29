@@ -7,5 +7,9 @@ document.head.appendChild( script );
 window._tkq = window._tkq || [];
 
 export const recordEvent = ( name, properties = {} ) => {
-	window._tkq.push( [ 'recordEvent', name, properties ] );
+	const propertiesWithDefaults = {
+		...properties,
+		happychatclient_version: require('/package.json').version,
+	};
+	window._tkq.push( [ 'recordEvent', name, propertiesWithDefaults ] );
 };
