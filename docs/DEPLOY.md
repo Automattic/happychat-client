@@ -36,7 +36,7 @@ The WordPress.com plugin references assets that are hosted on `widgets.wp.com`, 
 Static assets are hosted on widgets.wp.com. Make sure your WordPress.com sandbox is up-to-date and clean, and:
 
 ```
-scp -r targets/wordpress/widget/ wpdev@wordpress.sandbox:~/public_html/widgets.wp.com/happychat/v1/
+scp -r targets/wordpress/widget/* wpdev@[YOUR SANDBOX]:~/public_html/widgets.wp.com/happychat/v1/
 ```
 
 Then commit the code from your sandbox to SVN.
