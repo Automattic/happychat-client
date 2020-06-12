@@ -27,9 +27,11 @@ export default class Sibyl extends React.Component {
 		suggestionClicked: false,
 	};
 
+	getSearchQuery = () => `${this.props.subject} ${this.props.message}`.trim();
+
 	fetchSuggestions = debounce(() => {
 		const { config: { site }, subject, message } = this.props;
-		const query = `${subject} ${message}`.trim();
+		const query = this.getSearchQuery();
 
 		if ( ! query ) {
 			this.setState( { suggestions: [] } );
@@ -53,6 +55,13 @@ export default class Sibyl extends React.Component {
 	}, 400)
 
 	handleSuggestionClick = suggestion => {
+		if ( ! this.state.suggestionClicked ) {
+			recordEvent( 'happychatclient_sibyl_first_question_click', {
+				question_id: suggestion.id,
+				site: this.props.config.site
+			} );
+		}
+
 		this.setState({ suggestionClicked: true });
 		recordEvent( 'happychatclient_sibyl_question_click', {
 			question_id: suggestion.id,
@@ -67,8 +76,17 @@ export default class Sibyl extends React.Component {
 			recordEvent( 'happychatclient_sibyl_support_after_question_click', { site } );
 		}
 
-		if ( ! isEmpty( this.state.suggestions ) ) {
-			recordEvent( 'happychatclient_sibyl_support_with_questions_showing', { site } );
+		if ( isEmpty( this.state.suggestions ) ) {
+			recordEvent( 'happychatclient_sibyl_support_without_matching_questions', {
+				site,
+				query: this.getSearchQuery(),
+			} );
+		} else {
+			recordEvent( 'happychatclient_sibyl_support_with_questions_showing', {
+				site,
+				query: this.getSearchQuery(),
+				suggestions: this.state.suggestions.map( ({id, title}) => `${id} - ${title}` ).join(' / '),
+			} );
 		}
 	}
 
@@ -111,4 +129,3 @@ export default class Sibyl extends React.Component {
 }
 
 // TODO Proptypes?
-
