@@ -76,7 +76,12 @@ export default class Sibyl extends React.Component {
 			recordEvent( 'happychatclient_sibyl_support_after_question_click', { site } );
 		}
 
-		if ( ! isEmpty( this.state.suggestions ) ) {
+		if ( isEmpty( this.state.suggestions ) ) {
+			recordEvent( 'happychatclient_sibyl_support_without_matching_questions', {
+				site,
+				query: this.getSearchQuery(),
+			} );
+		} else {
 			recordEvent( 'happychatclient_sibyl_support_with_questions_showing', {
 				site,
 				query: this.getSearchQuery(),
