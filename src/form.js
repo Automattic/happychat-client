@@ -193,12 +193,17 @@ class TicketFormComponent {
 			fallbackTicketHeaders,
 			fallbackTicketTimeout,
 			fallbackTicketParseResponse,
+			isChatAvailable,
+			isUserEligibleForChat,
 		} = this.props;
 		this.props.onRequestFallbackTicket( {
 			url: fallbackTicketUrl,
 			method: fallbackTicketMethod,
 			headers: fallbackTicketHeaders,
-			payload: formState,
+			payload: {
+				...formState,
+				isChatOverflow: ( isUserEligibleForChat && ! isChatAvailable ),
+			},
 			timeout: fallbackTicketTimeout,
 			parseResponse: fallbackTicketParseResponse,
 		} );
