@@ -65,6 +65,20 @@ How to configure authentication via proxy iframe:
 		},
 	} );
 
+#### Connecting to alternate socket servers
+
+If you want to connect to another socket server (like a staging or local) you can pass `authentication.options.happychatUrl`, for example:
+
+	Happychat.open( {
+		authentication: {
+			type: ...,
+			options: {
+				happychatUrl: 'http://localhost:3232/customer',
+				...
+			},
+		},
+	} );
+
 ### canChat
 
 Whether the user can be offered chat or not. If this property is false, no chat will be offered. This can also be configured per option, see `entryOptions` below.

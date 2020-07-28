@@ -3,6 +3,7 @@
 /**
  * External dependencies
  */
+import { get } from 'lodash';
 import debugFactory from 'debug';
 
 /**
@@ -66,7 +67,7 @@ export class WPcomStrategy extends BaseStrategy {
 		 */
 		return () => {
 			let geoLocation;
-			const url = config( 'happychat_url' );
+			const url = get( this, 'options.happychatUrl', config( 'happychat_url' ) );
 
 			const user = getUser( state );
 			const skills = getUserSkills( state );

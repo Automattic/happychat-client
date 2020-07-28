@@ -20,6 +20,7 @@ const api = {
 	 * @param {Object} authentication Mandatory. Set of authentication options
 	 * @param {string} authentication.type Mandatory. Type of authentication strategy used
 	 * @param {Object} authentication.options Optional. Authentication options
+	 * @param {Object} authentication.options.happychatUrl Optional. Alternate socket server URL
 	 * @param {Object} authentication.options.token Optional. WP.com oAuth access token to be used
 	 * @param {Object} authentication.options.proxy Optional. WP.com proxy object to be used
 	 * @param {boolean} canChat Optional. Whether the user can be offered chat. True by default.
