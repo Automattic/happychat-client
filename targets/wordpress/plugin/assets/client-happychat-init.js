@@ -64,7 +64,10 @@
 			nodeId: happychatSettings.nodeId,
 			authentication: {
 				type: 'wpcom-oauth-by-token',
-				options: { token: happychatSettings.accessToken },
+				options: {
+					token: happychatSettings.accessToken,
+					happychatUrl: happychatSettings.happychatUrl,
+				},
 			},
 			groups: happychatSettings.groups,
 			canChat: toBoolean( happychatSettings.canChat ),
