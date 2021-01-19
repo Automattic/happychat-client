@@ -21,6 +21,7 @@ import {
 	sendMessage,
 	sendNotTyping,
 	sendTyping,
+	setChatData,
 } from 'src/state/connection/actions';
 import { blur, focus, openChat, setCurrentMessage, resetForm, setIsDisplayingNewMessages } from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
@@ -120,6 +121,12 @@ class ChatFormComponent {
 		( warmUpMessage !== '' ) && this.props.onSendMessage( warmUpMessage );
 		openTextFieldValue && this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
 		this.props.onSendMessage( message );
+		// Send form values in here! (Could also consider sending them _as_ they are switched in the form, but that may get... noisy?)
+		this.props.onSetChatData( {
+			openTextArea: openTextAreaTitle + '\n ' + openTextAreaValue,
+			warmUpMessage: warmUpMessage,
+			openTextField: openTextFieldTitle + ' ' + openTextFieldValue,
+		} );
 		recordFormSubmit( 'chat' );
 	}
 
@@ -459,6 +466,7 @@ const mapDispatch = {
 	onSendMessage: sendMessage,
 	onSendNotTyping: sendNotTyping,
 	onSendTyping: sendTyping,
+	onSetChatData: setChatData,
 	onSetCurrentMessage: setCurrentMessage,
 	onSetEligibility: setEligibility,
 	setBlurred: blur,
