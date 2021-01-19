@@ -33,7 +33,7 @@ import {
 	HAPPYCHAT_IO_SEND_MESSAGE_USERINFO,
 	HAPPYCHAT_IO_SEND_PREFERENCES,
 	HAPPYCHAT_IO_SEND_TYPING,
-	HAPPYCHAT_IO_SET_CHAT_FIELDS,
+	HAPPYCHAT_IO_SET_CUSTOM_FIELDS,
 } from 'src/state/action-types';
 import { HAPPYCHAT_MESSAGE_TYPES } from 'src/state/constants';
 
@@ -369,8 +369,8 @@ export const sendPreferences = ( locale, groups, skills ) => ( {
 } );
 
 // Send an object of key-values to update (like setState)
-export const setChatFields = ( fieldData ) => ( {
-	type: HAPPYCHAT_IO_SET_CHAT_FIELDS,
+export const setChatCustomFields = ( fieldData ) => ( {
+	type: HAPPYCHAT_IO_SET_CUSTOM_FIELDS,
 	event: 'chat.setFields',
 	payload: fieldData,
 } );

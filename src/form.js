@@ -21,7 +21,7 @@ import {
 	sendMessage,
 	sendNotTyping,
 	sendTyping,
-	setChatFields,
+	setChatCustomFields,
 } from 'src/state/connection/actions';
 import { blur, focus, openChat, setCurrentMessage, resetForm, setIsDisplayingNewMessages } from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
@@ -50,7 +50,7 @@ import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-re
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getFormDefaultValues from 'src/state/selectors/get-form-defaultvalues';
 import getUser from 'src/state/selectors/get-user';
-import getUserGroupExpanded from 'src/state/selectors/get-user-group-expanded';
+import getUserGroups from 'src/state/selectors/get-user-groups';
 import getUserEligibility from 'src/state/selectors/get-user-eligibility';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
@@ -114,19 +114,38 @@ class ChatFormComponent {
 		openTextAreaValue,
 	} ) {
 		this.props.onOpenChat();
-		openTextAreaValue && this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
-		let warmUpMessage = primarySelected.label ? ( primaryOptionsTitle + ' ' + primarySelected.label + '\n' ) : '';
-		warmUpMessage = warmUpMessage + ( secondarySelected.label ? ( secondaryOptionsTitle + ' ' + secondarySelected.label + '\n' ) : '' );
-		warmUpMessage = warmUpMessage + ( itemSelected.label ? ( itemListTitle + ' ' + itemSelected.label + '\n' ) : '' );
+		const customFields = { channel: this.props.userGroups ? this.props.userGroups[0] : null };
+		let warmUpMessage = '';
+
+		if ( openTextAreaValue ) {
+			this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
+			customFields[openTextAreaTitle] = openTextAreaValue;
+		}
+
+		if ( primarySelected.label ) {
+			warmUpMessage += primaryOptionsTitle + ' ' + primarySelected.label + '\n';
+			customFields[primaryOptionsTitle] = primarySelected.label;
+		}
+
+		if ( secondarySelected.label ) {
+			warmUpMessage += secondaryOptionsTitle + ' ' + secondarySelected.label + '\n';
+			customFields[secondaryOptionsTitle] = secondarySelected.label;
+		}
+
+		if ( itemSelected.label ) {
+			warmUpMessage += itemListTitle + ' ' + itemSelected.label + '\n';
+			customFields[itemListTitle] = itemSelected.label;
+		}
+
 		( warmUpMessage !== '' ) && this.props.onSendMessage( warmUpMessage );
-		openTextFieldValue && this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
+
+		if ( openTextFieldValue ) {
+			this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
+			customFields[openTextFieldTitle] = openTextAreaValue;
+		}
+
 		this.props.onSendMessage( message );
-		// Send form values in here! (Could also consider sending them _as_ they are switched in the form, but that may get... noisy?)
-		this.props.onSetChatFields( {
-			openTextArea: openTextAreaTitle + '\n ' + openTextAreaValue,
-			warmUpMessage: warmUpMessage,
-			openTextField: openTextFieldTitle + ' ' + openTextFieldValue,
-		} );
+		this.props.onSetChatCustomFields( customFields );
 		recordFormSubmit( 'chat' );
 	}
 
@@ -427,7 +446,6 @@ const mapState = state => {
 		chatStatus: getChatStatus( state ),
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
-		currentUserGroup: getUserGroupExpanded( state ),
 		defaultValues: getFormDefaultValues( state ),
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
@@ -440,6 +458,7 @@ const mapState = state => {
 		fallbackTicketTimeout: getFallbackTicketTimeout( state ),
 		fallbackTicketUrl: getFallbackTicketUrl( state ),
 		fallbackTicketParseResponse: getFallbackTicketParseResponse( state ),
+		userGroups: getUserGroups( state ),
 		authentication: authenticator.authorizeChat( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
@@ -466,7 +485,7 @@ const mapDispatch = {
 	onSendMessage: sendMessage,
 	onSendNotTyping: sendNotTyping,
 	onSendTyping: sendTyping,
-	onSetChatFields: setChatFields,
+	onSetChatCustomFields: setChatCustomFields,
 	onSetCurrentMessage: setCurrentMessage,
 	onSetEligibility: setEligibility,
 	setBlurred: blur,
