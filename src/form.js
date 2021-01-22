@@ -114,38 +114,14 @@ class ChatFormComponent {
 		openTextAreaValue,
 	} ) {
 		this.props.onOpenChat();
-		const customFields = { channel: this.props.userGroups ? this.props.userGroups[0] : null };
-		let warmUpMessage = '';
-
-		if ( openTextAreaValue ) {
-			this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
-			customFields[openTextAreaTitle] = openTextAreaValue;
-		}
-
-		if ( primarySelected.label ) {
-			warmUpMessage += primaryOptionsTitle + ' ' + primarySelected.label + '\n';
-			customFields[primaryOptionsTitle] = primarySelected.label;
-		}
-
-		if ( secondarySelected.label ) {
-			warmUpMessage += secondaryOptionsTitle + ' ' + secondarySelected.label + '\n';
-			customFields[secondaryOptionsTitle] = secondarySelected.label;
-		}
-
-		if ( itemSelected.label ) {
-			warmUpMessage += itemListTitle + ' ' + itemSelected.label + '\n';
-			customFields[itemListTitle] = itemSelected.label;
-		}
-
+		this.props.onSetChatCustomFields( { channel: this.props.userGroups ? this.props.userGroups[0] : null } );
+		openTextAreaValue && this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
+		let warmUpMessage = primarySelected.label ? ( primaryOptionsTitle + ' ' + primarySelected.label + '\n' ) : '';
+		warmUpMessage = warmUpMessage + ( secondarySelected.label ? ( secondaryOptionsTitle + ' ' + secondarySelected.label + '\n' ) : '' );
+		warmUpMessage = warmUpMessage + ( itemSelected.label ? ( itemListTitle + ' ' + itemSelected.label + '\n' ) : '' );
 		( warmUpMessage !== '' ) && this.props.onSendMessage( warmUpMessage );
-
-		if ( openTextFieldValue ) {
-			this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
-			customFields[openTextFieldTitle] = openTextAreaValue;
-		}
-
+		openTextFieldValue && this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
 		this.props.onSendMessage( message );
-		this.props.onSetChatCustomFields( customFields );
 		recordFormSubmit( 'chat' );
 	}
 
