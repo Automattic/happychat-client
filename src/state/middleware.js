@@ -22,6 +22,7 @@ import {
 	HAPPYCHAT_IO_SEND_MESSAGE_USERINFO,
 	HAPPYCHAT_IO_SEND_PREFERENCES,
 	HAPPYCHAT_IO_SEND_TYPING,
+	HAPPYCHAT_IO_SET_CUSTOM_FIELDS,
 } from 'src/state/action-types';
 import { sendEvent } from 'src/state/connection/actions';
 import { setOperatorIsTyping, setHasUnreadMessages } from 'src/state/chat/actions';
@@ -91,6 +92,7 @@ export const socketMiddleware = ( connection = null ) => {
 				case HAPPYCHAT_IO_SEND_MESSAGE_USERINFO:
 				case HAPPYCHAT_IO_SEND_PREFERENCES:
 				case HAPPYCHAT_IO_SEND_TYPING:
+				case HAPPYCHAT_IO_SET_CUSTOM_FIELDS:
 					connection.send( action );
 					break;
 

@@ -21,6 +21,7 @@ import {
 	sendMessage,
 	sendNotTyping,
 	sendTyping,
+	setChatCustomFields,
 } from 'src/state/connection/actions';
 import { blur, focus, openChat, setCurrentMessage, resetForm, setIsDisplayingNewMessages } from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
@@ -49,7 +50,7 @@ import getFallbackTicketResponse from 'src/state/selectors/get-fallbackticket-re
 import getFallbackTicketStatus from 'src/state/selectors/get-fallbackticket-status';
 import getFormDefaultValues from 'src/state/selectors/get-form-defaultvalues';
 import getUser from 'src/state/selectors/get-user';
-import getUserGroupExpanded from 'src/state/selectors/get-user-group-expanded';
+import getUserGroups from 'src/state/selectors/get-user-groups';
 import getUserEligibility from 'src/state/selectors/get-user-eligibility';
 import getUICurrentMessage from 'src/state/selectors/get-ui-currentmessage';
 import isHCConnectionUninitialized from 'src/state/selectors/is-connection-uninitialized';
@@ -113,6 +114,7 @@ class ChatFormComponent {
 		openTextAreaValue,
 	} ) {
 		this.props.onOpenChat();
+		this.props.onSetChatCustomFields( { channel: this.props.userGroups ? this.props.userGroups[0] : null } );
 		openTextAreaValue && this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
 		let warmUpMessage = primarySelected.label ? ( primaryOptionsTitle + ' ' + primarySelected.label + '\n' ) : '';
 		warmUpMessage = warmUpMessage + ( secondarySelected.label ? ( secondaryOptionsTitle + ' ' + secondarySelected.label + '\n' ) : '' );
@@ -420,7 +422,6 @@ const mapState = state => {
 		chatStatus: getChatStatus( state ),
 		connectionStatus: getConnectionStatus( state ),
 		currentUserEmail: currentUser.email,
-		currentUserGroup: getUserGroupExpanded( state ),
 		defaultValues: getFormDefaultValues( state ),
 		disabled: ! canUserSendMessages( state ),
 		fallbackTicketHeaders: getFallbackTicketHeaders( state ),
@@ -433,6 +434,7 @@ const mapState = state => {
 		fallbackTicketTimeout: getFallbackTicketTimeout( state ),
 		fallbackTicketUrl: getFallbackTicketUrl( state ),
 		fallbackTicketParseResponse: getFallbackTicketParseResponse( state ),
+		userGroups: getUserGroups( state ),
 		authentication: authenticator.authorizeChat( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
@@ -459,6 +461,7 @@ const mapDispatch = {
 	onSendMessage: sendMessage,
 	onSendNotTyping: sendNotTyping,
 	onSendTyping: sendTyping,
+	onSetChatCustomFields: setChatCustomFields,
 	onSetCurrentMessage: setCurrentMessage,
 	onSetEligibility: setEligibility,
 	setBlurred: blur,
