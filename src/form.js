@@ -113,16 +113,53 @@ class ChatFormComponent {
 		openTextAreaTitle,
 		openTextAreaValue,
 	} ) {
+		const {
+			primaryOptionsCustomFieldKey,
+			secondaryOptionsCustomFieldKey,
+			itemListCustomFieldKey,
+			openTextFieldCustomFieldKey,
+			openTextAreaCustomFieldKey,
+		} = this.props.entryOptions;
+
+		const customFields = {};
+
 		this.props.onOpenChat();
-		this.props.onSetChatCustomFields( { channel: this.props.userGroups ? this.props.userGroups[0] : null } );
-		openTextAreaValue && this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
-		let warmUpMessage = primarySelected.label ? ( primaryOptionsTitle + ' ' + primarySelected.label + '\n' ) : '';
-		warmUpMessage = warmUpMessage + ( secondarySelected.label ? ( secondaryOptionsTitle + ' ' + secondarySelected.label + '\n' ) : '' );
-		warmUpMessage = warmUpMessage + ( itemSelected.label ? ( itemListTitle + ' ' + itemSelected.label + '\n' ) : '' );
+
+		if ( openTextAreaValue ) {
+			this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
+			openTextAreaCustomFieldKey && ( customFields[ openTextAreaCustomFieldKey ] = openTextAreaValue );
+		}
+
+		let warmUpMessage = '';
+
+		if ( primarySelected.label ) {
+			warmUpMessage += primaryOptionsTitle + ' ' + primarySelected.label + '\n';
+			primaryOptionsCustomFieldKey && ( customFields[ primaryOptionsCustomFieldKey ] = primarySelected.value );
+		}
+
+		if ( secondarySelected.label ) {
+			warmUpMessage += secondaryOptionsTitle + ' ' + secondarySelected.label + '\n';
+			secondaryOptionsCustomFieldKey && ( customFields[ secondaryOptionsCustomFieldKey ] = secondarySelected.value );
+		}
+
+		if ( itemSelected.label ) {
+			warmUpMessage += itemListTitle + ' ' + itemSelected.label + '\n';
+			itemListCustomFieldKey && ( customFields[ itemListCustomFieldKey ] = itemSelected.value );
+		}
+
 		( warmUpMessage !== '' ) && this.props.onSendMessage( warmUpMessage );
-		openTextFieldValue && this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
+
+		if ( openTextFieldValue ) {
+			this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
+			openTextFieldCustomFieldKey && ( customFields[ openTextFieldCustomFieldKey ] = openTextFieldValue );
+		}
+
 		this.props.onSendMessage( message );
 		recordFormSubmit( 'chat' );
+
+		if ( Object.keys( customFields ).length > 0 ) {
+			this.props.onSetChatCustomFields( customFields );
+		}
 	}
 
 	onEvent( formState ) {

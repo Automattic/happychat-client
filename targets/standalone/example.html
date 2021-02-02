@@ -37,28 +37,33 @@
 						{ value: 'account', label: 'Help with my account', },
 						{ value: 'broken', label: 'Something is broken' },
 					],
+					primaryOptionsCustomFieldKey: 'devClientPrimary',
 					secondaryOptions: [
 						{ value: 'config', label: 'Help configuring', primary: ['account'], description: ['A secondary description.'] },
 						{ value: 'order', label: 'Help with an order', primary: ['account'], },
 						{ value: 'themes', label: 'Themes', primary: ['before-buy', 'broken'], description: ['Themes are awesome.'] },
 						{ value: 'plugins', label: 'Plugins', primary: ['before-buy', 'broken'], description: ['Plugins are awesome.'] },
 					],
+					secondaryOptionsCustomFieldKey: 'devClientSecondary',
 					itemList: [
 						{ value: '2010', label: '2010 theme', primary: ['before-buy'], secondary: ['themes'], description: ['An item description.'] },
 						{ value: '2011', label: '2011 theme', primary: ['before-buy'], secondary: ['themes'] },
 						{ value: 'jp', label: 'Jetpack', secondary: ['plugins'], description: ['An awesome plugin.'] },
 						{ value: 'wc', label: 'WooCommerce', secondary: ['plugins'], canChat: false },
 					],
+					itemListCustomFieldKey: 'devClientItemList',
 					openTextField: {
 						primary: ['before-buy'],
 						secondary: ['themes'],
 						isRequired: true,
 					},
+					openTextFieldCustomFieldKey: 'devClientTextField',
 					openTextArea: {
 						primary: ['before-buy'],
 						secondary: ['themes'],
 						isRequired: true
 					},
+					openTextAreaCustomFieldKey: 'devClientTextArea',
 					buttonText: {
 						ticket: 'Create ticket',
 						chat: 'Start chat',
