@@ -104,14 +104,19 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 | `formTitle` | string | `Contact form` | Title of form. |
 | `primaryOptionsTitle` | string | `How can we help` | Title of primary options menu. |
 | `primaryOptions` | array | `[]` | Contains the options to be shown in the primary menu. They'll be rendered either as a segmented control or a dropdown depending on the window width. If not provided, this section won't be shown. |
+| `primaryOptionsCustomFieldKey` | string | `null` | Add a key to save the result as a Custom Field on the chat. |
 | `secondaryOptionsTitle` | string | `Any more info you want to share?` | Title of secondary options menu. |
 | `secondaryOptions` | array | `[]` | Contains the options to be shown in the secondary menu. They'll be rendered either as a segmented control or a dropdown depending on the window width. If not provided, this section won't be shown. |
+| `secondaryOptionsCustomFieldKey` | string | `null` | Add a key to save the result as a Custom Field on the chat. |
 | `itemListTitle` | string | `Which product do you need help with?` | Title of item list menu. |
 | `itemList` | array | `[]` | Contains the options to be shown in the item list menu. They'll be rendered as a dropdown. If not provided, this section won't be shown. |
+| `itemListCustomFieldKey` | string | `null` | Add a key to save the result as a Custom Field on the chat. |
 | `openTextFieldTitle` | string | `What is the URL of your site?` | Title for the textfield component. |
 | `openTextField` | object | `{}` | Contains conditions under which to show the text field. |
+| `openTextFieldCustomFieldKey` | string | `null` | Add a key to save the result as a Custom Field on the chat. |
 | `openTextAreaTitle` | string | `Any more info you want to share?` | Title for the textarea component. |
 | `openTextArea` | object | `{}` | Contains conditions under which to show the text area.|
+| `openTextAreaCustomFieldKey` | string | `null` | Add a key to save the result as a Custom Field on the chat. |
 | `buttonText` | object | `{'ticket': "Send a ticket", 'chat': "Chat with us"}` | Contains the text to show for the two allowed states: offer ticket or chat. |
 | `defaultValues` | object | `{}` | Configures default values for the form. |
 | `fallbackTicket` | object | `{}` | Configures a default route that Happychat will use to offer ticket support as a fallback when chat is not available. |
