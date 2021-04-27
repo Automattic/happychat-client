@@ -1,0 +1,70 @@
+/** @format */
+.ssr-troubleshooting {
+	font-size: 14px;
+	margin-top: -8px;
+}
+
+.ssr-troubleshooting__intro {
+	font-style: italic;
+}
+
+.card.ssr-troubleshooting__flags {
+	padding: 0;
+	margin: 12px 0 36px
+}
+
+.ssr-troubleshooting__flag {
+	border-top: 1px solid var(--neutral-lighten-30);
+	&:first-of-type {
+		border: none;
+	}
+}
+.ssr-troubleshooting__flag-toggle {
+	font-weight: bold;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+	align-items: baseline;
+    padding: 14px 10px;
+    cursor: pointer;
+	text-align: left;
+}
+.ssr-troubleshooting__flag-toggle-icon {
+	margin-right: 8px;
+}
+.ssr-troubleshooting__flag-toggle-cta {
+	color: var(--neutral-lighten-10);
+	font-weight: normal;
+	margin-left: auto;
+	white-space: nowrap;
+
+	&:before {
+		content: 'Learn more';
+	}
+
+	.gridicon {
+		transform: rotate(90deg);
+		vertical-align: text-bottom;
+		margin-left: 3px;
+	}
+
+	.ssr-troubleshooting__flag-toggle:hover & {
+		color: var(--neutral);
+	}
+
+	.ssr-troubleshooting__flag--is-expanded & {
+		&:before {
+			content: 'Hide';
+		}
+		.gridicon {
+			transform: rotate(-90deg);
+		}
+	}
+}
+.ssr-troubleshooting__flag-body {
+	margin: 0 14px 10px;
+	display: none;
+	.ssr-troubleshooting__flag--is-expanded & {
+		display: block;
+	}
+}
