@@ -1,6 +1,6 @@
 {
   "name": "happychat-client",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "",
   "main": "./targets/npm/api.js",
   "keywords": [],
