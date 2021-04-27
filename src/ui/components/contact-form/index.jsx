@@ -20,6 +20,7 @@ import FormDescription from 'src/ui/components/form-description';
 import FormSelection from 'src/ui/components/form-selection';
 import SelectDropdown from 'src/ui/components/select-dropdown';
 import Sibyl from 'src/plugins/sibyl';
+import SSRTroubleshooting from 'src/plugins/ssr-troubleshooting';
 
 export class ContactForm extends React.Component {
 	constructor( props ) {
@@ -344,6 +345,9 @@ export class ContactForm extends React.Component {
 					value={ openTextAreaValue }
 					onChange={ this.handleChange }
 				/>
+				{ this.props.plugins.hasOwnProperty( 'ssr-troubleshooting' ) &&
+					<SSRTroubleshooting addFormSubmitListener={this.addFormSubmitListener} />
+				}
 			</div>
 		) : (
 			''
