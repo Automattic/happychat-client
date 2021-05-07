@@ -73,8 +73,10 @@ export default class SSRTroubleshooting extends React.Component {
 	}
 
 	render() {
-		// For right now, we're placing this component without visualizing it so we can track
-		// how many flags are generally shown, to influence the design of the widget
+		// For this phase of development, we're not rendering anything — just trackiong how
+		// many flags are retrieved to help inform how we design the UI.
 		return null;
 	}
 }
+
+// TODO Proptypes?

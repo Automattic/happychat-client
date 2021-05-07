@@ -398,10 +398,6 @@ export class ContactForm extends React.Component {
 						onChange={ this.handleChange }
 					/>
 
-					{ this.maybeOpenTextField() }
-
-					{ this.maybeOpenTextArea() }
-
 					{ plugins.hasOwnProperty( 'sibyl' ) &&
 						<Sibyl
 							subject={ this.props.showSubject ? this.state.subject : '' }
@@ -410,6 +406,10 @@ export class ContactForm extends React.Component {
 							config={ plugins[ 'sibyl' ] }
 						/>
 					}
+
+					{ this.maybeOpenTextField() }
+
+					{ this.maybeOpenTextArea() }
 
 					<FormButton
 						disabled={ ! this.prepareCanSubmitForm() }
