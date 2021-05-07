@@ -127,7 +127,7 @@ export class ContactForm extends React.Component {
 	}
 
 	addFormSubmitListener = func => {
-		this.setState( { formSubmitListeners: this.state.formSubmitListeners.concat(func) } );
+		this.setState( state => ( { formSubmitListeners: state.formSubmitListeners.concat(func) } ) );
 	}
 
 	handleChange( e ) {
@@ -346,7 +346,10 @@ export class ContactForm extends React.Component {
 					onChange={ this.handleChange }
 				/>
 				{ this.props.plugins.hasOwnProperty( 'ssr-troubleshooting' ) &&
-					<SSRTroubleshooting ssr={ openTextAreaValue } />
+					<SSRTroubleshooting
+						addFormSubmitListener={ this.addFormSubmitListener }
+						ssr={ openTextAreaValue }
+					/>
 				}
 			</div>
 		) : (
