@@ -115,7 +115,7 @@
     "react-redux": "5.0.7",
     "redux": "4.0.0",
     "redux-devtools-extension": "2.13.5",
-    "socket.io-client": "4.0.2",
+    "socket.io-client": "2.4.0",
     "twemoji": "2.3",
     "uuid": "2.0.1",
     "wpcom-oauth-cors": "1.0.1",
