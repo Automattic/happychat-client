@@ -49,13 +49,13 @@ export default class SSRTroubleshooting extends React.Component {
 
 		if ( ssr ) {
 			recordEvent( 'happychatclient_ssr_troubleshooting_support_with_flags_showing', {
-				flagCount: flags.length,
+				flag_count: flags.length,
 			} );
 			flags.forEach( ( flag ) => {
 				// Track how often each individual flag type is shown during submit, so we can
 				// both identify the biggest issues now, and see trends change over time
 				recordEvent( 'happychatclient_ssr_troubleshooting_support_with_flag_showing', {
-					flagType: flag.type,
+					flag_type: flag.type,
 				} );
 			} );
 		}
