@@ -127,7 +127,7 @@ export class ContactForm extends React.Component {
 	}
 
 	addFormSubmitListener = func => {
-		this.setState( { formSubmitListeners: this.state.formSubmitListeners.concat(func) } );
+		this.setState( state => ( { formSubmitListeners: state.formSubmitListeners.concat(func) } ) );
 	}
 
 	handleChange( e ) {
@@ -346,7 +346,10 @@ export class ContactForm extends React.Component {
 					onChange={ this.handleChange }
 				/>
 				{ this.props.plugins.hasOwnProperty( 'ssr-troubleshooting' ) &&
-					<SSRTroubleshooting addFormSubmitListener={this.addFormSubmitListener} />
+					<SSRTroubleshooting
+						addFormSubmitListener={ this.addFormSubmitListener }
+						ssr={ openTextAreaValue }
+					/>
 				}
 			</div>
 		) : (
@@ -395,10 +398,6 @@ export class ContactForm extends React.Component {
 						onChange={ this.handleChange }
 					/>
 
-					{ this.maybeOpenTextField() }
-
-					{ this.maybeOpenTextArea() }
-
 					{ plugins.hasOwnProperty( 'sibyl' ) &&
 						<Sibyl
 							subject={ this.props.showSubject ? this.state.subject : '' }
@@ -407,6 +406,10 @@ export class ContactForm extends React.Component {
 							config={ plugins[ 'sibyl' ] }
 						/>
 					}
+
+					{ this.maybeOpenTextField() }
+
+					{ this.maybeOpenTextArea() }
 
 					<FormButton
 						disabled={ ! this.prepareCanSubmitForm() }

@@ -133,7 +133,7 @@ const createIframe = ( { nodeId, theme }, assetsLoadedHook = () => {} ) => {
 	const styleHC = document.createElement( 'link' );
 	styleHC.setAttribute( 'rel', 'stylesheet' );
 	styleHC.setAttribute( 'type', 'text/css' );
-	styleHC.setAttribute( 'href', cssURLPrefix + 'happychat.css' );
+	styleHC.setAttribute( 'href', cssURLPrefix + 'happychat.css?v=' + Date.now() );
 	const styleHCPromise = new Promise( resolve => ( styleHC.onload = () => resolve() ) );
 
 	let styleHCThemePromise = Promise.resolve();

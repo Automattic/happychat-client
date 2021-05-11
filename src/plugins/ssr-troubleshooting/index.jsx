@@ -37,42 +37,38 @@ const TESTFLAGS = [
 
 export default class SSRTroubleshooting extends React.Component {
 	state = {
-		flags: TESTFLAGS,
+		flags: [],
 		flagClicked: false,
 		expandedFlags: [],
 	};
 
-	getSearchQuery = () => `${this.props.subject} ${this.props.message}`.trim();
-
 	fetchFlags = debounce(() => {
-		console.log('fetching');
-		// const { config: { site }, subject, message } = this.props;
-		// const query = this.getSearchQuery();
+		const { ssr } = this.props;
 
-		// if ( ! query ) {
-		// 	this.setState( { suggestions: [] } );
-		// 	return;
-		// }
+		if ( ! ssr ) {
+			this.setState( { flags: [] } );
+			return;
+		}
 
-		// wpcomRequest({
-		// 	apiVersion: '1.1',
-		// 	path: '/help/qanda',
-		// 	query: {
-		// 		site,
-		// 		query,
-		// 	},
-		// }, ( error, body, headers ) => {
-		// 	const suggestions = Array.isArray( body ) ? body : [];
-		// 	this.setState( {
-		// 		suggestions,
-		// 		suggestionClicked: this.state.suggestionClicked && areSameSuggestions( this.state.suggestions, suggestions )
-		// 	} );
-		// } );
+		wpcomRequest( {
+			apiNamespace: 'wpcom/v2',
+			path: '/support-flags/ssr-troubleshooting',
+			method: 'POST',
+			body: { ssr },
+		}, ( error, body ) => {
+			if ( error ) {
+				return;
+			}
+
+			if ( ! Array.isArray( body ) ) {
+				return;
+			}
+
+			this.setState( { flags: body } );
+		} );
 	}, 400)
 
 	handleFormSubmit = () => {
-		// const { config: { site } } = this.props;
-
 		// if ( this.state.suggestionClicked ) {
 		// 	recordEvent( 'happychatclient_sibyl_support_after_question_click', { site } );
 		// }
@@ -89,6 +85,22 @@ export default class SSRTroubleshooting extends React.Component {
 		// 		suggestions: this.state.suggestions.map( ({id, title}) => `${id} - ${title}` ).join(' / '),
 		// 	} );
 		// }
+		
+		const { ssr } = this.props;
+		const { flags } = this.state;
+
+		if ( ssr ) {
+			recordEvent( 'happychatclient_ssr_troubleshooting_support_with_flags_showing', {
+				flag_count: flags.length,
+			} );
+			flags.forEach( ( flag ) => {
+				// Track how often each individual flag type is shown during submit, so we can
+				// both identify the biggest issues now, and see trends change over time
+				recordEvent( 'happychatclient_ssr_troubleshooting_support_with_flag_showing', {
+					flag_type: flag.type,
+				} );
+			} );
+		}
 	}
 
 	componentDidMount() {
@@ -97,7 +109,7 @@ export default class SSRTroubleshooting extends React.Component {
 	}
 
 	componentDidUpdate( prevProps, prevState ) {
-		if ( prevProps.subject !== this.props.subject || prevProps.message !== this.props.message ) {
+		if ( prevProps.ssr !== this.props.ssr ) {
 			this.fetchFlags();
 		}
 	}
@@ -174,5 +186,3 @@ export default class SSRTroubleshooting extends React.Component {
 		);
 	}
 }
-
-// TODO Proptypes?
