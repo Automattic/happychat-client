@@ -62,9 +62,27 @@
 	}
 }
 .ssr-troubleshooting__flag-body {
-	margin: 0 14px 10px;
+	margin: 0 14px 2.5em;
 	display: none;
 	.ssr-troubleshooting__flag--is-expanded & {
 		display: block;
+	}
+	p {
+		max-width: 60em;
+		margin-bottom: 2em;
+	}
+}
+.ssr-troubleshooting__flag-link {
+	display: inline !important;
+	margin-right: 2em;
+}
+.ssr-troubleshooting__feedback-button {
+	color: var(--neutral-dark-lighten-20) !important;
+	text-decoration: none;
+	&:hover {
+		color: var(--neutral) !important;
+	}
+	svg {
+		vertical-align: text-bottom;
 	}
 }
