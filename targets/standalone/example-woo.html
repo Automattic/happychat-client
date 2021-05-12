@@ -16,6 +16,9 @@
 	<div id="support"></div>
 	<script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
 	<script type="text/javascript">
+		// This configuration is based off the production WooCommerce.com configuration,
+		// so that local testing using the standalone version can look and feel more like
+		// it will in-site for Woo.
 		wpcomOAuth.get(function (result) {
 			Happychat.open({
 				authentication: {
