@@ -19,29 +19,7 @@ import Card from 'src/ui/components/card';
 import FormLabel from 'src/ui/components/form-label';
 import { recordEvent } from 'src/lib/tracks';
 
-const TESTFLAGS = [
-	{
-		code: 'woocommerce_is_outdated',
-		title: "Your WooCommerce plugin is outdated.",
-		text: "It’s important to keep WordPress, WooCommerce, and any plugins up to date to ensure that your website functions as expected. Often times, current issues can be resolved simply by updating your website's software.",
-		link_text: 'Read more about backing up and updating your site.',
-		link_href: '',
-	},
-	{
-		code: 'woocommerce_is_outdated',
-		title: "Your WooCommerce plugin is outdated.",
-		text: "It’s important to keep WordPress, WooCommerce, and any plugins up to date to ensure that your website functions as expected. Often times, current issues can be resolved simply by updating your website's software.",
-		link_text: 'Read more about backing up and updating your site.',
-		link_href: '',
-	},
-	{
-		code: 'woocommerce_is_outdated',
-		title: "Your WooCommerce plugin is outdated.",
-		text: "It’s important to keep WordPress, WooCommerce, and any plugins up to date to ensure that your website functions as expected. Often times, current issues can be resolved simply by updating your website's software.",
-		link_text: 'Read more about backing up and updating your site.',
-		link_href: '',
-	},
-];
+const TESTFLAGS = [{"title":"Your WooCommerce plugin is outdated.","text":"It's important to keep WordPress, WooCommerce, and any plugins up to date to ensure that your website functions as expected. Often times, current issues can be resolved simply by updating your website's software.","action_text":"Learn how to back up and update your site","action_url":"https:\/\/docs.woocommerce.com\/document\/how-to-update-woocommerce\/","type":"SSR_WOOCOMMERCE_OUTDATED"},{"title":"Your WooCommerce database is outdated.","text":"It's important to keep WordPress, WooCommerce, and any plugins up to date to ensure that your website functions as expected. Often times, current issues can be resolved simply by updating your website's software.","action_text":"Learn how to update your site's database","action_url":"https:\/\/docs.woocommerce.com\/document\/how-to-update-woocommerce\/#woocommerce-data-update-notice","type":"SSR_WC_DB_OUTDATED"},{"title":"Your WooCommerce plugin and database versions do not match.","text":"It's important to keep WordPress, WooCommerce, and any plugins up to date to ensure that your website functions as expected. Often times, current issues can be resolved simply by updating your website's software.","action_text":"Learn how to back up and update your site and database","action_url":"https:\/\/docs.woocommerce.com\/document\/how-to-update-woocommerce\/","type":"SSR_WC_DB_VERSION_MISMATCH"},{"title":"Some of your WooCommerce Pages are missing.","text":"The following WooCommerce Pages are missing from your site and your customers will not be able to find them: Terms and conditions","action_text":"TK","action_url":"TK","type":"SSR_WC_PAGES_NOT_SET"},{"title":"Your site is not connected to WooCommerce.com.","text":"TK","action_text":"TK","action_url":"TK","type":"SSR_WCCOM_NOT_CONNECTED"}];
 
 export default class SSRTroubleshooting extends React.Component {
 	state = {
@@ -184,12 +162,12 @@ export default class SSRTroubleshooting extends React.Component {
 					help us support you better:
 				</p>
 				<Card className="ssr-troubleshooting__flags">
-					{ flags.map( ({code, title, text, link_text, link_href}, idx) => {
+					{ flags.map( ({type, title, text, action_text, action_url}, idx) => {
 						const classes = classnames( 'ssr-troubleshooting__flag', {
 							'ssr-troubleshooting__flag--is-expanded': this.state.expandedFlags.indexOf(idx) !== -1,
 						} );
 						return (
-							<div className={classes} key={code+idx}>
+							<div className={classes} key={type+idx}>
 								<button className="ssr-troubleshooting__flag-toggle" onClick={() => this.handleFlagClick(idx)}>
 									<span className="ssr-troubleshooting__flag-toggle-icon">⚠️</span>
 									{title}
@@ -203,9 +181,9 @@ export default class SSRTroubleshooting extends React.Component {
 										className="button ssr-troubleshooting__flag-link"
 										target="_blank"
 										rel="noopener noreferrer"
-										href={link_href}
+										href={action_url}
 									>
-										{link_text}
+										{action_text}
 									</a>
 									<a
 										className="ssr-troubleshooting__feedback-button"
