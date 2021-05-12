@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Happychat Embedded Example</title>
+	<style>
+		body {
+			margin-left: 12%;
+			margin-right: 12%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="support"></div>
+	<script type="text/javascript" src="./happychat.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		// This configuration is based off the production WooCommerce.com configuration,
+		// so that local testing using the standalone version can look and feel more like
+		// it will in-site for Woo.
+		wpcomOAuth.get(function (result) {
+			Happychat.open({
+				authentication: {
+					type: 'wpcom-oauth-by-token',
+					options: {
+						token: result.access_token,
+					},
+				},
+				nodeId: 'support',
+				groups: ['woo'],
+				theme: 'woo',
+				"entryOptions": {
+					"formTitle": "Support Request",
+					"primaryOptionsTitle": "Hello! Please select one of the options below:",
+					"primaryOptionsCustomFieldKey": "reasonForContact",
+					"primaryOptions": [
+						{"value":"broken","label":"Help with my purchased products","canChat":"true"},
+						{"value":"before-buy","label":"Before I buy","canChat":"false"},
+						{"value":"account","label":"Help with my account","canChat":"true"},
+						{"value":"vendor","label":"Marketplace Vendors","canChat":"false"}
+					],
+					"itemListTitle": "I need help with:",
+					"itemListCustomFieldKey": "product",
+					"itemList": [
+						{"value":"wc-core","label":"Core WooCommerce Plugin","primary":["broken"],"canChat":"true"},
+						{"value":"wc-mobile-app","label":"Mobile App","primary":["broken"],"canChat":"true"},
+						{"value":"paypal-standard","label":"PayPal Standard","primary":["broken"],"canChat":"true"},
+						{"value":"woocommerce-gateway-paypal-checkout","label":"PayPal Checkout","primary":["broken"],"canChat":"true"},
+						{"value":"6410731","label":"PayPal Payments","primary":["broken"],"description":["Support provided by Inpsyde. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with Inpsyde."],"canChat":false},
+						{"value":"5079950","label":"Bolt Checkout for WooCommerce","primary":["broken"],"canChat":false,"description":["Support provided by Bolt. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with Bolt."]},
+						{"value":"1489837","label":"Braintree for WooCommerce","primary":["broken"],"canChat":false,"description":["Support provided by SkyVerge. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with SkyVerge."]},
+						{"value":"3637139","label":"Custom Thank You Pages","primary":["broken"],"canChat":"false","description":["Support provided by Jeroen Sormani. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with Jeroen Sormani."]},
+						{"value":"2127297","label":"Facebook for WooCommerce","primary":["broken"],"canChat":"true","description":["Support provided by WooCommerce. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with WooCommerce."]},
+						{"value":"5785079","label":"HubSpot for WooCommerce","primary":["broken"],"canChat":false,"description":["Support provided by MakeWebBetter. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with MakeWebBetter."]},
+						{"value":"2754152","label":"Klarna Checkout","primary":["broken"],"canChat":false,"description":["Support provided by Krokedil. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with Krokedil."]},
+						{"value":"2754217","label":"Klarna Payments","primary":["broken"],"canChat":false,"description":["Support provided by Krokedil. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with Krokedil."]},
+						{"value":"6214538","label":"Matthew","primary":["broken"],"canChat":"false"},{"value":"245960","label":"QuickBooks Commerce (formerly TradeGecko)","primary":["broken"],"canChat":false,"description":["Support provided by TradeGecko. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with TradeGecko."]},
+						{"value":"18734","label":"ShipStation Integration","primary":["broken"],"canChat":"true","description":["Support provided by WooCommerce. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with WooCommerce."]},
+						{"value":"2956165","label":"ShippingEasy","primary":["broken"],"canChat":false,"description":["Support provided by Referral Partner. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with Referral Partner."]},
+						{"value":"1770503","label":"Square for WooCommerce","primary":["broken"],"canChat":"true","description":["Support provided by WooCommerce. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with WooCommerce."]},
+						{"value":"storefront","label":"Storefront","primary":["broken"]},{"value":"18627","label":"Stripe","primary":["broken"],"canChat":"true","description":["Support provided by WooCommerce. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with WooCommerce."]},
+						{"value":"1389326","label":"WooCommerce AvaTax","primary":["broken"],"canChat":"true","description":["Support provided by WooCommerce. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with WooCommerce."]},
+						{"value":"5278104","label":"WooCommerce Payments","primary":["broken"],"canChat":"true","description":["Support provided by WooCommerce. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with WooCommerce."]},
+						{"value":"2165910","label":"WooCommerce Shipping","primary":["broken"],"canChat":"true","description":["Support provided by WooCommerce. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with WooCommerce."]},
+						{"value":"583608","label":"WooCommerce Taxamo","primary":["broken"],"canChat":"true","description":["Support provided by WooCommerce. <a href=\"https:\/\/docs.woocommerce.com\/document\/marketplace-developers-customer-overview\/#section-3\" target=\"_blank\">Learn more<\/a> about what data will be shared with WooCommerce."]}
+					],
+					"defaultValues": {
+						"primary":"broken",
+						"item":""
+					},
+					"buttonText": {
+						"ticket":"Submit Request",
+						"chat":"Start Chat"
+					},
+					"openTextFieldTitle": "Website URL:",
+					"openTextFieldCustomFieldKey": "website",
+					"openTextField": { "primary":["broken"],"isRequired":true},
+					"openTextAreaTitle":"System Status Report, which is found in your site under WooCommerce > Status. Select \u201cGet system report\u201d, then \u201cCopy for support\u201d, and then paste in the field below:",
+					"openTextAreaCustomFieldKey":"ssr",
+					"openTextArea":{"primary":["broken"],"isRequired":false},
+					fallbackTicket: {
+						url: '/create-ticket',
+						headers: {
+							'X-Test-Header': 'test header',
+							'X-Test-Header-2': 'test 2'
+						}
+					},
+				},
+				
+				plugins: {
+					sibyl: {
+						site: 'en.support.wordpress.com'
+					},
+					'ssr-troubleshooting': {}
+				}
+			});
+		});
+
+
+		// test events API
+		const report = message => ( ... args ) => console.log(message, ...args);
+
+		Happychat.on('chatStatus', report('chatStatus is'));
+		Happychat.on('availability', report('availability is'));
+		Happychat.on('receiveMessage', report('receive message'));
+
+		window.unload = function () {
+			console.log('unload');
+			Happychat.of('availability', reportAvailability);
+			Happychat.of('chatStatus', reportChatStatus);
+		}
+	</script>
+</body>
+
+</html>
