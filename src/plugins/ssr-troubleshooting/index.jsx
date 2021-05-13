@@ -18,6 +18,12 @@ import Card from 'src/ui/components/card';
 import FormLabel from 'src/ui/components/form-label';
 import { recordEvent } from 'src/lib/tracks';
 
+const areSameFlags = ( oldFlags, newFlags ) => {
+	const oldTypes = oldFlags.map( flag => flag.type ).sort();
+	const newTypes = newFlags.map( flag => flag.type  ).sort();
+	return oldTypes.toString() === newTypes.toString();
+};
+
 export default class SSRTroubleshooting extends React.Component {
 	state = {
 		flags: [],
@@ -47,6 +53,10 @@ export default class SSRTroubleshooting extends React.Component {
 			}
 
 			if ( ! Array.isArray( body ) ) {
+				return;
+			}
+
+			if ( areSameFlags( body, this.state.flags ) ) {
 				return;
 			}
 
