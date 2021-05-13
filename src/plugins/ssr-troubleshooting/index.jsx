@@ -143,8 +143,35 @@ export default class SSRTroubleshooting extends React.Component {
 		return false;
 	}
 
+	renderFeedbackButton( flagIndex ) {
+		const { feedbackGivenOn } = this.state;
+		const wasClicked = feedbackGivenOn.indexOf(flagIndex) > -1;
+		const classes = classnames( 'ssr-troubleshooting__feedback-button', {
+			'ssr-troubleshooting__feedback-button--was-clicked': wasClicked
+		} );
+
+		return (
+			<a
+				className={ classes }
+				href="#"
+				onClick={evt => {
+					evt.preventDefault();
+					if ( ! wasClicked ) {
+						console.log('feedback');
+						this.handleFeedbackClick(flagIndex);
+					}
+				} }
+			>
+				{ wasClicked
+					? <><GridiconCheckmarkCircle size={16} /> Thanks for the feedback!</>
+					: <><GridiconThumbsUp size={16} /> This helped me </>
+				}
+			</a>
+		)
+	}
+
 	render() {
-		const { feedbackGivenOn, flags } = this.state;
+		const { flags } = this.state;
 
 		if ( isEmpty( this.state.flags ) ) {
 			return null;
@@ -177,27 +204,17 @@ export default class SSRTroubleshooting extends React.Component {
 								</button>
 								<div className="ssr-troubleshooting__flag-body">
 									<p>{text}</p>
-									<a
-										className="button ssr-troubleshooting__flag-link"
-										target="_blank"
-										rel="noopener noreferrer"
-										href={action_url}
-									>
-										{action_text}
-									</a>
-									<a
-										className="ssr-troubleshooting__feedback-button"
-										href="#"
-										onClick={evt => {
-											evt.preventDefault();
-											this.handleFeedbackClick(idx);
-										} }
-									>
-										{ feedbackGivenOn.indexOf(idx) === -1
-											? <span><GridiconThumbsUp size={16} /> This helped me </span>
-											: <span><GridiconCheckmarkCircle size={16} /> Thanks for the feedback!</span>
-										}
-									</a>
+									<div className="ssr-troubleshooting__flag-actions">
+										<a
+											className="button is-primary ssr-troubleshooting__flag-link"
+											target="_blank"
+											rel="noopener noreferrer"
+											href={action_url}
+										>
+											{action_text}
+										</a>
+										{ this.renderFeedbackButton( idx ) }
+									</div>
 								</div>
 							</div>
 						);
