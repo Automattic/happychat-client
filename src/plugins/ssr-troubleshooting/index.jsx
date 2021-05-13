@@ -97,6 +97,10 @@ export default class SSRTroubleshooting extends React.Component {
 		}
 	}
 
+	componentWillUnmount() {
+		this.props.removeFormSubmitListener( this.handleFormSubmit );
+	}
+
 	componentDidUpdate( prevProps, prevState ) {
 		if ( prevProps.ssr !== this.props.ssr ) {
 			this.fetchFlags();
