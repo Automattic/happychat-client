@@ -62,7 +62,7 @@
 	}
 }
 .ssr-troubleshooting__flag-body {
-	margin: 0.5em 1.5em 2.5em;
+	margin: 0.5em 1.5em 2em;
 	line-height: 1.7;
 	display: none;
 	.ssr-troubleshooting__flag--is-expanded & {
@@ -91,6 +91,9 @@
 	svg {
 		vertical-align: text-bottom;
 	}
+}
+.ssr-troubleshooting__feedback-button--was-clicked {
+	color: var(--neutral) !important;
 }
 
 @media (max-width: 640px) {

@@ -4,7 +4,6 @@
  * External dependencies
  */
 import React from 'react';
-// import PropTypes from 'prop-types';
 import { debounce, isEmpty } from 'lodash';
 import wpcomRequest from 'wpcom-xhr-request';
 import classnames from 'classnames';
@@ -19,12 +18,10 @@ import Card from 'src/ui/components/card';
 import FormLabel from 'src/ui/components/form-label';
 import { recordEvent } from 'src/lib/tracks';
 
-const TESTFLAGS = [{"title":"Your WooCommerce plugin is outdated.","text":"It's important to keep WordPress, WooCommerce, and any plugins up to date to ensure that your website functions as expected. Often times, current issues can be resolved simply by updating your website's software.","action_text":"Learn how to back up and update your site","action_url":"https:\/\/docs.woocommerce.com\/document\/how-to-update-woocommerce\/","type":"SSR_WOOCOMMERCE_OUTDATED"},{"title":"Your WooCommerce database is outdated.","text":"It's important to keep WordPress, WooCommerce, and any plugins up to date to ensure that your website functions as expected. Often times, current issues can be resolved simply by updating your website's software.","action_text":"Learn how to update your site's database","action_url":"https:\/\/docs.woocommerce.com\/document\/how-to-update-woocommerce\/#woocommerce-data-update-notice","type":"SSR_WC_DB_OUTDATED"},{"title":"Your WooCommerce plugin and database versions do not match.","text":"It's important to keep WordPress, WooCommerce, and any plugins up to date to ensure that your website functions as expected. Often times, current issues can be resolved simply by updating your website's software.","action_text":"Learn how to back up and update your site and database","action_url":"https:\/\/docs.woocommerce.com\/document\/how-to-update-woocommerce\/","type":"SSR_WC_DB_VERSION_MISMATCH"},{"title":"Some of your WooCommerce Pages are missing.","text":"The following WooCommerce Pages are missing from your site and your customers will not be able to find them: Terms and conditions","action_text":"TK","action_url":"TK","type":"SSR_WC_PAGES_NOT_SET"},{"title":"Your site is not connected to WooCommerce.com.","text":"TK","action_text":"TK","action_url":"TK","type":"SSR_WCCOM_NOT_CONNECTED"}];
-
 export default class SSRTroubleshooting extends React.Component {
 	state = {
-		flags: TESTFLAGS,
-		flagClicked: false,
+		flags: [],
+		hasInteracted: false,
 		expandedFlags: [],
 		feedbackGivenOn: [],
 	};
@@ -34,7 +31,6 @@ export default class SSRTroubleshooting extends React.Component {
 
 		const uiStateDefaults = { expandedFlags: [], feedbackGivenOn: [] };
 
-		// Reset some of the UI state
 		if ( ! ssr ) {
 			this.setState( { flags: [], ...uiStateDefaults } );
 			return;
@@ -60,9 +56,9 @@ export default class SSRTroubleshooting extends React.Component {
 
 	handleFormSubmit = () => {
 		const { ssr } = this.props;
-		const { flags } = this.state;
+		const { flags, hasInteracted } = this.state;
 
-		if ( ssr ) {
+		if ( flags.length > 0 ) {
 			recordEvent( 'happychatclient_ssr_troubleshooting_support_with_flags_showing', {
 				flag_count: flags.length,
 			} );
@@ -73,26 +69,15 @@ export default class SSRTroubleshooting extends React.Component {
 					flag_type: flag.type,
 				} );
 			} );
+		} else {
+			recordEvent( 'happychatclient_ssr_troubleshooting_support_without_flags_showing' );
 		}
 
-		// TODO: Also track other submission data, like these from Sibyl --->
-		//
-		// if ( this.state.suggestionClicked ) {
-		// 	recordEvent( 'happychatclient_sibyl_support_after_question_click', { site } );
-		// }
-		//
-		// if ( isEmpty( this.state.suggestions ) ) {
-		// 	recordEvent( 'happychatclient_sibyl_support_without_matching_questions', {
-		// 		site,
-		// 		query: this.getSearchQuery(),
-		// 	} );
-		// } else {
-		// 	recordEvent( 'happychatclient_sibyl_support_with_questions_showing', {
-		// 		site,
-		// 		query: this.getSearchQuery(),
-		// 		suggestions: this.state.suggestions.map( ({id, title}) => `${id} - ${title}` ).join(' / '),
-		// 	} );
-		// }
+		if ( hasInteracted ) {
+			recordEvent( 'happychatclient_ssr_troubleshooting_support_after_interacted', {
+				flag_count: flags.length,
+			} );
+		}
 	}
 
 	componentDidMount() {
@@ -109,10 +94,16 @@ export default class SSRTroubleshooting extends React.Component {
 	}
 
 	handleFlagClick( flagIndex ) {
-		const { expandedFlags } = this.state;
+		const { expandedFlags, flags, hasInteracted } = this.state;
 		const toggleIndex = this.state.expandedFlags.indexOf( flagIndex );
+		const flag = flags[ flagIndex ];
+
+		// Add or remove this from the list of expanded flags
 		if ( toggleIndex === -1 ) {
 			this.setState( { expandedFlags: [ ...expandedFlags, flagIndex ] } );
+			recordEvent( 'happychatclient_ssr_troubleshooting_flag_expanded', {
+				flag_type: flag.type,
+			} );
 		} else {
 			this.setState( {
 				expandedFlags: [
@@ -122,25 +113,29 @@ export default class SSRTroubleshooting extends React.Component {
 			} );
 		}
 
-		// TODO: Also track clicks data --->
+		// If this was the first interaction, fire a Tracks event saying so
+		if ( ! hasInteracted ) {
+			recordEvent( 'happychatclient_ssr_troubleshooting_user_interacted', {
+				flag_type: flag.type,
+			} );
+			this.setState( { hasInteracted: true } );
+		}
+	}
 
-		// if ( ! this.state.suggestionClicked ) {
-		// 	recordEvent( 'happychatclient_sibyl_first_question_click', {
-		// 		question_id: suggestion.id,
-		// 		site: this.props.config.site
-		// 	} );
-		// }
-
-		// recordEvent( 'happychatclient_sibyl_question_click', {
-		// 	question_id: suggestion.id,
-		// 	site: this.props.config.site
-		// } );
+	handleActionLinkClick( flagIndex ) {
+		const flag = this.state.flags[ flagIndex ];
+		recordEvent( 'happychatclient_ssr_troubleshooting_flag_action_link_clicked', {
+			flag_type: flag.type,
+		} );
 	}
 
 	handleFeedbackClick( flagIndex ) {
-		const { feedbackGivenOn } = this.state;
+		const { feedbackGivenOn, flags } = this.state;
+		const flag = flags[ flagIndex ];
 		this.setState( { feedbackGivenOn: [ ...feedbackGivenOn, flagIndex ] } );
-		return false;
+		recordEvent( 'happychatclient_ssr_troubleshooting_flag_feedback_clicked', {
+			flag_type: flag.type,
+		} );
 	}
 
 	renderFeedbackButton( flagIndex ) {
@@ -157,7 +152,6 @@ export default class SSRTroubleshooting extends React.Component {
 				onClick={evt => {
 					evt.preventDefault();
 					if ( ! wasClicked ) {
-						console.log('feedback');
 						this.handleFeedbackClick(flagIndex);
 					}
 				} }
@@ -182,11 +176,8 @@ export default class SSRTroubleshooting extends React.Component {
 				<p className="ssr-troubleshooting__intro">
 					{/* To help us support you better, please look into the following issues on your site: */}
 
-					{/* Your System Status Report shows these issues which could be impacting your site.
-					Please try to fix them to help us support you better. */}
-
-					The following issues may be impacting your site. Please look into them first to
-					help us support you better:
+					Your site shows the following issue{ flags.length > 1 ? 's' : '' }. Please
+					address { flags.length > 1 ? 'them' : 'it' } first to help us support you better.
 				</p>
 				<Card className="ssr-troubleshooting__flags">
 					{ flags.map( ({type, title, text, action_text, action_url}, idx) => {
@@ -210,6 +201,7 @@ export default class SSRTroubleshooting extends React.Component {
 											target="_blank"
 											rel="noopener noreferrer"
 											href={action_url}
+											onClick={() => this.handleActionLinkClick( idx )}
 										>
 											{action_text}
 										</a>
