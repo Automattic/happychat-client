@@ -9,6 +9,7 @@ import wpcomRequest from 'wpcom-xhr-request';
 import classnames from 'classnames';
 import GridiconCheckmarkCircle from 'gridicons/dist/checkmark-circle';
 import GridiconChevronRight from 'gridicons/dist/chevron-right';
+import GridiconExternal from 'gridicons/dist/external';
 import GridiconThumbsUp from 'gridicons/dist/thumbs-up';
 
 /**
@@ -218,6 +219,7 @@ export default class SSRTroubleshooting extends React.Component {
 											onClick={() => this.handleActionLinkClick( idx )}
 										>
 											{action_text}
+											<GridiconExternal />
 										</a>
 										{ this.renderFeedbackButton( idx ) }
 									</div>

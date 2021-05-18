@@ -80,6 +80,7 @@
 }
 .ssr-troubleshooting__flag-link {
 	margin-right: 2em;
+	.gridicon { margin-left: 0.5em; }
 }
 .ssr-troubleshooting__feedback-button {
 	color: var(--neutral-dark-lighten-20) !important;
