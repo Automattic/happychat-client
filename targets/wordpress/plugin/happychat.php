@@ -3,7 +3,7 @@
 * Plugin Name: Happychat
 * Plugin URI: https://github.com/Automattic/happychat-client
 * Description: Adds Happychat as a shortcode, allowing customers to get support via real time chat.
-* Version: 0.0.14
+* Version: 0.0.15
 * Author: Automattic
 * Author URI: http://automattic.com
 *
