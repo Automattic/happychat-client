@@ -130,6 +130,20 @@ export class ContactForm extends React.Component {
 		this.setState( state => ( { formSubmitListeners: state.formSubmitListeners.concat(func) } ) );
 	}
 
+	removeFormSubmitListener = func => {
+		this.setState( state => {
+			const idx = state.formSubmitListeners.indexOf( func );
+			if ( idx > -1 ) {
+				return {
+					formSubmitListeners: [
+						...state.formSubmitListeners.slice(0, idx),
+						...state.formSubmitListeners.slice(idx + 1)
+					]
+				};
+			}
+		} );
+	}
+
 	handleChange( e ) {
 		const { name, value } = e.currentTarget;
 		this.setState( { [ name ]: value } );
@@ -348,6 +362,7 @@ export class ContactForm extends React.Component {
 				{ this.props.plugins.hasOwnProperty( 'ssr-troubleshooting' ) &&
 					<SSRTroubleshooting
 						addFormSubmitListener={ this.addFormSubmitListener }
+						removeFormSubmitListener={ this.removeFormSubmitListener }
 						ssr={ openTextAreaValue }
 					/>
 				}
