@@ -120,3 +120,25 @@
 		}
 	}
 }
+
+.happychat__unread-messages-button-container {
+	position: relative;
+	height: 0;
+	margin: 0 30px 0 20px;
+}
+
+.happychat__unread-messages-button {
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	transform: translateX( -50% );
+	border-radius: 8px;
+	padding-left: 2em;
+	padding-right: 2em;
+	background: #fffabf !important;
+	border-color: #f1e44f !important;
+	color: #887f20 !important;
+	> .gridicon {
+		margin-left: 0.5em;
+	}	
+}
