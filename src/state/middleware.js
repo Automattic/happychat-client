@@ -15,6 +15,7 @@ import {
 	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT,
 	HAPPYCHAT_IO_RECEIVE_MESSAGE,
+	HAPPYCHAT_IO_RECEIVE_STATUS,
 	HAPPYCHAT_IO_RECEIVE_TYPING,
 	HAPPYCHAT_IO_SEND_MESSAGE_EVENT,
 	HAPPYCHAT_IO_SEND_MESSAGE_LOG,
@@ -24,13 +25,20 @@ import {
 	HAPPYCHAT_IO_SEND_TYPING,
 	HAPPYCHAT_IO_SET_CUSTOM_FIELDS,
 } from 'src/state/action-types';
+import {
+	HAPPYCHAT_CHAT_STATUS_ASSIGNED,
+	HAPPYCHAT_CHAT_STATUS_DEFAULT,
+} from 'src/state/constants';
 import { sendEvent } from 'src/state/connection/actions';
 import { setOperatorIsTyping, setHasUnreadMessages } from 'src/state/chat/actions';
 import buildConnection from 'src/state/socketio';
 import makeRequest from 'src/state/xhr';
+import getChatStatus from 'src/state/selectors/get-chat-status';
 import isConnectionConnected from 'src/state/selectors/is-connection-connected';
 import isChatAssigned from 'src/state/selectors/is-chat-assigned';
 import isDisplayingNewMessages from 'src/state/selectors/is-displaying-new-messages';
+import { openChat } from 'src/state/ui/actions';
+import { recordEvent } from 'src/lib/tracks';
 
 const eventMessage = {
 	HAPPYCHAT_BLUR: 'Stopped looking at Happychat',
@@ -106,6 +114,22 @@ export const socketMiddleware = ( connection = null ) => {
 					}
 				}
 
+				case HAPPYCHAT_IO_RECEIVE_STATUS: {
+					// If this is the initial status update (current status is `default`) and the new
+					// status is `assigned`, that means this user just opened the form into an ongoing
+					// chat session. We should skip the form and open chat.
+					if (
+						getChatStatus( store.getState() ) === HAPPYCHAT_CHAT_STATUS_DEFAULT &&
+						action.status === HAPPYCHAT_CHAT_STATUS_ASSIGNED
+					) {
+						// Since the current status is `default` that means this is the initial status report
+						// from Happy Chat. The status is `assigned` which means this user is in an ongoing
+						// chat. We should skip the form and open the chat UI.
+						store.dispatch( openChat() );
+						recordEvent( 'happychatclient_initialized_with_active_chat' );
+					}
+					break;
+				}
 				case HAPPYCHAT_IO_RECEIVE_TYPING: {
 					store.dispatch( setOperatorIsTyping( true ) );
 					clearOperatorIsTyping();
