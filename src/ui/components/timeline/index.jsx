@@ -3,22 +3,25 @@
 /**
  * External dependencies
  */
-import React from 'react';
+import React, { Fragment } from 'react';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import assign from 'lodash/assign';
 import isArray from 'lodash/isArray';
 import isEmpty from 'lodash/isEmpty';
+import GridiconArrowDown from 'gridicons/dist/arrow-down';
 
 /**
  * Internal dependencies
  */
+import Button from 'src/ui/components/button';
 import Emojify from 'src/ui/components/emojify';
 import scrollbleed from 'src/ui/components/scrollbleed';
 import { first, when, forEach } from './functional';
 import autoscroll from './autoscroll';
 import { addSchemeIfMissing, setUrlScheme } from './url';
+import { recordEvent } from 'src/lib/tracks';
 
 import debugFactory from 'debug';
 const debug = debugFactory( 'happychat-client:ui:timeline' );
@@ -172,28 +175,43 @@ const timelineHasContent = ( { timeline } ) => isArray( timeline ) && ! isEmpty(
 
 const renderTimeline = ( {
 	timeline,
+	hasUnreadMessages,
 	isCurrentUser,
 	isExternalUrl,
 	onScrollContainer,
+	onUnreadMessagesButtonClick,
 	scrollbleedLock,
 	scrollbleedUnlock,
 	twemojiUrl,
 } ) => (
-	<div
-		className="happychat__conversation"
-		ref={ onScrollContainer }
-		onMouseEnter={ scrollbleedLock }
-		onMouseLeave={ scrollbleedUnlock }
-	>
-		{ groupMessages( timeline ).map( item =>
-			renderGroupedTimelineItem( {
-				item,
-				isCurrentUser: isCurrentUser( item[ 0 ] ),
-				isExternalUrl,
-				twemojiUrl,
-			} )
-		) }
-	</div>
+	<Fragment>
+		<div
+			className="happychat__conversation"
+			ref={ onScrollContainer }
+			onMouseEnter={ scrollbleedLock }
+			onMouseLeave={ scrollbleedUnlock }
+		>
+			{ groupMessages( timeline ).map( item =>
+				renderGroupedTimelineItem( {
+					item,
+					isCurrentUser: isCurrentUser( item[ 0 ] ),
+					isExternalUrl,
+					twemojiUrl,
+				} )
+			) }
+		</div>
+		{ hasUnreadMessages &&
+			<div className="happychat__unread-messages-button-container">
+				<Button
+					primary
+					className="happychat__unread-messages-button"
+					onClick={ onUnreadMessagesButtonClick }
+				>
+					New messages <GridiconArrowDown />
+				</Button>
+			</div>
+		}
+	</Fragment>
 );
 
 const chatTimeline = when( timelineHasContent, renderTimeline, renderWelcomeMessage );
@@ -212,6 +230,7 @@ export const Timeline = createReactClass( {
 		translate: PropTypes.func,
 		twemojiUrl: PropTypes.string,
 		onAutoscrollChanged: PropTypes.func,
+		hasUnreadMessages: PropTypes.bool,
 	},
 
 	getDefaultProps() {
@@ -219,6 +238,21 @@ export const Timeline = createReactClass( {
 			onScrollContainer: () => {},
 			isExternalUrl: () => true,
 		};
+	},
+
+	handleUnreadMessagesButtonClick() {
+		this.setAutoscroll( true );
+		recordEvent( 'happychatclient_unread_messages_button_click' );
+	},
+
+	componentDidUpdate( prevProps ) {
+		if (prevProps.hasUnreadMessages !== this.props.hasUnreadMessages ) {
+			if ( this.props.hasUnreadMessages ) {
+				recordEvent( 'happychatclient_unread_messages_button_show' );
+			} else {
+				recordEvent( 'happychatclient_unread_messages_button_hide' );
+			}
+		}
 	},
 
 	render() {
@@ -232,6 +266,7 @@ export const Timeline = createReactClass( {
 				),
 				scrollbleedLock: this.scrollbleedLock,
 				scrollbleedUnlock: this.scrollbleedUnlock,
+				onUnreadMessagesButtonClick: this.handleUnreadMessagesButtonClick,
 			} )
 		);
 	},

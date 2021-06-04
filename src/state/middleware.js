@@ -37,14 +37,6 @@ const eventMessage = {
 	HAPPYCHAT_FOCUS: 'Started looking at Happychat',
 };
 
-function isFocusedWindow() {
-	// not a browser window, assume focused
-	if ( typeof document === 'undefined' ) {
-		return true;
-	}
-	return document.hasFocus();
-}
-
 function playAudibleNotice() {
 	if ( typeof Audio === 'undefined' ) {
 		return;
@@ -109,7 +101,7 @@ export const socketMiddleware = ( connection = null ) => {
 						break;
 					}
 					playAudibleNotice();
-					if ( ! isDisplayingNewMessages( store.getState() ) || ! isFocusedWindow() ) {
+					if ( ! isDisplayingNewMessages( store.getState() ) ) {
 						store.dispatch( setHasUnreadMessages( true ) );
 					}
 				}

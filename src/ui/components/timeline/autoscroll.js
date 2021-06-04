@@ -69,11 +69,15 @@ export default {
 
 		const { scrollTop, offsetHeight, scrollHeight } = this._autoscroll_node;
 		const enable = scrollTop + offsetHeight >= scrollHeight;
+		this.setAutoscroll(enable);
+	},
+
+	setAutoscroll(enable) {
 		if ( this._autoscroll_enabled !== enable ) {
 			if ( this.props.onAutoscrollChanged ) {
 				this.props.onAutoscrollChanged( enable );
 			}
 			this._autoscroll_enabled = enable;
 		}
-	},
+	}
 };

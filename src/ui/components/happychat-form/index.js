@@ -84,6 +84,7 @@ export class HappychatForm extends Component {
 				<Timeline
 					currentUserEmail={ currentUserEmail }
 					currentUserGroup={ currentUserGroup }
+					hasUnreadMessages={ hasUnreadMessages }
 					isCurrentUser={ isCurrentUser }
 					isExternalUrl={ isExternalUrl }
 					timeline={ timeline }
