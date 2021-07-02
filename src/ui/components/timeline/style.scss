@@ -142,3 +142,12 @@
 		margin-left: 0.5em;
 	}	
 }
+
+.timeline__edited-flag {
+	color: $gray;
+	font-size: 0.8em;
+	vertical-align: text-bottom;
+	&:before {
+		content: '  ';
+	}
+}

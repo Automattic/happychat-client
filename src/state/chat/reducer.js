@@ -6,6 +6,7 @@ import { combineReducers } from 'redux';
 import concat from 'lodash/concat';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
 import map from 'lodash/map';
 import get from 'lodash/get';
 import sortBy from 'lodash/sortBy';
@@ -15,6 +16,7 @@ import sortBy from 'lodash/sortBy';
  */
 import {
 	HAPPYCHAT_IO_RECEIVE_MESSAGE,
+	HAPPYCHAT_IO_RECEIVE_MESSAGE_UPDATE,
 	HAPPYCHAT_IO_RECEIVE_STATUS,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT,
@@ -85,6 +87,7 @@ export const status = ( state = HAPPYCHAT_CHAT_STATUS_DEFAULT, action ) => {
 const timelineEvent = ( state = {}, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_IO_RECEIVE_MESSAGE:
+		case HAPPYCHAT_IO_RECEIVE_MESSAGE_UPDATE:
 			const { message } = action;
 			return Object.assign(
 				{},
@@ -98,6 +101,7 @@ const timelineEvent = ( state = {}, action ) => {
 					user_id: message.user.id,
 					type: get( message, 'type', 'message' ),
 					links: get( message, 'meta.links' ),
+					isEdited: !! message.revisions,
 				}
 			);
 	}
@@ -124,6 +128,13 @@ export const timeline = ( state = [], action ) => {
 			const event = timelineEvent( {}, action );
 			const existing = find( state, ( { id } ) => event.id === id );
 			return existing ? state : concat( state, [ event ] );
+		case HAPPYCHAT_IO_RECEIVE_MESSAGE_UPDATE:
+			const index = findIndex( state, ( { id } ) => action.message.id === id );
+			return index === -1 ? state : [
+				...state.slice( 0, index ),
+				timelineEvent( {}, action ),
+				...state.slice( index + 1 ),
+			];
 		case HAPPYCHAT_IO_REQUEST_TRANSCRIPT_TIMEOUT:
 			return state;
 		case HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE:
@@ -152,6 +163,7 @@ export const timeline = ( state = [], action ) => {
 							user_id: message.user.id,
 							type: get( message, 'type', 'message' ),
 							links: get( message, 'meta.links' ),
+							isEdited: !! message.revisions,
 						} );
 					} )
 				)

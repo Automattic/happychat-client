@@ -16,6 +16,7 @@ import {
 	HAPPYCHAT_IO_RECEIVE_ERROR,
 	HAPPYCHAT_IO_RECEIVE_INIT,
 	HAPPYCHAT_IO_RECEIVE_MESSAGE,
+	HAPPYCHAT_IO_RECEIVE_MESSAGE_UPDATE,
 	HAPPYCHAT_IO_RECEIVE_RECONNECTING,
 	HAPPYCHAT_IO_RECEIVE_STATUS,
 	HAPPYCHAT_IO_RECEIVE_TOKEN,
@@ -122,6 +123,15 @@ export const receiveAccept = isAvailable => ( {
  * @return { Object } Action object
  */
 export const receiveMessage = message => ( { type: HAPPYCHAT_IO_RECEIVE_MESSAGE, message } );
+
+/**
+ * Returns an action object for the message update event,
+ * as it was received from Happychat.
+ *
+ * @param  { Object } message Updated message
+ * @return { Object } Action object
+ */
+export const receiveMessageUpdate = message => ( { type: HAPPYCHAT_IO_RECEIVE_MESSAGE_UPDATE, message } );
 
 /**
  * Returns an action object for the status event,
