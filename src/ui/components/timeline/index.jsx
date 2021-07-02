@@ -28,9 +28,10 @@ const debug = debugFactory( 'happychat-client:ui:timeline' );
 
 const linksNotEmpty = ( { links } ) => ! isEmpty( links );
 
-const messageParagraph = ( { message, key, twemojiUrl } ) => (
+const messageParagraph = ( { message, isEdited, key, twemojiUrl } ) => (
 	<p key={ key }>
 		<Emojify twemojiUrl={ twemojiUrl }>{ message }</Emojify>
+		{isEdited && <small className="timeline__edited-flag">(edited)</small>}
 	</p>
 );
 
@@ -38,7 +39,7 @@ const messageParagraph = ( { message, key, twemojiUrl } ) => (
  * Given a message and array of links contained within that message, returns the message
  * with clickable links inside of it.
  */
-const messageWithLinks = ( { message, key, links, isExternalUrl } ) => {
+const messageWithLinks = ( { message, isEdited, key, links, isExternalUrl } ) => {
 	const children = links.reduce(
 		( { parts, last }, [ url, startIndex, length ] ) => {
 			const text = url;
@@ -79,7 +80,12 @@ const messageWithLinks = ( { message, key, links, isExternalUrl } ) => {
 		);
 	}
 
-	return <p key={ key }>{ children.parts }</p>;
+	return (
+		<p key={ key }>
+			{ children.parts }
+			{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
+		</p>
+	);
 };
 
 /*
@@ -105,13 +111,14 @@ const renderGroupedMessages = ( { item, isCurrentUser, twemojiUrl, isExternalUrl
 				{ messageText( {
 					message: event.message,
 					name: event.name,
+					isEdited: event.isEdited,
 					key: event.id,
 					links: event.links,
 					twemojiUrl,
 					isExternalUrl,
 				} ) }
-				{ rest.map( ( { message, id: key, links } ) =>
-					messageText( { message, key, links, twemojiUrl, isExternalUrl } )
+				{ rest.map( ( { message, isEdited, id: key, links } ) =>
+					messageText( { message, isEdited, key, links, twemojiUrl, isExternalUrl } )
 				) }
 			</div>
 		</div>
