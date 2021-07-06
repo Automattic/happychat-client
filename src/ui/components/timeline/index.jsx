@@ -4,6 +4,7 @@
  * External dependencies
  */
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -22,24 +23,75 @@ import { first, when, forEach } from './functional';
 import autoscroll from './autoscroll';
 import { addSchemeIfMissing, setUrlScheme } from './url';
 import { recordEvent } from 'src/lib/tracks';
+import { sendEvent } from 'src/state/connection/actions';
+import getUser from 'src/state/selectors/get-user';
 
 import debugFactory from 'debug';
 const debug = debugFactory( 'happychat-client:ui:timeline' );
 
 const linksNotEmpty = ( { links } ) => ! isEmpty( links );
 
-const messageParagraph = ( { message, isEdited, key, twemojiUrl } ) => (
-	<p key={ key }>
+const messageParagraph = ( { message, messageId, isEdited, twemojiUrl } ) => (
+	<p key={ messageId }>
 		<Emojify twemojiUrl={ twemojiUrl }>{ message }</Emojify>
 		{isEdited && <small className="timeline__edited-flag">(edited)</small>}
 	</p>
 );
 
+class MessageLink extends React.Component {
+	handleClick = evt => {
+		const { href, messageId, sendEventMessage, user } = this.props;
+
+		sendEventMessage( `Opened ${href}` );
+		recordEvent( 'happychatclient_message_link_opened', {
+			message_id: messageId,
+			user_id: user.ID,
+			href
+		} );
+	};
+
+	handleMouseDown = evt => {
+		const { href, messageId, sendEventMessage, user } = this.props;
+
+		// Ignore left-clicks, the onClick handler will catch these
+		if (evt.button === 0) {
+			return;
+		}
+
+		this.props.sendEventMessage( `Alt-clicked ${href}` );
+		recordEvent( 'happychatclient_message_link_alt_click', {
+			message_id: messageId,
+			user_id: user.ID,
+			href
+		} );
+	};
+
+	render() {
+		const { children, href, key, rel, target } = this.props;
+		return (
+			<a
+				href={ href }
+				rel={ rel }
+				target={ target }
+				onClick={ this.handleClick }
+				onMouseDown={ this.handleMouseDown }
+			>
+				{ children }
+			</a>
+		);
+	}
+}
+
+MessageLink = connect(
+	state => ({ user: getUser(state) }),
+	{ sendEventMessage: sendEvent },
+)(MessageLink);
+
 /*
  * Given a message and array of links contained within that message, returns the message
  * with clickable links inside of it.
  */
-const messageWithLinks = ( { message, isEdited, key, links, isExternalUrl } ) => {
+const messageWithLinks = ( { message, messageId, isEdited, links, isExternalUrl, onLinkClick, onLinkMouseDown } ) => {
 	const children = links.reduce(
 		( { parts, last }, [ url, startIndex, length ] ) => {
 			const text = url;
@@ -64,9 +116,9 @@ const messageWithLinks = ( { message, isEdited, key, links, isExternalUrl } ) =>
 			}
 
 			parts = parts.concat(
-				<a key={ parts.length } href={ href } rel={ rel } target={ target }>
+				<MessageLink key={ parts.length } href={ href } rel={ rel } target={ target } messageId={messageId}>
 					{ text }
-				</a>
+				</MessageLink>
 			);
 
 			return { parts, last: startIndex + length };
@@ -81,7 +133,7 @@ const messageWithLinks = ( { message, isEdited, key, links, isExternalUrl } ) =>
 	}
 
 	return (
-		<p key={ key }>
+		<p key={ messageId }>
 			{ children.parts }
 			{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
 		</p>
@@ -110,15 +162,14 @@ const renderGroupedMessages = ( { item, isCurrentUser, twemojiUrl, isExternalUrl
 			<div className="happychat__message-text">
 				{ messageText( {
 					message: event.message,
-					name: event.name,
+					messageId: event.id,
 					isEdited: event.isEdited,
-					key: event.id,
 					links: event.links,
 					twemojiUrl,
 					isExternalUrl,
 				} ) }
-				{ rest.map( ( { message, isEdited, id: key, links } ) =>
-					messageText( { message, isEdited, key, links, twemojiUrl, isExternalUrl } )
+				{ rest.map( ( { message, isEdited, id, links } ) =>
+					messageText( { message, messageId: id, isEdited, links, twemojiUrl, isExternalUrl } )
 				) }
 			</div>
 		</div>
