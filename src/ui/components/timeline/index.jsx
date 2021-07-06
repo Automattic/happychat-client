@@ -31,8 +31,8 @@ const debug = debugFactory( 'happychat-client:ui:timeline' );
 
 const linksNotEmpty = ( { links } ) => ! isEmpty( links );
 
-const messageParagraph = ( { message, isEdited, key, twemojiUrl } ) => (
-	<p key={ key }>
+const messageParagraph = ( { message, messageId, isEdited, twemojiUrl } ) => (
+	<p key={ messageId }>
 		<Emojify twemojiUrl={ twemojiUrl }>{ message }</Emojify>
 		{isEdited && <small className="timeline__edited-flag">(edited)</small>}
 	</p>
@@ -75,7 +75,6 @@ class MessageLink extends React.Component {
 				target={ target }
 				onClick={ this.handleClick }
 				onMouseDown={ this.handleMouseDown }
-				key={key}
 			>
 				{ children }
 			</a>
