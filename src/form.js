@@ -185,6 +185,7 @@ class ChatFormComponent {
 				secondaryOptionsTitle,
 				itemList,
 				itemListTitle,
+				itemListOptions,
 				defaultValues,
 				buttonText: { chat: buttonTextChat },
 			},
@@ -200,6 +201,7 @@ class ChatFormComponent {
 				secondaryOptionsTitle={ secondaryOptionsTitle }
 				itemList={ itemList }
 				itemListTitle={ itemListTitle }
+				itemListOptions={ itemListOptions }
 				defaultValues={ defaultValues }
 				showSubject={ false }
 				submitForm={ this.submitForm }
@@ -285,6 +287,7 @@ class TicketFormComponent {
 				secondaryOptionsTitle,
 				itemList,
 				itemListTitle,
+				itemListOptions,
 				openTextArea,
 				openTextAreaTitle,
 				openTextField,
@@ -352,6 +355,7 @@ class TicketFormComponent {
 						secondaryOptionsTitle={ secondaryOptionsTitle }
 						itemList={ itemList }
 						itemListTitle={ itemListTitle }
+						itemListOptions={ itemListOptions }
 						defaultValues={ defaultValues }
 						showSubject={ true }
 						openTextArea={ openTextArea }

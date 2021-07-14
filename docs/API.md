@@ -111,6 +111,7 @@ The `entryOptions` property allows for configuring the text and behavior or Happ
 | `itemListTitle` | string | `Which product do you need help with?` | Title of item list menu. |
 | `itemList` | array | `[]` | Contains the options to be shown in the item list menu. They'll be rendered as a dropdown. If not provided, this section won't be shown. |
 | `itemListCustomFieldKey` | string | `null` | Add a key to save the result as a Custom Field on the chat. |
+| `itemListOptions` | object | `{}` | Options include `isRequired` |
 | `openTextFieldTitle` | string | `What is the URL of your site?` | Title for the textfield component. |
 | `openTextField` | object | `{}` | Contains conditions under which to show the text field. |
 | `openTextFieldCustomFieldKey` | string | `null` | Add a key to save the result as a Custom Field on the chat. |

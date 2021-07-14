@@ -207,7 +207,20 @@ export class ContactForm extends React.Component {
 			openTextAreaValue,
 			primarySelected,
 			secondarySelected,
+			itemList,
+			itemSelected,
 		} = this.state;
+		const { itemListOptions } = this.props;
+
+		if (
+			Array.isArray( itemList ) &&
+			itemList.length > 0 &&
+			itemListOptions &&
+			itemListOptions.isRequired &&
+			! itemSelected.value
+		) {
+			return false;
+		}
 
 		const isOpenTextShown = options => {
 			const newOptions = filterByTargetValue(
@@ -448,6 +461,7 @@ ContactForm.propTypes = {
 	secondaryOptionsTitle: PropTypes.string,
 	itemListTitle: PropTypes.string,
 	itemList: PropTypes.array,
+	itemListOptions: PropTypes.object,
 	openTextField: PropTypes.object,
 	openTextFieldTitle: PropTypes.string,
 	openTextArea: PropTypes.object,
