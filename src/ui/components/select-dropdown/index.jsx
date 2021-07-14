@@ -136,12 +136,7 @@ class SelectDropdown extends Component {
 			return props.initialSelected;
 		}
 
-		if ( ! props.options.length ) {
-			return;
-		}
-
-		const selectedItem = find( props.options, value => ! value.isLabel );
-		return selectedItem && selectedItem.value;
+		return undefined;
 	}
 
 	getSelectedText() {

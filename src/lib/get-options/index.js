@@ -5,7 +5,7 @@ import find from 'lodash/find';
 
 export const getSelectedOption = ( options, defaultValue ) => {
 	if ( Array.isArray( options ) && options.length > 0 ) {
-		return find( options, { value: defaultValue } ) || options[ 0 ];
+		return find( options, { value: defaultValue } ) || {};
 	}
 	return {};
 };
