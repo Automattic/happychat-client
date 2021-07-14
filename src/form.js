@@ -420,6 +420,7 @@ class Form extends React.Component {
 	render() {
 		const {
 			authentication,
+			forceTicketForm,
 			isConnectionUninitialized,
 			isHappychatEnabled,
 			onInitConnection,
@@ -427,12 +428,14 @@ class Form extends React.Component {
 
 		return (
 			<div>
-				<HappychatConnection
-					authentication={ authentication }
-					isConnectionUninitialized={ isConnectionUninitialized }
-					isHappychatEnabled={ isHappychatEnabled }
-					onInitConnection={ onInitConnection }
-				/>
+				{ forceTicketForm !== true &&
+					<HappychatConnection
+						authentication={ authentication }
+						isConnectionUninitialized={ isConnectionUninitialized }
+						isHappychatEnabled={ isHappychatEnabled }
+						onInitConnection={ onInitConnection }
+					/>
+				}
 
 				{ this.getSupportComponent().render() }
 			</div>
