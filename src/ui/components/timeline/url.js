@@ -27,3 +27,18 @@ export const setUrlScheme = ( url, scheme ) => {
 
 	return url.replace( schemeRegex, schemeWithSlashes );
 };
+
+export const addWooTrackers = ( url ) => {
+	// All *.woocommerce.com links should include affiliate links to track referrals
+	try {
+		const newURL = new URL( url );
+		const wooDomain = 'woocommerce.com';
+		if ( newURL.host === wooDomain || newURL.host.endsWith( `.${ wooDomain }` ) ) {
+			newURL.searchParams.set( 'aff', '10486' );
+			newURL.searchParams.set( 'cid', '1131038' );
+		}
+		return newURL.toString();
+	} catch ( e ) {
+		return url;
+	}
+};

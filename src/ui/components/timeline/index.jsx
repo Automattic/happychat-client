@@ -21,7 +21,7 @@ import Emojify from 'src/ui/components/emojify';
 import scrollbleed from 'src/ui/components/scrollbleed';
 import { first, when, forEach } from './functional';
 import autoscroll from './autoscroll';
-import { addSchemeIfMissing, setUrlScheme } from './url';
+import { addSchemeIfMissing, addWooTrackers, setUrlScheme } from './url';
 import { recordEvent } from 'src/lib/tracks';
 import { sendEvent } from 'src/state/connection/actions';
 import getUser from 'src/state/selectors/get-user';
@@ -100,6 +100,7 @@ const messageWithLinks = ( { message, messageId, isEdited, links, isExternalUrl,
 			let target = null;
 
 			href = addSchemeIfMissing( href, 'http' );
+			href = addWooTrackers( href );
 			if ( isExternalUrl( href ) ) {
 				rel = 'noopener noreferrer';
 				target = '_blank';
