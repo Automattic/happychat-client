@@ -88,7 +88,7 @@ describe( 'index', () => {
 		} );
 	} );
 
-	describe( 'getInitialSelectedItem', () => {
+		describe( 'getInitialSelectedItem', () => {
 		test( 'should return the initially selected value (if any)', () => {
 			const dropdown = shallowRenderDropdown( { initialSelected: 'drafts' } );
 			const initialSelectedValue = dropdown.instance().getInitialSelectedItem();
@@ -100,10 +100,10 @@ describe( 'index', () => {
 			expect( dropdown.instance().getInitialSelectedItem() ).toBeUndefined();
 		} );
 
-		test( "should return the first not-label option, when there isn't a preselected value", () => {
+		test( "should return `undefined`, when there isn't a preselected value", () => {
 			const dropdown = shallowRenderDropdown();
 			const initialSelectedValue = dropdown.instance().getInitialSelectedItem();
-			expect( initialSelectedValue ).toBe( 'published' );
+			expect( initialSelectedValue ).toBeUndefined();
 		} );
 	} );
 
@@ -115,7 +115,7 @@ describe( 'index', () => {
 		} );
 
 		test( 'should return the `label` associated to the selected option', () => {
-			const dropdown = shallowRenderDropdown();
+			const dropdown = shallowRenderDropdown( { initialSelected: 'published' } );
 			const initialSelectedText = dropdown.instance().getSelectedText();
 			expect( initialSelectedText ).toBe( 'Published' );
 		} );

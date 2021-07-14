@@ -136,7 +136,7 @@ class SelectDropdown extends Component {
 			return props.initialSelected;
 		}
 
-		return null;
+		return undefined;
 	}
 
 	getSelectedText() {
