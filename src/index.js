@@ -195,6 +195,7 @@ export const renderHappychat = (
 		userObject: { ID, email, username, display_name, avatar_URL, language },
 		groups = [ HAPPYCHAT_GROUP_WPCOM ],
 		canChat = true,
+		forceTicketForm = false,
 		entry = ENTRY_FORM,
 		entryOptions = {},
 		plugins = {},
@@ -220,7 +221,7 @@ export const renderHappychat = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat entry={ entry } canChat={ canChat } entryOptions={ entryOptions } plugins={ plugins } />
+			<Happychat entry={ entry } canChat={ canChat } entryOptions={ entryOptions } forceTicketForm={ forceTicketForm } plugins={ plugins } />
 		</Provider>,
 		targetNode
 	);
