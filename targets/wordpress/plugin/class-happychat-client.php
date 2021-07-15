@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Happychat_Client {
 	private static $_instance = null;
-	const VERSION             = '0.1.1';
+	const VERSION             = '0.1.2';
 
 	/**
 	* Create instance of class
@@ -126,7 +126,8 @@ class Happychat_Client {
 			self::VERSION,
 			true
 		);
-		wp_localize_script( 'happychat-init', 'happychatSettings', $happychat_settings );
+		$inline_script = 'var happychatSettings = ' . json_encode( $happychat_settings ) . ';';
+		wp_add_inline_script( 'happychat-init', $inline_script, 'before' );
 		wp_enqueue_script( 'happychat-init' );
 	}
 }
