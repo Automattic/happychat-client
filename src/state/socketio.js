@@ -17,6 +17,7 @@ import {
 	receiveError,
 	receiveInit,
 	receiveMessage,
+	receiveMessageOptimistic,
 	receiveMessageUpdate,
 	receiveReconnecting,
 	receiveStatus,
@@ -75,6 +76,7 @@ class Connection {
 						.on( 'status', status => dispatch( receiveStatus( status ) ) )
 						.on( 'accept', accept => dispatch( receiveAccept( accept ) ) )
 						.on( 'message', message => dispatch( receiveMessage( message ) ) )
+						.on( 'message.optimistic', message => dispatch( receiveMessageOptimistic( message ) ) )
 						.on( 'message.update', message => dispatch( receiveMessageUpdate( message ) ) )
 						.on( 'typing', () => dispatch( receiveTyping() ) );
 				} )

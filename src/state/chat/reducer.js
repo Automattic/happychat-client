@@ -16,6 +16,7 @@ import sortBy from 'lodash/sortBy';
  */
 import {
 	HAPPYCHAT_IO_RECEIVE_MESSAGE,
+	HAPPYCHAT_IO_RECEIVE_MESSAGE_OPTIMISTIC,
 	HAPPYCHAT_IO_RECEIVE_MESSAGE_UPDATE,
 	HAPPYCHAT_IO_RECEIVE_STATUS,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT_RECEIVE,
@@ -87,6 +88,7 @@ export const status = ( state = HAPPYCHAT_CHAT_STATUS_DEFAULT, action ) => {
 const timelineEvent = ( state = {}, action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_IO_RECEIVE_MESSAGE:
+		case HAPPYCHAT_IO_RECEIVE_MESSAGE_OPTIMISTIC:
 		case HAPPYCHAT_IO_RECEIVE_MESSAGE_UPDATE:
 			const { message } = action;
 			return Object.assign(
@@ -102,6 +104,7 @@ const timelineEvent = ( state = {}, action ) => {
 					type: get( message, 'type', 'message' ),
 					links: get( message, 'meta.links' ),
 					isEdited: !! message.revisions,
+					isOptimistic: message.isOptimistic,
 				}
 			);
 	}
@@ -121,13 +124,26 @@ const sortTimeline = timeline => sortBy( timeline, event => parseInt( event.time
 export const timeline = ( state = [], action ) => {
 	switch ( action.type ) {
 		case HAPPYCHAT_IO_RECEIVE_MESSAGE:
+		case HAPPYCHAT_IO_RECEIVE_MESSAGE_OPTIMISTIC:
 			// if meta.forOperator is set, skip so won't show to user
 			if ( get( action, 'message.meta.forOperator', false ) ) {
 				return state;
 			}
 			const event = timelineEvent( {}, action );
-			const existing = find( state, ( { id } ) => event.id === id );
-			return existing ? state : concat( state, [ event ] );
+
+			// If the message already exists in the timeline, replace it
+			const idx = findIndex( state, ( { id } ) => event.id === id );
+			if ( idx >= 0 ) {
+				return [
+					...state.slice( 0, idx ),
+					timelineEvent( {}, action ),
+					...state.slice( idx + 1 ),
+				];
+			}
+
+			// This is a new message — append it!
+			return concat( state, [ event ] );
+
 		case HAPPYCHAT_IO_RECEIVE_MESSAGE_UPDATE:
 			const index = findIndex( state, ( { id } ) => action.message.id === id );
 			return index === -1 ? state : [
