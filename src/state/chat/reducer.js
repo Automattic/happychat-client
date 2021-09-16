@@ -136,7 +136,7 @@ export const timeline = ( state = [], action ) => {
 			if ( idx >= 0 ) {
 				return [
 					...state.slice( 0, idx ),
-					timelineEvent( {}, action ),
+					event,
 					...state.slice( idx + 1 ),
 				];
 			}

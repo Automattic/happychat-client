@@ -31,15 +31,12 @@ const debug = debugFactory( 'happychat-client:ui:timeline' );
 
 const linksNotEmpty = ( { links } ) => ! isEmpty( links );
 
-const messageParagraph = ( { message, messageId, isEdited, isOptimistic, twemojiUrl } ) => {
-	const classes = classnames( { 'is-optimistic': isOptimistic } );
-	return (
-		<p key={ messageId } className={ classes }>
-			<Emojify twemojiUrl={ twemojiUrl }>{ message }</Emojify>
-			{isEdited && <small className="timeline__edited-flag">(edited)</small>}
-		</p>
-	);
-};
+const messageParagraph = ( { message, messageId, isEdited, isOptimistic, twemojiUrl } ) => (
+	<p key={ messageId } className={ classnames( { 'is-optimistic': isOptimistic } ) }>
+		<Emojify twemojiUrl={ twemojiUrl }>{ message }</Emojify>
+		{isEdited && <small className="timeline__edited-flag">(edited)</small>}
+	</p>
+);
 
 class MessageLink extends React.Component {
 	handleClick = evt => {
@@ -136,10 +133,8 @@ const messageWithLinks = ( { message, messageId, isEdited, isOptimistic, links, 
 		);
 	}
 
-	const classes = classnames( { 'is-optimistic': isOptimistic } );
-
 	return (
-		<p key={ messageId } className={classes}>
+		<p key={ messageId } className={classnames( { 'is-optimistic': isOptimistic } )}>
 			{ children.parts }
 			{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
 		</p>
