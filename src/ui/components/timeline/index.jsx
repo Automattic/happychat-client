@@ -31,8 +31,8 @@ const debug = debugFactory( 'happychat-client:ui:timeline' );
 
 const linksNotEmpty = ( { links } ) => ! isEmpty( links );
 
-const messageParagraph = ( { message, messageId, isEdited, twemojiUrl } ) => (
-	<p key={ messageId }>
+const messageParagraph = ( { message, messageId, isEdited, isOptimistic, twemojiUrl } ) => (
+	<p key={ messageId } className={ classnames( { 'is-optimistic': isOptimistic } ) }>
 		<Emojify twemojiUrl={ twemojiUrl }>{ message }</Emojify>
 		{isEdited && <small className="timeline__edited-flag">(edited)</small>}
 	</p>
@@ -91,7 +91,7 @@ MessageLink = connect(
  * Given a message and array of links contained within that message, returns the message
  * with clickable links inside of it.
  */
-const messageWithLinks = ( { message, messageId, isEdited, links, isExternalUrl, onLinkClick, onLinkMouseDown } ) => {
+const messageWithLinks = ( { message, messageId, isEdited, isOptimistic, links, isExternalUrl, onLinkClick, onLinkMouseDown } ) => {
 	const children = links.reduce(
 		( { parts, last }, [ url, startIndex, length ] ) => {
 			const text = url;
@@ -134,7 +134,7 @@ const messageWithLinks = ( { message, messageId, isEdited, links, isExternalUrl,
 	}
 
 	return (
-		<p key={ messageId }>
+		<p key={ messageId } className={classnames( { 'is-optimistic': isOptimistic } )}>
 			{ children.parts }
 			{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
 		</p>
@@ -165,12 +165,13 @@ const renderGroupedMessages = ( { item, isCurrentUser, twemojiUrl, isExternalUrl
 					message: event.message,
 					messageId: event.id,
 					isEdited: event.isEdited,
+					isOptimistic: event.isOptimistic,
 					links: event.links,
 					twemojiUrl,
 					isExternalUrl,
 				} ) }
-				{ rest.map( ( { message, isEdited, id, links } ) =>
-					messageText( { message, messageId: id, isEdited, links, twemojiUrl, isExternalUrl } )
+				{ rest.map( ( { message, isEdited, isOptimistic, id, links } ) =>
+					messageText( { message, messageId: id, isEdited, isOptimistic, links, twemojiUrl, isExternalUrl } )
 				) }
 			</div>
 		</div>
