@@ -134,23 +134,16 @@ const renderMessage = ( { message, messageId, isEdited, isOptimistic, links = []
  * Group messages based on user so when any user sends multiple messages they will be grouped
  * within the same message bubble until it reaches a message from a different user.
  */
-const renderGroupedMessages = ( { item, isCurrentUser, isExternalUrl }, index ) => {
-	const [ event, ...rest ] = item;
+const renderGroupedMessages = ( { messages, isCurrentUser, isExternalUrl }, index ) => {
 	return (
 		<div
 			className={ classnames( 'happychat__timeline-message', {
 				'is-user-message': isCurrentUser,
 			} ) }
-			key={ event.id || index }
+			key={ messages[0].id || index }
 		>
 			<div className="happychat__message-text">
-				{ renderMessage( { message: event.message, messageId: event.id,
-					isEdited: event.isEdited,
-					isOptimistic: event.isOptimistic,
-					links: event.links,
-					isExternalUrl,
-				} ) }
-				{ rest.map( ( { message, isEdited, isOptimistic, id, links } ) =>
+				{ messages.map( ( { message, isEdited, isOptimistic, id, links } ) =>
 					renderMessage( { message, messageId: id, isEdited, isOptimistic, links, isExternalUrl } )
 				) }
 			</div>
@@ -159,36 +152,22 @@ const renderGroupedMessages = ( { item, isCurrentUser, isExternalUrl }, index ) 
 };
 
 const groupMessages = messages => {
-	const grouped = messages.reduce(
-		( { user_id, type, group, groups, source }, message ) => {
-			const message_user_id = message.user_id;
-			const message_type = message.type;
-			const message_source = message.source;
-			debug( 'compare source', message_source, message.source );
+	const groups = [];
+	let user_id, type, source;
 
-			debug( 'user_id ', user_id );
-			debug( 'type ', type );
-			debug( 'group ', group );
-			debug( 'groups ', groups );
-			debug( 'source ', source );
-			debug( 'message ', message );
-			if ( user_id !== message_user_id || message_type !== type || message_source !== source ) {
-				return {
-					user_id: message_user_id,
-					type: message_type,
-					source: message_source,
-					group: [ message ],
-					groups: group ? groups.concat( [ group ] ) : groups,
-				};
-			}
+	messages.forEach( message => {
+		if ( user_id !== message.user_id || type !== message.type || source !== message.source ) {
+			// This message is not like the others in this group, start a new group...
+			groups.push([]);
+			// ... and update the comparison variables to what we expect to find in this new group.
+			( { user_id, type, source } = message );
+		}
 
-			// it's the same user so group it together
-			return { user_id, group: group.concat( [ message ] ), groups, type, source };
-		},
-		{ groups: [] }
-	);
+		// Add this message to the last group.
+		groups[ groups.length - 1 ].push( message );
+	} );
 
-	return grouped.groups.concat( [ grouped.group ] );
+	return groups;
 };
 
 const renderWelcomeMessage = ( { currentUserEmail, currentUserGroup, translate } ) => (
@@ -220,10 +199,10 @@ const renderTimeline = ( {
 			onMouseEnter={ scrollbleedLock }
 			onMouseLeave={ scrollbleedUnlock }
 		>
-			{ groupMessages( timeline ).map( item =>
+			{ groupMessages( timeline ).map( messages =>
 				renderGroupedMessages( {
-					item,
-					isCurrentUser: isCurrentUser( item[ 0 ] ),
+					messages,
+					isCurrentUser: isCurrentUser( messages[ 0 ] ),
 					isExternalUrl,
 				} )
 			) }
