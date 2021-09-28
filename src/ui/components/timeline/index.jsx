@@ -170,16 +170,6 @@ const groupMessages = messages => {
 	return groups;
 };
 
-const renderWelcomeMessage = ( { currentUserEmail, currentUserGroup, translate } ) => (
-	<div className="happychat__welcome">
-		<p>
-			{ translate(
-				`Welcome to ${ currentUserGroup } support chat! We'll send a transcript to ${ currentUserEmail } at the end of the chat.`
-			) }
-		</p>
-	</div>
-);
-
 const renderTimeline = ( {
 	timeline,
 	hasUnreadMessages,
@@ -258,10 +248,18 @@ export const Timeline = createReactClass( {
 	},
 
 	render() {
-		const { onScrollContainer, timeline } = this.props;
+		const { currentUserEmail, currentUserGroup, onScrollContainer, timeline, translate } = this.props;
 
 		if ( isEmpty( timeline ) ) {
-			return renderWelcomeMessage( this.props );
+			return (
+				<div className="happychat__welcome">
+					<p>
+						{ translate(
+							`Welcome to ${ currentUserGroup } support chat! We'll send a transcript to ${ currentUserEmail } at the end of the chat.`
+						) }
+					</p>
+				</div>
+			);
 		}
 
 		return renderTimeline( {
