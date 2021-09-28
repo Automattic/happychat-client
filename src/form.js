@@ -492,7 +492,6 @@ const mapState = state => {
 		hasUnreadMessages: hasUnreadMessages( state ),
 		message: getUICurrentMessage( state ),
 		timeline: getChatTimeline( state ),
-		twemojiUrl: config( 'twemoji_cdn_url' ),
 	};
 };
 

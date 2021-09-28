@@ -17,7 +17,6 @@ import GridiconArrowDown from 'gridicons/dist/arrow-down';
  * Internal dependencies
  */
 import Button from 'src/ui/components/button';
-import Emojify from 'src/ui/components/emojify';
 import scrollbleed from 'src/ui/components/scrollbleed';
 import { first, when, forEach } from './functional';
 import autoscroll from './autoscroll';
@@ -31,9 +30,9 @@ const debug = debugFactory( 'happychat-client:ui:timeline' );
 
 const linksNotEmpty = ( { links } ) => ! isEmpty( links );
 
-const messageParagraph = ( { message, messageId, isEdited, isOptimistic, twemojiUrl } ) => (
+const messageParagraph = ( { message, messageId, isEdited, isOptimistic } ) => (
 	<p key={ messageId } className={ classnames( { 'is-optimistic': isOptimistic } ) }>
-		<Emojify twemojiUrl={ twemojiUrl }>{ message }</Emojify>
+		{ message }
 		{isEdited && <small className="timeline__edited-flag">(edited)</small>}
 	</p>
 );
@@ -151,7 +150,7 @@ const messageText = when( linksNotEmpty, messageWithLinks, messageParagraph );
  * Group messages based on user so when any user sends multiple messages they will be grouped
  * within the same message bubble until it reaches a message from a different user.
  */
-const renderGroupedMessages = ( { item, isCurrentUser, twemojiUrl, isExternalUrl }, index ) => {
+const renderGroupedMessages = ( { item, isCurrentUser, isExternalUrl }, index ) => {
 	const [ event, ...rest ] = item;
 	return (
 		<div
@@ -167,11 +166,10 @@ const renderGroupedMessages = ( { item, isCurrentUser, twemojiUrl, isExternalUrl
 					isEdited: event.isEdited,
 					isOptimistic: event.isOptimistic,
 					links: event.links,
-					twemojiUrl,
 					isExternalUrl,
 				} ) }
 				{ rest.map( ( { message, isEdited, isOptimistic, id, links } ) =>
-					messageText( { message, messageId: id, isEdited, isOptimistic, links, twemojiUrl, isExternalUrl } )
+					messageText( { message, messageId: id, isEdited, isOptimistic, links, isExternalUrl } )
 				) }
 			</div>
 		</div>
@@ -242,7 +240,6 @@ const renderTimeline = ( {
 	onUnreadMessagesButtonClick,
 	scrollbleedLock,
 	scrollbleedUnlock,
-	twemojiUrl,
 } ) => (
 	<Fragment>
 		<div
@@ -256,7 +253,6 @@ const renderTimeline = ( {
 					item,
 					isCurrentUser: isCurrentUser( item[ 0 ] ),
 					isExternalUrl,
-					twemojiUrl,
 				} )
 			) }
 		</div>
@@ -288,7 +284,6 @@ export const Timeline = createReactClass( {
 		onScrollContainer: PropTypes.func,
 		timeline: PropTypes.array,
 		translate: PropTypes.func,
-		twemojiUrl: PropTypes.string,
 		onAutoscrollChanged: PropTypes.func,
 		hasUnreadMessages: PropTypes.bool,
 	},
