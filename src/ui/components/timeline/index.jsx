@@ -180,8 +180,6 @@ const renderWelcomeMessage = ( { currentUserEmail, currentUserGroup, translate }
 	</div>
 );
 
-const timelineHasContent = ( { timeline } ) => isArray( timeline ) && ! isEmpty( timeline );
-
 const renderTimeline = ( {
 	timeline,
 	hasUnreadMessages,
@@ -220,8 +218,6 @@ const renderTimeline = ( {
 		}
 	</Fragment>
 );
-
-const chatTimeline = when( timelineHasContent, renderTimeline, renderWelcomeMessage );
 
 export const Timeline = createReactClass( {
 	displayName: 'Timeline',
@@ -262,18 +258,22 @@ export const Timeline = createReactClass( {
 	},
 
 	render() {
-		const { onScrollContainer } = this.props;
-		return chatTimeline(
-			assign( {}, this.props, {
-				onScrollContainer: forEach(
-					this.setupAutoscroll,
-					onScrollContainer,
-					this.setScrollbleedTarget
-				),
-				scrollbleedLock: this.scrollbleedLock,
-				scrollbleedUnlock: this.scrollbleedUnlock,
-				onUnreadMessagesButtonClick: this.handleUnreadMessagesButtonClick,
-			} )
-		);
+		const { onScrollContainer, timeline } = this.props;
+
+		if ( isEmpty( timeline ) ) {
+			return renderWelcomeMessage( this.props );
+		}
+
+		return renderTimeline( {
+			...this.props,
+			onScrollContainer: forEach(
+				this.setupAutoscroll,
+				onScrollContainer,
+				this.setScrollbleedTarget
+			),
+			scrollbleedLock: this.scrollbleedLock,
+			scrollbleedUnlock: this.scrollbleedUnlock,
+			onUnreadMessagesButtonClick: this.handleUnreadMessagesButtonClick,
+		} );
 	},
 } );
