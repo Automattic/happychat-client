@@ -144,9 +144,7 @@ const renderGroupedMessages = ( { item, isCurrentUser, isExternalUrl }, index ) 
 			key={ event.id || index }
 		>
 			<div className="happychat__message-text">
-				{ renderMessage( {
-					message: event.message,
-					messageId: event.id,
+				{ renderMessage( { message: event.message, messageId: event.id,
 					isEdited: event.isEdited,
 					isOptimistic: event.isOptimistic,
 					links: event.links,
@@ -159,16 +157,6 @@ const renderGroupedMessages = ( { item, isCurrentUser, isExternalUrl }, index ) 
 		</div>
 	);
 };
-
-const itemTypeIs = type => ( { item: [ firstItem ] } ) => firstItem.type === type;
-
-/*
- * Renders a chat bubble with multiple messages grouped by user.
- */
-const renderGroupedTimelineItem = first(
-	when( itemTypeIs( 'message' ), renderGroupedMessages ),
-	( { item: [ firstItem ] } ) => debug( 'no handler for message type', firstItem.type, firstItem )
-);
 
 const groupMessages = messages => {
 	const grouped = messages.reduce(
@@ -233,7 +221,7 @@ const renderTimeline = ( {
 			onMouseLeave={ scrollbleedUnlock }
 		>
 			{ groupMessages( timeline ).map( item =>
-				renderGroupedTimelineItem( {
+				renderGroupedMessages( {
 					item,
 					isCurrentUser: isCurrentUser( item[ 0 ] ),
 					isExternalUrl,
