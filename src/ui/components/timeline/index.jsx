@@ -28,15 +28,6 @@ import getUser from 'src/state/selectors/get-user';
 import debugFactory from 'debug';
 const debug = debugFactory( 'happychat-client:ui:timeline' );
 
-const linksNotEmpty = ( { links } ) => ! isEmpty( links );
-
-const messageParagraph = ( { message, messageId, isEdited, isOptimistic } ) => (
-	<p key={ messageId } className={ classnames( { 'is-optimistic': isOptimistic } ) }>
-		{ message }
-		{isEdited && <small className="timeline__edited-flag">(edited)</small>}
-	</p>
-);
-
 class MessageLink extends React.Component {
 	handleClick = evt => {
 		const { href, messageId, sendEventMessage, user } = this.props;
@@ -87,10 +78,9 @@ MessageLink = connect(
 )(MessageLink);
 
 /*
- * Given a message and array of links contained within that message, returns the message
- * with clickable links inside of it.
+ * Returns the formatted message component
  */
-const messageWithLinks = ( { message, messageId, isEdited, isOptimistic, links, isExternalUrl, } ) => {
+const renderMessage = ( { message, messageId, isEdited, isOptimistic, links = [], isExternalUrl, } ) => {
 	const children = links.reduce(
 		( { parts, last }, [ url, startIndex, length ] ) => {
 			const text = url;
@@ -141,12 +131,6 @@ const messageWithLinks = ( { message, messageId, isEdited, isOptimistic, links, 
 };
 
 /*
- * If a message event has a message with links in it, return a component with clickable links.
- * Otherwise just return a single paragraph with the text.
- */
-const messageText = when( linksNotEmpty, messageWithLinks, messageParagraph );
-
-/*
  * Group messages based on user so when any user sends multiple messages they will be grouped
  * within the same message bubble until it reaches a message from a different user.
  */
@@ -160,7 +144,7 @@ const renderGroupedMessages = ( { item, isCurrentUser, isExternalUrl }, index ) 
 			key={ event.id || index }
 		>
 			<div className="happychat__message-text">
-				{ messageText( {
+				{ renderMessage( {
 					message: event.message,
 					messageId: event.id,
 					isEdited: event.isEdited,
@@ -169,7 +153,7 @@ const renderGroupedMessages = ( { item, isCurrentUser, isExternalUrl }, index ) 
 					isExternalUrl,
 				} ) }
 				{ rest.map( ( { message, isEdited, isOptimistic, id, links } ) =>
-					messageText( { message, messageId: id, isEdited, isOptimistic, links, isExternalUrl } )
+					renderMessage( { message, messageId: id, isEdited, isOptimistic, links, isExternalUrl } )
 				) }
 			</div>
 		</div>
