@@ -91,7 +91,7 @@ MessageLink = connect(
  * Given a message and array of links contained within that message, returns the message
  * with clickable links inside of it.
  */
-const messageWithLinks = ( { message, messageId, isEdited, isOptimistic, links, isExternalUrl, onLinkClick, onLinkMouseDown } ) => {
+const messageWithLinks = ( { message, messageId, isEdited, isOptimistic, links, isExternalUrl, } ) => {
 	const children = links.reduce(
 		( { parts, last }, [ url, startIndex, length ] ) => {
 			const text = url;
