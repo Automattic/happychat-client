@@ -77,54 +77,55 @@ MessageLink = connect(
 	{ sendEventMessage: sendEvent },
 )(MessageLink);
 
+/**
+ * Takes a message with formatting data and returns an array of components with formatting applied.
+ */
+const formattedMessageContent = ( { message, messageId, links = [], isExternalUrl } ) => {
+	const children = [];
+	let lastIndex = 0;
+
+	links.forEach( ( [ url, linkStartIndex, length ] ) => {
+		// If there's text before this link, add it.
+		if ( lastIndex < linkStartIndex ) {
+			children.push( message.slice( lastIndex, linkStartIndex ) );
+		}
+
+		let href = url;
+		let rel = null;
+		let target = null;
+
+		href = addSchemeIfMissing( href, 'http' );
+		href = addWooTrackers( href );
+		if ( isExternalUrl( href ) ) {
+			rel = 'noopener noreferrer';
+			target = '_blank';
+		} else if ( typeof window !== 'undefined' ) {
+			// Force internal URLs to the current scheme to avoid a page reload
+			const scheme = window.location.protocol.replace( /:+$/, '' );
+			href = setUrlScheme( href, scheme );
+		}
+
+		children.push(
+			<MessageLink href={ href } rel={ rel } target={ target } messageId={messageId}>{ url }</MessageLink>
+		);
+
+		lastIndex = linkStartIndex + length;
+	} );
+
+	if ( lastIndex < message.length ) {
+		children.push( message.slice( lastIndex ) );
+	}
+
+	return children.map( ( child, index ) => <Fragment key={index}>{child}</Fragment> );
+};
+
 /*
  * Returns the formatted message component
  */
-const renderMessage = ( { message, messageId, isEdited, isOptimistic, links = [], isExternalUrl, } ) => {
-	const children = links.reduce(
-		( { parts, last }, [ url, startIndex, length ] ) => {
-			const text = url;
-			let href = url;
-			let rel = null;
-			let target = null;
-
-			href = addSchemeIfMissing( href, 'http' );
-			href = addWooTrackers( href );
-			if ( isExternalUrl( href ) ) {
-				rel = 'noopener noreferrer';
-				target = '_blank';
-			} else if ( typeof window !== 'undefined' ) {
-				// Force internal URLs to the current scheme to avoid a page reload
-				const scheme = window.location.protocol.replace( /:+$/, '' );
-				href = setUrlScheme( href, scheme );
-			}
-
-			if ( last < startIndex ) {
-				parts = parts.concat(
-					<span key={ parts.length }>{ message.slice( last, startIndex ) }</span>
-				);
-			}
-
-			parts = parts.concat(
-				<MessageLink key={ parts.length } href={ href } rel={ rel } target={ target } messageId={messageId}>
-					{ text }
-				</MessageLink>
-			);
-
-			return { parts, last: startIndex + length };
-		},
-		{ parts: [], last: 0 }
-	);
-
-	if ( children.last < message.length ) {
-		children.parts = children.parts.concat(
-			<span key="last">{ message.slice( children.last ) }</span>
-		);
-	}
-
+const renderMessage = ( { message, messageId, isEdited, isOptimistic, links, isExternalUrl, } ) => {
 	return (
 		<p key={ messageId } className={classnames( { 'is-optimistic': isOptimistic } )}>
-			{ children.parts }
+			{ formattedMessageContent( { message, messageId, links, isExternalUrl } ) }
 			{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
 		</p>
 	);
