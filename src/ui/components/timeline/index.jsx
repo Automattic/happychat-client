@@ -77,6 +77,70 @@ MessageLink = connect(
 	{ sendEventMessage: sendEvent },
 )(MessageLink);
 
+const token = '';
+
+// ASSUMES ALL ATTACHMENTS ARE IMAGES, FOR NOW
+// TODO: While image is loading put placeholder with appropriate sizing
+class FileAttachment extends React.Component {
+	state = {
+		imgSrc: null
+	};
+
+	loadImage = () => {
+		fetch( this.props.file.url, { headers: { 'Authorization': `Bearer ${ token }` } } )
+			.then(response => response.blob())
+			.then(imageBlob => {
+				// TODO: Does `URL` have full browser support?
+				this.setState( { imgSrc: URL.createObjectURL(imageBlob) } );
+			});
+	};
+
+	componentDidMount() {
+		this.loadImage();
+	}
+
+	componentDidUpdate( prevProps ) {
+		if ( prevProps.file.url !== this.props.file.url ) {
+			console.log('NEW URL', prevProps.file.url, this.props.file.url);
+			this.loadImage();
+		}
+	}
+
+	render() {
+		// TODO: Send click events back to HUD
+		const { id, url } = this.props.file;
+		const { imgSrc } = this.state;
+		return (
+			<a className="file-attachments__file" href={url} target="_blank" rel="noopener noreferrer">
+				<img className="file-attachments__thumbnail" src={imgSrc} />
+			</a>
+		);
+	}
+
+}
+
+class FileAttachments extends React.Component {
+	render() {
+		const { files } = this.props;
+		if ( ! files || files.length === 0 ) {
+			return null;
+		}
+		
+		// fetch( 'https://public-api.wordpress.com/wpcom/v2/happychat/sessions/31907751/files/?bustcache=' + Math.random(), {
+		// 	headers: {
+		// 		'Authorization': 'Bearer ',
+		// 	}
+		// } ).then( response => console.log('FETCH', response, response.json()) ).catch( e => console.log('ERR', e))
+
+		return (
+			<div className="file-attachments">
+				{ files.map( file => <FileAttachment key={file.id} file={file} /> ) }
+			</div>
+		);
+		
+	}
+}
+
 /**
  * Takes a message with formatting data and returns an array of components with formatting applied.
  */
@@ -122,12 +186,15 @@ const formattedMessageContent = ( { message, messageId, links = [], isExternalUr
 /*
  * Returns the formatted message component
  */
-const renderMessage = ( { message, messageId, isEdited, isOptimistic, links, isExternalUrl, } ) => {
+const renderMessage = ( { message, messageId, isEdited, isOptimistic, links, files, isExternalUrl, } ) => {
 	return (
-		<p key={ messageId } className={classnames( { 'is-optimistic': isOptimistic } )}>
-			{ formattedMessageContent( { message, messageId, links, isExternalUrl } ) }
-			{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
-		</p>
+		<Fragment key={ messageId }>
+			<p className={classnames( { 'is-optimistic': isOptimistic } )}>
+				{ formattedMessageContent( { message, messageId, links, isExternalUrl } ) }
+				{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
+			</p>
+			{ <FileAttachments files={ files } /> }
+		</Fragment>
 	);
 };
 
@@ -144,8 +211,8 @@ const renderGroupedMessages = ( { messages, isCurrentUser, isExternalUrl }, inde
 			key={ messages[0].id || index }
 		>
 			<div className="happychat__message-text">
-				{ messages.map( ( { message, isEdited, isOptimistic, id, links } ) =>
-					renderMessage( { message, messageId: id, isEdited, isOptimistic, links, isExternalUrl } )
+				{ messages.map( ( { message, isEdited, isOptimistic, id, links, files } ) =>
+					renderMessage( { message, messageId: id, isEdited, isOptimistic, links, files, isExternalUrl } )
 				) }
 			</div>
 		</div>
