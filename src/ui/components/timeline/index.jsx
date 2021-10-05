@@ -24,6 +24,7 @@ import { addSchemeIfMissing, addWooTrackers, setUrlScheme } from './url';
 import { recordEvent } from 'src/lib/tracks';
 import { sendEvent } from 'src/state/connection/actions';
 import getUser from 'src/state/selectors/get-user';
+import getAuthenticationToken from 'src/state/selectors/get-authentication-token';
 
 import debugFactory from 'debug';
 const debug = debugFactory( 'happychat-client:ui:timeline' );
@@ -77,8 +78,6 @@ MessageLink = connect(
 	{ sendEventMessage: sendEvent },
 )(MessageLink);
 
-const token = '';
-
 // ASSUMES ALL ATTACHMENTS ARE IMAGES, FOR NOW
 // TODO: While image is loading put placeholder with appropriate sizing
 class FileAttachment extends React.Component {
@@ -87,7 +86,7 @@ class FileAttachment extends React.Component {
 	};
 
 	loadImage = () => {
-		fetch( this.props.file.url, { headers: { 'Authorization': `Bearer ${ token }` } } )
+		fetch( this.props.file.url, { headers: { 'Authorization': `Bearer ${ this.props.token }` } } )
 			.then(response => response.blob())
 			.then(imageBlob => {
 				// TODO: Does `URL` have full browser support?
@@ -116,8 +115,11 @@ class FileAttachment extends React.Component {
 			</a>
 		);
 	}
-
 }
+
+FileAttachment = connect(
+	state => ({ token: getAuthenticationToken(state) }),
+)(FileAttachment);
 
 class FileAttachments extends React.Component {
 	render() {
