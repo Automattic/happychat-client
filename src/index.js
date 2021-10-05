@@ -25,6 +25,7 @@ import eventAPIFactory from 'src/state/event-api';
 import reducer from 'src/state/reducer';
 import { socketMiddleware } from 'src/state/middleware';
 import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
+import { setAuthentication } from 'src/state/authentication/actions';
 import { setAssetsLoaded, setFormDefaultValues } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
@@ -192,6 +193,7 @@ const isAnyCanChatPropFalse = ( canChat, { primaryOptions, secondaryOptions, ite
 export const renderHappychat = (
 	targetNode,
 	{
+		authentication,
 		userObject: { ID, email, username, display_name, avatar_URL, language },
 		groups = [ HAPPYCHAT_GROUP_WPCOM ],
 		canChat = true,
@@ -201,6 +203,7 @@ export const renderHappychat = (
 		plugins = {},
 	}
 ) => {
+	store.dispatch( setAuthentication( authentication ) );
 	store.dispatch(
 		setCurrentUser( {
 			ID,

@@ -42,6 +42,7 @@ const api = {
 			.then( () => ( isEmpty( user ) ? authenticator.getUser() : Promise.resolve( user ) ) )
 			.then( userObject =>
 				renderHappychat( targetNode, {
+					authentication,
 					userObject,
 					canChat,
 					forceTicketForm,
