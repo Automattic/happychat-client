@@ -3,8 +3,9 @@
 /**
  * External dependencies
  */
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
+import GridiconExternal from 'gridicons/dist/external';
 
 /**
  * Internal dependencies
@@ -12,7 +13,6 @@ import { connect } from 'react-redux';
 import getAuthenticationToken from 'src/state/selectors/get-authentication-token';
 import { recordEvent } from 'src/lib/tracks';
 
-// TODO: Hover prompt "open in new tab"
 class ImageFile extends React.Component {
 	state = {
 		imgSrc: null
@@ -56,7 +56,10 @@ class ImageFile extends React.Component {
 		return (
 			<a className="image-file" href={imgSrc} target="_blank" rel="noopener noreferrer" onClick={this.handleClick}>
 				{imgSrc ?
-					<img className="image-file__thumbnail" src={imgSrc} style={ { maxWidth, maxHeight } } />
+					<Fragment>
+						<img className="image-file__thumbnail" src={imgSrc} style={ { maxWidth, maxHeight } } />
+						<span className="image-file__hover-prompt"><GridiconExternal size={16} /></span>
+					</Fragment>
 					:
 					<span className="image-file__placeholder" style={ { width: maxHeight, height: maxHeight } }></span>
 				}
