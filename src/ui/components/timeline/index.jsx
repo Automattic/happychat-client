@@ -17,6 +17,7 @@ import GridiconArrowDown from 'gridicons/dist/arrow-down';
  * Internal dependencies
  */
 import Button from 'src/ui/components/button';
+import ImageFile from 'src/ui/components/files/image-file';
 import scrollbleed from 'src/ui/components/scrollbleed';
 import { first, when, forEach } from './functional';
 import autoscroll from './autoscroll';
@@ -24,7 +25,6 @@ import { addSchemeIfMissing, addWooTrackers, setUrlScheme } from './url';
 import { recordEvent } from 'src/lib/tracks';
 import { sendEvent } from 'src/state/connection/actions';
 import getUser from 'src/state/selectors/get-user';
-import getAuthenticationToken from 'src/state/selectors/get-authentication-token';
 
 import debugFactory from 'debug';
 const debug = debugFactory( 'happychat-client:ui:timeline' );
@@ -78,65 +78,16 @@ MessageLink = connect(
 	{ sendEventMessage: sendEvent },
 )(MessageLink);
 
-// ASSUMES ALL ATTACHMENTS ARE IMAGES, FOR NOW
-// TODO: While image is loading put placeholder with appropriate sizing
-class FileAttachment extends React.Component {
-	state = {
-		imgSrc: null
-	};
-
-	loadImage = () => {
-		fetch( this.props.file.url, { headers: { 'Authorization': `Bearer ${ this.props.token }` } } )
-			.then(response => response.blob())
-			.then(imageBlob => {
-				// TODO: Does `URL` have full browser support?
-				this.setState( { imgSrc: URL.createObjectURL(imageBlob) } );
-			});
-	};
-
-	componentDidMount() {
-		this.loadImage();
-	}
-
-	componentDidUpdate( prevProps ) {
-		if ( prevProps.file.url !== this.props.file.url ) {
-			console.log('NEW URL', prevProps.file.url, this.props.file.url);
-			this.loadImage();
-		}
-	}
-
-	render() {
-		// TODO: Send click events back to HUD
-		const { id, url } = this.props.file;
-		const { imgSrc } = this.state;
-		return (
-			<a className="file-attachments__file" href={url} target="_blank" rel="noopener noreferrer">
-				<img className="file-attachments__thumbnail" src={imgSrc} />
-			</a>
-		);
-	}
-}
-
-FileAttachment = connect(
-	state => ({ token: getAuthenticationToken(state) }),
-)(FileAttachment);
-
-class FileAttachments extends React.Component {
+class MessageFiles extends React.Component {
 	render() {
 		const { files } = this.props;
 		if ( ! files || files.length === 0 ) {
 			return null;
 		}
-		
-		// fetch( 'https://public-api.wordpress.com/wpcom/v2/happychat/sessions/31907751/files/?bustcache=' + Math.random(), {
-		// 	headers: {
-		// 		'Authorization': 'Bearer ',
-		// 	}
-		// } ).then( response => console.log('FETCH', response, response.json()) ).catch( e => console.log('ERR', e))
 
 		return (
-			<div className="file-attachments">
-				{ files.map( file => <FileAttachment key={file.id} file={file} /> ) }
+			<div className="message-files">
+				{ files.map( file => <span key={file.id} className="message-files__file"><ImageFile file={file} /></span> ) }
 			</div>
 		);
 		
@@ -195,7 +146,7 @@ const renderMessage = ( { message, messageId, isEdited, isOptimistic, links, fil
 				{ formattedMessageContent( { message, messageId, links, isExternalUrl } ) }
 				{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
 			</p>
-			{ <FileAttachments files={ files } /> }
+			{ <MessageFiles files={ files } /> }
 		</Fragment>
 	);
 };
