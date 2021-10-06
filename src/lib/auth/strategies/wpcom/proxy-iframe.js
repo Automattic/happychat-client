@@ -133,4 +133,16 @@ export default class WPcomProxyIframe extends WPcomStrategy {
 			path: '/happychat/session',
 		} );
 	}
+
+	/**
+	 * Get file data from a session.
+	 * @returns {Promise}
+	 */
+	getFile( sessionId, fileId ) {
+		const path = `/happychat/sessions/${ sessionId }/files/${ fileId }`;
+		return this._request( {
+			method: 'GET',
+			path,
+		} );
+	}
 }

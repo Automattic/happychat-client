@@ -4,13 +4,12 @@
  * External dependencies
  */
 import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
 import GridiconExternal from 'gridicons/dist/external';
 
 /**
  * Internal dependencies
  */
-import getAuthenticationToken from 'src/state/selectors/get-authentication-token';
+import auth from 'src/lib/auth';
 import { recordEvent } from 'src/lib/tracks';
 
 class ImageFile extends React.Component {
@@ -24,7 +23,9 @@ class ImageFile extends React.Component {
 	};
 
 	loadImage = () => {
-		fetch( this.props.file.url, { headers: { 'Authorization': `Bearer ${ this.props.token }` } } )
+		const { session_id: sessionId, id } = this.props.file;
+
+		auth.getFile( sessionId, id )
 			.then(response => response.blob())
 			.then(imageBlob => {
 				this.setState( { imgSrc: URL.createObjectURL(imageBlob) } );
@@ -68,6 +69,4 @@ class ImageFile extends React.Component {
 	}
 }
 
-export default connect(
-	state => ({ token: getAuthenticationToken(state) }),
-)(ImageFile);
+export default ImageFile;

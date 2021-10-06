@@ -109,4 +109,5 @@ export default {
 	 * @returns {Promise} which contains login data returned by the strategy
 	 */
 	login: () => strategy ? strategy.login() : Promise.resolve(),
+	getFile: ( sessionId, fileId ) => strategy ? strategy.getFile( sessionId, fileId ) : Promise.resolve(),
 };

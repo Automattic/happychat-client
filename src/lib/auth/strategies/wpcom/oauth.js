@@ -98,6 +98,22 @@ export default class WPcomOAuth extends WPcomStrategy {
 	}
 
 	/**
+	 * Placeholder method that will be overwritten by a promisified authenticated request method
+	 * after the login is successfull.
+	 *
+	 * _request() is an interface to the wpcom-xhr-request module, which assumes the API response
+	 * is JSON. But that won't work in cases where we call to the WPCOM API but the response should
+	 * be another format (like a binary image or other file). So _fetch() will make an authenticated
+	 * fetch() call.
+	 *
+	 * @returns {Promise} rejects if the login failed and the method is not overwritten
+	 * @private
+	 */
+	_fetch() {
+		return Promise.reject( `Authentication ${ this.type } error: user not authenticated.` );
+	}
+
+	/**
 	 * Login method for oAuth strategy. If the token was passed when instantiating this strategy
 	 * it will just overwrite the request method and return the promisifed token.
 	 *
@@ -108,6 +124,11 @@ export default class WPcomOAuth extends WPcomStrategy {
 	login() {
 		// overwrite the request method to an authenticated promisified xhr request
 		this._request = this._createAuthenticatedRequest( this.options.token );
+		this._fetch = ( url, args = {} ) => {
+			const newArgs = { headers: {}, ...args };
+			newArgs.headers.Authorization = 'Bearer ' + this.options.token;
+			return fetch( url, newArgs );
+		}
 
 		// bail if already authenticated
 		return Promise.resolve( this.options.token );
@@ -152,4 +173,13 @@ export default class WPcomOAuth extends WPcomStrategy {
 			path: '/happychat/session',
 		} );
 	}
+
+	/**
+	 * Get file data from a session.
+	 * @returns {Promise}
+	 */
+	 getFile( sessionId, fileId ) {
+		 const url = `https://public-api.wordpress.com/wpcom/v2/happychat/sessions/${ sessionId }/files/${ fileId }`;
+		 return this._fetch( url );
+	 }
 }
