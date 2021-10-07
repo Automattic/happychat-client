@@ -105,6 +105,7 @@ const timelineEvent = ( state = {}, action ) => {
 					links: get( message, 'meta.links' ),
 					isEdited: !! message.revisions,
 					isOptimistic: message.isOptimistic,
+					files: message.files,
 				}
 			);
 	}
@@ -180,6 +181,7 @@ export const timeline = ( state = [], action ) => {
 							type: get( message, 'type', 'message' ),
 							links: get( message, 'meta.links' ),
 							isEdited: !! message.revisions,
+							files: message.files,
 						} );
 					} )
 				)

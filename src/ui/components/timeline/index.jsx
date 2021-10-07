@@ -17,6 +17,7 @@ import GridiconArrowDown from 'gridicons/dist/arrow-down';
  * Internal dependencies
  */
 import Button from 'src/ui/components/button';
+import ImageFile from 'src/ui/components/files/image-file';
 import scrollbleed from 'src/ui/components/scrollbleed';
 import { first, when, forEach } from './functional';
 import autoscroll from './autoscroll';
@@ -77,6 +78,22 @@ MessageLink = connect(
 	{ sendEventMessage: sendEvent },
 )(MessageLink);
 
+class MessageFiles extends React.Component {
+	render() {
+		const { files } = this.props;
+		if ( ! files || files.length === 0 ) {
+			return null;
+		}
+
+		return (
+			<div className="message-files">
+				{ files.map( file => <span key={file.id} className="message-files__file"><ImageFile file={file} /></span> ) }
+			</div>
+		);
+		
+	}
+}
+
 /**
  * Takes a message with formatting data and returns an array of components with formatting applied.
  */
@@ -122,12 +139,15 @@ const formattedMessageContent = ( { message, messageId, links = [], isExternalUr
 /*
  * Returns the formatted message component
  */
-const renderMessage = ( { message, messageId, isEdited, isOptimistic, links, isExternalUrl, } ) => {
+const renderMessage = ( { message, messageId, isEdited, isOptimistic, links, files, isExternalUrl, } ) => {
 	return (
-		<p key={ messageId } className={classnames( { 'is-optimistic': isOptimistic } )}>
-			{ formattedMessageContent( { message, messageId, links, isExternalUrl } ) }
-			{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
-		</p>
+		<Fragment key={ messageId }>
+			<p className={classnames( { 'is-optimistic': isOptimistic } )}>
+				{ formattedMessageContent( { message, messageId, links, isExternalUrl } ) }
+				{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
+			</p>
+			{ <MessageFiles files={ files } /> }
+		</Fragment>
 	);
 };
 
@@ -144,8 +164,8 @@ const renderGroupedMessages = ( { messages, isCurrentUser, isExternalUrl }, inde
 			key={ messages[0].id || index }
 		>
 			<div className="happychat__message-text">
-				{ messages.map( ( { message, isEdited, isOptimistic, id, links } ) =>
-					renderMessage( { message, messageId: id, isEdited, isOptimistic, links, isExternalUrl } )
+				{ messages.map( ( { message, isEdited, isOptimistic, id, links, files } ) =>
+					renderMessage( { message, messageId: id, isEdited, isOptimistic, links, files, isExternalUrl } )
 				) }
 			</div>
 		</div>

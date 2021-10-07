@@ -151,3 +151,12 @@
 		content: '  ';
 	}
 }
+
+.message-files {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.message-files__file {
+	margin: 0 5px 5px 0;
+}
