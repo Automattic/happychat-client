@@ -68,7 +68,6 @@ export class HappychatForm extends Component {
 			onSetCurrentMessage,
 			timeline,
 			translate,
-			twemojiUrl,
 			hasUnreadMessages,
 		} = this.props;
 
@@ -89,7 +88,6 @@ export class HappychatForm extends Component {
 					isExternalUrl={ isExternalUrl }
 					timeline={ timeline }
 					translate={ translate }
-					twemojiUrl={ twemojiUrl }
 					onAutoscrollChanged={ onAutoscrollChanged }
 				/>
 				<Notices
@@ -132,7 +130,6 @@ HappychatForm.propTypes = {
 	setFocused: PropTypes.func,
 	timeline: PropTypes.array,
 	translate: PropTypes.func,
-	twemojiUrl: PropTypes.string,
 	onAutoscrollChanged: PropTypes.func,
 	hasUnreadMessages: PropTypes.bool,
 };

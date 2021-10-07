@@ -17,7 +17,6 @@ import GridiconArrowDown from 'gridicons/dist/arrow-down';
  * Internal dependencies
  */
 import Button from 'src/ui/components/button';
-import Emojify from 'src/ui/components/emojify';
 import scrollbleed from 'src/ui/components/scrollbleed';
 import { first, when, forEach } from './functional';
 import autoscroll from './autoscroll';
@@ -28,15 +27,6 @@ import getUser from 'src/state/selectors/get-user';
 
 import debugFactory from 'debug';
 const debug = debugFactory( 'happychat-client:ui:timeline' );
-
-const linksNotEmpty = ( { links } ) => ! isEmpty( links );
-
-const messageParagraph = ( { message, messageId, isEdited, isOptimistic, twemojiUrl } ) => (
-	<p key={ messageId } className={ classnames( { 'is-optimistic': isOptimistic } ) }>
-		<Emojify twemojiUrl={ twemojiUrl }>{ message }</Emojify>
-		{isEdited && <small className="timeline__edited-flag">(edited)</small>}
-	</p>
-);
 
 class MessageLink extends React.Component {
 	handleClick = evt => {
@@ -87,151 +77,99 @@ MessageLink = connect(
 	{ sendEventMessage: sendEvent },
 )(MessageLink);
 
-/*
- * Given a message and array of links contained within that message, returns the message
- * with clickable links inside of it.
+/**
+ * Takes a message with formatting data and returns an array of components with formatting applied.
  */
-const messageWithLinks = ( { message, messageId, isEdited, isOptimistic, links, isExternalUrl, onLinkClick, onLinkMouseDown } ) => {
-	const children = links.reduce(
-		( { parts, last }, [ url, startIndex, length ] ) => {
-			const text = url;
-			let href = url;
-			let rel = null;
-			let target = null;
+const formattedMessageContent = ( { message, messageId, links = [], isExternalUrl } ) => {
+	const children = [];
+	let lastIndex = 0;
 
-			href = addSchemeIfMissing( href, 'http' );
-			href = addWooTrackers( href );
-			if ( isExternalUrl( href ) ) {
-				rel = 'noopener noreferrer';
-				target = '_blank';
-			} else if ( typeof window !== 'undefined' ) {
-				// Force internal URLs to the current scheme to avoid a page reload
-				const scheme = window.location.protocol.replace( /:+$/, '' );
-				href = setUrlScheme( href, scheme );
-			}
+	links.forEach( ( [ url, linkStartIndex, length ] ) => {
+		// If there's text before this link, add it.
+		if ( lastIndex < linkStartIndex ) {
+			children.push( message.slice( lastIndex, linkStartIndex ) );
+		}
 
-			if ( last < startIndex ) {
-				parts = parts.concat(
-					<span key={ parts.length }>{ message.slice( last, startIndex ) }</span>
-				);
-			}
+		let href = url;
+		let rel = null;
+		let target = null;
 
-			parts = parts.concat(
-				<MessageLink key={ parts.length } href={ href } rel={ rel } target={ target } messageId={messageId}>
-					{ text }
-				</MessageLink>
-			);
+		href = addSchemeIfMissing( href, 'http' );
+		href = addWooTrackers( href );
+		if ( isExternalUrl( href ) ) {
+			rel = 'noopener noreferrer';
+			target = '_blank';
+		} else if ( typeof window !== 'undefined' ) {
+			// Force internal URLs to the current scheme to avoid a page reload
+			const scheme = window.location.protocol.replace( /:+$/, '' );
+			href = setUrlScheme( href, scheme );
+		}
 
-			return { parts, last: startIndex + length };
-		},
-		{ parts: [], last: 0 }
-	);
-
-	if ( children.last < message.length ) {
-		children.parts = children.parts.concat(
-			<span key="last">{ message.slice( children.last ) }</span>
+		children.push(
+			<MessageLink href={ href } rel={ rel } target={ target } messageId={messageId}>{ url }</MessageLink>
 		);
+
+		lastIndex = linkStartIndex + length;
+	} );
+
+	if ( lastIndex < message.length ) {
+		children.push( message.slice( lastIndex ) );
 	}
 
+	return children.map( ( child, index ) => <Fragment key={index}>{child}</Fragment> );
+};
+
+/*
+ * Returns the formatted message component
+ */
+const renderMessage = ( { message, messageId, isEdited, isOptimistic, links, isExternalUrl, } ) => {
 	return (
 		<p key={ messageId } className={classnames( { 'is-optimistic': isOptimistic } )}>
-			{ children.parts }
+			{ formattedMessageContent( { message, messageId, links, isExternalUrl } ) }
 			{ isEdited && <small className="timeline__edited-flag">(edited)</small> }
 		</p>
 	);
 };
 
 /*
- * If a message event has a message with links in it, return a component with clickable links.
- * Otherwise just return a single paragraph with the text.
- */
-const messageText = when( linksNotEmpty, messageWithLinks, messageParagraph );
-
-/*
  * Group messages based on user so when any user sends multiple messages they will be grouped
  * within the same message bubble until it reaches a message from a different user.
  */
-const renderGroupedMessages = ( { item, isCurrentUser, twemojiUrl, isExternalUrl }, index ) => {
-	const [ event, ...rest ] = item;
+const renderGroupedMessages = ( { messages, isCurrentUser, isExternalUrl }, index ) => {
 	return (
 		<div
 			className={ classnames( 'happychat__timeline-message', {
 				'is-user-message': isCurrentUser,
 			} ) }
-			key={ event.id || index }
+			key={ messages[0].id || index }
 		>
 			<div className="happychat__message-text">
-				{ messageText( {
-					message: event.message,
-					messageId: event.id,
-					isEdited: event.isEdited,
-					isOptimistic: event.isOptimistic,
-					links: event.links,
-					twemojiUrl,
-					isExternalUrl,
-				} ) }
-				{ rest.map( ( { message, isEdited, isOptimistic, id, links } ) =>
-					messageText( { message, messageId: id, isEdited, isOptimistic, links, twemojiUrl, isExternalUrl } )
+				{ messages.map( ( { message, isEdited, isOptimistic, id, links } ) =>
+					renderMessage( { message, messageId: id, isEdited, isOptimistic, links, isExternalUrl } )
 				) }
 			</div>
 		</div>
 	);
 };
 
-const itemTypeIs = type => ( { item: [ firstItem ] } ) => firstItem.type === type;
-
-/*
- * Renders a chat bubble with multiple messages grouped by user.
- */
-const renderGroupedTimelineItem = first(
-	when( itemTypeIs( 'message' ), renderGroupedMessages ),
-	( { item: [ firstItem ] } ) => debug( 'no handler for message type', firstItem.type, firstItem )
-);
-
 const groupMessages = messages => {
-	const grouped = messages.reduce(
-		( { user_id, type, group, groups, source }, message ) => {
-			const message_user_id = message.user_id;
-			const message_type = message.type;
-			const message_source = message.source;
-			debug( 'compare source', message_source, message.source );
+	const groups = [];
+	let user_id, type, source;
 
-			debug( 'user_id ', user_id );
-			debug( 'type ', type );
-			debug( 'group ', group );
-			debug( 'groups ', groups );
-			debug( 'source ', source );
-			debug( 'message ', message );
-			if ( user_id !== message_user_id || message_type !== type || message_source !== source ) {
-				return {
-					user_id: message_user_id,
-					type: message_type,
-					source: message_source,
-					group: [ message ],
-					groups: group ? groups.concat( [ group ] ) : groups,
-				};
-			}
+	messages.forEach( message => {
+		if ( user_id !== message.user_id || type !== message.type || source !== message.source ) {
+			// This message is not like the others in this group, start a new group...
+			groups.push([]);
+			// ... and update the comparison variables to what we expect to find in this new group.
+			( { user_id, type, source } = message );
+		}
 
-			// it's the same user so group it together
-			return { user_id, group: group.concat( [ message ] ), groups, type, source };
-		},
-		{ groups: [] }
-	);
+		// Add this message to the last group.
+		groups[ groups.length - 1 ].push( message );
+	} );
 
-	return grouped.groups.concat( [ grouped.group ] );
+	return groups;
 };
-
-const renderWelcomeMessage = ( { currentUserEmail, currentUserGroup, translate } ) => (
-	<div className="happychat__welcome">
-		<p>
-			{ translate(
-				`Welcome to ${ currentUserGroup } support chat! We'll send a transcript to ${ currentUserEmail } at the end of the chat.`
-			) }
-		</p>
-	</div>
-);
-
-const timelineHasContent = ( { timeline } ) => isArray( timeline ) && ! isEmpty( timeline );
 
 const renderTimeline = ( {
 	timeline,
@@ -242,7 +180,6 @@ const renderTimeline = ( {
 	onUnreadMessagesButtonClick,
 	scrollbleedLock,
 	scrollbleedUnlock,
-	twemojiUrl,
 } ) => (
 	<Fragment>
 		<div
@@ -251,12 +188,11 @@ const renderTimeline = ( {
 			onMouseEnter={ scrollbleedLock }
 			onMouseLeave={ scrollbleedUnlock }
 		>
-			{ groupMessages( timeline ).map( item =>
-				renderGroupedTimelineItem( {
-					item,
-					isCurrentUser: isCurrentUser( item[ 0 ] ),
+			{ groupMessages( timeline ).map( messages =>
+				renderGroupedMessages( {
+					messages,
+					isCurrentUser: isCurrentUser( messages[ 0 ] ),
 					isExternalUrl,
-					twemojiUrl,
 				} )
 			) }
 		</div>
@@ -274,8 +210,6 @@ const renderTimeline = ( {
 	</Fragment>
 );
 
-const chatTimeline = when( timelineHasContent, renderTimeline, renderWelcomeMessage );
-
 export const Timeline = createReactClass( {
 	displayName: 'Timeline',
 	mixins: [ autoscroll, scrollbleed ],
@@ -288,7 +222,6 @@ export const Timeline = createReactClass( {
 		onScrollContainer: PropTypes.func,
 		timeline: PropTypes.array,
 		translate: PropTypes.func,
-		twemojiUrl: PropTypes.string,
 		onAutoscrollChanged: PropTypes.func,
 		hasUnreadMessages: PropTypes.bool,
 	},
@@ -316,18 +249,30 @@ export const Timeline = createReactClass( {
 	},
 
 	render() {
-		const { onScrollContainer } = this.props;
-		return chatTimeline(
-			assign( {}, this.props, {
-				onScrollContainer: forEach(
-					this.setupAutoscroll,
-					onScrollContainer,
-					this.setScrollbleedTarget
-				),
-				scrollbleedLock: this.scrollbleedLock,
-				scrollbleedUnlock: this.scrollbleedUnlock,
-				onUnreadMessagesButtonClick: this.handleUnreadMessagesButtonClick,
-			} )
-		);
+		const { currentUserEmail, currentUserGroup, onScrollContainer, timeline, translate } = this.props;
+
+		if ( isEmpty( timeline ) ) {
+			return (
+				<div className="happychat__welcome">
+					<p>
+						{ translate(
+							`Welcome to ${ currentUserGroup } support chat! We'll send a transcript to ${ currentUserEmail } at the end of the chat.`
+						) }
+					</p>
+				</div>
+			);
+		}
+
+		return renderTimeline( {
+			...this.props,
+			onScrollContainer: forEach(
+				this.setupAutoscroll,
+				onScrollContainer,
+				this.setScrollbleedTarget
+			),
+			scrollbleedLock: this.scrollbleedLock,
+			scrollbleedUnlock: this.scrollbleedUnlock,
+			onUnreadMessagesButtonClick: this.handleUnreadMessagesButtonClick,
+		} );
 	},
 } );
