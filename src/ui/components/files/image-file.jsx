@@ -45,7 +45,10 @@ class ImageFile extends React.Component {
 	}
 
 	componentDidUpdate( prevProps ) {
-		if ( prevProps.file.url !== this.props.file.url ) {
+		if (
+			prevProps.file.id !== this.props.file.id ||
+			prevProps.file.session_id !== this.props.file.session_id
+		) {
 			this.loadImage();
 		}
 	}
