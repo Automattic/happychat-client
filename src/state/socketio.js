@@ -31,7 +31,9 @@ const debug = debugFactory( 'happychat-client:socketio' );
 
 const buildConnection = socket =>
 	isString( socket )
-		? new IO( socket ) // If socket is an URL, connect to server.
+		? new IO( socket, {
+			transports: [ 'websocket' ],
+		} ) // If socket is an URL, connect to server.
 		: socket; // If socket is not an url, use it directly. Useful for testing.
 
 class Connection {
@@ -78,7 +80,10 @@ class Connection {
 						.on( 'message', message => dispatch( receiveMessage( message ) ) )
 						.on( 'message.optimistic', message => dispatch( receiveMessageOptimistic( message ) ) )
 						.on( 'message.update', message => dispatch( receiveMessageUpdate( message ) ) )
-						.on( 'typing', () => dispatch( receiveTyping() ) );
+						.on( 'typing', () => dispatch( receiveTyping() ) )
+						.on( 'reconnect_attempt', () => {
+							socket.io.opts.transports = [ 'polling', 'websocket' ];
+						} );
 				} )
 				.catch( e => reject( e ) );
 		} );
