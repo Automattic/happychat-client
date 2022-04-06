@@ -47,3 +47,7 @@ The code lives in the gh-pages branch. To update the demo:
 * build the standalone target: `npm run targets:standalone`
 * copy the files in `targets/standalone/public` to the `gh-pages` branch
 * commit and push to see the changes live
+
+## Testing locally
+
+See https://fieldguide.automattic.com/woocommerce-com-developer-documentation/happychat-on-woocommerce-com/
