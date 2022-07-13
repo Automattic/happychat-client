@@ -12,6 +12,7 @@ import findIndex from 'lodash/findIndex';
 import map from 'lodash/map';
 import result from 'lodash/result';
 import classNames from 'classnames';
+import escapeRegExp from 'lodash/escapeRegExp';
 
 /**
  * Internal dependencies
@@ -215,7 +216,7 @@ class SelectDropdown extends Component {
 				);
 			}
 
-			if ( ! searchValue || ( item.label && item.label.match( new RegExp( searchValue, 'i' ) ) ) ) {
+			if ( ! searchValue || ( item.label && item.label.match( new RegExp( escapeRegExp( searchValue ), 'i' ) ) ) ) {
 				const dropdownItem = (
 					<DropdownItem
 						key={ 'dropdown-item-' + this.state.instanceId + '-' + item.value }
