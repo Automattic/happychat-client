@@ -25,7 +25,7 @@
 	font-family: $sans;
 	font-size: 14px;
 	border: 1px solid var(--neutral-lighten-25);
-	max-height: 99vh;
+	max-height: 768px;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
@@ -48,10 +48,6 @@
 	height: 80vh; // set height so it can be scrolled
 	padding-left: 6px;
 	padding-right: 6px;
-}
-
-.happychat__composer {
-	height: 18vh;
 }
 
 // clean grey border on submit button
@@ -90,7 +86,7 @@
 	justify-content: flex-start;
 	align-items: flex-end;
 	padding-left: 16px;
-	
+
 	> span {
 		position: relative;
 		margin: 6px 0;

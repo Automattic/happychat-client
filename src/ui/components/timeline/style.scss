@@ -14,7 +14,7 @@
 
 	&::after {
 		content: ' ';
-		flex: 1 0 46px;
+		flex: 0 0 12px;
 	}
 }
 
@@ -140,7 +140,7 @@
 	color: #887f20 !important;
 	> .gridicon {
 		margin-left: 0.5em;
-	}	
+	}
 }
 
 .timeline__edited-flag {
