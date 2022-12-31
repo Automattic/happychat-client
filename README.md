@@ -51,3 +51,4 @@ The code lives in the gh-pages branch. To update the demo:
 ## Testing locally
 
 See https://fieldguide.automattic.com/woocommerce-com-developer-documentation/happychat-on-woocommerce-com/
+test
