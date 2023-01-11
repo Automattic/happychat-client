@@ -117,7 +117,7 @@
     "sass": "1.55.0",
     "socket.io-client": "2.1.1",
     "uuid": "2.0.1",
-    "wpcom-oauth-cors": "1.0.1",
+    "wpcom-oauth-cors": "1.0.2-beta",
     "wpcom-xhr-request": "1.1.3"
   }
 }
