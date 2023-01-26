@@ -160,9 +160,11 @@ this option will only be shown when the value of the selected primary option is 
 
 **itemList**
 
-In addition to the `value`, `label`, `canChat`, `description`, and `primary` properties, the options in this section can define a `secondary` option.
+In addition to the `value`, `label`, `canChat`, `description`, and `primary` properties, the options in this section can define a `secondary` and `canSupport` option.
 
 The `secondary` property works the same way that the `primary` one but taking into account the selected secondary option instead.
+
+When the `canSupport` property is set to `false`, it hides all fields after the item list selection. This is meant to be used when support for the given item is through a third-party.
 
 For example:
 

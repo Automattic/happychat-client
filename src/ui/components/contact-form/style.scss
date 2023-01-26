@@ -18,6 +18,10 @@
 	.contact-form__item-list {
 		margin-bottom: 24px;
 
+		&.no-support {
+			margin-bottom: 0;
+		}
+
 		@include breakpoint( '>960px' ) {
 			margin-bottom: 32px;
 		}

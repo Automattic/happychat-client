@@ -5,6 +5,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
@@ -44,11 +45,14 @@ export class ContactForm extends React.Component {
 			secondarySelected,
 			newItemList,
 			itemSelected,
-		} = getOptions( {
-			primaryOptions,
-			secondaryOptions,
-			itemList,
-		}, defaultValues );
+		} = getOptions(
+			{
+				primaryOptions,
+				secondaryOptions,
+				itemList,
+			},
+			defaultValues
+		);
 		this.state = {
 			subject: defaultValues.subject || '',
 			message: defaultValues.message || '',
@@ -109,13 +113,7 @@ export class ContactForm extends React.Component {
 			prevState.secondarySelected.canChat !== this.state.secondarySelected.canChat ||
 			prevState.itemSelected.canChat !== this.state.itemSelected.canChat
 		) {
-			const {
-				primarySelected,
-				secondarySelected,
-				itemSelected,
-				subject,
-				message,
-			} = this.state;
+			const { primarySelected, secondarySelected, itemSelected, subject, message } = this.state;
 			this.props.onEvent( {
 				primarySelected,
 				secondarySelected,
@@ -127,8 +125,8 @@ export class ContactForm extends React.Component {
 	}
 
 	addFormSubmitListener = func => {
-		this.setState( state => ( { formSubmitListeners: state.formSubmitListeners.concat(func) } ) );
-	}
+		this.setState( state => ( { formSubmitListeners: state.formSubmitListeners.concat( func ) } ) );
+	};
 
 	removeFormSubmitListener = func => {
 		this.setState( state => {
@@ -136,13 +134,13 @@ export class ContactForm extends React.Component {
 			if ( idx > -1 ) {
 				return {
 					formSubmitListeners: [
-						...state.formSubmitListeners.slice(0, idx),
-						...state.formSubmitListeners.slice(idx + 1)
-					]
+						...state.formSubmitListeners.slice( 0, idx ),
+						...state.formSubmitListeners.slice( idx + 1 ),
+					],
 				};
 			}
 		} );
-	}
+	};
 
 	handleChange( e ) {
 		const { name, value } = e.currentTarget;
@@ -164,13 +162,16 @@ export class ContactForm extends React.Component {
 				secondarySelected,
 				newItemList,
 				itemSelected,
-			} = getOptions( {
-				primaryOptions: this.state.primaryOptions,
-				secondaryOptions: this.props.secondaryOptions,
-				itemList: this.props.itemList,
-			}, {
-				primary: e.option.value,
-			} );
+			} = getOptions(
+				{
+					primaryOptions: this.state.primaryOptions,
+					secondaryOptions: this.props.secondaryOptions,
+					itemList: this.props.itemList,
+				},
+				{
+					primary: e.option.value,
+				}
+			);
 			this.setState( {
 				primarySelected,
 				secondaryOptions: newSecondaryOptions,
@@ -179,18 +180,17 @@ export class ContactForm extends React.Component {
 				itemSelected,
 			} );
 		} else if ( e.name === 'secondarySelected' ) {
-			const {
-				secondarySelected,
-				newItemList,
-				itemSelected,
-			} = getOptions( {
-				primaryOptions: this.state.primaryOptions,
-				secondaryOptions: this.state.secondaryOptions,
-				itemList: this.props.itemList,
-			}, {
-				primary: this.state.primarySelected.value,
-				secondary: e.option.value,
-			} );
+			const { secondarySelected, newItemList, itemSelected } = getOptions(
+				{
+					primaryOptions: this.state.primaryOptions,
+					secondaryOptions: this.state.secondaryOptions,
+					itemList: this.props.itemList,
+				},
+				{
+					primary: this.state.primarySelected.value,
+					secondary: e.option.value,
+				}
+			);
 			this.setState( {
 				secondarySelected,
 				itemList: newItemList,
@@ -299,8 +299,15 @@ export class ContactForm extends React.Component {
 
 	maybeItemList() {
 		const { itemList, itemListTitle, itemSelected } = this.state;
-		return Array.isArray( itemList ) && itemList.length > 0 ? (
-			<div className="contact-form__item-list">
+		if ( ! Array.isArray( itemList ) || itemList.length === 0 ) {
+			return '';
+		}
+
+		const classes = classNames( 'contact-form__item-list', {
+			'no-support': itemSelected.canSupport === false,
+		} );
+		return (
+			<div className={ classes }>
 				<FormLabel>{ itemListTitle }</FormLabel>
 				<SelectDropdown
 					initialSelected={ itemSelected.value }
@@ -313,8 +320,6 @@ export class ContactForm extends React.Component {
 					''
 				) }
 			</div>
-		) : (
-			''
 		);
 	}
 
@@ -372,13 +377,13 @@ export class ContactForm extends React.Component {
 					value={ openTextAreaValue }
 					onChange={ this.handleChange }
 				/>
-				{ this.props.plugins.hasOwnProperty( 'ssr-troubleshooting' ) &&
+				{ this.props.plugins.hasOwnProperty( 'ssr-troubleshooting' ) && (
 					<SSRTroubleshooting
 						addFormSubmitListener={ this.addFormSubmitListener }
 						removeFormSubmitListener={ this.removeFormSubmitListener }
 						ssr={ openTextAreaValue }
 					/>
-				}
+				) }
 			</div>
 		) : (
 			''
@@ -390,19 +395,53 @@ export class ContactForm extends React.Component {
 		return showSubject ? (
 			<div>
 				<FormLabel>{ 'Subject' }</FormLabel>
-				<FormTextInput
-					name="subject"
-					value={ this.state.subject }
-					onChange={ this.handleChange }
-				/>
+				<FormTextInput name="subject" value={ this.state.subject } onChange={ this.handleChange } />
 			</div>
 		) : (
 			''
 		);
 	}
 
+	renderSupportFields() {
+		const { submitFormText, plugins } = this.props;
+		return (
+			<>
+				{ this.maybeSubject() }
+
+				<FormLabel>What are you trying to do?</FormLabel>
+				<FormTextarea
+					placeholder="Please be descriptive"
+					name="message"
+					value={ this.state.message }
+					onChange={ this.handleChange }
+				/>
+
+				{ plugins.hasOwnProperty( 'sibyl' ) && (
+					<Sibyl
+						subject={ this.props.showSubject ? this.state.subject : '' }
+						message={ this.state.message }
+						addFormSubmitListener={ this.addFormSubmitListener }
+						config={ plugins[ 'sibyl' ] }
+					/>
+				) }
+
+				{ this.maybeOpenTextField() }
+
+				{ this.maybeOpenTextArea() }
+
+				<FormButton
+					disabled={ ! this.prepareCanSubmitForm() }
+					type="button"
+					onClick={ this.prepareSubmitForm }
+				>
+					{ submitFormText }
+				</FormButton>
+			</>
+		);
+	}
+
 	render() {
-		const { formTitle, submitFormText, plugins } = this.props;
+		const { formTitle } = this.props;
 
 		return (
 			<div className="contact-form">
@@ -416,36 +455,7 @@ export class ContactForm extends React.Component {
 
 					{ this.maybeItemList() }
 
-					{ this.maybeSubject() }
-
-					<FormLabel>What are you trying to do?</FormLabel>
-					<FormTextarea
-						placeholder="Please be descriptive"
-						name="message"
-						value={ this.state.message }
-						onChange={ this.handleChange }
-					/>
-
-					{ plugins.hasOwnProperty( 'sibyl' ) &&
-						<Sibyl
-							subject={ this.props.showSubject ? this.state.subject : '' }
-							message={ this.state.message }
-							addFormSubmitListener={this.addFormSubmitListener}
-							config={ plugins[ 'sibyl' ] }
-						/>
-					}
-
-					{ this.maybeOpenTextField() }
-
-					{ this.maybeOpenTextArea() }
-
-					<FormButton
-						disabled={ ! this.prepareCanSubmitForm() }
-						type="button"
-						onClick={ this.prepareSubmitForm }
-					>
-						{ submitFormText }
-					</FormButton>
+					{ this.state.itemSelected.canSupport !== false && this.renderSupportFields() }
 				</Card>
 			</div>
 		);
