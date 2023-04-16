@@ -23,7 +23,14 @@ import {
 	sendTyping,
 	setChatCustomFields,
 } from 'src/state/connection/actions';
-import { blur, focus, openChat, setCurrentMessage, resetForm, setIsDisplayingNewMessages } from 'src/state/ui/actions';
+import {
+	blur,
+	focus,
+	openChat,
+	setCurrentMessage,
+	resetForm,
+	setIsDisplayingNewMessages,
+} from 'src/state/ui/actions';
 import { setEligibility } from 'src/state/user/actions';
 import {
 	HAPPYCHAT_FALLBACK_TICKET_NEW,
@@ -72,7 +79,8 @@ import SpinnerLine from 'src/ui/components/spinner-line';
 const ENTRY_FORM = 'form';
 const ENTRY_CHAT = 'chat';
 
-const recordFormSubmit = supportType => recordEvent( 'happychatclient_form_submit', { support_type: supportType } );
+const recordFormSubmit = supportType =>
+	recordEvent( 'happychatclient_form_submit', { support_type: supportType } );
 
 class ChatComponent {
 	constructor( props ) {
@@ -80,9 +88,10 @@ class ChatComponent {
 	}
 
 	render() {
-		return (
-			<HappychatForm { ...this.props } />
-		);
+		if ( this.props.isMessagingEnabled ) {
+			return <div>Check Zendesk Messaging Widget...</div>;
+		}
+		return <HappychatForm { ...this.props } />;
 	}
 }
 
@@ -127,19 +136,22 @@ class ChatFormComponent {
 
 		if ( openTextAreaValue ) {
 			this.props.onSendMessage( openTextAreaTitle + '\n ' + openTextAreaValue );
-			openTextAreaCustomFieldKey && ( customFields[ openTextAreaCustomFieldKey ] = openTextAreaValue );
+			openTextAreaCustomFieldKey &&
+				( customFields[ openTextAreaCustomFieldKey ] = openTextAreaValue );
 		}
 
 		let warmUpMessage = '';
 
 		if ( primarySelected.label ) {
 			warmUpMessage += primaryOptionsTitle + ' ' + primarySelected.label + '\n';
-			primaryOptionsCustomFieldKey && ( customFields[ primaryOptionsCustomFieldKey ] = primarySelected.value );
+			primaryOptionsCustomFieldKey &&
+				( customFields[ primaryOptionsCustomFieldKey ] = primarySelected.value );
 		}
 
 		if ( secondarySelected.label ) {
 			warmUpMessage += secondaryOptionsTitle + ' ' + secondarySelected.label + '\n';
-			secondaryOptionsCustomFieldKey && ( customFields[ secondaryOptionsCustomFieldKey ] = secondarySelected.value );
+			secondaryOptionsCustomFieldKey &&
+				( customFields[ secondaryOptionsCustomFieldKey ] = secondarySelected.value );
 		}
 
 		if ( itemSelected.label ) {
@@ -147,11 +159,12 @@ class ChatFormComponent {
 			itemListCustomFieldKey && ( customFields[ itemListCustomFieldKey ] = itemSelected.value );
 		}
 
-		( warmUpMessage !== '' ) && this.props.onSendMessage( warmUpMessage );
+		warmUpMessage !== '' && this.props.onSendMessage( warmUpMessage );
 
 		if ( openTextFieldValue ) {
 			this.props.onSendMessage( openTextFieldTitle + ' ' + openTextFieldValue );
-			openTextFieldCustomFieldKey && ( customFields[ openTextFieldCustomFieldKey ] = openTextFieldValue );
+			openTextFieldCustomFieldKey &&
+				( customFields[ openTextFieldCustomFieldKey ] = openTextFieldValue );
 		}
 
 		this.props.onSendMessage( message );
@@ -159,6 +172,10 @@ class ChatFormComponent {
 
 		if ( Object.keys( customFields ).length > 0 ) {
 			this.props.onSetChatCustomFields( customFields );
+		}
+
+		if ( this.props.isMessagingEnabled ) {
+			// Send stuff?
 		}
 	}
 
@@ -243,7 +260,7 @@ class TicketFormComponent {
 			headers: fallbackTicketHeaders,
 			payload: {
 				...formState,
-				isChatOverflow: ( isUserEligibleForChat && ! isChatAvailable ),
+				isChatOverflow: isUserEligibleForChat && ! isChatAvailable,
 			},
 			timeout: fallbackTicketTimeout,
 			parseResponse: fallbackTicketParseResponse,
@@ -423,19 +440,21 @@ class Form extends React.Component {
 			forceTicketForm,
 			isConnectionUninitialized,
 			isHappychatEnabled,
+			isMessagingEnabled,
 			onInitConnection,
 		} = this.props;
 
 		return (
 			<div>
 				{ forceTicketForm !== true &&
-					<HappychatConnection
-						authentication={ authentication }
-						isConnectionUninitialized={ isConnectionUninitialized }
-						isHappychatEnabled={ isHappychatEnabled }
-						onInitConnection={ onInitConnection }
-					/>
-				}
+					! isMessagingEnabled && (
+						<HappychatConnection
+							authentication={ authentication }
+							isConnectionUninitialized={ isConnectionUninitialized }
+							isHappychatEnabled={ isHappychatEnabled }
+							onInitConnection={ onInitConnection }
+						/>
+					) }
 
 				{ this.getSupportComponent().render() }
 			</div>
@@ -482,10 +501,12 @@ const mapState = state => {
 		authentication: authenticator.authorizeChat( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
-		isConnectionUninitialized: isHCConnectionUninitialized( state ),
+		isConnectionUninitialized:
+			isHCConnectionUninitialized( state ) && ! config.isEnabled( 'messaging' ),
 		isCurrentUser,
 		isExternalUrl,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),
+		isMessagingEnabled: config.isEnabled( 'messaging' ),
 		isServerReachable: isHCServerReachable( state ),
 		isFormUIReady: isUIReady( state ),
 		isOperatorTyping: isOperatorTyping( state ),

@@ -24,15 +24,14 @@ import {
 	HAPPYCHAT_IO_SEND_PREFERENCES,
 	HAPPYCHAT_IO_SEND_TYPING,
 	HAPPYCHAT_IO_SET_CUSTOM_FIELDS,
+	HAPPYCHAT_OPEN,
 } from 'src/state/action-types';
-import {
-	HAPPYCHAT_CHAT_STATUS_ASSIGNED,
-	HAPPYCHAT_CHAT_STATUS_DEFAULT,
-} from 'src/state/constants';
+import { HAPPYCHAT_CHAT_STATUS_ASSIGNED, HAPPYCHAT_CHAT_STATUS_DEFAULT } from 'src/state/constants';
 import { sendEvent } from 'src/state/connection/actions';
 import { setOperatorIsTyping, setHasUnreadMessages } from 'src/state/chat/actions';
 import buildConnection from 'src/state/socketio';
 import makeRequest from 'src/state/xhr';
+import postMessage from 'src/state/post-message';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import isConnectionConnected from 'src/state/selectors/is-connection-connected';
 import isChatAssigned from 'src/state/selectors/is-chat-assigned';
@@ -55,7 +54,7 @@ function playAudibleNotice() {
 		result.catch(
 			// Safari will throw an error because auto-playing audio is not allowed without
 			// user consent, nooping the error handler
-			error => {}
+			() => {}
 		);
 	}
 }
@@ -68,9 +67,13 @@ export const socketMiddleware = ( connection = null ) => {
 	}
 
 	return store => {
-		const clearOperatorIsTyping = throttle( () => {
-			store.dispatch( setOperatorIsTyping( false ) );
-		}, 3000, { leading: false } );
+		const clearOperatorIsTyping = throttle(
+			() => {
+				store.dispatch( setOperatorIsTyping( false ) );
+			},
+			3000,
+			{ leading: false }
+		);
 
 		return next => action => {
 			switch ( action.type ) {
@@ -135,6 +138,36 @@ export const socketMiddleware = ( connection = null ) => {
 					clearOperatorIsTyping();
 					break;
 				}
+			}
+
+			return next( action );
+		};
+	};
+};
+
+export const messagingMiddleware = () => {
+	console.log( 'going with messagingMiddleware' );
+	return store => {
+		return next => action => {
+			switch ( action.type ) {
+				case HAPPYCHAT_IO_INIT:
+					postMessage( 'init' );
+					break;
+
+				case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
+					makeRequest( store.dispatch, action, action.timeout );
+					break;
+
+				case HAPPYCHAT_IO_SET_CUSTOM_FIELDS:
+					// makeRequest( store.dispatch, action, action.timeout ); TODO: Make API call
+					break;
+
+				case HAPPYCHAT_OPEN:
+					postMessage( 'open' );
+					break;
+
+				default:
+					break;
 			}
 
 			return next( action );

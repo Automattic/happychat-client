@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty';
 /**
  * Internal dependencies
  */
-import { createTargetNode, eventAPI, renderHappychat, renderError } from './index';
+import { createTargetNode, eventAPI, renderContactForm, renderError } from './index';
 import authenticator from 'src/lib/auth';
 
 /** @format */
@@ -32,7 +32,18 @@ const api = {
 	 * @param {string} nodeId Mandatory. HTML Node id where Happychat will be rendered.
 	 * @param {Object} user Optional. Customer information.
 	 */
-	open: ( { authentication, canChat, entry, entryOptions, forceTicketForm, groups, nodeId, plugins, theme, user } ) => {
+	open: ( {
+		authentication,
+		canChat,
+		entry,
+		entryOptions,
+		forceTicketForm,
+		groups,
+		nodeId,
+		plugins,
+		theme,
+		user,
+	} ) => {
 		authenticator.init( authentication );
 
 		const targetNode = createTargetNode( { nodeId, theme, groups, entryOptions } );
@@ -41,7 +52,7 @@ const api = {
 			.login()
 			.then( () => ( isEmpty( user ) ? authenticator.getUser() : Promise.resolve( user ) ) )
 			.then( userObject =>
-				renderHappychat( targetNode, {
+				renderContactForm( targetNode, {
 					userObject,
 					canChat,
 					forceTicketForm,

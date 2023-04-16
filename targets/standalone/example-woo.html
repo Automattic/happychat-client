@@ -22,7 +22,7 @@
 		wpcomOAuth.get(function (result) {
 			Happychat.open({
 				authentication: {
-					type: 'wpcom-oauth-by-token',
+					type: 'wpcom-oauth-messaging-by-token',
 					options: {
 						token: result.access_token,
 					},

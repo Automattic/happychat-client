@@ -3,7 +3,6 @@
 /**
  * Internal dependencies
  */
-import { HAPPYCHAT_IO_RECEIVE_MESSAGE } from 'src/state/action-types';
 import { sendEvent, sendUserInfo } from 'src/state/connection/actions';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import getUserInfo from 'src/state/selectors/get-user-info';
@@ -36,9 +35,8 @@ export default store => {
 		subscribers[ eventName ].splice( subscribers[ eventName ].indexOf( subscriber ), 1 );
 
 	const emit = ( eventName, ...eventArgs ) =>
-		eventNameExist( eventName ) && subscribers[ eventName ].forEach(
-			subscriber => subscriber( ...eventArgs )
-		);
+		eventNameExist( eventName ) &&
+		subscribers[ eventName ].forEach( subscriber => subscriber( ...eventArgs ) );
 
 	const observeChange = ( selector, initialValue, eventName ) => {
 		let current = initialValue;
