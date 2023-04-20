@@ -66,7 +66,7 @@ export default class WPcomOAuth extends WPcomStrategy {
 		 * @param {Object} args request parameters
 		 * @returns {Promise} authenticated promisfied wrapper for the 'wpcom-xhr-request' request
 		 */
-		return ( args ) => {
+		return args => {
 			return new Promise( ( resolve, reject ) => {
 				if ( ! this.options.token ) {
 					return reject( `Authentication ${ this.type } error: token is missing` );
@@ -128,7 +128,7 @@ export default class WPcomOAuth extends WPcomStrategy {
 			const newArgs = { headers: {}, ...args };
 			newArgs.headers.Authorization = 'Bearer ' + this.options.token;
 			return fetch( url, newArgs );
-		}
+		};
 
 		// bail if already authenticated
 		return Promise.resolve( this.options.token );
@@ -178,8 +178,8 @@ export default class WPcomOAuth extends WPcomStrategy {
 	 * Get file data from a session.
 	 * @returns {Promise}
 	 */
-	 getFile( sessionId, fileId ) {
-		 const url = `https://public-api.wordpress.com/wpcom/v2/happychat/sessions/${ sessionId }/files/${ fileId }`;
-		 return this._fetch( url );
-	 }
+	getFile( sessionId, fileId ) {
+		const url = `https://public-api.wordpress.com/wpcom/v2/happychat/sessions/${ sessionId }/files/${ fileId }`;
+		return this._fetch( url );
+	}
 }

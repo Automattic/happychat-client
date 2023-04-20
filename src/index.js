@@ -28,6 +28,7 @@ import { setAssetsLoaded, setFormDefaultValues } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
+import authenticator from 'src/lib/auth';
 
 const middleware = config.isEnabled( 'messaging' ) ? messagingMiddleware() : socketMiddleware();
 const store = createStore(
@@ -219,11 +220,10 @@ export const renderContactForm = (
 	store.dispatch( setFallbackTicketOptions( entryOptions ) );
 	store.dispatch( setFormDefaultValues( entryOptions.defaultValues ) );
 
-	setTimeout( () => {
-		console.log( 'Simulating availability set to true...' );
+	authenticator.isChatAvailable().then( ( { is_available: isAvailable } ) => {
 		store.dispatch( receiveInit( {} ) );
-		store.dispatch( receiveAccept( true ) );
-	}, 5000 );
+		store.dispatch( receiveAccept( isAvailable ) );
+	} );
 
 	isAnyCanChatPropFalse( canChat, entryOptions )
 		? store.dispatch( setEligibility( false ) )

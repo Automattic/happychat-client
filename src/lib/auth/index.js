@@ -125,4 +125,7 @@ export default {
 	login: () => ( strategy ? strategy.login() : Promise.resolve() ),
 	getFile: ( sessionId, fileId ) =>
 		strategy ? strategy.getFile( sessionId, fileId ) : Promise.resolve(),
+	isChatAvailable: () => ( strategy ? strategy.isChatAvailable() : Promise.resolve() ),
+	saveCustomFields: fields =>
+		strategy ? strategy.saveCustomFields( fields ) : Promise.resolve(),
 };

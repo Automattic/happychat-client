@@ -1,10 +1,9 @@
 /** @format */
 
-const postMessage = ( type, data = {} ) => {
-	console.log( 'postMessage' );
-	console.log( { type, data } );
+const postMessage = message => {
+	console.log( 'postMessage', message );
 
-	//window.parent.postMessage( { type, data }, origin );
+	window.postMessage( message, window.location.origin );
 };
 
 export default postMessage;

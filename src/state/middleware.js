@@ -38,6 +38,7 @@ import isChatAssigned from 'src/state/selectors/is-chat-assigned';
 import isDisplayingNewMessages from 'src/state/selectors/is-displaying-new-messages';
 import { openChat } from 'src/state/ui/actions';
 import { recordEvent } from 'src/lib/tracks';
+import authenticator from 'src/lib/auth';
 
 const eventMessage = {
 	HAPPYCHAT_BLUR: 'Stopped looking at Happychat',
@@ -146,12 +147,11 @@ export const socketMiddleware = ( connection = null ) => {
 };
 
 export const messagingMiddleware = () => {
-	console.log( 'going with messagingMiddleware' );
 	return store => {
 		return next => action => {
 			switch ( action.type ) {
 				case HAPPYCHAT_IO_INIT:
-					postMessage( 'init' );
+					postMessage( 'loadSupportChat' );
 					break;
 
 				case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
@@ -159,11 +159,11 @@ export const messagingMiddleware = () => {
 					break;
 
 				case HAPPYCHAT_IO_SET_CUSTOM_FIELDS:
-					// makeRequest( store.dispatch, action, action.timeout ); TODO: Make API call
+					authenticator.saveCustomFields( action.payload );
 					break;
 
 				case HAPPYCHAT_OPEN:
-					postMessage( 'open' );
+					postMessage( 'openSupportChat' );
 					break;
 
 				default:

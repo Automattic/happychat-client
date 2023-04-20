@@ -6,16 +6,36 @@
 import WPcomOAuth from './oauth';
 
 export default class WPcomOAuthMessaging extends WPcomOAuth {
-	/**
-	 * Sign a JWT token.
-	 * @param {Object} payload jwt token
-	 */
 	signJWT() {}
 
-	startChat() {
-		console.log( 'START CHAT IN AUTHENTICATOR' );
-		// sendMessage to parent window
-	}
+	startChat() {}
 
 	getFile() {}
+
+	isChatAvailable() {
+		return this._request( {
+			method: 'GET',
+			apiNamespace: 'wpcom/v2',
+			path: '/help/messaging/is-available',
+			query: {
+				group: 'woo_messaging',
+			},
+		} );
+	}
+
+	saveCustomFields( { ssr, website, product } ) {
+		const body = {
+			fields: {
+				messaging_product: product,
+				messaging_ssr: ssr,
+				messaging_url: website,
+			},
+		};
+		return this._request( {
+			method: 'POST',
+			apiNamespace: 'wpcom/v2',
+			path: '/help/zendesk/update-user-fields',
+			body,
+		} );
+	}
 }
