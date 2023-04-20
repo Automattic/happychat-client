@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
+import debugFactory from 'debug';
 
 /**
  * Internal dependencies
@@ -29,6 +30,8 @@ import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
 import authenticator from 'src/lib/auth';
+
+const debug = debugFactory( 'happychat-client:index' );
 
 const middleware = config.isEnabled( 'messaging' ) ? messagingMiddleware() : socketMiddleware();
 const store = createStore(
@@ -251,7 +254,12 @@ export const createTargetNode = ( { nodeId, theme, groups } ) => {
 	);
 };
 
-export const renderError = ( targetNode, { error } ) =>
-	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
+export const renderError = ( targetNode, error ) => {
+	debug( 'Error when rendering index: ', error );
+	return ReactDOM.render(
+		<MessageForm message={ 'Could not load form. ' + error.error } />,
+		targetNode
+	);
+};
 
 export const eventAPI = eventAPIFactory( store );
