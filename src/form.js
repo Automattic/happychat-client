@@ -89,7 +89,7 @@ class ChatComponent {
 
 	render() {
 		if ( this.props.isMessagingEnabled ) {
-			return <div>Check Zendesk Messaging Widget...</div>;
+			return <div>Chat started, please check bottom right corner of page...</div>;
 		}
 		return <HappychatForm { ...this.props } />;
 	}
