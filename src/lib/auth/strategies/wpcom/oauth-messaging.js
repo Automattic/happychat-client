@@ -19,6 +19,7 @@ export default class WPcomOAuthMessaging extends WPcomOAuth {
 			path: '/help/messaging/is-available',
 			query: {
 				group: 'woo_messaging',
+				environment: process.env.NODE_ENV,
 			},
 		} );
 	}
