@@ -14,6 +14,7 @@ import {
 	HAPPYCHAT_IO_INIT,
 	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT,
+	HAPPYCHAT_IO_RECEIVE_ACCEPT,
 	HAPPYCHAT_IO_RECEIVE_MESSAGE,
 	HAPPYCHAT_IO_RECEIVE_STATUS,
 	HAPPYCHAT_IO_RECEIVE_TYPING,
@@ -27,7 +28,7 @@ import {
 	HAPPYCHAT_OPEN,
 } from 'src/state/action-types';
 import { HAPPYCHAT_CHAT_STATUS_ASSIGNED, HAPPYCHAT_CHAT_STATUS_DEFAULT } from 'src/state/constants';
-import { sendEvent } from 'src/state/connection/actions';
+import { receiveConnect, receiveInit, sendEvent } from 'src/state/connection/actions';
 import { setOperatorIsTyping, setHasUnreadMessages } from 'src/state/chat/actions';
 import buildConnection from 'src/state/socketio';
 import makeRequest from 'src/state/xhr';
@@ -150,8 +151,11 @@ export const messagingMiddleware = () => {
 	return store => {
 		return next => action => {
 			switch ( action.type ) {
-				case HAPPYCHAT_IO_INIT:
-					postMessage( 'loadSupportChat' );
+				case HAPPYCHAT_IO_RECEIVE_ACCEPT:
+					if ( action.isAvailable ) {
+						store.dispatch( receiveInit( {} ) );
+						postMessage( 'loadSupportChat' );
+					}
 					break;
 
 				case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:

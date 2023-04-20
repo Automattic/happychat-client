@@ -173,10 +173,6 @@ class ChatFormComponent {
 		if ( Object.keys( customFields ).length > 0 ) {
 			this.props.onSetChatCustomFields( customFields );
 		}
-
-		if ( this.props.isMessagingEnabled ) {
-			// Send stuff?
-		}
 	}
 
 	onEvent( formState ) {
@@ -440,21 +436,19 @@ class Form extends React.Component {
 			forceTicketForm,
 			isConnectionUninitialized,
 			isHappychatEnabled,
-			isMessagingEnabled,
 			onInitConnection,
 		} = this.props;
 
 		return (
 			<div>
-				{ forceTicketForm !== true &&
-					! isMessagingEnabled && (
-						<HappychatConnection
-							authentication={ authentication }
-							isConnectionUninitialized={ isConnectionUninitialized }
-							isHappychatEnabled={ isHappychatEnabled }
-							onInitConnection={ onInitConnection }
-						/>
-					) }
+				{ forceTicketForm !== true && (
+					<HappychatConnection
+						authentication={ authentication }
+						isConnectionUninitialized={ isConnectionUninitialized }
+						isHappychatEnabled={ isHappychatEnabled }
+						onInitConnection={ onInitConnection }
+					/>
+				) }
 
 				{ this.getSupportComponent().render() }
 			</div>
@@ -501,8 +495,7 @@ const mapState = state => {
 		authentication: authenticator.authorizeChat( state ),
 		isChatOpen: isChatFormOpen( state ),
 		isChatAvailable: isAvailable( state ),
-		isConnectionUninitialized:
-			isHCConnectionUninitialized( state ) && ! config.isEnabled( 'messaging' ),
+		isConnectionUninitialized: isHCConnectionUninitialized( state ),
 		isCurrentUser,
 		isExternalUrl,
 		isHappychatEnabled: config.isEnabled( 'happychat' ),

@@ -22,7 +22,7 @@ import { MessageForm } from 'src/ui/components/message-form';
 // state: general, actions, selectors
 import eventAPIFactory from 'src/state/event-api';
 import reducer from 'src/state/reducer';
-import { receiveAccept, receiveInit } from 'src/state/connection/actions';
+import { receiveAccept } from 'src/state/connection/actions';
 import { messagingMiddleware, socketMiddleware } from 'src/state/middleware';
 import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
 import { setAssetsLoaded, setFormDefaultValues } from 'src/state/ui/actions';
@@ -224,7 +224,6 @@ export const renderContactForm = (
 	store.dispatch( setFormDefaultValues( entryOptions.defaultValues ) );
 
 	authenticator.isChatAvailable().then( ( { is_available: isAvailable } ) => {
-		store.dispatch( receiveInit( {} ) );
 		store.dispatch( receiveAccept( isAvailable ) );
 	} );
 

@@ -6,6 +6,10 @@
 import WPcomOAuth from './oauth';
 
 export default class WPcomOAuthMessaging extends WPcomOAuth {
+	authorizeChat() {
+		return () => {};
+	}
+
 	signJWT() {}
 
 	startChat() {}
