@@ -203,6 +203,7 @@ class ChatFormComponent {
 				buttonText: { chat: buttonTextChat },
 			},
 			plugins,
+			isMessagingEnabled,
 		} = this.props;
 		return (
 			<ContactForm
@@ -216,6 +217,7 @@ class ChatFormComponent {
 				itemListTitle={ itemListTitle }
 				itemListOptions={ itemListOptions }
 				defaultValues={ defaultValues }
+				showMessage={ ! isMessagingEnabled }
 				showSubject={ false }
 				submitForm={ this.submitForm }
 				submitFormText={ buttonTextChat }

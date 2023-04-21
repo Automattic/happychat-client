@@ -92,6 +92,7 @@ export class ContactForm extends React.Component {
 
 	shouldComponentUpdate( nextProps, nextState ) {
 		if (
+			nextProps.showMessage !== this.props.showMessage ||
 			nextProps.showSubject !== this.props.showSubject ||
 			nextProps.submitFormText !== this.props.submitFormText ||
 			nextState.subject !== this.state.subject ||
@@ -247,7 +248,10 @@ export class ContactForm extends React.Component {
 	}
 
 	prepareCanSubmitForm() {
-		let canSubmit = '' !== this.state.message;
+		let canSubmit = true;
+		if ( this.props.showMessage ) {
+			canSubmit = canSubmit && '' !== this.state.message;
+		}
 		if ( this.props.showSubject ) {
 			canSubmit = canSubmit && '' !== this.state.subject;
 		}
@@ -390,15 +394,34 @@ export class ContactForm extends React.Component {
 		);
 	}
 
+	maybeMessage() {
+		if ( ! this.props.showMessage ) {
+			return null;
+		}
+
+		return (
+			<div>
+				<FormLabel>What are you trying to do?</FormLabel>
+				<FormTextarea
+					placeholder="Please be descriptive"
+					name="message"
+					value={ this.state.message }
+					onChange={ this.handleChange }
+				/>
+			</div>
+		);
+	}
+
 	maybeSubject() {
-		const { showSubject } = this.props;
-		return showSubject ? (
+		if ( ! this.props.showSubject ) {
+			return null;
+		}
+
+		return (
 			<div>
 				<FormLabel>{ 'Subject' }</FormLabel>
 				<FormTextInput name="subject" value={ this.state.subject } onChange={ this.handleChange } />
 			</div>
-		) : (
-			''
 		);
 	}
 
@@ -408,22 +431,17 @@ export class ContactForm extends React.Component {
 			<>
 				{ this.maybeSubject() }
 
-				<FormLabel>What are you trying to do?</FormLabel>
-				<FormTextarea
-					placeholder="Please be descriptive"
-					name="message"
-					value={ this.state.message }
-					onChange={ this.handleChange }
-				/>
+				{ this.maybeMessage() }
 
-				{ plugins.hasOwnProperty( 'sibyl' ) && (
-					<Sibyl
-						subject={ this.props.showSubject ? this.state.subject : '' }
-						message={ this.state.message }
-						addFormSubmitListener={ this.addFormSubmitListener }
-						config={ plugins[ 'sibyl' ] }
-					/>
-				) }
+				{ plugins.hasOwnProperty( 'sibyl' ) &&
+					this.props.showMessage && (
+						<Sibyl
+							subject={ this.props.showSubject ? this.state.subject : '' }
+							message={ this.state.message }
+							addFormSubmitListener={ this.addFormSubmitListener }
+							config={ plugins[ 'sibyl' ] }
+						/>
+					) }
 
 				{ this.maybeOpenTextField() }
 
@@ -477,6 +495,7 @@ ContactForm.propTypes = {
 	openTextArea: PropTypes.object,
 	openTextAreaTitle: PropTypes.string,
 	defaultValues: PropTypes.object,
+	showMessage: PropTypes.bool,
 	showSubject: PropTypes.bool,
 	submitForm: PropTypes.func.isRequired,
 	submitFormText: PropTypes.string,
@@ -497,6 +516,7 @@ ContactForm.defaultProps = {
 	openTextArea: null,
 	openTextAreaTitle: 'Any more info you want to share?',
 	defaultValues: {},
+	showMessage: true,
 	showSubject: false,
 	submitForm: () => {},
 	submitFormText: 'Send',
