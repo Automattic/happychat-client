@@ -28,7 +28,7 @@ import {
 	HAPPYCHAT_OPEN,
 } from 'src/state/action-types';
 import { HAPPYCHAT_CHAT_STATUS_ASSIGNED, HAPPYCHAT_CHAT_STATUS_DEFAULT } from 'src/state/constants';
-import { receiveConnect, receiveInit, sendEvent } from 'src/state/connection/actions';
+import { receiveAccept, receiveInit, sendEvent } from 'src/state/connection/actions';
 import { setOperatorIsTyping, setHasUnreadMessages } from 'src/state/chat/actions';
 import buildConnection from 'src/state/socketio';
 import makeRequest from 'src/state/xhr';
@@ -151,6 +151,12 @@ export const messagingMiddleware = () => {
 	return store => {
 		return next => action => {
 			switch ( action.type ) {
+				case HAPPYCHAT_IO_INIT:
+					authenticator.isChatAvailable().then( ( { is_available: isAvailable } ) => {
+						store.dispatch( receiveAccept( isAvailable ) );
+					} );
+					break;
+
 				case HAPPYCHAT_IO_RECEIVE_ACCEPT:
 					if ( action.isAvailable ) {
 						store.dispatch( receiveInit( {} ) );

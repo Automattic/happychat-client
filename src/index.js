@@ -29,7 +29,6 @@ import { setAssetsLoaded, setFormDefaultValues } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
-import authenticator from 'src/lib/auth';
 
 const debug = debugFactory( 'happychat-client:index' );
 
@@ -222,10 +221,6 @@ export const renderContactForm = (
 	store.dispatch( setLocale( language ) );
 	store.dispatch( setFallbackTicketOptions( entryOptions ) );
 	store.dispatch( setFormDefaultValues( entryOptions.defaultValues ) );
-
-	authenticator.isChatAvailable().then( ( { is_available: isAvailable } ) => {
-		store.dispatch( receiveAccept( isAvailable ) );
-	} );
 
 	isAnyCanChatPropFalse( canChat, entryOptions )
 		? store.dispatch( setEligibility( false ) )
