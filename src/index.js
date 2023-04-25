@@ -8,8 +8,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore, compose } from 'redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
-import find from 'lodash/find';
-import max from 'lodash/max';
+import debugFactory from 'debug';
 
 /**
  * Internal dependencies
@@ -18,22 +17,26 @@ import max from 'lodash/max';
 import { hasTouch } from 'src/lib/touch-detect';
 import { getOptions } from 'src/lib/get-options';
 // UI components
-import Happychat, { ENTRY_FORM } from 'src/form';
+import ContactForm, { ENTRY_FORM } from 'src/form';
 import { MessageForm } from 'src/ui/components/message-form';
 // state: general, actions, selectors
 import eventAPIFactory from 'src/state/event-api';
 import reducer from 'src/state/reducer';
-import { socketMiddleware } from 'src/state/middleware';
+import { receiveAccept } from 'src/state/connection/actions';
+import { messagingMiddleware, socketMiddleware } from 'src/state/middleware';
 import { HAPPYCHAT_GROUP_WPCOM } from 'src/state/constants';
 import { setAssetsLoaded, setFormDefaultValues } from 'src/state/ui/actions';
 import { setCurrentUser, setGroups, setLocale, setEligibility } from 'src/state/user/actions';
 import { setFallbackTicketOptions } from 'src/state/fallbackTicket/actions';
 import config from 'src/config';
 
+const debug = debugFactory( 'happychat-client:index' );
+
+const middleware = config.isEnabled( 'messaging' ) ? messagingMiddleware() : socketMiddleware();
 const store = createStore(
 	reducer,
 	{},
-	compose( applyMiddleware( socketMiddleware() ), devToolsEnhancer() )
+	compose( applyMiddleware( middleware ), devToolsEnhancer() )
 );
 
 const dispatchAssetsFinishedDownloading = () => store.dispatch( setAssetsLoaded() );
@@ -175,21 +178,25 @@ const createIframe = ( { nodeId, theme }, assetsLoadedHook = () => {} ) => {
 	return targetNode;
 };
 
-const isAnyCanChatPropFalse = ( canChat, { primaryOptions, secondaryOptions, itemList, defaultValues } ) => {
-	const {
-		primarySelected,
-		secondarySelected,
-		itemSelected,
-	} = getOptions( { primaryOptions, secondaryOptions, itemList }, defaultValues );
+const isAnyCanChatPropFalse = (
+	canChat,
+	{ primaryOptions, secondaryOptions, itemList, defaultValues }
+) => {
+	const { primarySelected, secondarySelected, itemSelected } = getOptions(
+		{ primaryOptions, secondaryOptions, itemList },
+		defaultValues
+	);
 
-	return false === canChat ||
+	return (
+		false === canChat ||
 		false === primarySelected.canChat ||
 		false === secondarySelected.canChat ||
-		false === itemSelected.canChat;
+		false === itemSelected.canChat
+	);
 };
 
 /* eslint-disable camelcase */
-export const renderHappychat = (
+export const renderContactForm = (
 	targetNode,
 	{
 		userObject: { ID, email, username, display_name, avatar_URL, language },
@@ -221,21 +228,32 @@ export const renderHappychat = (
 
 	ReactDOM.render(
 		<Provider store={ store }>
-			<Happychat entry={ entry } canChat={ canChat } entryOptions={ entryOptions } forceTicketForm={ forceTicketForm } plugins={ plugins } />
+			<ContactForm
+				entry={ entry }
+				canChat={ canChat }
+				entryOptions={ entryOptions }
+				forceTicketForm={ forceTicketForm }
+				plugins={ plugins }
+			/>
 		</Provider>,
 		targetNode
 	);
 };
 /* eslint-enable camelcase */
 
-export const createTargetNode = ( { nodeId, theme, groups, entryOptions } ) => {
+export const createTargetNode = ( { nodeId, theme, groups } ) => {
 	return createIframe(
 		{ nodeId, theme: getTheme( { theme, groups } ) },
 		dispatchAssetsFinishedDownloading
 	);
 };
 
-export const renderError = ( targetNode, { error } ) =>
-	ReactDOM.render( <MessageForm message={ 'Could not load form. ' + error } />, targetNode );
+export const renderError = ( targetNode, error ) => {
+	debug( 'Error when rendering index: ', error );
+	return ReactDOM.render(
+		<MessageForm message={ 'Could not load form. ' + error.error } />,
+		targetNode
+	);
+};
 
 export const eventAPI = eventAPIFactory( store );

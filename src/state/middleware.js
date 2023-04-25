@@ -14,6 +14,7 @@ import {
 	HAPPYCHAT_IO_INIT,
 	HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET,
 	HAPPYCHAT_IO_REQUEST_TRANSCRIPT,
+	HAPPYCHAT_IO_RECEIVE_ACCEPT,
 	HAPPYCHAT_IO_RECEIVE_MESSAGE,
 	HAPPYCHAT_IO_RECEIVE_STATUS,
 	HAPPYCHAT_IO_RECEIVE_TYPING,
@@ -24,21 +25,21 @@ import {
 	HAPPYCHAT_IO_SEND_PREFERENCES,
 	HAPPYCHAT_IO_SEND_TYPING,
 	HAPPYCHAT_IO_SET_CUSTOM_FIELDS,
+	HAPPYCHAT_OPEN,
 } from 'src/state/action-types';
-import {
-	HAPPYCHAT_CHAT_STATUS_ASSIGNED,
-	HAPPYCHAT_CHAT_STATUS_DEFAULT,
-} from 'src/state/constants';
-import { sendEvent } from 'src/state/connection/actions';
+import { HAPPYCHAT_CHAT_STATUS_ASSIGNED, HAPPYCHAT_CHAT_STATUS_DEFAULT } from 'src/state/constants';
+import { receiveAccept, receiveInit, sendEvent } from 'src/state/connection/actions';
 import { setOperatorIsTyping, setHasUnreadMessages } from 'src/state/chat/actions';
 import buildConnection from 'src/state/socketio';
 import makeRequest from 'src/state/xhr';
+import postMessage from 'src/state/post-message';
 import getChatStatus from 'src/state/selectors/get-chat-status';
 import isConnectionConnected from 'src/state/selectors/is-connection-connected';
 import isChatAssigned from 'src/state/selectors/is-chat-assigned';
 import isDisplayingNewMessages from 'src/state/selectors/is-displaying-new-messages';
 import { openChat } from 'src/state/ui/actions';
 import { recordEvent } from 'src/lib/tracks';
+import authenticator from 'src/lib/auth';
 
 const eventMessage = {
 	HAPPYCHAT_BLUR: 'Stopped looking at Happychat',
@@ -55,7 +56,7 @@ function playAudibleNotice() {
 		result.catch(
 			// Safari will throw an error because auto-playing audio is not allowed without
 			// user consent, nooping the error handler
-			error => {}
+			() => {}
 		);
 	}
 }
@@ -68,9 +69,13 @@ export const socketMiddleware = ( connection = null ) => {
 	}
 
 	return store => {
-		const clearOperatorIsTyping = throttle( () => {
-			store.dispatch( setOperatorIsTyping( false ) );
-		}, 3000, { leading: false } );
+		const clearOperatorIsTyping = throttle(
+			() => {
+				store.dispatch( setOperatorIsTyping( false ) );
+			},
+			3000,
+			{ leading: false }
+		);
 
 		return next => action => {
 			switch ( action.type ) {
@@ -135,6 +140,44 @@ export const socketMiddleware = ( connection = null ) => {
 					clearOperatorIsTyping();
 					break;
 				}
+			}
+
+			return next( action );
+		};
+	};
+};
+
+export const messagingMiddleware = () => {
+	return store => {
+		return next => action => {
+			switch ( action.type ) {
+				case HAPPYCHAT_IO_INIT:
+					authenticator.isChatAvailable().then( ( { is_available: isAvailable } ) => {
+						store.dispatch( receiveAccept( isAvailable ) );
+					} );
+					break;
+
+				case HAPPYCHAT_IO_RECEIVE_ACCEPT:
+					if ( action.isAvailable ) {
+						store.dispatch( receiveInit( {} ) );
+						postMessage( 'loadSupportChat' );
+					}
+					break;
+
+				case HAPPYCHAT_IO_REQUEST_FALLBACK_TICKET:
+					makeRequest( store.dispatch, action, action.timeout );
+					break;
+
+				case HAPPYCHAT_IO_SET_CUSTOM_FIELDS:
+					authenticator.saveCustomFields( action.payload );
+					break;
+
+				case HAPPYCHAT_OPEN:
+					postMessage( 'openSupportChat' );
+					break;
+
+				default:
+					break;
 			}
 
 			return next( action );

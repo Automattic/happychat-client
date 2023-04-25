@@ -10,9 +10,11 @@ import debugFactory from 'debug';
  */
 import {
 	AUTH_TYPE_WPCOM_OAUTH_BY_TOKEN,
+	AUTH_TYPE_WPCOM_OAUTH_MESSAGING_BY_TOKEN,
 	AUTH_TYPE_WPCOM_PROXY_IFRAME,
 } from './strategies';
 import WPcomOAuth from './strategies/wpcom/oauth';
+import WPcomOAuthMessaging from './strategies/wpcom/oauth-messaging';
 import WPcomProxyIframe from './strategies/wpcom/proxy-iframe';
 
 /**
@@ -42,7 +44,7 @@ const debug = debugFactory( 'happychat-client:auth' );
  *
  * @throws {Error} if a strategy method used is not implemented.
  */
-const init = ( auth ) => {
+const init = auth => {
 	debug( 'Authentication library was initialized', auth );
 
 	switch ( auth.type ) {
@@ -55,6 +57,17 @@ const init = ( auth ) => {
 			}
 
 			strategy = new WPcomOAuth( auth );
+			break;
+
+		case AUTH_TYPE_WPCOM_OAUTH_MESSAGING_BY_TOKEN:
+			if ( ! auth.options ) {
+				throw new Error( `Strategy ${ auth.type } requires parameter 'options'.` );
+			}
+			if ( ! auth.options.token ) {
+				throw new Error( `Strategy ${ auth.type } requires parameter 'options.token'.` );
+			}
+
+			strategy = new WPcomOAuthMessaging( auth );
 			break;
 
 		case AUTH_TYPE_WPCOM_PROXY_IFRAME:
@@ -92,13 +105,14 @@ export default {
 	 * @param {Object} args all parameters are merged into an object and sent to the strategy method
 	 * @returns {Promise} which contains authorize data returned by the strategy
 	 */
-	authorizeChat: ( ...args ) => strategy ? strategy.authorizeChat( ...args ) : Promise.resolve(),
+	authorizeChat: ( ...args ) =>
+		strategy ? strategy.authorizeChat( ...args ) : Promise.resolve(),
 	/**
 	 * Get current user details via WPcom api endpoint (/me), resolves if there is no selected
 	 * strategy.
 	 * @returns {Promise} that grabs the current user details
 	 */
-	getUser: () => strategy ? strategy.getUser() : Promise.resolve(),
+	getUser: () => ( strategy ? strategy.getUser() : Promise.resolve() ),
 	/**
 	 * Initializes the authentication interface, see docs above.
 	 */
@@ -108,6 +122,10 @@ export default {
 	 * selected strategy.
 	 * @returns {Promise} which contains login data returned by the strategy
 	 */
-	login: () => strategy ? strategy.login() : Promise.resolve(),
-	getFile: ( sessionId, fileId ) => strategy ? strategy.getFile( sessionId, fileId ) : Promise.resolve(),
+	login: () => ( strategy ? strategy.login() : Promise.resolve() ),
+	getFile: ( sessionId, fileId ) =>
+		strategy ? strategy.getFile( sessionId, fileId ) : Promise.resolve(),
+	isChatAvailable: () => ( strategy ? strategy.isChatAvailable() : Promise.resolve() ),
+	saveCustomFields: fields =>
+		strategy ? strategy.saveCustomFields( fields ) : Promise.resolve(),
 };

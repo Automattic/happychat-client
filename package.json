@@ -1,6 +1,6 @@
 {
   "name": "happychat-client",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "",
   "main": "./targets/npm/api.js",
   "keywords": [],
@@ -103,10 +103,10 @@
   "dependencies": {
     "@babel/plugin-transform-react-display-name": "7.2.0",
     "classnames": "2.2.6",
-    "create-react-class": "15.6.3",
+    "create-react-class": "15.7.0",
     "gridicons": "3.0.1",
     "interpolate-components": "1.1.1",
-    "lodash": "4.17.11",
+    "lodash": "4.17.21",
     "prop-types": "15.6.2",
     "react": "16.4.1",
     "react-dom": "16.4.1",
@@ -116,7 +116,7 @@
     "redux-devtools-extension": "2.13.5",
     "sass": "1.55.0",
     "socket.io-client": "2.1.1",
-    "uuid": "2.0.1",
+    "uuid": "^8.3.2",
     "wpcom-oauth-cors": "1.0.1",
     "wpcom-xhr-request": "1.1.3"
   }
