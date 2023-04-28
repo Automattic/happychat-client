@@ -28,9 +28,15 @@ export default class WPcomOAuthMessaging extends WPcomOAuth {
 		} );
 	}
 
-	saveCustomFields( { ssr, website, product } ) {
+	saveCustomFields( {
+		ssr = 'Not required in this contact type',
+		website,
+		product,
+		reasonForContact,
+	} ) {
 		const body = {
 			fields: {
+				messaging_contact_type: reasonForContact,
 				messaging_product: product,
 				messaging_ssr: ssr,
 				messaging_url: website,
