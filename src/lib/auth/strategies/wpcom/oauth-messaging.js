@@ -36,7 +36,7 @@ export default class WPcomOAuthMessaging extends WPcomOAuth {
 	} ) {
 		const body = {
 			fields: {
-				messaging_contact_type: reasonForContact,
+				contact_reason: reasonForContact,
 				messaging_product: product,
 				messaging_ssr: ssr,
 				messaging_url: website,
