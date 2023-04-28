@@ -156,7 +156,7 @@ class ChatFormComponent {
 
 		if ( itemSelected.label ) {
 			warmUpMessage += itemListTitle + ' ' + itemSelected.label + '\n';
-			itemListCustomFieldKey && ( customFields[ itemListCustomFieldKey ] = itemSelected.value );
+			itemListCustomFieldKey && ( customFields[ itemListCustomFieldKey ] = itemSelected.label );
 		}
 
 		warmUpMessage !== '' && this.props.onSendMessage( warmUpMessage );
