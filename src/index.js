@@ -178,6 +178,15 @@ const createIframe = ( { nodeId, theme }, assetsLoadedHook = () => {} ) => {
 	return targetNode;
 };
 
+const unescapeHtmlEntities = itemList => {
+	return itemList.map( item => {
+		const label = item.label.replaceAll( '&amp;', '&' );
+		return Object.assign( {}, item, {
+			label,
+		} );
+	} );
+};
+
 const isAnyCanChatPropFalse = (
 	canChat,
 	{ primaryOptions, secondaryOptions, itemList, defaultValues }
@@ -208,6 +217,8 @@ export const renderContactForm = (
 		plugins = {},
 	}
 ) => {
+	entryOptions.itemList = unescapeHtmlEntities( entryOptions.itemList );
+
 	store.dispatch(
 		setCurrentUser( {
 			ID,
