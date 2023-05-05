@@ -5,6 +5,25 @@
  */
 import WPcomOAuth from './oauth';
 
+function mapReasonForContactToZendeskTag( reasonForContact ) {
+	switch ( reasonForContact ) {
+		case 'broken':
+			return 'contact_reason_woo_product';
+
+		case 'before-buy':
+			return 'contact_reason_woo_before_i_buy';
+
+		case 'account':
+			return 'contact_reason_woo_account';
+
+		case 'vendor':
+			return 'contact_reason_woo_marketplace_vendors';
+
+		default:
+			return 'contact_reason_unrecognized';
+	}
+}
+
 export default class WPcomOAuthMessaging extends WPcomOAuth {
 	authorizeChat() {
 		return () => {};
@@ -36,7 +55,7 @@ export default class WPcomOAuthMessaging extends WPcomOAuth {
 	} ) {
 		const body = {
 			fields: {
-				contact_reason: reasonForContact,
+				contact_reason: mapReasonForContactToZendeskTag( reasonForContact ),
 				messaging_product: product,
 				messaging_ssr: ssr,
 				messaging_url: website,
