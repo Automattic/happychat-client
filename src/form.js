@@ -89,7 +89,7 @@ class ChatComponent {
 
 	render() {
 		if ( this.props.isMessagingEnabled ) {
-			return <div>Chat started, please check bottom right corner of page...</div>;
+			return <div>Chat started, please check the bottom right corner of your screen...</div>;
 		}
 		return <HappychatForm { ...this.props } />;
 	}
