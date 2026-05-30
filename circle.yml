@@ -2,11 +2,17 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10.4.1
+      - image: cimg/node:16.17.1@sha256:9e7dff70aee20446a146e374367c3fddc58df1e39cca318dbd4993e625892880
     environment:
       - NODE_ENV: "development"
     steps:
-      - checkout
+      - run:
+          name: Checkout
+          command: |
+            git init
+            git remote add origin https://github.com/Automattic/happychat-client.git
+            git fetch --depth=1 origin "$CIRCLE_SHA1"
+            git checkout --force FETCH_HEAD
 
       - restore_cache:
           name: "Restoring npm cache"
