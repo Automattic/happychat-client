@@ -46,7 +46,10 @@ const api = {
 	} ) => {
 		authenticator.init( authentication );
 
-		const targetNode = createTargetNode( { nodeId, theme, groups, entryOptions } );
+		const {
+			targetNode,
+			heightInterval
+		} = createTargetNode( { nodeId, theme, groups, entryOptions } );
 
 		authenticator
 			.login()
@@ -63,6 +66,11 @@ const api = {
 				} )
 			)
 			.catch( error => renderError( targetNode, { error } ) );
+
+		// a cleanup function
+		return () => {
+			clearInterval( heightInterval )
+		}
 	},
 	/**
 	 * Method to subscribe to Happychat events, either 'availability' or 'chatStatus'.
